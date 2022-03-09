@@ -1,0 +1,120 @@
+body {
+    -webkit-user-select: none;
+}
+
+::selection {
+    background: #def;
+}
+
+blockquote {
+    -webkit-user-select: text;
+}
+
+.titlebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 30px;
+    z-index: 1000;
+    -webkit-app-region: drag;
+    background-color: #fffa;
+    backdrop-filter: blur(20px) saturate(1.8);
+}
+
+.titlebar .clickable {
+    z-index: 1001;
+    -webkit-app-region: no-drag;
+}
+
+.mdui-btn i {
+    transform: scale(0.75);
+    margin-top: -3px;
+    margin-right: 5px;
+}
+
+.tab-bar button {
+    width: 115px;
+    color: #777;
+}
+
+.tab-bar .select {
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: 'DOTMATRI';
+    src: url('DOTMATRI.TTF');
+}
+
+.dotfont {
+    font-family: 'DOTMATRI';
+}
+
+.line {
+    width: 100%;
+    height: 0.5px;
+    background-color: #ccc;
+}
+
+h1 {
+    font-size: 20px !important;
+    font-weight: 500;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.color-dot {
+    height: 30px;
+    width: 30px;
+    border-radius: 15px;
+    margin-right: 1px;
+    margin-left: 1px;
+    display: inline-block;
+    margin-bottom: -9px;
+}
+
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-content: flex-start;
+}
+
+.model-item {
+    min-width: 220px;
+    max-width: 330px;
+    flex: 1;
+    height: 120px;
+    border: solid 1px #ccc;
+    border-radius: 10px;
+    overflow: hidden;
+    display: inline-block;
+    margin: 5px;
+    background-color: #fff;
+}
+
+.settings-item {
+    height: 50px;
+    line-height: 30px;
+    cursor: pointer;
+}
+
+.settings-item label {
+    width: 100%;
+}
+
+.settings-item label span {
+    display: inline-block;
+    width: calc(100% - 50px);
+}
+
+.settings-item i {
+    color: #777;
+    transform: scale(0.8);
+}
+
+body::-webkit-scrollbar {
+    display: none;
+}

@@ -1,0 +1,9 @@
+video {
+    transform: scale(-1, 1);
+}
+.preview canvas {
+    transform: scale(-1, 1);
+}
+/* #model{
+    transform: scale(-1, 1);
+} */

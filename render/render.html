@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Mocap</title>
+
+  <meta name="viewport"
+    content="viewport-fit=cover, user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1" />
+  <!--     Basic Three.js -->
+  <script src="https://unpkg.com/three@0.133.0/build/three.js"></script>
+  <!--     GLTF Loader for Three.js -->
+  <script src="https://unpkg.com/three@0.133.0/examples/js/loaders/GLTFLoader.js"></script>
+  <!--     Orbit Controls for Three.js -->
+  <script src="https://unpkg.com/three@0.133.0/examples/js/controls/OrbitControls.js"></script>
+  <!--     VRM Loader for Three.js -->
+  <script src="https://unpkg.com/@pixiv/three-vrm@0.6.7/lib/three-vrm.js"></script>
+  <!--     Mediapipe or Tensorflow.js -->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/holistic@0.5.1635989137/holistic.js"
+    crossorigin="anonymous"></script>
+
+  <!--     Mediapipe Drawing Tools -->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+  <!--     Mediapipe Camera Tools -->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <!-- <button id='reset' style="z-index: 1000;position:fixed;top:0px;left:0px;"
+    onclick="require('electron').remote.getCurrentWebContents().openDevTools()">open dev
+    tools</button> -->
+    <!-- virtual 3d model show here -->
+  <div id="model"
+    style="width: 48%;border: solid 1px #ccc;border-radius: 10px;height: fit-content;top: 10px;left:10px;overflow: hidden;position: fixed;">
+  </div>
+  <div class="preview">
+    <!-- canvas for show body skeleton -->
+    <canvas class="guides"
+      style="width: 48%;border: solid 1px #ccc;border-radius: 10px;height: auto;overflow: hidden;position: fixed;top:10px;left: 50%;z-index: 1000;"></canvas>
+    <!-- show camera or video input  -->
+    <video class="input_video"
+      style="width: 48%;border: solid 1px #ccc;border-radius: 10px;height: auto;overflow: hidden;position: fixed;top:10px;left: 50%;"></video>
+  </div>
+
+  <div style="position: fixed;width: 400px;height: 120px;left: calc(50vw - 200px);top:calc(50vh - 60px);
+  z-index: 1000;background: #fffa;border: solid 1px #ccc;text-align: center;line-height: 120px;border-radius: 10px;backdrop-filter: blur(20px) saturate(1.8);" id="loading">正在初始化，请稍后</div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/kalidokit@1.1/dist/kalidokit.umd.js"></script>
+  <script src="./script.js" type="module" defer></script>
+</body>
+
+</html>
