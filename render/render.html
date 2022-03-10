@@ -24,13 +24,16 @@
   <!--     Mediapipe Camera Tools -->
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="../libs/mdui/css/mdui.css">
+  <script src="../libs/vue/vue.js"></script>
+  <script src="../libs/mdui/js/mdui.js"></script>
 </head>
 
 <body>
-  <!-- <button id='reset' style="z-index: 1000;position:fixed;top:0px;left:0px;"
+  <button id='reset' style="z-index: 1000;position:fixed;top:0px;left:0px;"
     onclick="require('electron').remote.getCurrentWebContents().openDevTools()">open dev
-    tools</button> -->
-    <!-- virtual 3d model show here -->
+    tools</button>
+  <!-- virtual 3d model show here -->
   <div id="model"
     style="width: 48%;border: solid 1px #ccc;border-radius: 10px;height: fit-content;top: 10px;left:10px;overflow: hidden;position: fixed;">
   </div>
@@ -43,11 +46,16 @@
       style="width: 48%;border: solid 1px #ccc;border-radius: 10px;height: auto;overflow: hidden;position: fixed;top:10px;left: 50%;"></video>
   </div>
 
-  <div style="position: fixed;width: 400px;height: 120px;left: calc(50vw - 200px);top:calc(50vh - 60px);
-  z-index: 1000;background: #fffa;border: solid 1px #ccc;text-align: center;line-height: 120px;border-radius: 10px;backdrop-filter: blur(20px) saturate(1.8);" id="loading">正在初始化，请稍后</div>
+  <div
+    style="position: fixed;width: 400px;height: 120px;left: calc(50vw - 200px);top:calc(50vh - 60px);
+  z-index: 1000;background: #fffa;border: solid 1px #ccc;text-align: center;line-height: 120px;border-radius: 10px;backdrop-filter: blur(20px) saturate(1.8);"
+    id="loading">正在初始化，请稍后</div>
+    <div style="position: absolute;bottom: 0;width: calc(100% - 40px);margin: 15px;" ><label class="mdui-slider mdui-slider-discrete">
+      <input type="range" step="0.1" min="0" max="100" value="0" id="videoCtrl"/>
+    </label></div>
   
   <script src="https://cdn.jsdelivr.net/npm/kalidokit@1.1/dist/kalidokit.umd.js"></script>
-  <script src="./script.js" type="module" defer></script>
+  <script src="./script.js" defer></script>
 </body>
 
 </html>

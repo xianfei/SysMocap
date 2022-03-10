@@ -17,7 +17,8 @@
     <script src="../models/models.js"></script>
 </head>
 
-<body style="font-family: 'LatoWeb', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;background-color: #fff7;">
+<body
+    style="font-family: 'LatoWeb', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;background-color: #fff7;">
     <div id="vue-mount" v-bind:class="'mdui-theme-primary-' + themeColor + ' mdui-theme-accent-' + themeColor">
         <div class="titlebar" style="height: 40px;align-content: center;">
             <button class="clickable" onclick="require('electron').remote.getCurrentWebContents().toggleDevTools()"
@@ -30,8 +31,9 @@
                 <div class="mdui-text-color-theme" style="font-size: 10px;color:#555">视频驱动虚拟角色动作的自动生成系统</div>
             </div>
 
-            <i class="mdui-icon material-icons" style="z-index: 1001;position:fixed;top:3px;right:140px;transform: scale(0.6);cursor: pointer;-webkit-app-region: no-drag;" 
-        onclick="require('electron').remote.getCurrentWebContents().toggleDevTools()">extension</i>
+            <i class="mdui-icon material-icons"
+                style="z-index: 1001;position:fixed;top:3px;right:140px;transform: scale(0.6);cursor: pointer;-webkit-app-region: no-drag;"
+                onclick="require('electron').remote.getCurrentWebContents().toggleDevTools()">extension</i>
 
             <div class="clickable tab-bar" style="width: 360px;top:3px;position: fixed;left: calc(50vw - 180px);">
                 <button v-bind:class="tab=='model'?'mdui-btn select mdui-text-color-theme':'mdui-btn'"
@@ -51,8 +53,7 @@
                 <div class="flex-container" id="userModels">
                     <div v-for="model in builtIn" class="mdui-ripple model-item"
                         v-on:click="require('electron').ipcRenderer.send('openModelViewer', {model:model,backgroundColor:bg,color:fg});">
-                        <img v-bind:src="model.pic"
-                        style="width: 120px;height: 120px;object-fit:contain;">
+                        <img v-bind:src="model.pic" style="width: 120px;height: 120px;object-fit:contain;">
                         <div style="margin-top: -120px;margin-left: 140px;">
                             <h1>{{model.name}}</h1>
                             <div class="mdui-color-theme"
@@ -81,15 +82,21 @@
                         <i class="mdui-radio-icon"></i>
                         视频文件
                     </label>
+
                     <span style="margin-left: 60px;"></span>
                     <button class="mdui-btn mdui-color-theme" onclick="startMocap(this)"><i
                             class="mdui-icon material-icons">play_arrow</i>开始</button>
+                    <div style="margin-top: 10px;" v-show="videoSource == 'file'">
+                        <button class="mdui-btn mdui-color-theme" id="chooseFile">选择视频文件</button>
+                                <span style="margin-left: 10px;">已选择视频文件：{{videoPath==''?'未选择':videoPath}}</span>
+                    </div>
                 </div>
                 <webview nodeIntegration webpreferences="contextIsolation=no" enableremotemodule id="foo"
                     src="about:blank"
-                    style="width: calc(100vw - 40px);height: calc((100vw - 40px) * 10 / 32);margin-top: 20px;">
+                    style="width: calc(100vw - 40px);height: calc((100vw - 40px) * 10 / 32 + 20px);margin-top: 20px;">
                 </webview>
             </div>
+            <!-- settings page -->
             <div v-show="tab=='settings'" style="max-width: 550px; margin: auto;">
                 <div class="dotfont" style="font-size: 32px;color: #555;margin-top: 10px;">Xianfei's<span
                         style="margin-left: 5px;margin-right: 5px;">Mocap</span>System</div>
@@ -244,27 +251,39 @@
                 themeColor: 'deep-purple',
                 builtIn: builtInModels,
                 selectModelPath: builtInModels[0].path,
-                videoSource: 'camera'
+                videoSource: 'camera',
+                videoPath:'',
             },
             computed: {
                 bg: function () {
                     this.themeColor
-                    return window.getComputedStyle(document.querySelector('.mdui-color-theme'),null).backgroundColor
+                    return window.getComputedStyle(document.querySelector('.mdui-color-theme'), null).backgroundColor
                 },
                 fg: function () {
                     this.themeColor
-                    return window.getComputedStyle(document.querySelector('.mdui-color-theme'),null).color
+                    return window.getComputedStyle(document.querySelector('.mdui-color-theme'), null).color
                 }
             }
         })
+        
+        document.getElementById("chooseFile").onclick = async function () {
+				const result = await remote.dialog.showOpenDialogSync({
+					properties: ['openFile'],
+					filters: [{
+						name: '视频文件',
+						extensions: ['mp4', 'webm']
+					}],
+				});
+				if (result)  app.videoPath = result
+		}
 
         var inst = new mdui.Select('#demo-js');
 
         function startMocap(e) {
             if (e.innerHTML.indexOf('开始') != -1) {
                 localStorage.setItem('modelPath', app.selectModelPath);
-                localStorage.setItem('useCamera', app.videoSource == 'camera');
-                localStorage.setItem('videoFile', 'todo');
+                localStorage.setItem('useCamera', app.videoSource);
+                localStorage.setItem('videoFile', app.videoPath[0]);
                 document.getElementById('foo').src = '../render/render.html'
                 e.innerHTML = '<i class="mdui-icon material-icons">stop</i>停止'
             } else {

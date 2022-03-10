@@ -16,8 +16,8 @@ renderer.setPixelRatio(window.devicePixelRatio);
 document.querySelector("#model").appendChild(renderer.domElement);
 
 window.addEventListener('resize', function () {
-    camera.aspect = 16 / 9;
-    camera.updateProjectionMatrix();
+    orbitCamera.aspect = 16 / 9;
+    orbitCamera.updateProjectionMatrix();
     renderer.setSize(document.querySelector("#model").clientWidth, document.querySelector("#model").clientWidth / 16 * 9);
 }, false);
 
@@ -258,6 +258,7 @@ const animateVRM = (vrm, results) => {
 
 /* SETUP MEDIAPIPE HOLISTIC INSTANCE */
 let videoElement = document.querySelector(".input_video"),
+    videoCtrl = document.querySelector("#videoCtrl"),
     guideCanvas = document.querySelector("canvas.guides");
 
 const onResults = (results) => {
@@ -267,6 +268,7 @@ const onResults = (results) => {
     animateVRM(currentVrm, results);
     if(!started){
         document.getElementById('loading').remove()
+        if(localStorage.getItem('useCamera') == 'file') videoElement.play()
         started=true;
     }
 };
@@ -332,7 +334,8 @@ const drawResults = (results) => {
 };
 
 // switch use camera or video file
-if (localStorage.getItem('useCamera')) {
+if (localStorage.getItem('useCamera') == 'camera') {
+    videoCtrl.parentNode.remove()
     // Use `Mediapipe` utils to get camera - lower resolution = higher fps
     const camera = new Camera(videoElement, {
         onFrame: async () => {
@@ -343,13 +346,18 @@ if (localStorage.getItem('useCamera')) {
     });
     camera.start();
 } else {
+    videoCtrl.oninput = ()=>{
+        videoElement.currentTime=videoCtrl.value
+    }
     // path of video file
-    videoElement.src = "test.mp4"
+    videoElement.src = localStorage.getItem('videoFile')
     videoElement.loop = true
-    videoElement.autoplay = true
 
     var videoFrameCallback = async () => {
         await holistic.send({ image: videoElement });
+        videoCtrl.value = videoElement.currentTime
+        videoCtrl.max = videoElement.duration
+        mdui.updateSliders(videoCtrl.parentNode)
         videoElement.requestVideoFrameCallback(videoFrameCallback)
     }
 

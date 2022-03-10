@@ -7,3 +7,11 @@ video {
 /* #model{
     transform: scale(-1, 1);
 } */
+
+.mdui-slider span {
+    line-height: 30px;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
