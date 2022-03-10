@@ -1,2 +1,2 @@
 # SysMocap
-A real-time motion capture system for virtual character creating.
+A real-time video-based motion capture system for virtual character rendering.
