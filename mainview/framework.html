@@ -65,8 +65,8 @@
             <!-- render page -->
             <div v-show="tab=='render'">
                 <div style="width: 730px;margin: auto;">
-                    选择模型：<select class="mdui-select" id="demo-js" v-model="selectModelPath">
-                        <option v-for="model in builtIn" v-bind:value="model.path">{{model.name}}</option>
+                    选择模型：<select class="mdui-select" id="demo-js" v-model="selectModel">
+                        <option v-for="model in builtIn" v-bind:value="JSON.stringify(model)">{{model.name}}</option>
                     </select>
                     <span style="margin-left: 60px;"></span>
                     数据源：
@@ -248,7 +248,7 @@
                 tab: 'model',
                 themeColor: 'deep-purple',
                 builtIn: builtInModels,
-                selectModelPath: builtInModels[0].path,
+                selectModel: JSON.stringify(builtInModels[0]),
                 videoSource: 'camera',
                 videoPath:'',
             },
@@ -279,7 +279,7 @@
 
         function startMocap(e) {
             if (e.innerHTML.indexOf('开始') != -1) {
-                localStorage.setItem('modelPath', app.selectModelPath);
+                localStorage.setItem('modelInfo', app.selectModel);
                 localStorage.setItem('useCamera', app.videoSource);
                 localStorage.setItem('videoFile', app.videoPath[0]);
                 document.getElementById('foo').src = '../render/render.html'

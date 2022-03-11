@@ -43,6 +43,8 @@ function createWindow() {
   // and load the index.html of the app.
   mainWindow.loadFile('mainview/framework.html')
 
+  createWelcomeWindow()
+
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
 
@@ -80,6 +82,36 @@ function createModelViewerWindow(args) {
 
   // and load the index.html of the app.
   viewer.loadFile('modelview/modelview.html')
+
+  // Open the DevTools.
+  // viewer.webContents.openDevTools()
+
+  // Emitted when the window is closed.
+  viewer.on('closed', function () {
+    viewer = null
+  })
+}
+
+function createWelcomeWindow() {
+  // Create the browser window.
+  var viewer = new blurBrowserWindow({
+    width: 860,
+    height: 460,
+    titleBarStyle: 'hidden',
+    vibrancy:{
+      theme:'light',
+      effect:'blur'
+    },
+    webPreferences: {
+      nodeIntegration: true,
+      webviewTag: true,
+      contextIsolation: false,
+      enableRemoteModule: true,
+    }
+  })
+
+  // and load the index.html of the app.
+  viewer.loadFile('hellopage/welcome.html')
 
   // Open the DevTools.
   // viewer.webContents.openDevTools()

@@ -4,13 +4,13 @@ const remap = Kalidokit.Utils.remap;
 const clamp = Kalidokit.Utils.clamp;
 const lerp = Kalidokit.Vector.lerp;
 
-/* THREEJS WORLD SETUP */
 let currentVrm;
 
+/* THREEJS WORLD SETUP */
 var started = false
 
 // renderer
-const renderer = new THREE.WebGLRenderer({ alpha: true,antialias: true });
+const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
 renderer.setSize(document.querySelector("#model").clientWidth, document.querySelector("#model").clientWidth / 16 * 9);
 renderer.setPixelRatio(window.devicePixelRatio);
 document.querySelector("#model").appendChild(renderer.domElement);
@@ -58,18 +58,35 @@ animate();
 // Import Character VRM
 const loader = new THREE.GLTFLoader();
 loader.crossOrigin = "anonymous";
+
+var modelPath = JSON.parse(localStorage.getItem('modelInfo')).path
+
+var fileType = modelPath.substring(modelPath.lastIndexOf('.') + 1).toLowerCase()
+
+var skeletonHelper;
+
 // Import model from URL, add your own model here
 loader.load(
-    localStorage.getItem('modelPath'),
+    modelPath,
 
     (gltf) => {
-        THREE.VRMUtils.removeUnnecessaryJoints(gltf.scene);
+        if (fileType == 'vrm') {
+            // calling these functions greatly improves the performance
+            THREE.VRMUtils.removeUnnecessaryVertices(gltf.scene);
+            THREE.VRMUtils.removeUnnecessaryJoints(gltf.scene);
 
-        THREE.VRM.from(gltf).then((vrm) => {
-            scene.add(vrm.scene);
-            currentVrm = vrm;
-            currentVrm.scene.rotation.y = Math.PI; // Rotate model 180deg to face camera
-        });
+            THREE.VRM.from(gltf).then((vrm) => {
+                scene.add(vrm.scene);
+                currentVrm = vrm;
+                currentVrm.scene.rotation.y = Math.PI; // Rotate model 180deg to face camera
+            });
+        } else {
+            // for glb files
+            skeletonHelper = new THREE.SkeletonHelper(gltf.scene);
+            scene.add(gltf.scene);
+            skeletonHelper.bones[0].rotation.y = Math.PI; // Rotate model 180deg to face camera
+
+        }
     },
 
     (progress) => console.log("Loading model...", 100.0 * (progress.loaded / progress.total), "%"),
@@ -79,43 +96,41 @@ loader.load(
 
 // Animate Rotation Helper function
 const rigRotation = (name, rotation = { x: 0, y: 0, z: 0 }, dampener = 1, lerpAmount = 0.3) => {
-    if (!currentVrm) {
-        return;
-    }
-    const Part = currentVrm.humanoid.getBoneNode(THREE.VRMSchema.HumanoidBoneName[name]);
-    if (!Part) {
-        return;
-    }
+    if (currentVrm) {
+        const Part = currentVrm.humanoid.getBoneNode(THREE.VRMSchema.HumanoidBoneName[name]);
+        if (!Part) {
+            return;
+        }
 
-    let euler = new THREE.Euler(
-        rotation.x * dampener,
-        rotation.y * dampener,
-        rotation.z * dampener,
-        rotation.rotationOrder || "XYZ"
-    );
-    let quaternion = new THREE.Quaternion().setFromEuler(euler);
-    Part.quaternion.slerp(quaternion, lerpAmount); // interpolate
+        let euler = new THREE.Euler(
+            rotation.x * dampener,
+            rotation.y * dampener,
+            rotation.z * dampener,
+            rotation.rotationOrder || "XYZ"
+        );
+        let quaternion = new THREE.Quaternion().setFromEuler(euler);
+        Part.quaternion.slerp(quaternion, lerpAmount); // interpolate
+    }
 };
 
 // Animate Position Helper Function
 const rigPosition = (name, position = { x: 0, y: 0, z: 0 }, dampener = 1, lerpAmount = 0.3) => {
-    if (!currentVrm) {
-        return;
+    if (currentVrm) {
+
+        const Part = currentVrm.humanoid.getBoneNode(THREE.VRMSchema.HumanoidBoneName[name]);
+        if (!Part) {
+            return;
+        }
+        let vector = new THREE.Vector3(position.x * dampener, position.y * dampener, position.z * dampener);
+        Part.position.lerp(vector, lerpAmount); // interpolate
     }
-    const Part = currentVrm.humanoid.getBoneNode(THREE.VRMSchema.HumanoidBoneName[name]);
-    if (!Part) {
-        return;
-    }
-    let vector = new THREE.Vector3(position.x * dampener, position.y * dampener, position.z * dampener);
-    Part.position.lerp(vector, lerpAmount); // interpolate
 };
 
 let oldLookTarget = new THREE.Euler();
 const rigFace = (riggedFace) => {
     if (!currentVrm) {
-        return;
+        return; // face motion only support VRM Now
     }
-    rigRotation("Neck", riggedFace.head, 0.7);
 
     // Blendshapes and Preset Name Schema
     const Blendshape = currentVrm.blendShapeProxy;
@@ -149,7 +164,7 @@ const rigFace = (riggedFace) => {
 
 /* VRM Character Animator */
 const animateVRM = (vrm, results) => {
-    if (!vrm) {
+    if (!vrm && !skeletonHelper) {
         return;
     }
     // Take the results from `Holistic` and animate character based on its Face, Pose, and Hand Keypoints.
@@ -170,6 +185,7 @@ const animateVRM = (vrm, results) => {
             runtime: "mediapipe",
             video: videoElement,
         });
+        rigRotation("Neck", riggedFace.head, 0.7);
         rigFace(riggedFace);
     }
 
@@ -194,19 +210,19 @@ const animateVRM = (vrm, results) => {
         rigRotation("Chest", riggedPose.Spine, 0.25, 0.3);
         rigRotation("Spine", riggedPose.Spine, 0.45, 0.3);
 
-        rigRotation("RightUpperArm", riggedPose.RightUpperArm, 1, 0.3);
-        rigRotation("RightLowerArm", riggedPose.RightLowerArm, 1, 0.3);
-        rigRotation("LeftUpperArm", riggedPose.LeftUpperArm, 1, 0.3);
-        rigRotation("LeftLowerArm", riggedPose.LeftLowerArm, 1, 0.3);
+        rigRotation("RightUpperArm", riggedPose.RightUpperArm);
+        rigRotation("RightLowerArm", riggedPose.RightLowerArm);
+        rigRotation("LeftUpperArm", riggedPose.LeftUpperArm);
+        rigRotation("LeftLowerArm", riggedPose.LeftLowerArm);
 
-        rigRotation("LeftUpperLeg", riggedPose.LeftUpperLeg, 1, 0.3);
-        rigRotation("LeftLowerLeg", riggedPose.LeftLowerLeg, 1, 0.3);
-        rigRotation("RightUpperLeg", riggedPose.RightUpperLeg, 1, 0.3);
-        rigRotation("RightLowerLeg", riggedPose.RightLowerLeg, 1, 0.3);
+        rigRotation("LeftUpperLeg", riggedPose.LeftUpperLeg);
+        rigRotation("LeftLowerLeg", riggedPose.LeftLowerLeg);
+        rigRotation("RightUpperLeg", riggedPose.RightUpperLeg);
+        rigRotation("RightLowerLeg", riggedPose.RightLowerLeg);
     }
 
     // Animate Hands
-    if (leftHandLandmarks) {
+    if (leftHandLandmarks && fileType == 'vrm') {
         riggedLeftHand = Kalidokit.Hand.solve(leftHandLandmarks, "Left");
         rigRotation("LeftHand", {
             // Combine pose rotation Z and hand rotation X Y
@@ -230,7 +246,7 @@ const animateVRM = (vrm, results) => {
         rigRotation("LeftLittleIntermediate", riggedLeftHand.LeftLittleIntermediate);
         rigRotation("LeftLittleDistal", riggedLeftHand.LeftLittleDistal);
     }
-    if (rightHandLandmarks) {
+    if (rightHandLandmarks && fileType == 'vrm') {
         riggedRightHand = Kalidokit.Hand.solve(rightHandLandmarks, "Right");
         rigRotation("RightHand", {
             // Combine Z axis from pose hand and X/Y axis from hand wrist rotation
@@ -266,10 +282,10 @@ const onResults = (results) => {
     drawResults(results);
     // Animate model
     animateVRM(currentVrm, results);
-    if(!started){
+    if (!started) {
         document.getElementById('loading').remove()
-        if(localStorage.getItem('useCamera') == 'file') videoElement.play()
-        started=true;
+        if (localStorage.getItem('useCamera') == 'file') videoElement.play()
+        started = true;
     }
 };
 
@@ -346,8 +362,8 @@ if (localStorage.getItem('useCamera') == 'camera') {
     });
     camera.start();
 } else {
-    videoCtrl.oninput = ()=>{
-        videoElement.currentTime=videoCtrl.value
+    videoCtrl.oninput = () => {
+        videoElement.currentTime = videoCtrl.value
     }
     // path of video file
     videoElement.src = localStorage.getItem('videoFile')
@@ -373,11 +389,11 @@ document.addEventListener("keydown", event => {
     var step = 0.1
     switch (event.key) {
         case 'd':
-            case 'ArrowRight':
+        case 'ArrowRight':
             orbitCamera.position.set(x + step, y, z);
             break;
         case 'a':
-            case 'ArrowLeft':
+        case 'ArrowLeft':
             orbitCamera.position.set(x - step, y, z);
             break;
         case 'w':
@@ -385,7 +401,7 @@ document.addEventListener("keydown", event => {
             orbitCamera.position.set(x, y + step, z);
             break;
         case 's':
-            case 'ArrowDown':
+        case 'ArrowDown':
             orbitCamera.position.set(x, y - step, z);
             break;
 
