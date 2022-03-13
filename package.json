@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "electron-acrylic-window": "^0.5.11",
+    "electron-find": "^1.0.7",
     "electron-localstorage": "^1.0.5"
   },
   "devDependencies": {

@@ -44,15 +44,17 @@
         </div>
         <div class="line" style="position: fixed;top:40px"></div>
         <div style="padding: 10px 20px;margin-top: 40px;">
-            <!-- Model library -->
+
+            <!-------------------------- Model library -------------------------->
+
             <div v-show="tab=='model'">
                 <h1 class="mdui-text-color-theme">用户模型</h1>
                 <h1 class="mdui-text-color-theme">内建模型</h1>
                 <div class="flex-container" id="userModels">
                     <div v-for="model in builtIn" class="mdui-ripple model-item"
                         v-on:click="require('electron').ipcRenderer.send('openModelViewer', {model:model,backgroundColor:bg,color:fg});">
-                        <img v-bind:src="model.pic" style="width: 120px;height: 120px;object-fit:contain;">
-                        <div style="margin-top: -120px;margin-left: 140px;">
+                        <img v-bind:src="model.pic" style="width: 90px;height: 100px;object-fit:contain;">
+                        <div style="margin-top: -110px;margin-left: 100px;">
                             <h1>{{model.name}}</h1>
                             <div class="mdui-color-theme"
                                 style="width: 35px;height: 18px;border-radius: 5px;margin-top: -8px;font-size: 10px;line-height: 18px;text-align: center;filter: opacity(0.7);">
@@ -62,7 +64,9 @@
                     <div v-for="i in [1,2,3,4,5]" class="model-item" style="visibility: hidden;height: 1px;"></div>
                 </div>
             </div>
-            <!-- render page -->
+
+            <!-------------------------- render page -------------------------->
+
             <div v-show="tab=='render'">
                 <div style="width: 730px;margin: auto;">
                     选择模型：<select class="mdui-select" id="demo-js" v-model="selectModel">
@@ -94,7 +98,9 @@
                     style="width: calc(100vw - 40px);height: calc((100vw - 40px) * 10 / 32 + 20px);margin-top: 20px;">
                 </webview>
             </div>
-            <!-- settings page -->
+
+            <!-------------------------- settings page -------------------------->
+
             <div v-show="tab=='settings'" style="max-width: 550px; margin: auto;">
                 <div class="dotfont" style="font-size: 32px;color: #555;margin-top: 10px;">Xianfei's<span
                         style="margin-left: 5px;margin-right: 5px;">Mocap</span>System</div>
@@ -108,6 +114,10 @@
                     </blockquote>
                 </div>
                 <div style="height: 20px;"></div>
+                <h1 class="mdui-text-color-theme">文档</h1>
+                <div class="settings-item" onclick="require('electron').ipcRenderer.send('openDocument')">
+                    打开使用文档
+                </div>
                 <h1 class="mdui-text-color-theme">外观</h1>
                 <div class="settings-item">
                     <div style="display: flex;align-content: space-between;justify-content: space-between;width: 100%;">

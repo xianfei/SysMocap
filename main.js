@@ -1,6 +1,6 @@
 // Modules to control application life and create native browser window
-const { app,BrowserWindow, ipcMain } = require('electron')
-const blurBrowserWindow= require("electron-acrylic-window").BrowserWindow
+const { app, BrowserWindow, ipcMain } = require('electron')
+const blurBrowserWindow = require("electron-acrylic-window").BrowserWindow
 const path = require('path')
 const storage = require('electron-localstorage');
 
@@ -43,7 +43,8 @@ function createWindow() {
   // and load the index.html of the app.
   mainWindow.loadFile('mainview/framework.html')
 
-  createWelcomeWindow()
+  // createWelcomeWindow()
+  // showDoc()
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
@@ -63,13 +64,13 @@ function createModelViewerWindow(args) {
     width: 820,
     height: 540,
     titleBarStyle: 'hidden',
-    backgroundColor:args.backgroundColor,
+    backgroundColor: args.backgroundColor,
     titleBarOverlay: {
       color: args.backgroundColor,
       symbolColor: args.color
     },
-    vibrancy:{
-      theme:'dark'
+    vibrancy: {
+      theme: 'dark'
     },
     webPreferences: {
       nodeIntegration: true,
@@ -98,9 +99,9 @@ function createWelcomeWindow() {
     width: 860,
     height: 460,
     titleBarStyle: 'hidden',
-    vibrancy:{
-      theme:'light',
-      effect:'blur'
+    vibrancy: {
+      theme: 'light',
+      effect: 'blur'
     },
     webPreferences: {
       nodeIntegration: true,
@@ -121,6 +122,36 @@ function createWelcomeWindow() {
     viewer = null
   })
 }
+
+function showDoc() {
+  var docWindow = new BrowserWindow({
+    width: 1200,
+    height: 700,
+    frame: false,
+    titleBarStyle: 'hidden',
+    webPreferences: {
+      nodeIntegration: true,
+      webviewTag: true,
+      contextIsolation: false,
+      enableRemoteModule: true,
+    }
+  })
+
+
+// and load the html of the app.
+docWindow.loadFile('documentview/readme.html')
+
+docWindow.on('closed', function () {
+  docWindow = null
+})
+
+  // docWindow.toggleDevTools();
+
+}
+
+ipcMain.on('openDocument', function (event, arg) {
+  showDoc()
+});
 
 ipcMain.on('openModelViewer', function (event, arg) {
   createModelViewerWindow(arg)

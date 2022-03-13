@@ -86,13 +86,19 @@ h1 {
     min-width: 220px;
     max-width: 330px;
     flex: 1;
-    height: 120px;
-    border: solid 1px #ccc;
+    height: 110px;
     border-radius: 10px;
+    padding: 5px;
     overflow: hidden;
     display: inline-block;
     margin: 5px;
     background-color: #fff;
+    border: solid 1px #fff0;
+
+}
+
+.model-item:hover{
+    border: solid 1px #ccc;
 }
 
 .settings-item {
