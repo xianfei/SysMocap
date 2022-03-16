@@ -1,7 +1,7 @@
 const { remote, ipcRenderer,shell } = require('electron')
 const { FindInPage } = require('electron-find')
 
-window.$ = window.jQuery = require("../libs/jquery.js");
+window.$ = window.jQuery = require("../node_modules/jquery/dist/jquery.js");
 
 let findInPage = new FindInPage(remote.getCurrentWebContents(), {
   offsetTop: 30,
