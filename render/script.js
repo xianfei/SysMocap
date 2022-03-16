@@ -1,5 +1,4 @@
-// import * as Kalidokit from "../dist";
-//Import Helper Functions from Kalidokit
+// import Helper Functions from Kalidokit
 const remap = Kalidokit.Utils.remap;
 const clamp = Kalidokit.Utils.clamp;
 const lerp = Kalidokit.Vector.lerp;
@@ -291,12 +290,12 @@ const onResults = (results) => {
 
 const holistic = new Holistic({
     locateFile: (file) => {
-        return __dirname + `/../libs/@mediapipe/holistic/${file}`;
+        return __dirname + `/../node_modules/@mediapipe/holistic/${file}`;
     },
 });
 
 holistic.setOptions({
-    modelComplexity: 2,
+    modelComplexity: 1,
     smoothLandmarks: true,
     minDetectionConfidence: 0.7,
     minTrackingConfidence: 0.7,
