@@ -369,11 +369,13 @@ if (localStorage.getItem('useCamera') == 'camera') {
     videoElement.loop = true
 
     var videoFrameCallback = async () => {
+        // videoElement.pause()
         await holistic.send({ image: videoElement });
         videoCtrl.value = videoElement.currentTime
         videoCtrl.max = videoElement.duration
         mdui.updateSliders(videoCtrl.parentNode)
         videoElement.requestVideoFrameCallback(videoFrameCallback)
+        // videoElement.play()
     }
 
     videoElement.requestVideoFrameCallback(videoFrameCallback)
