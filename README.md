@@ -32,24 +32,24 @@ A real-time video-based motion capture system for virtual character rendering.
 
 ### To-Do
 
-- [] Settings page and global settings utils
-
-- [] Add play/pause button and progress bar when mocap from video 
-
-- [] Support bones binding for glTF/glb
-
-- [] Support binding when bones' name is non-uniformed
-
-- [] Model library add user's custom 3D model
-
-- [] Live plug-in / interface for Open Broadcast Software
-
-- [] Output video ( using such as libffmpeg )
-
-- [] Support per-frame rendering without drop frame
-
-- [] Support c-s architecture for online video mocap ( on cloud )
-
-- [] Support Material Designed 3 Color System
-
-- [] Add mocap data forwarding via network
+- [ ] Settings page and global settings utils
+ 
+- [ ] Add play/pause button and progress bar when mocap from video 
+ 
+- [ ] Support bones binding for glTF/glb
+ 
+- [ ] Support binding when bones' name is non-uniformed
+ 
+- [ ] Model library add user's custom 3D model
+ 
+- [ ] Live plug-in / interface for Open Broadcast Software
+ 
+- [ ] Output video ( using such as libffmpeg )
+ 
+- [ ] Support per-frame rendering without drop frame
+ 
+- [ ] Support c-s architecture for online video mocap ( on cloud )
+ 
+- [ ] Support Material Designed 3 Color System
+ 
+- [ ] Add mocap data forwarding via network
