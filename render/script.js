@@ -1,11 +1,22 @@
+/**
+ *  Video-based Motion Capture and 3D Model Render Part
+ *
+ *  A part of SysMocap, open sourced under Mozilla Public License 2.0
+ * 
+ *  https://github.com/xianfei/SysMocap
+ * 
+ *  xianfei 2022.3
+ */
+
 // import Helper Functions from Kalidokit
 const remap = Kalidokit.Utils.remap;
 const clamp = Kalidokit.Utils.clamp;
 const lerp = Kalidokit.Vector.lerp;
 
+// VRM object
 let currentVrm;
 
-/* THREEJS WORLD SETUP */
+// Whether mediapipe ready
 var started = false
 
 // renderer
@@ -52,7 +63,6 @@ function animate() {
 }
 animate();
 
-/* VRM CHARACTER SETUP */
 
 // Import Character VRM
 const loader = new THREE.GLTFLoader();
@@ -351,7 +361,6 @@ const drawResults = (results) => {
 // switch use camera or video file
 if (localStorage.getItem('useCamera') == 'camera') {
     videoCtrl.parentNode.remove()
-    // Use `Mediapipe` utils to get camera - lower resolution = higher fps
     const camera = new Camera(videoElement, {
         onFrame: async () => {
             await holistic.send({ image: videoElement });
@@ -405,7 +414,5 @@ document.addEventListener("keydown", event => {
         case 'ArrowDown':
             orbitCamera.position.set(x, y - step, z);
             break;
-
-
     }
 });

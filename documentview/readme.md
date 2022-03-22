@@ -1,10 +1,7 @@
-<script type="text/javascript" src="md/jquery-3.4.1.min.js"></script>
-<script type="text/javascript" src="md/2html.js"></script>
 <script type="text/javascript" src="../node_modules/jquery/dist/jquery.js"></script>
 <script src="./readme.js"></script>
-<link rel="stylesheet" type="text/css" href="md/style.css">
+<link rel="stylesheet" type="text/css" href="style.css">
 <link rel="stylesheet" type="text/css" href="../node_modules/mdui/dist/css/mdui.css">
-
 <div style="font-size: 48px;color: #333;margin-top: 10px;line-height: 50px;font-family: 'DOTMATRI'">Xianfei's<span style="margin-left: 5px;margin-right: 5px;">Mocap</span>System</div>
 
 这是一个免费且开源的自由软件。https://github.com/xianfei/SysMocap
