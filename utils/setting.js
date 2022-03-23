@@ -10,9 +10,19 @@
 
 function getSettings() {
     var settings = localStorage.getItem('sysmocap-global-settings');
-    if (!settings) settings = {
+    try {
+        // if is a string
+        if (typeof (settings) == typeof ("wxfnb"))
+            settings = JSON.parse(settings)
+    } catch (e) {
+        console.log(e)
+        settings = null
+    }
+    // load default settings when cannot read from localStroage
+    if (!settings || !settings.valued) settings = {
         ui: {
-            themeColor: '',
+            themeColor: 'deep-purple',
+            isDark: false,
             useGlass: true
         },
         preview: {
@@ -33,14 +43,19 @@ function getSettings() {
             minTrackingConfidence: 0.7,
             refineFaceLandmarks: true
         },
-        dev:{
-            allowDevTools:false
-        }
+        dev: {
+            allowDevTools: false
+        },
+        valued: true
     }
+    return settings
 }
 
 var globalSettings = getSettings();
 
-function saveSettings(){
-    localStorage.setItem('sysmocap-global-settings',globalSettings)
+function saveSettings(settings) {
+    if (settings)
+        localStorage.setItem('sysmocap-global-settings', settings)
+    else
+        localStorage.setItem('sysmocap-global-settings', globalSettings)
 }

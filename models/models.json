@@ -1,0 +1,44 @@
+[
+    {
+        "name": "Ashtra",
+        "path": "../models/test.vrm",
+        "type": "vrm",
+        "pic": "../models/3.jpg"
+    },
+    {
+        "name": "Hanako",
+        "path": "../models/three-vrm-girl.vrm",
+        "type": "vrm",
+        "pic": "../models/1.jpg"
+    },
+    {
+        "name": "VAL",
+        "path": "../models/VAL.vrm",
+        "type": "vrm",
+        "pic": "../models/4.jpg"
+    },
+    {
+        "name": "Sendagaya",
+        "path": "../models/shibu_sendagaya.vrm",
+        "type": "vrm",
+        "pic": "../models/5.jpg"
+    },
+    {
+        "name": "Amaris",
+        "path": "../models/SampleA.vrm",
+        "type": "vrm",
+        "pic": "../models/6.jpg"
+    },
+    {
+        "name": "Natsuki",
+        "path": "../models/SampleB.vrm",
+        "type": "vrm",
+        "pic": "../models/2.jpg"
+    },
+    {
+        "name": "Maid",
+        "path": "../models/merged-saber-maid.glb",
+        "type": "glb",
+        "pic": "../models/7.jpg"
+    }
+]
