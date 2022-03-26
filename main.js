@@ -1,5 +1,5 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, ipcMain } = require('electron')
+const { app, BrowserWindow, ipcMain,nativeTheme  } = require('electron')
 const blurBrowserWindow = require("electron-acrylic-window").BrowserWindow
 const path = require('path')
 const storage = require('electron-localstorage');
@@ -42,6 +42,7 @@ function createWindow() {
 
   // and load the index.html of the app.
   mainWindow.loadFile('mainview/framework.html')
+  nativeTheme.themeSource = 'light'
 
   // createWelcomeWindow()
   // showDoc()
@@ -139,13 +140,13 @@ function showDoc() {
 
 
 // and load the html of the app.
-docWindow.loadFile('documentview/readme.html')
+docWindow.loadFile('documentview/document.html')
 
 docWindow.on('closed', function () {
   docWindow = null
 })
 
-  // docWindow.toggleDevTools();
+  docWindow.toggleDevTools();
 
 }
 

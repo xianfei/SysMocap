@@ -281,7 +281,6 @@ const animateVRM = (vrm, results) => {
     }
 };
 
-/* SETUP MEDIAPIPE HOLISTIC INSTANCE */
 let videoElement = document.querySelector(".input_video"),
     videoCtrl = document.querySelector("#videoCtrl"),
     guideCanvas = document.querySelector("canvas.guides");

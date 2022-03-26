@@ -283,7 +283,7 @@ img {
 
 @font-face {
     font-family: 'DOTMATRI';
-    src: url('../../mainview/DOTMATRI.TTF');
+    src: url('../mainview/DOTMATRI.TTF');
 }
 
 ::selection {
