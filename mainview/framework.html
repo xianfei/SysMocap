@@ -46,14 +46,13 @@
                 onclick="remote.getCurrentWindow().minimize()" style="font-size: small;">
                 <div style="font-size: 18px;text-shadow: 0 0 3px #fff, 0 0 3px #fff; transform: scaleX(0.7);margin-top:0;">—</div>
             </button>
-            <button class="mdui-btn mdui-btn-icon"
-                style="position: fixed;right: 140px;top: 2px;-webkit-app-region: no-drag;z-index: 11;" id="minbtn"
+            <button class="mdui-btn mdui-btn-icon" v-show="settings.dev.allowDevTools"
+                style="position: fixed;right: 140px;top: 2px;-webkit-app-region: no-drag;z-index: 11;display: none;" id="minbtn"
                 onclick="require('@electron/remote').getCurrentWebContents().toggleDevTools()" style="font-size: 20px;margin-top:0;"> 
                  <div style="font-size: 14px;text-shadow: 0 0 3px #fff, 0 0 3px #fff; transform: scaleX(0.7);margin-top:0;">Dev</div>
             </button>
             <div class="mdui-color-theme clickable"
-                style="height: 24px;width:4px;border-radius: 2px;position: fixed;left: 10px;top: 9px;"
-                onclick="require('@electron/remote').getCurrentWebContents().toggleDevTools()"></div>
+                style="height: 24px;width:4px;border-radius: 2px;position: fixed;left: 10px;top: 9px;"></div>
             <div class="dotfont" style="display: inline-block;padding-top: 8px;margin-left: 22px;">Xianfei's<span
                     style="margin-left: 2px;margin-right: 2px;">Mocap</span>System
                 <div class="mdui-text-color-theme" style="font-size: 10px;color:#555">视频驱动虚拟角色动作的自动生成系统</div>
@@ -272,7 +271,7 @@
                 <div class="settings-item">
                     <label class="mdui-switch">
                         <span>显示DevTools入口</span>
-                        <input type="checkbox" />
+                        <input type="checkbox" v-model="settings.dev.allowDevTools" />
                         <i class="mdui-switch-icon"></i>
                     </label>
                 </div>
