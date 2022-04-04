@@ -155,15 +155,15 @@ window.onload = () => {
     replaceText(`${type}-version`, process.versions[type])
   }
 
-  if (process.platform === 'darwin') {
-    $('#border').hide();
-    document.getElementsByClassName('html_header')[0].setAttribute('style', 'margin-top:20px')
-    document.getElementById('btns').innerHTML = String.raw`<button class="mdui-btn mdui-btn-icon"
-        style="position: fixed;right: 10px;top: 0;-webkit-app-region: no-drag;z-index: 11;" id="minbtn"
-        onclick="findInPage.openFindWindow()" style="font-size: 20px;"><i class="mdui-icon material-icons" style="font-size: 20px;text-shadow: 0 0 3px #fff, 0 0 3px #fff; ">search</i></button>
-        `
-    return
-  }
+  // if (process.platform === 'darwin') {
+  //   $('#border').hide();
+  //   document.getElementsByClassName('html_header')[0].setAttribute('style', 'margin-top:20px')
+  //   document.getElementById('btns').innerHTML = String.raw`<button class="mdui-btn mdui-btn-icon"
+  //       style="position: fixed;right: 10px;top: 0;-webkit-app-region: no-drag;z-index: 11;" id="minbtn"
+  //       onclick="findInPage.openFindWindow()" style="font-size: 20px;"><i class="mdui-icon material-icons" style="font-size: 20px;text-shadow: 0 0 3px #fff, 0 0 3px #fff; ">search</i></button>
+  //       `
+  //   return
+  // }
 
   document.getElementById('btns').innerHTML = String.raw`<button class="mdui-btn mdui-btn-icon"
       style="position: fixed;right: 5px;top: 0px;-webkit-app-region: no-drag;z-index: 11;" id="closebtn"

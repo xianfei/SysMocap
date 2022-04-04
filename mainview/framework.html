@@ -28,10 +28,29 @@
 
 <body
     style="font-family: 'LatoWeb', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;background-color: #fff7;">
-    <div id="vue-mount" v-bind:class="'mdui-theme-primary-' + settings.ui.themeColor + ' mdui-theme-accent-' + settings.ui.themeColor">
+    <div id="vue-mount"
+        v-bind:class="'mdui-theme-primary-' + settings.ui.themeColor + ' mdui-theme-accent-' + settings.ui.themeColor">
         <div class="titlebar" style="height: 40px;align-content: center;">
             <button class="clickable" onclick="require('@electron/remote').getCurrentWebContents().toggleDevTools()"
                 style="height: 30px;position: fixed;left: 0px;top: 5px;display: none;"></button>
+            <button class="mdui-btn mdui-btn-icon"
+                style="position: fixed;right: 5px;top: 2px;-webkit-app-region: no-drag;z-index: 11;" id="closebtn"
+                onclick="remote.getCurrentWindow().close()"><i class="mdui-icon material-icons"
+                    style="font-size: 20px;text-shadow: 0 0 3px #fff, 0 0 3px #fff; margin-top:0;">close</i></button>
+            <button class="mdui-btn mdui-btn-icon"
+                style="position: fixed;right: 50px;top: 2px;-webkit-app-region: no-drag;z-index: 11;" id="maxbtn"><i
+                    class="mdui-icon material-icons" onclick="maximizeBtn()"
+                    style="font-size: 20px;text-shadow: 0 0 3px #fff, 0 0 3px #fff; margin-top:0;">fullscreen</i></button>
+            <button class="mdui-btn mdui-btn-icon"
+                style="position: fixed;right: 95px;top: 2px;-webkit-app-region: no-drag;z-index: 11;" id="minbtn"
+                onclick="remote.getCurrentWindow().minimize()" style="font-size: small;">
+                <div style="font-size: 18px;text-shadow: 0 0 3px #fff, 0 0 3px #fff; transform: scaleX(0.7);margin-top:0;">—</div>
+            </button>
+            <button class="mdui-btn mdui-btn-icon"
+                style="position: fixed;right: 140px;top: 2px;-webkit-app-region: no-drag;z-index: 11;" id="minbtn"
+                onclick="require('@electron/remote').getCurrentWebContents().toggleDevTools()" style="font-size: 20px;margin-top:0;"> 
+                 <div style="font-size: 14px;text-shadow: 0 0 3px #fff, 0 0 3px #fff; transform: scaleX(0.7);margin-top:0;">Dev</div>
+            </button>
             <div class="mdui-color-theme clickable"
                 style="height: 24px;width:4px;border-radius: 2px;position: fixed;left: 10px;top: 9px;"
                 onclick="require('@electron/remote').getCurrentWebContents().toggleDevTools()"></div>
@@ -40,9 +59,6 @@
                 <div class="mdui-text-color-theme" style="font-size: 10px;color:#555">视频驱动虚拟角色动作的自动生成系统</div>
             </div>
 
-            <i class="mdui-icon material-icons"
-                style="z-index: 1001;position:fixed;top:3px;right:140px;transform: scale(0.6);cursor: pointer;-webkit-app-region: no-drag;"
-                onclick="require('@electron/remote').getCurrentWebContents().toggleDevTools()">extension</i>
 
             <div class="clickable tab-bar" style="width: 360px;top:3px;position: fixed;left: calc(50vw - 180px);">
                 <button v-bind:class="tab=='model'?'mdui-btn select mdui-text-color-theme':'mdui-btn'"
@@ -140,14 +156,15 @@
                     <div style="display: flex;align-content: space-between;justify-content: space-between;width: 100%;">
                         主题颜色：
                         <div v-for="c in ['deep-purple', 'pink','indigo','light-blue','teal','cyan','light-green','amber','orange']"
-                            v-bind:class="'color-dot mdui-color-'+c+' mdui-ripple'" v-on:click="settings.ui.themeColor=c"></div>
+                            v-bind:class="'color-dot mdui-color-'+c+' mdui-ripple'"
+                            v-on:click="settings.ui.themeColor=c"></div>
                         <div></div>
                     </div>
                 </div>
                 <div class="settings-item">
                     <label class="mdui-switch">
                         <span>使用毛玻璃效果</span>
-                        <input type="checkbox" v-model="settings.ui.useGlass"/>
+                        <input type="checkbox" v-model="settings.ui.useGlass" />
                         <i class="mdui-switch-icon"></i>
                     </label>
                 </div>
@@ -155,21 +172,21 @@
                 <div class="settings-item">
                     <label class="mdui-switch">
                         <span>对输入源进行骨骼可视化标记</span>
-                        <input type="checkbox"  v-model="settings.preview.showSketelonOnInput"/>
+                        <input type="checkbox" v-model="settings.preview.showSketelonOnInput" />
                         <i class="mdui-switch-icon"></i>
                     </label>
                 </div>
                 <div class="settings-item">
                     <label class="mdui-switch">
                         <span>当输入源为摄像头时，进行水平镜像翻转</span>
-                        <input type="checkbox" v-model="settings.preview.mirroringWhenCamera"/>
+                        <input type="checkbox" v-model="settings.preview.mirroringWhenCamera" />
                         <i class="mdui-switch-icon"></i>
                     </label>
                 </div>
                 <div class="settings-item">
                     <label class="mdui-switch">
                         <span>当输入源为视频文件时，进行水平镜像翻转</span>
-                        <input type="checkbox" v-model="settings.preview.mirroringWhenVideoFile"/>
+                        <input type="checkbox" v-model="settings.preview.mirroringWhenVideoFile" />
                         <i class="mdui-switch-icon"></i>
                     </label>
                 </div>
@@ -177,14 +194,14 @@
                 <div class="settings-item">
                     <label class="mdui-switch">
                         <span>启用抗锯齿</span>
-                        <input type="checkbox" v-model="settings.output.antialias"/>
+                        <input type="checkbox" v-model="settings.output.antialias" />
                         <i class="mdui-switch-icon"></i>
                     </label>
                 </div>
                 <div class="settings-item">
                     <label class="mdui-switch">
                         <span>使用图片作为背景而不是纯色</span>
-                        <input type="checkbox" v-model="settings.output.usePicInsteadOfColor"/>
+                        <input type="checkbox" v-model="settings.output.usePicInsteadOfColor" />
                         <i class="mdui-switch-icon"></i>
                     </label>
                 </div>
@@ -314,11 +331,11 @@
 
         var inst = new mdui.Select('#demo-js');
 
-        var isRemoteInit =false
+        var isRemoteInit = false
 
         function startMocap(e) {
-            if(!isRemoteInit){
-                var webContents = require('@electron/remote').webContents.fromId(document.getElementById('foo').getWebContentsId())
+            if (!isRemoteInit) {
+                var webContents = remote.webContents.fromId(document.getElementById('foo').getWebContentsId())
                 webContents.openDevTools()
                 isRemoteInit = true
             }
@@ -332,6 +349,19 @@
                 document.getElementById('foo').src = 'about:blank'
                 e.innerHTML = '<i class="mdui-icon material-icons">play_arrow</i>开始'
             }
+        }
+
+        var isMax = false;
+
+        function maximizeBtn() {
+            if (isMax) {
+                remote.getCurrentWindow().restore();
+                document.getElementById('maxbtn').innerHTML = '<i onclick="maximizeBtn()" class="mdui-icon material-icons" style="font-size: 20px;text-shadow: 0 0 3px #fff, 0 0 3px #fff; margin-top:0;">fullscreen</i>';
+            } else {
+                remote.getCurrentWindow().maximize();
+                document.getElementById('maxbtn').innerHTML = '<i onclick="maximizeBtn()" class="mdui-icon material-icons" style="font-size: 20px;text-shadow: 0 0 3px #fff, 0 0 3px #fff; margin-top:0;">fullscreen_exit</i>';
+            }
+            isMax = !isMax
         }
     </script>
 </body>

@@ -35,10 +35,10 @@ function createWindow() {
     width: 1180,
     height: 750,
     titleBarStyle: 'hidden',
-    titleBarOverlay: {
-      color: '#fff',
-      symbolColor: '#111'
-    },
+    // titleBarOverlay: {
+    //   color: '#fff',
+    //   symbolColor: '#111'
+    // },
     webPreferences: {
       nodeIntegration: true,
       webviewTag: true,
@@ -73,7 +73,7 @@ function createModelViewerWindow(args) {
     width: 820,
     height: 540,
     titleBarStyle: 'hidden',
-    backgroundColor: args.backgroundColor,
+    backgroundColor: '#00000000',
     titleBarOverlay: {
       color: args.backgroundColor,
       symbolColor: args.color
