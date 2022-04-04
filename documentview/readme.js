@@ -8,8 +8,9 @@
  *  xianfei 2022.3
  */ 
 
-const { remote, ipcRenderer,shell } = require('electron')
+const { ipcRenderer,shell } = require('electron')
 const { FindInPage } = require('electron-find')
+const remote = require('@electron/remote')
 
 window.$ = window.jQuery = require("../node_modules/jquery/dist/jquery.js");
 
