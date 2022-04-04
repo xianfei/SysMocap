@@ -78,9 +78,7 @@ function createModelViewerWindow(args) {
       color: args.backgroundColor,
       symbolColor: args.color
     },
-    vibrancy: {
-      theme: 'dark'
-    },
+    vibrancy: 'dark',
     webPreferences: {
       nodeIntegration: true,
       webviewTag: true,
