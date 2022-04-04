@@ -30,11 +30,11 @@
     style="font-family: 'LatoWeb', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;background-color: #fff7;">
     <div id="vue-mount" v-bind:class="'mdui-theme-primary-' + settings.ui.themeColor + ' mdui-theme-accent-' + settings.ui.themeColor">
         <div class="titlebar" style="height: 40px;align-content: center;">
-            <button class="clickable" onclick="require('electron').remote.getCurrentWebContents().toggleDevTools()"
+            <button class="clickable" onclick="require('@electron/remote').getCurrentWebContents().toggleDevTools()"
                 style="height: 30px;position: fixed;left: 0px;top: 5px;display: none;"></button>
             <div class="mdui-color-theme clickable"
                 style="height: 24px;width:4px;border-radius: 2px;position: fixed;left: 10px;top: 9px;"
-                onclick="require('electron').remote.getCurrentWebContents().toggleDevTools()"></div>
+                onclick="require('@electron/remote').getCurrentWebContents().toggleDevTools()"></div>
             <div class="dotfont" style="display: inline-block;padding-top: 8px;margin-left: 22px;">Xianfei's<span
                     style="margin-left: 2px;margin-right: 2px;">Mocap</span>System
                 <div class="mdui-text-color-theme" style="font-size: 10px;color:#555">视频驱动虚拟角色动作的自动生成系统</div>
@@ -42,7 +42,7 @@
 
             <i class="mdui-icon material-icons"
                 style="z-index: 1001;position:fixed;top:3px;right:140px;transform: scale(0.6);cursor: pointer;-webkit-app-region: no-drag;"
-                onclick="require('electron').remote.getCurrentWebContents().toggleDevTools()">extension</i>
+                onclick="require('@electron/remote').getCurrentWebContents().toggleDevTools()">extension</i>
 
             <div class="clickable tab-bar" style="width: 360px;top:3px;position: fixed;left: calc(50vw - 180px);">
                 <button v-bind:class="tab=='model'?'mdui-btn select mdui-text-color-theme':'mdui-btn'"
@@ -264,7 +264,7 @@
     </div>
 
     <script>
-        var remote = require('electron').remote;
+        var remote = require('@electron/remote');
 
         // import built-in models
         var builtInModels = require('../models/models.json')
@@ -314,7 +314,14 @@
 
         var inst = new mdui.Select('#demo-js');
 
+        var isRemoteInit =false
+
         function startMocap(e) {
+            if(!isRemoteInit){
+                var webContents = require('@electron/remote').webContents.fromId(document.getElementById('foo').getWebContentsId())
+                webContents.openDevTools()
+                isRemoteInit = true
+            }
             if (e.innerHTML.indexOf('开始') != -1) {
                 localStorage.setItem('modelInfo', app.selectModel);
                 localStorage.setItem('useCamera', app.videoSource);

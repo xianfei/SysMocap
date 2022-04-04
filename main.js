@@ -3,6 +3,7 @@ const { app, BrowserWindow, ipcMain,nativeTheme  } = require('electron')
 const blurBrowserWindow = require("electron-acrylic-window").BrowserWindow
 const path = require('path')
 const storage = require('electron-localstorage');
+require('@electron/remote/main').initialize()
 
 const fs = require('fs');
 const _path = path.join(app.getPath("home"), app.getName() + "/", 'db.json');
@@ -49,6 +50,7 @@ function createWindow() {
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
+  require("@electron/remote/main").enable(mainWindow.webContents)
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
