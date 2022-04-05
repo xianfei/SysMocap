@@ -32,7 +32,7 @@ A real-time video-based motion capture system for virtual character rendering.
 
 ### To-Do
 
-- [ ] Settings page and global settings utils
+- [x] Settings page and global settings utils
  
 - [ ] Add play/pause button and progress bar when mocap from video 
  
@@ -56,4 +56,4 @@ A real-time video-based motion capture system for virtual character rendering.
  
 - [ ] Mocap data forwarding via network
 
-- [ ] Adapt for Linux and macOS 
+- [x] Adapt for Linux and macOS 
