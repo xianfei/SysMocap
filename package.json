@@ -19,6 +19,8 @@
     "electron-acrylic-window": "^0.5.11",
     "electron-find": "^1.0.7",
     "electron-localstorage": "^1.0.5",
+    "express": "^4.17.3",
+    "express-ws": "^5.0.2",
     "jquery": "^3.6.0",
     "kalidokit": "^1.1.5",
     "lato-font": "^3.0.0",

@@ -336,7 +336,6 @@
             if (!isRemoteInit) {
                 var webContents = remote.webContents.fromId(document.getElementById('foo').getWebContentsId())
                 webContents.openDevTools()
-                isRemoteInit = true
             }
             if (e.innerHTML.indexOf('开始') != -1) {
                 localStorage.setItem('modelInfo', app.selectModel);

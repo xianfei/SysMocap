@@ -8,6 +8,7 @@
  *  xianfei 2022.3
  */
 
+
 // import Helper Functions from Kalidokit
 const remap = Kalidokit.Utils.remap;
 const clamp = Kalidokit.Utils.clamp;
@@ -73,6 +74,12 @@ var modelPath = JSON.parse(localStorage.getItem('modelInfo')).path
 var fileType = modelPath.substring(modelPath.lastIndexOf('.') + 1).toLowerCase()
 
 var skeletonHelper;
+
+// init server
+var my_server = require('../webserv/server.js')
+
+my_server.startServer(8080,modelPath)
+
 
 // Import model from URL, add your own model here
 loader.load(
@@ -279,6 +286,14 @@ const animateVRM = (vrm, results) => {
         rigRotation("RightLittleIntermediate", riggedRightHand.RightLittleIntermediate);
         rigRotation("RightLittleDistal", riggedRightHand.RightLittleDistal);
     }
+
+    my_server.sendBoradcast(JSON.stringify({
+        type:"xf-sysmocap-data",
+        riggedPose:riggedPose, 
+        riggedLeftHand:riggedLeftHand, 
+        riggedRightHand:riggedRightHand, 
+        riggedFace:riggedFace
+    }))
 };
 
 let videoElement = document.querySelector(".input_video"),

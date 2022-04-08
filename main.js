@@ -1,9 +1,9 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, ipcMain,nativeTheme  } = require('electron')
+const { app, BrowserWindow, ipcMain, nativeTheme } = require('electron')
 const os = require('os')
 const platform = os.platform()
 var blurBrowserWindow
-if(platform==='win32')
+if (platform === 'win32')
   blurBrowserWindow = require("electron-acrylic-window").BrowserWindow
 else
   blurBrowserWindow = BrowserWindow
@@ -147,14 +147,14 @@ function showDoc() {
   })
 
 
-// and load the html of the app.
-docWindow.loadFile('documentview/document.html')
-require("@electron/remote/main").enable(docWindow.webContents)
+  // and load the html of the app.
+  docWindow.loadFile('documentview/document.html')
+  require("@electron/remote/main").enable(docWindow.webContents)
 
 
-docWindow.on('closed', function () {
-  docWindow = null
-})
+  docWindow.on('closed', function () {
+    docWindow = null
+  })
 
   docWindow.toggleDevTools();
 

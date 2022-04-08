@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>菜鸟教程(runoob.com)</title>
+
+    <script type="text/javascript">
+        function WebSocketTest() {
+            if ("WebSocket" in window) {
+
+                // 打开一个 web socket
+                var ws = new WebSocket("ws://" + window.location.host + "/");
+
+                ws.onopen = function () {
+                    // Web Socket 已连接上，使用 send() 方法发送数据
+                    ws.send("发送数据");
+                };
+
+                ws.onmessage = function (evt) {
+                    var received_msg = evt.data;
+                   console.log(received_msg);
+                };
+
+                ws.onclose = function () {
+                    // 关闭 websocket
+                };
+            }
+
+            else {
+                // 浏览器不支持 WebSocket
+                alert("您的浏览器不支持 WebSocket!");
+            }
+        }
+    </script>
+
+</head>
+
+<body>
+
+    <div id="sse">
+        <a href="javascript:WebSocketTest()">运行 WebSocket</a>
+    </div>
+
+</body>
+
+</html>
