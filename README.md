@@ -44,7 +44,7 @@ A real-time video-based motion capture system for virtual character rendering.
  
 - [ ] Model library add user's custom 3D model
  
-- [ ] Live plug-in / interface for Open Broadcast Software
+- [x] Live plug-in / interface for Open Broadcast Software
  
 - [ ] Output video ( using such as libffmpeg )
  
@@ -54,6 +54,6 @@ A real-time video-based motion capture system for virtual character rendering.
  
 - [ ] Support Material Designed 3 Color System
  
-- [ ] Mocap data forwarding via network
+- [x] Mocap data forwarding via network
 
 - [x] Adapt for Linux and macOS 

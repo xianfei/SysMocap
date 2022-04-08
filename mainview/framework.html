@@ -23,13 +23,11 @@
     <script src="../node_modules/mdui/dist/js/mdui.js"></script>
     <script src="../node_modules/vue/dist/vue.js"></script>
     <!-- import built-in model -->
-    <script src="../utils/setting.js"></script>
 </head>
 
 <body
     style="font-family: 'LatoWeb', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;background-color: #fff7;">
-    <div id="vue-mount"
-        v-bind:class="'mdui-theme-primary-' + settings.ui.themeColor + ' mdui-theme-accent-' + settings.ui.themeColor">
+    <div id="vue-mount">
         <div class="titlebar" style="height: 40px;align-content: center;">
             <button class="clickable" onclick="require('@electron/remote').getCurrentWebContents().toggleDevTools()"
                 style="height: 30px;position: fixed;left: 0px;top: 5px;display: none;"></button>
@@ -189,6 +187,18 @@
                         <i class="mdui-switch-icon"></i>
                     </label>
                 </div>
+                <h1 class="mdui-text-color-theme">动作/虚拟形象转发</h1>
+                <div class="settings-item">
+                    <label class="mdui-switch">
+                        <span>启用通过 HTTP / WebSocket 的动作/虚拟形象转发</span>
+                        <input type="checkbox" v-model="settings.forward.enableForwarding" />
+                        <i class="mdui-switch-icon"></i>
+                    </label>
+                </div>
+                <div class="settings-item" v-show="settings.forward.enableForwarding" onclick="mdui.prompt('','修改端口号',(s)=>{app.settings.forward.port = parseInt(s)},()=>{},{defaultValue:app.settings.forward.port})">
+                        <span>HTTP / WebSocket 端口号</span>
+                        <span style="float:right;margin-right: 10px;font-weight: 600;">{{settings.forward.port}}</span>
+                </div>
                 <h1 class="mdui-text-color-theme">虚拟形象输出</h1>
                 <div class="settings-item">
                     <label class="mdui-switch">
@@ -270,8 +280,15 @@
                 <h1 class="mdui-text-color-theme">开发者</h1>
                 <div class="settings-item">
                     <label class="mdui-switch">
-                        <span>显示DevTools入口</span>
+                        <span>显示GUI DevTools入口</span>
                         <input type="checkbox" v-model="settings.dev.allowDevTools" />
+                        <i class="mdui-switch-icon"></i>
+                    </label>
+                </div>
+                <div class="settings-item">
+                    <label class="mdui-switch">
+                        <span>在启动动作捕捉时打开DevTools窗口</span>
+                        <input type="checkbox" v-model="settings.dev.openDevToolsWhenMocap" />
                         <i class="mdui-switch-icon"></i>
                     </label>
                 </div>
@@ -280,7 +297,12 @@
     </div>
 
     <script>
+        // import electron remote
         var remote = require('@electron/remote');
+
+        // import setting utils
+        const {getSettings,globalSettings,saveSettings} = require("../utils/setting.js")
+        document.body.setAttribute('class','mdui-theme-primary-' + globalSettings.ui.themeColor + ' mdui-theme-accent-' + globalSettings.ui.themeColor)
 
         // import built-in models
         var builtInModels = require('../models/models.json')
@@ -310,6 +332,7 @@
                     handler(newVal, oldVal) {
                         // save when changed
                         // console.log('settings changed')
+                        document.body.setAttribute('class','mdui-theme-primary-' + app.settings.ui.themeColor + ' mdui-theme-accent-' + app.settings.ui.themeColor)
                         saveSettings(JSON.stringify(app.settings))
                     },
                     deep: true
@@ -333,7 +356,7 @@
         var isRemoteInit = false
 
         function startMocap(e) {
-            if (!isRemoteInit) {
+            if (app.settings.dev.openDevToolsWhenMocap) {
                 var webContents = remote.webContents.fromId(document.getElementById('foo').getWebContentsId())
                 webContents.openDevTools()
             }

@@ -8,6 +8,12 @@
  *  xianfei 2022.3
  */
 
+// import setting utils
+const { globalSettings } = require("../utils/setting.js")
+
+// import mocap web server
+var my_server = null
+if (globalSettings.forward.enableForwarding) my_server = require('../webserv/server.js')
 
 // import Helper Functions from Kalidokit
 const remap = Kalidokit.Utils.remap;
@@ -21,7 +27,7 @@ let currentVrm;
 var started = false
 
 // renderer
-const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: globalSettings.output.antialias });
 renderer.setSize(document.querySelector("#model").clientWidth, document.querySelector("#model").clientWidth / 16 * 9);
 renderer.setPixelRatio(window.devicePixelRatio);
 document.querySelector("#model").appendChild(renderer.domElement);
@@ -76,10 +82,7 @@ var fileType = modelPath.substring(modelPath.lastIndexOf('.') + 1).toLowerCase()
 var skeletonHelper;
 
 // init server
-var my_server = require('../webserv/server.js')
-
-my_server.startServer(8080,modelPath)
-
+if (my_server) my_server.startServer(globalSettings.forward.port, modelPath)
 
 // Import model from URL, add your own model here
 loader.load(
@@ -287,12 +290,12 @@ const animateVRM = (vrm, results) => {
         rigRotation("RightLittleDistal", riggedRightHand.RightLittleDistal);
     }
 
-    my_server.sendBoradcast(JSON.stringify({
-        type:"xf-sysmocap-data",
-        riggedPose:riggedPose, 
-        riggedLeftHand:riggedLeftHand, 
-        riggedRightHand:riggedRightHand, 
-        riggedFace:riggedFace
+    if (my_server) my_server.sendBoradcast(JSON.stringify({
+        type: "xf-sysmocap-data",
+        riggedPose: riggedPose,
+        riggedLeftHand: riggedLeftHand,
+        riggedRightHand: riggedRightHand,
+        riggedFace: riggedFace
     }))
 };
 
@@ -319,11 +322,11 @@ const holistic = new Holistic({
 });
 
 holistic.setOptions({
-    modelComplexity: 1,
-    smoothLandmarks: true,
-    minDetectionConfidence: 0.7,
-    minTrackingConfidence: 0.7,
-    refineFaceLandmarks: true,
+    modelComplexity: globalSettings.mediapipe.modelComplexity,
+    smoothLandmarks: globalSettings.mediapipe.smoothLandmarks,
+    minDetectionConfidence: globalSettings.mediapipe.minDetectionConfidence,
+    minTrackingConfidence: globalSettings.mediapipe.minTrackingConfidence,
+    refineFaceLandmarks: globalSettings.mediapipe.refineFaceLandmarks,
 });
 // Pass holistic a callback function
 holistic.onResults(onResults);

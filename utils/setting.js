@@ -1,6 +1,8 @@
 /**
  *  Global Settings Utility (stronge in localStorage)
  * 
+ *  @usage import by ```const {getSettings,globalSettings,saveSettings} = require("../utils/setting.js")```
+ * 
  *  A part of SysMocap, open sourced under Mozilla Public License 2.0
  * 
  *  https://github.com/xianfei/SysMocap
@@ -36,6 +38,10 @@ function getSettings() {
             bgColor: '#ffffff',
             bgPicPath: '',
         },
+        forward:{
+            enableForwarding:false,
+            port:8080
+        },
         mediapipe: {
             modelComplexity: 1,
             smoothLandmarks: true,
@@ -44,9 +50,11 @@ function getSettings() {
             refineFaceLandmarks: true
         },
         dev: {
-            allowDevTools: false
+            allowDevTools: false,
+            openDevToolsWhenMocap: false
         },
-        valued: true
+        valued: true,
+        ver: 0.2
     }
     return settings
 }
@@ -58,4 +66,10 @@ function saveSettings(settings) {
         localStorage.setItem('sysmocap-global-settings', settings)
     else
         localStorage.setItem('sysmocap-global-settings', globalSettings)
+}
+
+module.exports = {
+    getSettings: getSettings,
+    globalSettings: globalSettings,
+    saveSettings: saveSettings
 }
