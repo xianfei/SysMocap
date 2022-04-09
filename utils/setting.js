@@ -25,7 +25,8 @@ function getSettings() {
         ui: {
             themeColor: 'deep-purple',
             isDark: false,
-            useGlass: true
+            useGlass: true,
+            language:"zh"
         },
         preview: {
             showSketelonOnInput: true,

@@ -125,3 +125,7 @@ h1 {
 body::-webkit-scrollbar {
     display: none;
 }
+
+button{
+    border-radius: 5px !important;
+}

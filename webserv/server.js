@@ -12,10 +12,8 @@ const express = require('express')
 const app = express();
 const path = require('path');
 
-app.use('/node_modules', express.static(__dirname+'/../node_modules'));
-app.use(express.static(__dirname+'/public'))
-
-console.log(__dirname)
+app.use('/node_modules', express.static(__dirname + '/../node_modules'));
+app.use(express.static(__dirname + '/public'))
 
 var expressWs = require('express-ws')(app);
 var modelPath = null;
@@ -28,27 +26,27 @@ app.ws('/', function (ws, req) {
 });
 
 app.get('/model', (req, res) => {
-    if(modelPath)res.sendFile(modelPath)
+    if (modelPath) res.sendFile(modelPath)
     else res.send('Model file undefined')
 });
 
 module.exports = {
     startServer: function (port, modelPath_) {
-        modelPath = path.resolve(__dirname,modelPath_)
+        modelPath = path.resolve(__dirname, modelPath_)
         server = app.listen(port, '0.0.0.0', function () {
             console.log('[ Mocap Web Server ] Server Started.')
         })
     },
     stopServer: function () {
-        if(server){
+        if (server) {
             server.close()
             console.log('[ Mocap Web Server ] Server Stoped.')
             server = null
-        }else 
+        } else
             console.error('[ Mocap Web Server ] Server not running.')
     },
-    sendBoradcast: function (obj){
-        for(var ws of expressWs.getWss().clients){
+    sendBoradcast: function (obj) {
+        for (var ws of expressWs.getWss().clients) {
             ws.send(obj)
         }
     }
