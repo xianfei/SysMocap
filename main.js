@@ -23,7 +23,7 @@ if (!fs.existsSync(_path_dir)) {
   }
 }
 storage.setStoragePath(_path);
-global.storagePath = { extra: storage.getStoragePath() };
+global.storagePath = { jsonPath: storage.getStoragePath() };
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.

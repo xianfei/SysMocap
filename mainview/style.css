@@ -129,3 +129,8 @@ body::-webkit-scrollbar {
 button{
     border-radius: 5px !important;
 }
+
+#closebtn:hover{
+    background-color: #ff6060;
+    color: #fff;
+}

@@ -48,12 +48,12 @@
         <i class="mdui-icon material-icons"
             style="z-index: 1001;position:fixed;top:3px;right:140px;transform: scale(0.6);cursor: pointer;-webkit-app-region: no-drag;"
             v-bind:style="{ color: color}"
-            onclick="require('electron').remote.getCurrentWebContents().toggleDevTools()">extension</i>
+            onclick="require('@electron/remote').getCurrentWebContents().toggleDevTools()">extension</i>
         <div id="model" style="top:0;left:0;width: 61.8vw;height: 100vh;background-color: #fff0;"></div>
         <div style="position: fixed;left: 61.8vw;top:0px;height: 100vh;width: 38.2vw;overflow: scroll;"
             v-bind:style="{ backgroundColor: bgcolor}">
             <div style="width:calc(100% - 50px);margin: 25px;" v-bind:style="{ color: color}">
-                <h1 v-bind:style="{ color: color, margin:'40px 0 0 0',fontSize:'32px',fontWeight:'600'}">{{model.name}}
+                <h1 v-bind:style="{ color: color, margin:'30px 0 0 0',fontSize:'32px',fontWeight:'600'}">{{model.name}}
                 </h1>
                 <div v-bind:style="{ backgroundColor: color,color:bgcolor}"
                     style="width: 42px;height: 22px;border-radius: 5px;margin-top: 18px;font-size: 14px;line-height: 22px;text-align: center;font-weight: 600;display: inline-block;">
@@ -63,15 +63,26 @@
                         style="margin-left: 4px;font-size: 13px;">{{model.type=='vrm'?'完整动作支持':'部分动作支持'}}</span>
                 </div>
                 <ul class="mdui-list" style="margin-top: 20px;">
-                    <li class="mdui-list-item mdui-ripple" onclick="app.showSketelon?gui.hide():gui.show();app.showSketelon=!app.showSketelon">
+                    <li class="mdui-list-item mdui-ripple"
+                        onclick="app.showSketelon?gui.hide():gui.show();app.showSketelon=!app.showSketelon">
                         <i class="mdui-icon material-icons">device_hub</i>
-                        <div class="mdui-list-item-content" style="margin-left: 30px;">{{showSketelon?'隐藏骨骼控制器':'显示骨骼控制器'}}</div>
+                        <div class="mdui-list-item-content" style="margin-left: 30px;">
+                            {{showSketelon?'隐藏骨骼控制器':'显示骨骼控制器'}}</div>
                     </li>
                     <li class="mdui-list-item mdui-ripple">
                         <i class="mdui-icon material-icons">mode_edit</i>
                         <div class="mdui-list-item-content" style="margin-left: 30px;">编辑骨骼绑定信息</div>
                     </li>
                 </ul>
+                <div style="display: none;">
+                    <div v-for="b in ['Hips','Chest','Spine','RightUpperArm','RightLowerArm','LeftUpperArm','LeftLowerArm','LeftUpperLeg','LeftLowerLeg','RightUpperLeg','RightLowerLeg']" style="margin-top: 10px;font-size: 16px;">
+                        <span style="line-height: 36px;">{{b}}: </span>
+                        <select class="mdui-select" style="float:right;margin-right: 10px;max-width: calc(100% - 20px);" v-bind:style="{ color: color}">
+                            <option value="-1">None</option>
+                            <option v-for="bb in bones" v-bind:value="bb.index">{{bb.name}}</option>
+                        </select>
+                    </div>
+                </div>
             </div>
 
         </div>
@@ -92,6 +103,7 @@
                 color: args.color,
                 bgcolor: args.backgroundColor,
                 showSketelon: false,
+                bones:[]
             }
         })
 
@@ -163,8 +175,10 @@
                     skeletonHelper.bones[0].rotation.y = Math.PI
                 }
                 setupDatGui()
-
-
+                var bones = []
+                for(var i in skeletonHelper.bones)bones.push({index:i,name:skeletonHelper.bones[i].name})
+                app.bones = bones
+                mdui.mutation();
             },
 
             // called while loading is progressing
@@ -235,14 +249,14 @@
                     folder.controllers[1].name('position.y');
                     folder.controllers[2].name('position.z');
                     folder.controllers[3].name('rotation.x');
-                folder.controllers[4].name('rotation.y');
-                folder.controllers[5].name('rotation.z');
-                }else{
+                    folder.controllers[4].name('rotation.y');
+                    folder.controllers[5].name('rotation.z');
+                } else {
                     folder.controllers[0].name('rotation.x');
-                folder.controllers[1].name('rotation.y');
-                folder.controllers[2].name('rotation.z');
+                    folder.controllers[1].name('rotation.y');
+                    folder.controllers[2].name('rotation.z');
                 }
-                
+
 
                 // folder.controllers[6].name('scale.x');
                 // folder.controllers[7].name('scale.y');

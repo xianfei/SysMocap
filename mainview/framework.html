@@ -34,16 +34,16 @@
             <button class="mdui-btn mdui-btn-icon"
                 style="position: fixed;right: 5px;top: 2px;-webkit-app-region: no-drag;z-index: 11;" id="closebtn"
                 onclick="remote.getCurrentWindow().close()"><i class="mdui-icon material-icons"
-                    style="font-size: 20px;text-shadow: 0 0 3px #fff, 0 0 3px #fff; margin-top:0;">close</i></button>
+                    style="font-size: 20px; margin-top:0;">close</i></button>
             <button class="mdui-btn mdui-btn-icon"
                 style="position: fixed;right: 50px;top: 2px;-webkit-app-region: no-drag;z-index: 11;" id="maxbtn"><i
                     class="mdui-icon material-icons" onclick="maximizeBtn()"
-                    style="font-size: 20px;text-shadow: 0 0 3px #fff, 0 0 3px #fff; margin-top:0;">fullscreen</i></button>
+                    style="font-size: 20px; margin-top:0;">fullscreen</i></button>
             <button class="mdui-btn mdui-btn-icon"
                 style="position: fixed;right: 95px;top: 2px;-webkit-app-region: no-drag;z-index: 11;" id="minbtn"
                 onclick="remote.getCurrentWindow().minimize()" style="font-size: small;">
                 <div
-                    style="font-size: 18px;text-shadow: 0 0 3px #fff, 0 0 3px #fff; transform: scaleX(0.7);margin-top:0;">
+                    style="font-size: 18px; transform: scaleX(0.7);margin-top:0;">
                     —</div>
             </button>
             <button class="mdui-btn mdui-btn-icon" v-show="settings.dev.allowDevTools"
@@ -51,7 +51,7 @@
                 id="minbtn" onclick="require('@electron/remote').getCurrentWebContents().toggleDevTools()"
                 style="font-size: 20px;margin-top:0;">
                 <div
-                    style="font-size: 14px;text-shadow: 0 0 3px #fff, 0 0 3px #fff; transform: scaleX(0.7);margin-top:0;">
+                    style="font-size: 14px; transform: scaleX(0.7);margin-top:0;">
                     Dev</div>
             </button>
             <div class="mdui-color-theme clickable"
@@ -80,10 +80,12 @@
 
             <div v-show="tab=='model'">
                 <h1 class="mdui-text-color-theme">{{language.tabModelLib.userModel}}</h1>
+                <button class="mdui-btn mdui-color-theme" onclick=""><i
+                    class="mdui-icon material-icons">add</i>{{language.tabModelLib.optAdd}}</button>
                 <h1 class="mdui-text-color-theme">{{language.tabModelLib.buildinModel}}</h1>
                 <div class="flex-container" id="userModels">
                     <div v-for="model in builtIn" class="mdui-ripple model-item"
-                        v-on:click="require('electron').ipcRenderer.send('openModelViewer', {model:model,backgroundColor:bg,color:fg});">
+                        v-on:click="require('electron').ipcRenderer.send('openModelViewer', {model:model,backgroundColor:bg,color:'#fff'});">
                         <img v-bind:src="model.pic" style="width: 90px;height: 100px;object-fit:contain;">
                         <div style="margin-top: -110px;margin-left: 100px;">
                             <h1>{{model.name}}</h1>
@@ -396,10 +398,10 @@
         function maximizeBtn() {
             if (isMax) {
                 remote.getCurrentWindow().restore();
-                document.getElementById('maxbtn').innerHTML = '<i onclick="maximizeBtn()" class="mdui-icon material-icons" style="font-size: 20px;text-shadow: 0 0 3px #fff, 0 0 3px #fff; margin-top:0;">fullscreen</i>';
+                document.getElementById('maxbtn').innerHTML = '<i onclick="maximizeBtn()" class="mdui-icon material-icons" style="font-size: 20px; margin-top:0;">fullscreen</i>';
             } else {
                 remote.getCurrentWindow().maximize();
-                document.getElementById('maxbtn').innerHTML = '<i onclick="maximizeBtn()" class="mdui-icon material-icons" style="font-size: 20px;text-shadow: 0 0 3px #fff, 0 0 3px #fff; margin-top:0;">fullscreen_exit</i>';
+                document.getElementById('maxbtn').innerHTML = '<i onclick="maximizeBtn()" class="mdui-icon material-icons" style="font-size: 20px; margin-top:0;">fullscreen_exit</i>';
             }
             isMax = !isMax
         }
