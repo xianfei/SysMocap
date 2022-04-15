@@ -17,16 +17,15 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="stylesheet" href="style.css" />
+        <!-- import thirdpart library -->
         <link rel="stylesheet" href="../node_modules/mdui/dist/css/mdui.css" />
         <link
             rel="stylesheet"
             type="text/css"
             href="../node_modules/lato-font/css/lato-font.css"
         />
-
         <script src="../node_modules/mdui/dist/js/mdui.js"></script>
         <script src="../node_modules/vue/dist/vue.js"></script>
-        <!-- import built-in model -->
     </head>
 
     <body
@@ -215,7 +214,7 @@
                     <h1 class="mdui-text-color-theme">
                         {{language.tabModelLib.userModel}}
                     </h1>
-                    <button class="mdui-btn mdui-color-theme" onclick="">
+                    <button class="mdui-btn mdui-color-theme" onclick="mdui.alert('该功能正在开发，敬请期待')">
                         <i class="mdui-icon material-icons">add</i
                         >{{language.tabModelLib.optAdd}}
                     </button>
@@ -364,6 +363,8 @@
                         {{language.app.name}}
                     </div>
                     <div style="color: #555; margin-top: 20px; font-size: 14px">
+                        v{{appVersion}}
+                        <div style="height: 10px"></div>
                         {{language.tabSettings.desc}}
                     </div>
                     <!-- <div style="height: 20px;"></div>
@@ -693,6 +694,12 @@
                             <i class="mdui-switch-icon"></i>
                         </label>
                     </div>
+                    <div
+                        class="settings-item"
+                        onclick="require('electron').ipcRenderer.send('openGpuInfo')"
+                    >
+                        Show GPU Info
+                    </div>
                 </div>
             </div>
         </div>
@@ -707,6 +714,8 @@
                 globalSettings,
                 saveSettings,
             } = require("../utils/setting.js");
+
+            // set theme
             document.body.setAttribute(
                 "class",
                 "mdui-theme-primary-" +
@@ -731,6 +740,7 @@
                     videoSource: "camera",
                     videoPath: "",
                     settings: globalSettings,
+                    appVersion: remote.getGlobal("appInfo").appVersion,
                 },
                 computed: {
                     bg: function () {
@@ -784,6 +794,8 @@
             var inst = new mdui.Select("#demo-js");
 
             var isRemoteInit = false;
+
+            mdui.alert('该版本为早期技术预览版，有众多未完工功能。目前只支持VRM模型。Version' + app.appVersion + ', alpha, forced dgpu.')
 
             function startMocap(e) {
                 if (app.settings.dev.openDevToolsWhenMocap) {

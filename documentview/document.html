@@ -17,6 +17,7 @@
         />
         <style>
             .icon {
+                display: inline-block;
                 height: 100px;
                 width: 100px;
                 border-radius: 50%;
@@ -45,23 +46,26 @@
 
     <body>
         <div id="write" style="background-color: #fff; z-index: 9">
+            
+            <!-- <div class="icon">
+                <div class="bg">
+                    <i class="mdui-icon material-icons">directions_run</i>
+                </div>
+            </div> -->
             <div
                 style="
                     font-size: 48px;
-                    color: #333;
+                    color: #555;
                     margin-top: 10px;
                     line-height: 50px;
                     font-family: 'DOTMATRI';
+                    display: inline-block;
+                    /* margin-left: 20px; */
                 "
             >
                 Xianfei's<span style="margin-left: 5px; margin-right: 5px"
                     >Mocap</span
                 >System
-            </div>
-            <div class="icon">
-                <div class="bg">
-                    <i class="mdui-icon material-icons">directions_run</i>
-                </div>
             </div>
             <div id="content"></div>
         </div>

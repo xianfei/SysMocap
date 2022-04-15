@@ -1,25 +1,65 @@
+/**
+ *  Main Node Process for SysMocap
+ *
+ *  A part of SysMocap, open sourced under Mozilla Public License 2.0
+ *
+ *  https://github.com/xianfei/SysMocap
+ *
+ *  xianfei 2022.4
+ */
+
+ const { spawn } = require('child_process');
+
+ // Restart with force using the dedicated GPU
+ if (process.env.GPUSET !== 'true' && false) {
+   spawn(process.execPath, process.argv, {
+     env: {
+       ...process.env,
+       SHIM_MCCOMPAT: '0x800000001', // this forces windows to use the dedicated GPU for the process
+       GPUSET: 'true'
+     },
+     detached: true,
+   });
+   process.exit(0);
+ }
+
 // Modules to control application life and create native browser window
 const { app, BrowserWindow, ipcMain, nativeTheme } = require("electron");
 const os = require("os");
 const platform = os.platform();
 var blurBrowserWindow;
+
+// Enable Acrylic Effect on Windows by default
 if (platform === "win32")
     blurBrowserWindow = require("electron-acrylic-window").BrowserWindow;
+// if not on Windows, use electron window
 else blurBrowserWindow = BrowserWindow;
+
 const path = require("path");
 const storage = require("electron-localstorage");
 require("@electron/remote/main").initialize();
 
+// Make profile file on user home dir
 const fs = require("fs");
 const _path = path.join(app.getPath("home"), app.getName() + "/", "db.json");
 const _path_dir = path.dirname(_path);
 if (!fs.existsSync(_path_dir)) {
     try {
-        fs.mkdirSync(_path_dir); // 只支持一层
+        fs.mkdirSync(_path_dir);
     } catch (e) {}
 }
 storage.setStoragePath(_path);
 global.storagePath = { jsonPath: storage.getStoragePath() };
+global.appInfo = { appVersion: app.getVersion(), appName: app.getName() };
+
+// Prevents Chromium from lowering the priority of invisible pages' renderer processes.
+// Improve performance when Mocap is running and forward motion data in background
+app.commandLine.appendSwitch('disable-renderer-backgrounding')
+
+// Force using discrete GPU when there are multiple GPUs available.
+// Improve performance when your PC has discrete GPU
+app.commandLine.appendSwitch('force_high_performance_gpu')
+
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -97,16 +137,13 @@ function createModelViewerWindow(args) {
     });
 }
 
-function createWelcomeWindow() {
+function createGpuInfoWindow() {
     // Create the browser window.
     var viewer = new blurBrowserWindow({
-        width: 860,
-        height: 460,
-        titleBarStyle: "hidden",
-        vibrancy: {
-            theme: "light",
-            effect: "blur",
-        },
+        width: 1000,
+        height: 600,
+        title:"GPU Info",
+        autoHideMenuBar: true,
         webPreferences: {
             nodeIntegration: true,
             webviewTag: true,
@@ -116,7 +153,7 @@ function createWelcomeWindow() {
     });
 
     // and load the index.html of the app.
-    viewer.loadFile("hellopage/welcome.html");
+    viewer.loadURL("chrome://gpu");
 
     // Open the DevTools.
     // viewer.webContents.openDevTools()
@@ -149,7 +186,7 @@ function showDoc() {
         docWindow = null;
     });
 
-    docWindow.toggleDevTools();
+    // docWindow.toggleDevTools();
 }
 
 ipcMain.on("openDocument", function (event, arg) {
@@ -160,6 +197,10 @@ ipcMain.on("openModelViewer", function (event, arg) {
     createModelViewerWindow(arg);
 });
 
+ipcMain.on("openGpuInfo", function (event, arg) {
+  createGpuInfoWindow();
+});
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
@@ -167,9 +208,7 @@ app.on("ready", createWindow);
 
 // Quit when all windows are closed.
 app.on("window-all-closed", function () {
-    // On macOS it is common for applications and their menu bar
-    // to stay active until the user quits explicitly with Cmd + Q
-    if (process.platform !== "darwin") app.quit();
+    app.quit();
 });
 
 app.on("activate", function () {

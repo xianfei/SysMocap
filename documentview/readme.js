@@ -12,6 +12,18 @@ const { ipcRenderer, shell } = require("electron");
 const { FindInPage } = require("electron-find");
 const remote = require("@electron/remote");
 
+// import setting utils
+const { globalSettings } = require("../utils/setting.js");
+
+// set theme
+document.body.setAttribute(
+  "class",
+  "mdui-theme-primary-" +
+      globalSettings.ui.themeColor +
+      " mdui-theme-accent-" +
+      globalSettings.ui.themeColor
+);
+
 window.$ = window.jQuery = require("../node_modules/jquery/dist/jquery.js");
 
 var showNavBar = true;
@@ -157,8 +169,6 @@ var os = require("os");
 window.onload = () => {
     $("body").css("background", "#ffffff00");
     $("html").css("background", "#ffffff22");
-    document.body.className +=
-        " mdui-theme-primary-deep-purple mdui-theme-accent-deep-purple";
     for (var ee of $(".url")) {
         ee.onclick = (event) => {
             event.preventDefault();
