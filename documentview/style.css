@@ -1,8 +1,8 @@
 /*markdown_box*/
 html {
-    background: #F4F6F900;
+    background: #f4f6f900;
     font-family: "Microsoft YaHei", "微软雅黑", Arial;
-    font-weight: 400
+    font-weight: 400;
 }
 
 body {
@@ -12,14 +12,14 @@ body {
     line-height: 188%;
     margin: 0 !important;
     padding: 0 !important;
-    --var-bg-50: '';
+    --var-bg-50: "";
 }
 
 .html_header {
     display: block;
     height: 60px;
     line-height: 46px;
-    border-bottom: 1px solid #E6ECF1;
+    border-bottom: 1px solid #e6ecf1;
     text-align: left !important;
 }
 
@@ -34,7 +34,7 @@ body {
     font-size: 19px;
     font-weight: bold;
     margin: 0 8px 0 5px;
-    color: var(--var-color)
+    color: var(--var-color);
 }
 
 blockquote {
@@ -51,35 +51,35 @@ code {
     padding: 2px 4px 1px;
     font-weight: bold;
     margin: 0 3px;
-    border: 1px solid rgba(255, 130, 130, .3);
-    background: rgba(255, 130, 120, .05);
-    color: #F66;
-    font-family: 'consola';
+    border: 1px solid rgba(255, 130, 130, 0.3);
+    background: rgba(255, 130, 120, 0.05);
+    color: #f66;
+    font-family: "consola";
 }
 
 a {
-    color: var(--var-color)
+    color: var(--var-color);
 }
 
 a:visited {
-    color: var(--var-color)
+    color: var(--var-color);
 }
 
 a:hover {
     text-decoration: none;
-    color: var(--var-color)
+    color: var(--var-color);
 }
 
 h2 {
     margin: 40px 0 20px;
     font-size: 36px;
-    font-weight: 400
+    font-weight: 400;
 }
 
 h3 {
     margin-top: 40px;
     font-size: 30px;
-    font-weight: 400
+    font-weight: 400;
 }
 
 img {
@@ -88,28 +88,27 @@ img {
     width: 100%;
     max-width: 1100px;
     opacity: 1;
-    transition: opacity .3s
+    transition: opacity 0.3s;
 }
 
 #img:hover {
     opacity: 1;
     box-shadow: 0px 2px 8px rgba(87, 87, 87, 0.8);
-    transition: box-shadow .3s
+    transition: box-shadow 0.3s;
 }
-
 
 #write {
     margin: 50px 50px 50px 260px;
     padding: 20px 60px;
     max-width: unset;
     background: #fff;
-    border: 1px solid #E6ECF1;
-    box-shadow: 0 2px 8px rgba(116, 129, 141, .08);
-    border-radius: 4px
+    border: 1px solid #e6ecf1;
+    box-shadow: 0 2px 8px rgba(116, 129, 141, 0.08);
+    border-radius: 4px;
 }
 
 .BlogAnchor {
-    width: 210px !important
+    width: 210px !important;
 }
 
 @media screen and (max-width: 1620px) {
@@ -119,7 +118,7 @@ img {
     }
 
     .BlogAnchor {
-        width: 210px !important
+        width: 210px !important;
     }
 }
 
@@ -130,7 +129,7 @@ img {
     }
 
     .BlogAnchor {
-        width: 200px !important
+        width: 200px !important;
     }
 }
 
@@ -146,15 +145,15 @@ img {
         margin: 20px 20px 20px 200px;
         padding: 20px 20px;
         font-size: 15px;
-        line-height: 170%
+        line-height: 170%;
     }
 
     .BlogAnchor {
-        width: 180px !important
+        width: 180px !important;
     }
 
     .html_header span::before {
-        margin-left: 0
+        margin-left: 0;
     }
 
     .html_header span::after {
@@ -175,7 +174,7 @@ img {
         margin: 10px;
         padding: 16px;
         font-size: 14px;
-        line-height: 160%
+        line-height: 160%;
     }
 
     .BlogAnchor {
@@ -191,11 +190,9 @@ img {
     }
 }
 
-
 .AnchorContent::-webkit-scrollbar {
     display: none;
 }
-
 
 /*导航*/
 .BlogAnchor {
@@ -207,8 +204,7 @@ img {
     width: 200px;
     left: 0;
     top: 0;
-    border-right: 1px solid #E6ECF1;
-
+    border-right: 1px solid #e6ecf1;
 }
 
 .BlogAnchor p {
@@ -232,9 +228,7 @@ img {
 
 .BlogAnchor li .nav_item {
     padding: 3px 16px;
-
 }
-
 
 .BlogAnchor li .item_h1 {
     margin-left: 0rem;
@@ -246,7 +240,7 @@ img {
     margin-left: 0;
     font-size: 0.8rem;
     padding-left: 18px;
-    color: #708090
+    color: #708090;
 }
 
 .BlogAnchor li .nav_item.current {
@@ -255,13 +249,12 @@ img {
     border-left: 4px solid var(--var-color);
     text-indent: 20px;
     font-weight: bold;
-
 }
 
 #AnchorContentToggle {
     font-size: 13px;
     font-weight: normal;
-    color: #FFF;
+    color: #fff;
     display: inline-block;
     line-height: 20px;
     background: rgb(7, 196, 189);
@@ -271,7 +264,7 @@ img {
 
 .BlogAnchor a:hover {
     color: var(--var-color);
-    background:var(--var-bg-30);
+    background: var(--var-bg-30);
 }
 
 .BlogAnchor a {
@@ -282,10 +275,10 @@ img {
 }
 
 @font-face {
-    font-family: 'DOTMATRI';
-    src: url('../mainview/DOTMATRI.TTF');
+    font-family: "DOTMATRI";
+    src: url("../mainview/DOTMATRI.TTF");
 }
 
 ::selection {
-    background:var(--var-bg-70);
+    background: var(--var-bg-70);
 }

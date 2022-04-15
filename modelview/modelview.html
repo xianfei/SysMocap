@@ -1,308 +1,430 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
+        />
+        <title>Document</title>
+        <link rel="stylesheet" href="../node_modules/mdui/dist/css/mdui.css" />
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="../node_modules/lato-font/css/lato-font.css"
+        />
+        <script src="../node_modules/mdui/dist/js/mdui.js"></script>
+        <script src="../node_modules/vue/dist/vue.js"></script>
+        <script src="../node_modules/three/build/three.js"></script>
+        <script src="../node_modules/three/examples/js/loaders/GLTFLoader.js"></script>
+        <script src="../node_modules/three/examples/js/controls/OrbitControls.js"></script>
+        <script src="../node_modules/lil-gui/dist/lil-gui.umd.min.js"></script>
+        <script src="../node_modules/@pixiv/three-vrm/lib/three-vrm.js"></script>
+        <style>
+            .titlebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 30px;
+                z-index: 1000;
+                -webkit-app-region: drag;
+            }
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Document</title>
-    <link rel="stylesheet" href="../node_modules/mdui/dist/css/mdui.css">
-    <link rel="stylesheet" type="text/css" href="../node_modules/lato-font/css/lato-font.css">
-    <script src="../node_modules/mdui/dist/js/mdui.js"></script>
-    <script src="../node_modules/vue/dist/vue.js"></script>
-    <script src="../node_modules/three/build/three.js"></script>
-    <script src="../node_modules/three/examples/js/loaders/GLTFLoader.js"></script>
-    <script src="../node_modules/three/examples/js/controls/OrbitControls.js"></script>
-    <script src="../node_modules/lil-gui/dist/lil-gui.umd.min.js"></script>
-    <script src="../node_modules/@pixiv/three-vrm/lib/three-vrm.js"></script>
-    <style>
-        .titlebar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 30px;
-            z-index: 1000;
-            -webkit-app-region: drag;
+            canvas {
+                display: block;
+            }
 
-        }
+            ::-webkit-scrollbar {
+                display: none;
+            }
+        </style>
+    </head>
 
-        canvas {
-            display: block;
-        }
+    <body
+        style="
+            font-family: 'LatoWeb', Helvetica, 'PingFang SC', 'Hiragino Sans GB',
+                'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
+            background-color: #0000;
+        "
+    >
+        <div class="titlebar"></div>
 
-        ::-webkit-scrollbar {
-            display: none;
-        }
-    </style>
-</head>
-
-<body
-    style="font-family: 'LatoWeb', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;background-color: #0000;">
-    <div class="titlebar"></div>
-
-    <!-- <button id='reset' >open dev
+        <!-- <button id='reset' >open dev
         tools</button> -->
-    <div id="vue-target">
-        <i class="mdui-icon material-icons"
-            style="z-index: 1001;position:fixed;top:3px;right:140px;transform: scale(0.6);cursor: pointer;-webkit-app-region: no-drag;"
-            v-bind:style="{ color: color}"
-            onclick="require('@electron/remote').getCurrentWebContents().toggleDevTools()">extension</i>
-        <div id="model" style="top:0;left:0;width: 61.8vw;height: 100vh;background-color: #fff0;"></div>
-        <div style="position: fixed;left: 61.8vw;top:0px;height: 100vh;width: 38.2vw;overflow: scroll;"
-            v-bind:style="{ backgroundColor: bgcolor}">
-            <div style="width:calc(100% - 50px);margin: 25px;" v-bind:style="{ color: color}">
-                <h1 v-bind:style="{ color: color, margin:'30px 0 0 0',fontSize:'32px',fontWeight:'600'}">{{model.name}}
-                </h1>
-                <div v-bind:style="{ backgroundColor: color,color:bgcolor}"
-                    style="width: 42px;height: 22px;border-radius: 5px;margin-top: 18px;font-size: 14px;line-height: 22px;text-align: center;font-weight: 600;display: inline-block;">
-                    {{model.type.toUpperCase()}}</div>
-                <div style="display: inline;margin-left: 10px;">
-                    <i class="mdui-icon material-icons">{{model.type=='vrm'?'done_all':'done'}}</i><span
-                        style="margin-left: 4px;font-size: 13px;">{{model.type=='vrm'?'完整动作支持':'部分动作支持'}}</span>
-                </div>
-                <ul class="mdui-list" style="margin-top: 20px;">
-                    <li class="mdui-list-item mdui-ripple"
-                        onclick="app.showSketelon?gui.hide():gui.show();app.showSketelon=!app.showSketelon">
-                        <i class="mdui-icon material-icons">device_hub</i>
-                        <div class="mdui-list-item-content" style="margin-left: 30px;">
-                            {{showSketelon?'隐藏骨骼控制器':'显示骨骼控制器'}}</div>
-                    </li>
-                    <li class="mdui-list-item mdui-ripple">
-                        <i class="mdui-icon material-icons">mode_edit</i>
-                        <div class="mdui-list-item-content" style="margin-left: 30px;">编辑骨骼绑定信息</div>
-                    </li>
-                </ul>
-                <div style="display: none;">
-                    <div v-for="b in ['Hips','Chest','Spine','RightUpperArm','RightLowerArm','LeftUpperArm','LeftLowerArm','LeftUpperLeg','LeftLowerLeg','RightUpperLeg','RightLowerLeg']" style="margin-top: 10px;font-size: 16px;">
-                        <span style="line-height: 36px;">{{b}}: </span>
-                        <select class="mdui-select" style="float:right;margin-right: 10px;max-width: calc(100% - 20px);" v-bind:style="{ color: color}">
-                            <option value="-1">None</option>
-                            <option v-for="bb in bones" v-bind:value="bb.index">{{bb.name}}</option>
-                        </select>
+        <div id="vue-target">
+            <i
+                class="mdui-icon material-icons"
+                style="
+                    z-index: 1001;
+                    position: fixed;
+                    top: 3px;
+                    right: 140px;
+                    transform: scale(0.6);
+                    cursor: pointer;
+                    -webkit-app-region: no-drag;
+                "
+                v-bind:style="{ color: color}"
+                onclick="require('@electron/remote').getCurrentWebContents().toggleDevTools()"
+                >extension</i
+            >
+            <div
+                id="model"
+                style="
+                    top: 0;
+                    left: 0;
+                    width: 61.8vw;
+                    height: 100vh;
+                    background-color: #fff0;
+                "
+            ></div>
+            <div
+                style="
+                    position: fixed;
+                    left: 61.8vw;
+                    top: 0px;
+                    height: 100vh;
+                    width: 38.2vw;
+                    overflow: scroll;
+                "
+                v-bind:style="{ backgroundColor: bgcolor}"
+            >
+                <div
+                    style="width: calc(100% - 50px); margin: 25px"
+                    v-bind:style="{ color: color}"
+                >
+                    <h1
+                        v-bind:style="{ color: color, margin:'30px 0 0 0',fontSize:'32px',fontWeight:'600'}"
+                    >
+                        {{model.name}}
+                    </h1>
+                    <div
+                        v-bind:style="{ backgroundColor: color,color:bgcolor}"
+                        style="
+                            width: 42px;
+                            height: 22px;
+                            border-radius: 5px;
+                            margin-top: 18px;
+                            font-size: 14px;
+                            line-height: 22px;
+                            text-align: center;
+                            font-weight: 600;
+                            display: inline-block;
+                        "
+                    >
+                        {{model.type.toUpperCase()}}
+                    </div>
+                    <div style="display: inline; margin-left: 10px">
+                        <i class="mdui-icon material-icons"
+                            >{{model.type=='vrm'?'done_all':'done'}}</i
+                        ><span style="margin-left: 4px; font-size: 13px"
+                            >{{model.type=='vrm'?'完整动作支持':'部分动作支持'}}</span
+                        >
+                    </div>
+                    <ul class="mdui-list" style="margin-top: 20px">
+                        <li
+                            class="mdui-list-item mdui-ripple"
+                            onclick="app.showSketelon?gui.hide():gui.show();app.showSketelon=!app.showSketelon"
+                        >
+                            <i class="mdui-icon material-icons">device_hub</i>
+                            <div
+                                class="mdui-list-item-content"
+                                style="margin-left: 30px"
+                            >
+                                {{showSketelon?'隐藏骨骼控制器':'显示骨骼控制器'}}
+                            </div>
+                        </li>
+                        <li class="mdui-list-item mdui-ripple">
+                            <i class="mdui-icon material-icons">mode_edit</i>
+                            <div
+                                class="mdui-list-item-content"
+                                style="margin-left: 30px"
+                            >
+                                编辑骨骼绑定信息
+                            </div>
+                        </li>
+                    </ul>
+                    <div style="display: none">
+                        <div
+                            v-for="b in ['Hips','Chest','Spine','RightUpperArm','RightLowerArm','LeftUpperArm','LeftLowerArm','LeftUpperLeg','LeftLowerLeg','RightUpperLeg','RightLowerLeg']"
+                            style="margin-top: 10px; font-size: 16px"
+                        >
+                            <span style="line-height: 36px">{{b}}: </span>
+                            <select
+                                class="mdui-select"
+                                style="
+                                    float: right;
+                                    margin-right: 10px;
+                                    max-width: calc(100% - 20px);
+                                "
+                                v-bind:style="{ color: color}"
+                            >
+                                <option value="-1">None</option>
+                                <option
+                                    v-for="bb in bones"
+                                    v-bind:value="bb.index"
+                                >
+                                    {{bb.name}}
+                                </option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
-
         </div>
-    </div>
-    <script>
-        var args;
-        for (var i = 0; i < process.argv.length; i++) {
-            if (process.argv[i] == 'argsData') {
-                console.log(process.argv[i + 1])
-                args = JSON.parse(process.argv[i + 1])
-            }
-        }
-        Vue.config.ignoredElements = ['model-viewer']
-        var app = new Vue({
-            el: '#vue-target',
-            data: {
-                model: args.model,
-                color: args.color,
-                bgcolor: args.backgroundColor,
-                showSketelon: false,
-                bones:[]
-            }
-        })
-
-        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-        renderer.setSize(document.querySelector("#model").clientWidth, document.querySelector("#model").clientHeight);
-        renderer.setPixelRatio(window.devicePixelRatio);
-        // renderer.setClearColor(0x000000,1); //设置背景颜色
-        document.querySelector("#model").appendChild(renderer.domElement);
-
-        // camera
-        const camera = new THREE.PerspectiveCamera(30.0, document.querySelector("#model").clientWidth / document.querySelector("#model").clientHeight, 0.1, 20.0);
-        camera.position.set(0.0, 1.0, 5.0);
-
-        window.addEventListener('resize', function () {
-            camera.aspect = document.querySelector("#model").clientWidth / document.querySelector("#model").clientHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(document.querySelector("#model").clientWidth, document.querySelector("#model").clientHeight);
-        }, false);
-
-        // camera controls
-        const controls = new THREE.OrbitControls(camera, renderer.domElement);
-        controls.screenSpacePanning = true;
-        controls.target.set(0.0, 1.0, 0.0);
-        controls.update();
-
-        // scene
-        const scene = new THREE.Scene();
-
-        var skeletonHelper;
-
-        // light
-        const light = new THREE.DirectionalLight(0xffffff);
-        light.position.set(1.0, 1.0, 1.0).normalize();
-        scene.add(light);
-
-        // gltf and vrm
-        const loader = new THREE.GLTFLoader();
-        loader.crossOrigin = 'anonymous';
-        loader.load(
-
-            // URL of the VRM you want to load
-            args.model.path,
-
-            // called when the resource is loaded
-            (gltf) => {
-                skeletonHelper = new THREE.SkeletonHelper(gltf.scene);
-                skeletonHelper.visible = false;
-                scene.add(skeletonHelper);
-
-                if (model.type == 'vrm') {
-
-                    // calling these functions greatly improves the performance
-                    THREE.VRMUtils.removeUnnecessaryVertices(gltf.scene);
-                    THREE.VRMUtils.removeUnnecessaryJoints(gltf.scene);
-
-                    // generate VRM instance from gltf
-                    THREE.VRM.from(gltf).then((vrm) => {
-
-                        console.log(vrm);
-                        scene.add(vrm.scene);
-
-                        vrm.humanoid.getBoneNode(THREE.VRMSchema.HumanoidBoneName.Hips).rotation.y = Math.PI;
-
-                    });
-                } else {
-                    console.log(gltf);
-                    scene.add(gltf.scene);
-
-                    skeletonHelper.bones[0].rotation.y = Math.PI
+        <script>
+            var args;
+            for (var i = 0; i < process.argv.length; i++) {
+                if (process.argv[i] == "argsData") {
+                    console.log(process.argv[i + 1]);
+                    args = JSON.parse(process.argv[i + 1]);
                 }
-                setupDatGui()
-                var bones = []
-                for(var i in skeletonHelper.bones)bones.push({index:i,name:skeletonHelper.bones[i].name})
-                app.bones = bones
-                mdui.mutation();
-            },
-
-            // called while loading is progressing
-            (progress) => console.log('Loading model...', 100.0 * (progress.loaded / progress.total), '%'),
-
-            // called when loading has errors
-            (error) => console.error(error)
-
-        );
-
-        // helpers
-        const gridHelper = new THREE.GridHelper(10, 10);
-        scene.add(gridHelper);
-
-        const axesHelper = new THREE.AxesHelper(5);
-        scene.add(axesHelper);
-
-        function animate() {
-
-            requestAnimationFrame(animate);
-
-            renderer.render(scene, camera);
-
-        }
-
-        animate();
-
-        var GUI = lil.GUI;
-        var gui = new GUI();
-        gui.hide()
-
-        function setupDatGui() {
-
-            let folder = gui.addFolder('骨骼解析');
-
-            folder.add(skeletonHelper, 'visible');
-            folder.controllers[0].name('展示骨架');
-
-            const bones = skeletonHelper.bones;
-
-            for (let i = 0; i < bones.length; i++) {
-
-                const bone = bones[i];
-
-                folder = gui.addFolder('骨骼' + bone.name);
-
-                if (i == 0) {
-                    folder.add(bone.position, 'x', - 10 + bone.position.x, 10 + bone.position.x);
-                    folder.add(bone.position, 'y', - 10 + bone.position.y, 10 + bone.position.y);
-                    folder.add(bone.position, 'z', - 10 + bone.position.z, 10 + bone.position.z);
-                }
-
-                folder.add(bone.rotation, 'x', - Math.PI, Math.PI);
-                folder.add(bone.rotation, 'y', - Math.PI, Math.PI);
-                folder.add(bone.rotation, 'z', - Math.PI, Math.PI);
-
-                // folder.add(bone.scale, 'x', 0, 2);
-                // folder.add(bone.scale, 'y', 0, 2);
-                // folder.add(bone.scale, 'z', 0, 2);
-
-                // folder.add(bone.quaternion, 'x', -1, 1);
-                // folder.add(bone.quaternion, 'y', -1, 1);
-                // folder.add(bone.quaternion, 'z', -1, 1);
-                // folder.add(bone.quaternion, 'w', -1, 1);
-
-                if (i == 0) {
-                    folder.controllers[0].name('position.x');
-                    folder.controllers[1].name('position.y');
-                    folder.controllers[2].name('position.z');
-                    folder.controllers[3].name('rotation.x');
-                    folder.controllers[4].name('rotation.y');
-                    folder.controllers[5].name('rotation.z');
-                } else {
-                    folder.controllers[0].name('rotation.x');
-                    folder.controllers[1].name('rotation.y');
-                    folder.controllers[2].name('rotation.z');
-                }
-
-
-                // folder.controllers[6].name('scale.x');
-                // folder.controllers[7].name('scale.y');
-                // folder.controllers[8].name('scale.z');
-
-                // folder.controllers[9].name('quaternion.x');
-                // folder.controllers[10].name('quaternion.y');
-                // folder.controllers[11].name('quaternion.z');
-                // folder.controllers[12].name('quaternion.w');
-
             }
-            var guiroot = document.querySelector('.lil-gui.root')
-            guiroot.style.left = 'calc(61.8vw - 245px)'
-            guiroot.style.webkitAppRegion = 'no-drag'
-            guiroot.style.zIndex = '10000'
-        }
+            Vue.config.ignoredElements = ["model-viewer"];
+            var app = new Vue({
+                el: "#vue-target",
+                data: {
+                    model: args.model,
+                    color: args.color,
+                    bgcolor: args.backgroundColor,
+                    showSketelon: false,
+                    bones: [],
+                },
+            });
 
-        // keyborad control camera position
-        document.addEventListener("keydown", event => {
-            console.log(event)
-            var x = camera.position.x
-            var y = camera.position.y
-            var z = camera.position.z
-            var step = 0.03
-            switch (event.key) {
-                case 'd':
-                case 'ArrowRight':
-                    camera.position.set(x + step, y, z);
-                    break;
-                case 'a':
-                case 'ArrowLeft':
-                    camera.position.set(x - step, y, z);
-                    break;
-                case 'w':
-                case 'ArrowUp':
-                    camera.position.set(x, y + step, z);
-                    break;
-                case 's':
-                case 'ArrowDown':
-                    camera.position.set(x, y - step, z);
-                    break;
+            const renderer = new THREE.WebGLRenderer({
+                alpha: true,
+                antialias: true,
+            });
+            renderer.setSize(
+                document.querySelector("#model").clientWidth,
+                document.querySelector("#model").clientHeight
+            );
+            renderer.setPixelRatio(window.devicePixelRatio);
+            // renderer.setClearColor(0x000000,1); //设置背景颜色
+            document.querySelector("#model").appendChild(renderer.domElement);
 
+            // camera
+            const camera = new THREE.PerspectiveCamera(
+                30.0,
+                document.querySelector("#model").clientWidth /
+                    document.querySelector("#model").clientHeight,
+                0.1,
+                20.0
+            );
+            camera.position.set(0.0, 1.0, 5.0);
 
+            window.addEventListener(
+                "resize",
+                function () {
+                    camera.aspect =
+                        document.querySelector("#model").clientWidth /
+                        document.querySelector("#model").clientHeight;
+                    camera.updateProjectionMatrix();
+                    renderer.setSize(
+                        document.querySelector("#model").clientWidth,
+                        document.querySelector("#model").clientHeight
+                    );
+                },
+                false
+            );
+
+            // camera controls
+            const controls = new THREE.OrbitControls(
+                camera,
+                renderer.domElement
+            );
+            controls.screenSpacePanning = true;
+            controls.target.set(0.0, 1.0, 0.0);
+            controls.update();
+
+            // scene
+            const scene = new THREE.Scene();
+
+            var skeletonHelper;
+
+            // light
+            const light = new THREE.DirectionalLight(0xffffff);
+            light.position.set(1.0, 1.0, 1.0).normalize();
+            scene.add(light);
+
+            // gltf and vrm
+            const loader = new THREE.GLTFLoader();
+            loader.crossOrigin = "anonymous";
+            loader.load(
+                // URL of the VRM you want to load
+                args.model.path,
+
+                // called when the resource is loaded
+                (gltf) => {
+                    skeletonHelper = new THREE.SkeletonHelper(gltf.scene);
+                    skeletonHelper.visible = false;
+                    scene.add(skeletonHelper);
+
+                    if (model.type == "vrm") {
+                        // calling these functions greatly improves the performance
+                        THREE.VRMUtils.removeUnnecessaryVertices(gltf.scene);
+                        THREE.VRMUtils.removeUnnecessaryJoints(gltf.scene);
+
+                        // generate VRM instance from gltf
+                        THREE.VRM.from(gltf).then((vrm) => {
+                            console.log(vrm);
+                            scene.add(vrm.scene);
+
+                            vrm.humanoid.getBoneNode(
+                                THREE.VRMSchema.HumanoidBoneName.Hips
+                            ).rotation.y = Math.PI;
+                        });
+                    } else {
+                        console.log(gltf);
+                        scene.add(gltf.scene);
+
+                        skeletonHelper.bones[0].rotation.y = Math.PI;
+                    }
+                    setupDatGui();
+                    var bones = [];
+                    for (var i in skeletonHelper.bones)
+                        bones.push({
+                            index: i,
+                            name: skeletonHelper.bones[i].name,
+                        });
+                    app.bones = bones;
+                    mdui.mutation();
+                },
+
+                // called while loading is progressing
+                (progress) =>
+                    console.log(
+                        "Loading model...",
+                        100.0 * (progress.loaded / progress.total),
+                        "%"
+                    ),
+
+                // called when loading has errors
+                (error) => console.error(error)
+            );
+
+            // helpers
+            const gridHelper = new THREE.GridHelper(10, 10);
+            scene.add(gridHelper);
+
+            const axesHelper = new THREE.AxesHelper(5);
+            scene.add(axesHelper);
+
+            function animate() {
+                requestAnimationFrame(animate);
+
+                renderer.render(scene, camera);
             }
-        });
-    </script>
-</body>
 
+            animate();
+
+            var GUI = lil.GUI;
+            var gui = new GUI();
+            gui.hide();
+
+            function setupDatGui() {
+                let folder = gui.addFolder("骨骼解析");
+
+                folder.add(skeletonHelper, "visible");
+                folder.controllers[0].name("展示骨架");
+
+                const bones = skeletonHelper.bones;
+
+                for (let i = 0; i < bones.length; i++) {
+                    const bone = bones[i];
+
+                    folder = gui.addFolder("骨骼" + bone.name);
+
+                    if (i == 0) {
+                        folder.add(
+                            bone.position,
+                            "x",
+                            -10 + bone.position.x,
+                            10 + bone.position.x
+                        );
+                        folder.add(
+                            bone.position,
+                            "y",
+                            -10 + bone.position.y,
+                            10 + bone.position.y
+                        );
+                        folder.add(
+                            bone.position,
+                            "z",
+                            -10 + bone.position.z,
+                            10 + bone.position.z
+                        );
+                    }
+
+                    folder.add(bone.rotation, "x", -Math.PI, Math.PI);
+                    folder.add(bone.rotation, "y", -Math.PI, Math.PI);
+                    folder.add(bone.rotation, "z", -Math.PI, Math.PI);
+
+                    // folder.add(bone.scale, 'x', 0, 2);
+                    // folder.add(bone.scale, 'y', 0, 2);
+                    // folder.add(bone.scale, 'z', 0, 2);
+
+                    // folder.add(bone.quaternion, 'x', -1, 1);
+                    // folder.add(bone.quaternion, 'y', -1, 1);
+                    // folder.add(bone.quaternion, 'z', -1, 1);
+                    // folder.add(bone.quaternion, 'w', -1, 1);
+
+                    if (i == 0) {
+                        folder.controllers[0].name("position.x");
+                        folder.controllers[1].name("position.y");
+                        folder.controllers[2].name("position.z");
+                        folder.controllers[3].name("rotation.x");
+                        folder.controllers[4].name("rotation.y");
+                        folder.controllers[5].name("rotation.z");
+                    } else {
+                        folder.controllers[0].name("rotation.x");
+                        folder.controllers[1].name("rotation.y");
+                        folder.controllers[2].name("rotation.z");
+                    }
+
+                    // folder.controllers[6].name('scale.x');
+                    // folder.controllers[7].name('scale.y');
+                    // folder.controllers[8].name('scale.z');
+
+                    // folder.controllers[9].name('quaternion.x');
+                    // folder.controllers[10].name('quaternion.y');
+                    // folder.controllers[11].name('quaternion.z');
+                    // folder.controllers[12].name('quaternion.w');
+                }
+                var guiroot = document.querySelector(".lil-gui.root");
+                guiroot.style.left = "calc(61.8vw - 245px)";
+                guiroot.style.webkitAppRegion = "no-drag";
+                guiroot.style.zIndex = "10000";
+            }
+
+            // keyborad control camera position
+            document.addEventListener("keydown", (event) => {
+                console.log(event);
+                var x = camera.position.x;
+                var y = camera.position.y;
+                var z = camera.position.z;
+                var step = 0.03;
+                switch (event.key) {
+                    case "d":
+                    case "ArrowRight":
+                        camera.position.set(x + step, y, z);
+                        break;
+                    case "a":
+                    case "ArrowLeft":
+                        camera.position.set(x - step, y, z);
+                        break;
+                    case "w":
+                    case "ArrowUp":
+                        camera.position.set(x, y + step, z);
+                        break;
+                    case "s":
+                    case "ArrowDown":
+                        camera.position.set(x, y - step, z);
+                        break;
+                }
+            });
+        </script>
+    </body>
 </html>

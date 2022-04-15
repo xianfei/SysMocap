@@ -1,411 +1,828 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
-<!-- 
-/**
- *  SysMocap Main GUI (display when boot finish)
- *
- *  A part of SysMocap, open sourced under Mozilla Public License 2.0
- * 
- *  https://github.com/xianfei/SysMocap
- * 
- *  xianfei 2022.3
- */ 
--->
+    <!-- 
+        /**
+        *  SysMocap Main GUI (display when boot finish)
+        *
+        *  A part of SysMocap, open sourced under Mozilla Public License 2.0
+        * 
+        *  https://github.com/xianfei/SysMocap
+        * 
+        *  xianfei 2022.3
+        */ 
+    -->
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="../node_modules/mdui/dist/css/mdui.css">
-    <link rel="stylesheet" type="text/css" href="../node_modules/lato-font/css/lato-font.css">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="style.css" />
+        <link rel="stylesheet" href="../node_modules/mdui/dist/css/mdui.css" />
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="../node_modules/lato-font/css/lato-font.css"
+        />
 
-    <script src="../node_modules/mdui/dist/js/mdui.js"></script>
-    <script src="../node_modules/vue/dist/vue.js"></script>
-    <!-- import built-in model -->
-</head>
+        <script src="../node_modules/mdui/dist/js/mdui.js"></script>
+        <script src="../node_modules/vue/dist/vue.js"></script>
+        <!-- import built-in model -->
+    </head>
 
-<body
-    style="font-family: 'LatoWeb', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;background-color: #fff7;">
-    <div id="vue-mount" style="display: none;" v-show="true">
-        <div class="titlebar" style="height: 40px;align-content: center;">
-            <button class="clickable" onclick="require('@electron/remote').getCurrentWebContents().toggleDevTools()"
-                style="height: 30px;position: fixed;left: 0px;top: 5px;display: none;"></button>
-            <button class="mdui-btn mdui-btn-icon"
-                style="position: fixed;right: 5px;top: 2px;-webkit-app-region: no-drag;z-index: 11;" id="closebtn"
-                onclick="remote.getCurrentWindow().close()"><i class="mdui-icon material-icons"
-                    style="font-size: 20px; margin-top:0;">close</i></button>
-            <button class="mdui-btn mdui-btn-icon"
-                style="position: fixed;right: 50px;top: 2px;-webkit-app-region: no-drag;z-index: 11;" id="maxbtn"><i
-                    class="mdui-icon material-icons" onclick="maximizeBtn()"
-                    style="font-size: 20px; margin-top:0;">fullscreen</i></button>
-            <button class="mdui-btn mdui-btn-icon"
-                style="position: fixed;right: 95px;top: 2px;-webkit-app-region: no-drag;z-index: 11;" id="minbtn"
-                onclick="remote.getCurrentWindow().minimize()" style="font-size: small;">
-                <div
-                    style="font-size: 18px; transform: scaleX(0.7);margin-top:0;">
-                    —</div>
-            </button>
-            <button class="mdui-btn mdui-btn-icon" v-show="settings.dev.allowDevTools"
-                style="position: fixed;right: 140px;top: 2px;-webkit-app-region: no-drag;z-index: 11;display: none;"
-                id="minbtn" onclick="require('@electron/remote').getCurrentWebContents().toggleDevTools()"
-                style="font-size: 20px;margin-top:0;">
-                <div
-                    style="font-size: 14px; transform: scaleX(0.7);margin-top:0;">
-                    Dev</div>
-            </button>
-            <div class="mdui-color-theme clickable"
-                style="height: 24px;width:4px;border-radius: 2px;position: fixed;left: 10px;top: 9px;"></div>
-            <div class="dotfont" style="display: inline-block;padding-top: 8px;margin-left: 22px;">Xianfei's<span
-                    style="margin-left: 2px;margin-right: 2px;">Mocap</span>System
-                <div class="mdui-text-color-theme" style="font-size: 10px;color:#555">{{language.app.name}}</div>
-            </div>
-
-
-            <div class="clickable tab-bar" style="width: 360px;top:3px;position: fixed;left: calc(50vw - 180px);">
-                <button v-bind:class="tab=='model'?'mdui-btn select mdui-text-color-theme':'mdui-btn'"
-                    onclick="app.tab='model'"><i class="mdui-icon material-icons">folder_open</i>{{language.titlebar.modelLib}}</button>
-                <button v-bind:class="tab=='render'?'mdui-btn select mdui-text-color-theme':'mdui-btn'"
-                    onclick="app.tab='render'"><i class="mdui-icon material-icons">filter_center_focus</i>{{language.titlebar.mocap}}</button>
-                <button v-bind:class="tab=='settings'?'mdui-btn select mdui-text-color-theme':'mdui-btn'"
-                    onclick="app.tab='settings'"><i class="mdui-icon material-icons">settings</i>{{language.titlebar.settings}}</button>
-            </div>
-        </div>
-        <div class="line" style="position: fixed;top:40px"></div>
-        <div style="padding: 10px 20px;margin-top: 40px;">
-
+    <body
+        style="
+            font-family: 'LatoWeb', Helvetica, 'PingFang SC', 'Hiragino Sans GB',
+                'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
+            background-color: #fff7;
+        "
+    >
+        <div id="vue-mount" style="display: none" v-show="true">
             <!--
+                --------------------------------- Title Bar ------------------------------------
+            -->
+            <div class="titlebar" style="height: 40px; align-content: center">
+                <!-- Button for Open DevTools -->
+                <button
+                    class="clickable"
+                    onclick="require('@electron/remote').getCurrentWebContents().toggleDevTools()"
+                    style="
+                        height: 30px;
+                        position: fixed;
+                        left: 0px;
+                        top: 5px;
+                        display: none;
+                    "
+                ></button>
+                <!-- Button for Close Window -->
+                <button
+                    class="mdui-btn mdui-btn-icon"
+                    style="
+                        position: fixed;
+                        right: 5px;
+                        top: 2px;
+                        -webkit-app-region: no-drag;
+                        z-index: 11;
+                    "
+                    id="closebtn"
+                    onclick="remote.getCurrentWindow().close()"
+                >
+                    <i
+                        class="mdui-icon material-icons"
+                        style="font-size: 20px; margin-top: 0"
+                        >close</i
+                    >
+                </button>
+                <!-- Button for Maximize Window -->
+                <button
+                    class="mdui-btn mdui-btn-icon"
+                    style="
+                        position: fixed;
+                        right: 50px;
+                        top: 2px;
+                        -webkit-app-region: no-drag;
+                        z-index: 11;
+                    "
+                    id="maxbtn"
+                >
+                    <i
+                        class="mdui-icon material-icons"
+                        onclick="maximizeBtn()"
+                        style="font-size: 20px; margin-top: 0"
+                        >fullscreen</i
+                    >
+                </button>
+                <!-- Button for Minimize Window -->
+                <button
+                    class="mdui-btn mdui-btn-icon"
+                    style="
+                        position: fixed;
+                        right: 95px;
+                        top: 2px;
+                        -webkit-app-region: no-drag;
+                        z-index: 11;
+                    "
+                    id="minbtn"
+                    onclick="remote.getCurrentWindow().minimize()"
+                    style="font-size: small"
+                >
+                    <div
+                        style="
+                            font-size: 18px;
+                            transform: scaleX(0.7);
+                            margin-top: 0;
+                        "
+                    >
+                        —
+                    </div>
+                </button>
+                <!-- Button for Open DevTools -->
+                <button
+                    class="mdui-btn mdui-btn-icon"
+                    v-show="settings.dev.allowDevTools"
+                    style="
+                        position: fixed;
+                        right: 140px;
+                        top: 2px;
+                        -webkit-app-region: no-drag;
+                        z-index: 11;
+                        display: none;
+                    "
+                    id="minbtn"
+                    onclick="require('@electron/remote').getCurrentWebContents().toggleDevTools()"
+                    style="font-size: 20px; margin-top: 0"
+                >
+                    <div
+                        style="
+                            font-size: 14px;
+                            transform: scaleX(0.7);
+                            margin-top: 0;
+                        "
+                    >
+                        Dev
+                    </div>
+                </button>
+                <div
+                    class="mdui-color-theme clickable"
+                    style="
+                        height: 24px;
+                        width: 4px;
+                        border-radius: 2px;
+                        position: fixed;
+                        left: 10px;
+                        top: 9px;
+                    "
+                ></div>
+                <!-- Show App Name -->
+                <div
+                    class="dotfont"
+                    style="
+                        display: inline-block;
+                        padding-top: 8px;
+                        margin-left: 22px;
+                    "
+                >
+                    Xianfei's<span style="margin-left: 2px; margin-right: 2px"
+                        >Mocap</span
+                    >System
+                    <div
+                        class="mdui-text-color-theme"
+                        style="font-size: 10px; color: #555"
+                    >
+                        {{language.app.name}}
+                    </div>
+                </div>
+
+                <div
+                    class="clickable tab-bar"
+                    style="
+                        width: 360px;
+                        top: 3px;
+                        position: fixed;
+                        left: calc(50vw - 180px);
+                    "
+                >
+                    <button
+                        v-bind:class="tab=='model'?'mdui-btn select mdui-text-color-theme':'mdui-btn'"
+                        onclick="app.tab='model'"
+                    >
+                        <i class="mdui-icon material-icons">folder_open</i
+                        >{{language.titlebar.modelLib}}
+                    </button>
+                    <button
+                        v-bind:class="tab=='render'?'mdui-btn select mdui-text-color-theme':'mdui-btn'"
+                        onclick="app.tab='render'"
+                    >
+                        <i class="mdui-icon material-icons"
+                            >filter_center_focus</i
+                        >{{language.titlebar.mocap}}
+                    </button>
+                    <button
+                        v-bind:class="tab=='settings'?'mdui-btn select mdui-text-color-theme':'mdui-btn'"
+                        onclick="app.tab='settings'"
+                    >
+                        <i class="mdui-icon material-icons">settings</i
+                        >{{language.titlebar.settings}}
+                    </button>
+                </div>
+            </div>
+            <div class="line" style="position: fixed; top: 40px"></div>
+            <div style="padding: 10px 20px; margin-top: 40px">
+                <!--
                 ------------------------ Model library ------------------------
             -->
 
-            <div v-show="tab=='model'">
-                <h1 class="mdui-text-color-theme">{{language.tabModelLib.userModel}}</h1>
-                <button class="mdui-btn mdui-color-theme" onclick=""><i
-                    class="mdui-icon material-icons">add</i>{{language.tabModelLib.optAdd}}</button>
-                <h1 class="mdui-text-color-theme">{{language.tabModelLib.buildinModel}}</h1>
-                <div class="flex-container" id="userModels">
-                    <div v-for="model in builtIn" class="mdui-ripple model-item"
-                        v-on:click="require('electron').ipcRenderer.send('openModelViewer', {model:model,backgroundColor:bg,color:'#fff'});">
-                        <img v-bind:src="model.pic" style="width: 90px;height: 100px;object-fit:contain;">
-                        <div style="margin-top: -110px;margin-left: 100px;">
-                            <h1>{{model.name}}</h1>
-                            <div class="mdui-color-theme"
-                                style="width: 35px;height: 18px;border-radius: 5px;margin-top: -8px;font-size: 10px;line-height: 18px;text-align: center;filter: opacity(0.7);">
-                                {{model.type.toUpperCase()}}</div>
+                <div v-show="tab=='model'">
+                    <h1 class="mdui-text-color-theme">
+                        {{language.tabModelLib.userModel}}
+                    </h1>
+                    <button class="mdui-btn mdui-color-theme" onclick="">
+                        <i class="mdui-icon material-icons">add</i
+                        >{{language.tabModelLib.optAdd}}
+                    </button>
+                    <h1 class="mdui-text-color-theme">
+                        {{language.tabModelLib.buildinModel}}
+                    </h1>
+                    <div class="flex-container" id="userModels">
+                        <div
+                            v-for="model in builtIn"
+                            class="mdui-ripple model-item"
+                            v-on:click="require('electron').ipcRenderer.send('openModelViewer', {model:model,backgroundColor:bg,color:'#fff'});"
+                        >
+                            <img
+                                v-bind:src="model.pic"
+                                style="
+                                    width: 90px;
+                                    height: 100px;
+                                    object-fit: contain;
+                                "
+                            />
+                            <div style="margin-top: -110px; margin-left: 100px">
+                                <h1>{{model.name}}</h1>
+                                <div
+                                    class="mdui-color-theme"
+                                    style="
+                                        width: 35px;
+                                        height: 18px;
+                                        border-radius: 5px;
+                                        margin-top: -8px;
+                                        font-size: 10px;
+                                        line-height: 18px;
+                                        text-align: center;
+                                        filter: opacity(0.7);
+                                    "
+                                >
+                                    {{model.type.toUpperCase()}}
+                                </div>
+                            </div>
                         </div>
+                        <div
+                            v-for="i in [1,2,3,4,5]"
+                            class="model-item"
+                            style="visibility: hidden; height: 1px"
+                        ></div>
                     </div>
-                    <div v-for="i in [1,2,3,4,5]" class="model-item" style="visibility: hidden;height: 1px;"></div>
                 </div>
-            </div>
 
-            <!--
+                <!--
                 ------------------------ render page ------------------------
             -->
 
-            <div v-show="tab=='render'">
-                <div style="width: 730px;margin: auto;">
-                    {{language.tabMocap.chooseModel}}<select class="mdui-select" id="demo-js" v-model="selectModel">
-                        <option v-for="model in builtIn" v-bind:value="JSON.stringify(model)">{{model.name}}</option>
-                    </select>
-                    <span style="margin-left: 60px;"></span>
-                    {{language.tabMocap.dataSource}}
-                    <label class="mdui-radio">
-                        <input type="radio" name="group1" value="camera" v-model="videoSource" />
-                        <i class="mdui-radio-icon"></i>
-                        {{language.tabMocap.camera}} </label>
-                    <span style="margin-left: 30px;"></span>
-                    <label class="mdui-radio">
-                        <input type="radio" name="group1" value="file" v-model="videoSource" />
-                        <i class="mdui-radio-icon"></i>
-                        {{language.tabMocap.videoFile}}
-                    </label>
+                <div v-show="tab=='render'">
+                    <div style="width: 730px; margin: auto">
+                        {{language.tabMocap.chooseModel}}<select
+                            class="mdui-select"
+                            id="demo-js"
+                            v-model="selectModel"
+                        >
+                            <option
+                                v-for="model in builtIn"
+                                v-bind:value="JSON.stringify(model)"
+                            >
+                                {{model.name}}
+                            </option>
+                        </select>
+                        <span style="margin-left: 60px"></span>
+                        {{language.tabMocap.dataSource}}
+                        <label class="mdui-radio">
+                            <input
+                                type="radio"
+                                name="group1"
+                                value="camera"
+                                v-model="videoSource"
+                            />
+                            <i class="mdui-radio-icon"></i>
+                            {{language.tabMocap.camera}}
+                        </label>
+                        <span style="margin-left: 30px"></span>
+                        <label class="mdui-radio">
+                            <input
+                                type="radio"
+                                name="group1"
+                                value="file"
+                                v-model="videoSource"
+                            />
+                            <i class="mdui-radio-icon"></i>
+                            {{language.tabMocap.videoFile}}
+                        </label>
 
-                    <span style="margin-left: 60px;"></span>
-                    <button class="mdui-btn mdui-color-theme" onclick="startMocap(this)"><i
-                            class="mdui-icon material-icons">play_arrow</i>{{language.tabMocap.start}}</button>
-                    <div style="margin-top: 10px;" v-show="videoSource == 'file'">
-                        <button class="mdui-btn mdui-color-theme" id="chooseFile">选择视频文件</button>
-                        <span style="margin-left: 10px;">已选择视频文件：{{videoPath==''?'未选择':videoPath}}</span>
+                        <span style="margin-left: 60px"></span>
+                        <button
+                            class="mdui-btn mdui-color-theme"
+                            onclick="startMocap(this)"
+                        >
+                            <i class="mdui-icon material-icons">play_arrow</i
+                            >{{language.tabMocap.start}}
+                        </button>
+                        <div
+                            style="margin-top: 10px"
+                            v-show="videoSource == 'file'"
+                        >
+                            <button
+                                class="mdui-btn mdui-color-theme"
+                                id="chooseFile"
+                            >
+                                选择视频文件
+                            </button>
+                            <span style="margin-left: 10px"
+                                >已选择视频文件：{{videoPath==''?'未选择':videoPath}}</span
+                            >
+                        </div>
                     </div>
+                    <webview
+                        nodeIntegration
+                        webpreferences="contextIsolation=no"
+                        enableremotemodule
+                        id="foo"
+                        src="about:blank"
+                        style="
+                            width: calc(100vw - 40px);
+                            height: calc((100vw - 40px) * 10 / 32 + 20px);
+                            margin-top: 20px;
+                        "
+                    >
+                    </webview>
                 </div>
-                <webview nodeIntegration webpreferences="contextIsolation=no" enableremotemodule id="foo"
-                    src="about:blank"
-                    style="width: calc(100vw - 40px);height: calc((100vw - 40px) * 10 / 32 + 20px);margin-top: 20px;">
-                </webview>
-            </div>
 
-            <!--
+                <!--
                 ------------------------ settings page ------------------------
             -->
 
-            <div v-show="tab=='settings'" style="max-width: 550px; margin: auto;">
-                <div class="dotfont" style="font-size: 32px;color: #555;margin-top: 10px;">Xianfei's<span
-                        style="margin-left: 5px;margin-right: 5px;">Mocap</span>System</div>
-                <div class="mdui-text-color-theme">{{language.app.name}}</div>
-                <div style="color: #555;margin-top: 20px;font-size: 14px;">{{language.tabSettings.desc}}</div>
-                <!-- <div style="height: 20px;"></div>
+                <div
+                    v-show="tab=='settings'"
+                    style="max-width: 550px; margin: auto"
+                >
+                    <div
+                        class="dotfont"
+                        style="font-size: 32px; color: #555; margin-top: 10px"
+                    >
+                        Xianfei's<span
+                            style="margin-left: 5px; margin-right: 5px"
+                            >Mocap</span
+                        >System
+                    </div>
+                    <div class="mdui-text-color-theme">
+                        {{language.app.name}}
+                    </div>
+                    <div style="color: #555; margin-top: 20px; font-size: 14px">
+                        {{language.tabSettings.desc}}
+                    </div>
+                    <!-- <div style="height: 20px;"></div>
                 <div class="mdui-typo">
                     <blockquote style="margin: 0;">
                         <p>希望你能喜欢。</p>
                         <footer> —— 王衔飞</footer>
                     </blockquote>
                 </div> -->
-                <div style="height: 20px;"></div>
-                <h1 class="mdui-text-color-theme">{{language.tabSettings.document.name}}</h1>
-                <div class="settings-item" onclick="require('electron').ipcRenderer.send('openDocument')">
-                    {{language.tabSettings.document.openDoc}}
-                </div>
-                <h1 class="mdui-text-color-theme">{{language.tabSettings.ui.name}}</h1>
-                <div class="settings-item">
-                    <div style="display: flex;align-content: space-between;justify-content: space-between;width: 100%;">
-                        {{language.tabSettings.ui.themeColor}}
-                        <div v-for="c in ['deep-purple', 'pink','indigo','light-blue','teal','cyan','light-green','amber','orange']"
-                            v-bind:class="'color-dot mdui-color-'+c+' mdui-ripple'"
-                            v-on:click="settings.ui.themeColor=c"></div>
-                        <div></div>
+                    <div style="height: 20px"></div>
+                    <h1 class="mdui-text-color-theme">
+                        {{language.tabSettings.document.name}}
+                    </h1>
+                    <div
+                        class="settings-item"
+                        onclick="require('electron').ipcRenderer.send('openDocument')"
+                    >
+                        {{language.tabSettings.document.openDoc}}
                     </div>
-                </div>
-                <div class="settings-item">
-                    <label class="mdui-switch">
-                        <span>{{language.tabSettings.ui.useGlass}}</span>
-                        <input type="checkbox" v-model="settings.ui.useGlass" />
-                        <i class="mdui-switch-icon"></i>
-                    </label>
-                </div>
-                <div class="settings-item">
-                    <span>{{language.tabSettings.ui.language}}</span>
-                    <select v-model="settings.ui.language" class="mdui-select" mdui-select
-                        style="float:right;margin-right: 10px;">
-                        <option value="zh">简体中文</option>
-                        <option value="en">English</option>
-                    </select>
-                </div>
-                <h1 class="mdui-text-color-theme">{{language.tabSettings.preview.name}}</h1>
-                <div class="settings-item">
-                    <label class="mdui-switch">
-                        <span>{{language.tabSettings.preview.showSketelonOnInput}}</span>
-                        <input type="checkbox" v-model="settings.preview.showSketelonOnInput" />
-                        <i class="mdui-switch-icon"></i>
-                    </label>
-                </div>
-                <div class="settings-item">
-                    <label class="mdui-switch">
-                        <span>{{language.tabSettings.preview.mirroringWhenCamera}}</span>
-                        <input type="checkbox" v-model="settings.preview.mirroringWhenCamera" />
-                        <i class="mdui-switch-icon"></i>
-                    </label>
-                </div>
-                <div class="settings-item">
-                    <label class="mdui-switch">
-                        <span>{{language.tabSettings.preview.mirroringWhenVideoFile}}</span>
-                        <input type="checkbox" v-model="settings.preview.mirroringWhenVideoFile" />
-                        <i class="mdui-switch-icon"></i>
-                    </label>
-                </div>
-                <h1 class="mdui-text-color-theme">{{language.tabSettings.forward.name}}</h1>
-                <div class="settings-item">
-                    <label class="mdui-switch">
-                        <span>{{language.tabSettings.forward.enableForwarding}}</span>
-                        <input type="checkbox" v-model="settings.forward.enableForwarding" />
-                        <i class="mdui-switch-icon"></i>
-                    </label>
-                </div>
-                <div class="settings-item" v-show="settings.forward.enableForwarding"
-                    onclick="mdui.prompt('','修改端口号',(s)=>{app.settings.forward.port = parseInt(s)},()=>{},{defaultValue:app.settings.forward.port})">
-                    <span>{{language.tabSettings.forward.port}}</span>
-                    <span style="float:right;margin-right: 10px;font-weight: 600;">{{settings.forward.port}}</span>
-                </div>
-                <h1 class="mdui-text-color-theme">{{language.tabSettings.output.name}}</h1>
-                <div class="settings-item">
-                    <label class="mdui-switch">
-                        <span>{{language.tabSettings.output.antialias}}</span>
-                        <input type="checkbox" v-model="settings.output.antialias" />
-                        <i class="mdui-switch-icon"></i>
-                    </label>
-                </div>
-                <div class="settings-item">
-                    <label class="mdui-switch">
-                        <span>{{language.tabSettings.output.usePicInsteadOfColor}}</span>
-                        <input type="checkbox" v-model="settings.output.usePicInsteadOfColor" />
-                        <i class="mdui-switch-icon"></i>
-                    </label>
-                </div>
-                <div class="settings-item" v-show="!settings.output.usePicInsteadOfColor">
-                    <label>
-                        <span>{{language.tabSettings.output.bgColor}}</span>
-                        <input type="color" v-model="settings.output.bgColor"
-                            style="background: none;border: none;padding:0;width: 40px;height: 25px;">
-                    </label>
-                </div>
-                <div class="settings-item" v-show="settings.output.usePicInsteadOfColor">
-                    <span>{{language.tabSettings.output.usePicInsteadOfColor}}</span>
-                </div>
-                <h1 class="mdui-text-color-theme">{{language.tabSettings.mediapipe.name}}<span
-                        style="color: #777;font-size: 12px;font-weight: 400;margin-left: 10px;">Powered by Google
-                        MideaPipe</span></h1>
-                <div class="settings-item">
-                    <span style="display: inline-block;width: 56%;">MODEL_COMPLEXITY
-                        <i class="mdui-icon material-icons"
-                            mdui-tooltip="{content: 'Complexity of the pose landmark model: 0, 1 or 2. Landmark accuracy as well as inference latency generally go up with the model complexity. Default to 1.'}">help_outline</i>
-                    </span>
-                    <label class="mdui-slider mdui-slider-discrete"
-                        style="display: inline-block;width: 40%;margin-bottom: -12px;">
-                        <input type="range" step="1" min="0" max="2" value="2" />
-                    </label>
-                </div>
-                <div class="settings-item">
-                    <label class="mdui-switch">
-                        <span>SMOOTH_LANDMARKS
-                            <i class="mdui-icon material-icons"
-                                mdui-tooltip="{content: 'If set to true, the solution filters pose landmarks across different input images to reduce jitter. Default to true.'}">help_outline</i>
+                    <h1 class="mdui-text-color-theme">
+                        {{language.tabSettings.ui.name}}
+                    </h1>
+                    <div class="settings-item">
+                        <div
+                            style="
+                                display: flex;
+                                align-content: space-between;
+                                justify-content: space-between;
+                                width: 100%;
+                            "
+                        >
+                            {{language.tabSettings.ui.themeColor}}
+                            <div
+                                v-for="c in ['deep-purple', 'pink','indigo','light-blue','teal','cyan','light-green','amber','orange']"
+                                v-bind:class="'color-dot mdui-color-'+c+' mdui-ripple'"
+                                v-on:click="settings.ui.themeColor=c"
+                            ></div>
+                            <div></div>
+                        </div>
+                    </div>
+                    <div class="settings-item">
+                        <label class="mdui-switch">
+                            <span>{{language.tabSettings.ui.useGlass}}</span>
+                            <input
+                                type="checkbox"
+                                v-model="settings.ui.useGlass"
+                            />
+                            <i class="mdui-switch-icon"></i>
+                        </label>
+                    </div>
+                    <div class="settings-item">
+                        <span>{{language.tabSettings.ui.language}}</span>
+                        <select
+                            v-model="settings.ui.language"
+                            class="mdui-select"
+                            mdui-select
+                            style="float: right; margin-right: 10px"
+                        >
+                            <option value="zh">简体中文</option>
+                            <option value="en">English</option>
+                        </select>
+                    </div>
+                    <h1 class="mdui-text-color-theme">
+                        {{language.tabSettings.preview.name}}
+                    </h1>
+                    <div class="settings-item">
+                        <label class="mdui-switch">
+                            <span
+                                >{{language.tabSettings.preview.showSketelonOnInput}}</span
+                            >
+                            <input
+                                type="checkbox"
+                                v-model="settings.preview.showSketelonOnInput"
+                            />
+                            <i class="mdui-switch-icon"></i>
+                        </label>
+                    </div>
+                    <div class="settings-item">
+                        <label class="mdui-switch">
+                            <span
+                                >{{language.tabSettings.preview.mirroringWhenCamera}}</span
+                            >
+                            <input
+                                type="checkbox"
+                                v-model="settings.preview.mirroringWhenCamera"
+                            />
+                            <i class="mdui-switch-icon"></i>
+                        </label>
+                    </div>
+                    <div class="settings-item">
+                        <label class="mdui-switch">
+                            <span
+                                >{{language.tabSettings.preview.mirroringWhenVideoFile}}</span
+                            >
+                            <input
+                                type="checkbox"
+                                v-model="settings.preview.mirroringWhenVideoFile"
+                            />
+                            <i class="mdui-switch-icon"></i>
+                        </label>
+                    </div>
+                    <h1 class="mdui-text-color-theme">
+                        {{language.tabSettings.forward.name}}
+                    </h1>
+                    <div class="settings-item">
+                        <label class="mdui-switch">
+                            <span
+                                >{{language.tabSettings.forward.enableForwarding}}</span
+                            >
+                            <input
+                                type="checkbox"
+                                v-model="settings.forward.enableForwarding"
+                            />
+                            <i class="mdui-switch-icon"></i>
+                        </label>
+                    </div>
+                    <div
+                        class="settings-item"
+                        v-show="settings.forward.enableForwarding"
+                        onclick="mdui.prompt('','修改端口号',(s)=>{app.settings.forward.port = parseInt(s)},()=>{},{defaultValue:app.settings.forward.port})"
+                    >
+                        <span>{{language.tabSettings.forward.port}}</span>
+                        <span
+                            style="
+                                float: right;
+                                margin-right: 10px;
+                                font-weight: 600;
+                            "
+                            >{{settings.forward.port}}</span
+                        >
+                    </div>
+                    <h1 class="mdui-text-color-theme">
+                        {{language.tabSettings.output.name}}
+                    </h1>
+                    <div class="settings-item">
+                        <label class="mdui-switch">
+                            <span
+                                >{{language.tabSettings.output.antialias}}</span
+                            >
+                            <input
+                                type="checkbox"
+                                v-model="settings.output.antialias"
+                            />
+                            <i class="mdui-switch-icon"></i>
+                        </label>
+                    </div>
+                    <div class="settings-item">
+                        <label class="mdui-switch">
+                            <span
+                                >{{language.tabSettings.output.usePicInsteadOfColor}}</span
+                            >
+                            <input
+                                type="checkbox"
+                                v-model="settings.output.usePicInsteadOfColor"
+                            />
+                            <i class="mdui-switch-icon"></i>
+                        </label>
+                    </div>
+                    <div
+                        class="settings-item"
+                        v-show="!settings.output.usePicInsteadOfColor"
+                    >
+                        <label>
+                            <span>{{language.tabSettings.output.bgColor}}</span>
+                            <input
+                                type="color"
+                                v-model="settings.output.bgColor"
+                                style="
+                                    background: none;
+                                    border: none;
+                                    padding: 0;
+                                    width: 40px;
+                                    height: 25px;
+                                "
+                            />
+                        </label>
+                    </div>
+                    <div
+                        class="settings-item"
+                        v-show="settings.output.usePicInsteadOfColor"
+                    >
+                        <span
+                            >{{language.tabSettings.output.usePicInsteadOfColor}}</span
+                        >
+                    </div>
+                    <h1 class="mdui-text-color-theme">
+                        {{language.tabSettings.mediapipe.name}}<span
+                            style="
+                                color: #777;
+                                font-size: 12px;
+                                font-weight: 400;
+                                margin-left: 10px;
+                            "
+                            >Powered by Google MideaPipe</span
+                        >
+                    </h1>
+                    <div class="settings-item">
+                        <span style="display: inline-block; width: 56%"
+                            >MODEL_COMPLEXITY
+                            <i
+                                class="mdui-icon material-icons"
+                                mdui-tooltip="{content: 'Complexity of the pose landmark model: 0, 1 or 2. Landmark accuracy as well as inference latency generally go up with the model complexity. Default to 1.'}"
+                                >help_outline</i
+                            >
                         </span>
-                        <input type="checkbox" checked />
-                        <i class="mdui-switch-icon"></i>
-                    </label>
-                </div>
-                <div class="settings-item">
-                    <label class="mdui-switch">
-                        <span>REFINE_FACE_LANDMARKS
-                            <i class="mdui-icon material-icons"
-                                mdui-tooltip="{content: 'Whether to further refine the landmark coordinates around the eyes and lips, and output additional landmarks around the irises. Default to false.'}">help_outline</i>
+                        <label
+                            class="mdui-slider mdui-slider-discrete"
+                            style="
+                                display: inline-block;
+                                width: 40%;
+                                margin-bottom: -12px;
+                            "
+                        >
+                            <input
+                                type="range"
+                                step="1"
+                                min="0"
+                                max="2"
+                                value="2"
+                            />
+                        </label>
+                    </div>
+                    <div class="settings-item">
+                        <label class="mdui-switch">
+                            <span
+                                >SMOOTH_LANDMARKS
+                                <i
+                                    class="mdui-icon material-icons"
+                                    mdui-tooltip="{content: 'If set to true, the solution filters pose landmarks across different input images to reduce jitter. Default to true.'}"
+                                    >help_outline</i
+                                >
+                            </span>
+                            <input type="checkbox" checked />
+                            <i class="mdui-switch-icon"></i>
+                        </label>
+                    </div>
+                    <div class="settings-item">
+                        <label class="mdui-switch">
+                            <span
+                                >REFINE_FACE_LANDMARKS
+                                <i
+                                    class="mdui-icon material-icons"
+                                    mdui-tooltip="{content: 'Whether to further refine the landmark coordinates around the eyes and lips, and output additional landmarks around the irises. Default to false.'}"
+                                    >help_outline</i
+                                >
+                            </span>
+                            <input type="checkbox" checked />
+                            <i class="mdui-switch-icon"></i>
+                        </label>
+                    </div>
+                    <div class="settings-item">
+                        <span style="display: inline-block; width: 56%"
+                            >MIN_DETECTION_CONFIDENCE
+                            <i
+                                class="mdui-icon material-icons"
+                                mdui-tooltip="{content: 'Minimum confidence value ([0.0, 1.0]) from the person-detection model for the detection to be considered successful. Default to 0.5.'}"
+                                >help_outline</i
+                            >
                         </span>
-                        <input type="checkbox" checked />
-                        <i class="mdui-switch-icon"></i>
-                    </label>
-                </div>
-                <div class="settings-item">
-                    <span style="display: inline-block;width: 56%;">MIN_DETECTION_CONFIDENCE
-                        <i class="mdui-icon material-icons"
-                            mdui-tooltip="{content: 'Minimum confidence value ([0.0, 1.0]) from the person-detection model for the detection to be considered successful. Default to 0.5.'}">help_outline</i>
-                    </span>
-                    <label class="mdui-slider mdui-slider-discrete"
-                        style="display: inline-block;width: 40%;margin-bottom: -12px;">
-                        <input type="range" step="0.1" min="0" max="1" value="0.7" />
-                    </label>
-                </div>
-                <div class="settings-item">
-                    <span style="display: inline-block;width: 56%;">MIN_TRACKING_CONFIDENCE
-                        <i class="mdui-icon material-icons"
-                            mdui-tooltip="{content: 'Minimum confidence value ([0.0, 1.0]) from the landmark-tracking model for the pose landmarks to be considered tracked successfully, or otherwise person detection will be invoked automatically on the next input image. Setting it to a higher value can increase robustness of the solution, at the expense of a higher latency. Default to 0.5.'}">help_outline</i>
-                    </span>
-                    <label class="mdui-slider mdui-slider-discrete"
-                        style="display: inline-block;width: 40%;margin-bottom: -12px;">
-                        <input type="range" step="0.1" min="0" max="1" value="0.7" />
-                    </label>
-                </div>
-                <h1 class="mdui-text-color-theme">{{language.tabSettings.dev.name}}</h1>
-                <div class="settings-item">
-                    <label class="mdui-switch">
-                        <span>{{language.tabSettings.dev.allowDevTools}}</span>
-                        <input type="checkbox" v-model="settings.dev.allowDevTools" />
-                        <i class="mdui-switch-icon"></i>
-                    </label>
-                </div>
-                <div class="settings-item">
-                    <label class="mdui-switch">
-                        <span>{{language.tabSettings.dev.openDevToolsWhenMocap}}</span>
-                        <input type="checkbox" v-model="settings.dev.openDevToolsWhenMocap" />
-                        <i class="mdui-switch-icon"></i>
-                    </label>
+                        <label
+                            class="mdui-slider mdui-slider-discrete"
+                            style="
+                                display: inline-block;
+                                width: 40%;
+                                margin-bottom: -12px;
+                            "
+                        >
+                            <input
+                                type="range"
+                                step="0.1"
+                                min="0"
+                                max="1"
+                                value="0.7"
+                            />
+                        </label>
+                    </div>
+                    <div class="settings-item">
+                        <span style="display: inline-block; width: 56%"
+                            >MIN_TRACKING_CONFIDENCE
+                            <i
+                                class="mdui-icon material-icons"
+                                mdui-tooltip="{content: 'Minimum confidence value ([0.0, 1.0]) from the landmark-tracking model for the pose landmarks to be considered tracked successfully, or otherwise person detection will be invoked automatically on the next input image. Setting it to a higher value can increase robustness of the solution, at the expense of a higher latency. Default to 0.5.'}"
+                                >help_outline</i
+                            >
+                        </span>
+                        <label
+                            class="mdui-slider mdui-slider-discrete"
+                            style="
+                                display: inline-block;
+                                width: 40%;
+                                margin-bottom: -12px;
+                            "
+                        >
+                            <input
+                                type="range"
+                                step="0.1"
+                                min="0"
+                                max="1"
+                                value="0.7"
+                            />
+                        </label>
+                    </div>
+                    <h1 class="mdui-text-color-theme">
+                        {{language.tabSettings.dev.name}}
+                    </h1>
+                    <div class="settings-item">
+                        <label class="mdui-switch">
+                            <span
+                                >{{language.tabSettings.dev.allowDevTools}}</span
+                            >
+                            <input
+                                type="checkbox"
+                                v-model="settings.dev.allowDevTools"
+                            />
+                            <i class="mdui-switch-icon"></i>
+                        </label>
+                    </div>
+                    <div class="settings-item">
+                        <label class="mdui-switch">
+                            <span
+                                >{{language.tabSettings.dev.openDevToolsWhenMocap}}</span
+                            >
+                            <input
+                                type="checkbox"
+                                v-model="settings.dev.openDevToolsWhenMocap"
+                            />
+                            <i class="mdui-switch-icon"></i>
+                        </label>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <script>
-        // import electron remote
-        var remote = require('@electron/remote');
+        <script>
+            // import electron remote
+            var remote = require("@electron/remote");
 
-        // import setting utils
-        const { getSettings, globalSettings, saveSettings } = require("../utils/setting.js")
-        document.body.setAttribute('class', 'mdui-theme-primary-' + globalSettings.ui.themeColor + ' mdui-theme-accent-' + globalSettings.ui.themeColor)
+            // import setting utils
+            const {
+                getSettings,
+                globalSettings,
+                saveSettings,
+            } = require("../utils/setting.js");
+            document.body.setAttribute(
+                "class",
+                "mdui-theme-primary-" +
+                    globalSettings.ui.themeColor +
+                    " mdui-theme-accent-" +
+                    globalSettings.ui.themeColor
+            );
 
-        // import languages
-        const { languages } = require("../utils/language.js")
+            // import languages
+            const { languages } = require("../utils/language.js");
 
-        // import built-in models
-        var builtInModels = require('../models/models.json')
+            // import built-in models
+            var builtInModels = require("../models/models.json");
 
-        var app = new Vue({
-            el: '#vue-mount',
-            data: {
-                tab: 'model',
-                builtIn: builtInModels,
-                selectModel: JSON.stringify(builtInModels[0]),
-                language: languages[globalSettings.ui.language],
-                videoSource: 'camera',
-                videoPath: '',
-                settings: globalSettings
-            },
-            computed: {
-                bg: function () {
-                    this.settings.ui.themeColor
-                    return window.getComputedStyle(document.querySelector('.mdui-color-theme'), null).backgroundColor
+            var app = new Vue({
+                el: "#vue-mount",
+                data: {
+                    tab: "model",
+                    builtIn: builtInModels,
+                    selectModel: JSON.stringify(builtInModels[0]),
+                    language: languages[globalSettings.ui.language],
+                    videoSource: "camera",
+                    videoPath: "",
+                    settings: globalSettings,
                 },
-                fg: function () {
-                    this.settings.ui.themeColor
-                    return window.getComputedStyle(document.querySelector('.mdui-color-theme'), null).color
-                }
-            },
-            watch: {
-                settings: {
-                    handler(newVal, oldVal) {
-                        // save when changed
-                        // console.log('settings changed')
-                        document.body.setAttribute('class', 'mdui-theme-primary-' + app.settings.ui.themeColor + ' mdui-theme-accent-' + app.settings.ui.themeColor)
-                        saveSettings(JSON.stringify(app.settings))
-                        app.language = languages[app.settings.ui.language]
+                computed: {
+                    bg: function () {
+                        this.settings.ui.themeColor;
+                        return window.getComputedStyle(
+                            document.querySelector(".mdui-color-theme"),
+                            null
+                        ).backgroundColor;
                     },
-                    deep: true
+                    fg: function () {
+                        this.settings.ui.themeColor;
+                        return window.getComputedStyle(
+                            document.querySelector(".mdui-color-theme"),
+                            null
+                        ).color;
+                    },
+                },
+                watch: {
+                    settings: {
+                        handler(newVal, oldVal) {
+                            // save when changed
+                            // console.log('settings changed')
+                            document.body.setAttribute(
+                                "class",
+                                "mdui-theme-primary-" +
+                                    app.settings.ui.themeColor +
+                                    " mdui-theme-accent-" +
+                                    app.settings.ui.themeColor
+                            );
+                            saveSettings(JSON.stringify(app.settings));
+                            app.language = languages[app.settings.ui.language];
+                        },
+                        deep: true,
+                    },
+                },
+            });
+
+            document.getElementById("chooseFile").onclick = async function () {
+                const result = await remote.dialog.showOpenDialogSync({
+                    properties: ["openFile"],
+                    filters: [
+                        {
+                            name: "视频文件",
+                            extensions: ["mp4", "webm"],
+                        },
+                    ],
+                });
+                if (result) app.videoPath = result;
+            };
+
+            var inst = new mdui.Select("#demo-js");
+
+            var isRemoteInit = false;
+
+            function startMocap(e) {
+                if (app.settings.dev.openDevToolsWhenMocap) {
+                    var webContents = remote.webContents.fromId(
+                        document.getElementById("foo").getWebContentsId()
+                    );
+                    webContents.openDevTools();
+                }
+                if (e.innerHTML.indexOf(app.language.tabMocap.start) != -1) {
+                    localStorage.setItem("modelInfo", app.selectModel);
+                    localStorage.setItem("useCamera", app.videoSource);
+                    localStorage.setItem("videoFile", app.videoPath[0]);
+                    document.getElementById("foo").src =
+                        "../render/render.html";
+                    e.innerHTML =
+                        '<i class="mdui-icon material-icons">stop</i>' +
+                        app.language.tabMocap.stop;
+                } else {
+                    document.getElementById("foo").src = "about:blank";
+                    e.innerHTML =
+                        '<i class="mdui-icon material-icons">play_arrow</i>' +
+                        app.language.tabMocap.start;
                 }
             }
-        })
 
-        document.getElementById("chooseFile").onclick = async function () {
-            const result = await remote.dialog.showOpenDialogSync({
-                properties: ['openFile'],
-                filters: [{
-                    name: '视频文件',
-                    extensions: ['mp4', 'webm']
-                }],
-            });
-            if (result) app.videoPath = result
-        }
+            var isMax = false;
 
-        var inst = new mdui.Select('#demo-js');
-
-        var isRemoteInit = false
-
-        function startMocap(e) {
-            if (app.settings.dev.openDevToolsWhenMocap) {
-                var webContents = remote.webContents.fromId(document.getElementById('foo').getWebContentsId())
-                webContents.openDevTools()
+            function maximizeBtn() {
+                if (isMax) {
+                    remote.getCurrentWindow().restore();
+                    document.getElementById("maxbtn").innerHTML =
+                        '<i onclick="maximizeBtn()" class="mdui-icon material-icons" style="font-size: 20px; margin-top:0;">fullscreen</i>';
+                } else {
+                    remote.getCurrentWindow().maximize();
+                    document.getElementById("maxbtn").innerHTML =
+                        '<i onclick="maximizeBtn()" class="mdui-icon material-icons" style="font-size: 20px; margin-top:0;">fullscreen_exit</i>';
+                }
+                isMax = !isMax;
             }
-            if (e.innerHTML.indexOf(app.language.tabMocap.start) != -1) {
-                localStorage.setItem('modelInfo', app.selectModel);
-                localStorage.setItem('useCamera', app.videoSource);
-                localStorage.setItem('videoFile', app.videoPath[0]);
-                document.getElementById('foo').src = '../render/render.html'
-                e.innerHTML = '<i class="mdui-icon material-icons">stop</i>' + app.language.tabMocap.stop
-            } else {
-                document.getElementById('foo').src = 'about:blank'
-                e.innerHTML = '<i class="mdui-icon material-icons">play_arrow</i>' + app.language.tabMocap.start
-            }
-        }
-
-        var isMax = false;
-
-        function maximizeBtn() {
-            if (isMax) {
-                remote.getCurrentWindow().restore();
-                document.getElementById('maxbtn').innerHTML = '<i onclick="maximizeBtn()" class="mdui-icon material-icons" style="font-size: 20px; margin-top:0;">fullscreen</i>';
-            } else {
-                remote.getCurrentWindow().maximize();
-                document.getElementById('maxbtn').innerHTML = '<i onclick="maximizeBtn()" class="mdui-icon material-icons" style="font-size: 20px; margin-top:0;">fullscreen_exit</i>';
-            }
-            isMax = !isMax
-        }
-    </script>
-</body>
-
+        </script>
+    </body>
 </html>

@@ -2,18 +2,19 @@
  *  Video-based Motion Capture and 3D Model Render Part
  *
  *  A part of SysMocap, open sourced under Mozilla Public License 2.0
- * 
+ *
  *  https://github.com/xianfei/SysMocap
- * 
+ *
  *  xianfei 2022.3
  */
 
 // import setting utils
-const { globalSettings } = require("../utils/setting.js")
+const { globalSettings } = require("../utils/setting.js");
 
 // import mocap web server
-var my_server = null
-if (globalSettings.forward.enableForwarding) my_server = require('../webserv/server.js')
+var my_server = null;
+if (globalSettings.forward.enableForwarding)
+    my_server = require("../webserv/server.js");
 
 // import Helper Functions from Kalidokit
 const remap = Kalidokit.Utils.remap;
@@ -24,19 +25,32 @@ const lerp = Kalidokit.Vector.lerp;
 let currentVrm;
 
 // Whether mediapipe ready
-var started = false
+var started = false;
 
 // renderer
-const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: globalSettings.output.antialias });
-renderer.setSize(document.querySelector("#model").clientWidth, document.querySelector("#model").clientWidth / 16 * 9);
+const renderer = new THREE.WebGLRenderer({
+    alpha: true,
+    antialias: globalSettings.output.antialias,
+});
+renderer.setSize(
+    document.querySelector("#model").clientWidth,
+    (document.querySelector("#model").clientWidth / 16) * 9
+);
 renderer.setPixelRatio(window.devicePixelRatio);
 document.querySelector("#model").appendChild(renderer.domElement);
 
-window.addEventListener('resize', function () {
-    orbitCamera.aspect = 16 / 9;
-    orbitCamera.updateProjectionMatrix();
-    renderer.setSize(document.querySelector("#model").clientWidth, document.querySelector("#model").clientWidth / 16 * 9);
-}, false);
+window.addEventListener(
+    "resize",
+    function () {
+        orbitCamera.aspect = 16 / 9;
+        orbitCamera.updateProjectionMatrix();
+        renderer.setSize(
+            document.querySelector("#model").clientWidth,
+            (document.querySelector("#model").clientWidth / 16) * 9
+        );
+    },
+    false
+);
 
 // camera
 const orbitCamera = new THREE.PerspectiveCamera(35, 16 / 9, 0.1, 1000);
@@ -70,26 +84,27 @@ function animate() {
 }
 animate();
 
-
 // Import Character VRM
 const loader = new THREE.GLTFLoader();
 loader.crossOrigin = "anonymous";
 
-var modelPath = JSON.parse(localStorage.getItem('modelInfo')).path
+var modelPath = JSON.parse(localStorage.getItem("modelInfo")).path;
 
-var fileType = modelPath.substring(modelPath.lastIndexOf('.') + 1).toLowerCase()
+var fileType = modelPath
+    .substring(modelPath.lastIndexOf(".") + 1)
+    .toLowerCase();
 
 var skeletonHelper;
 
 // init server
-if (my_server) my_server.startServer(globalSettings.forward.port, modelPath)
+if (my_server) my_server.startServer(globalSettings.forward.port, modelPath);
 
 // Import model from URL, add your own model here
 loader.load(
     modelPath,
 
     (gltf) => {
-        if (fileType == 'vrm') {
+        if (fileType == "vrm") {
             // calling these functions greatly improves the performance
             THREE.VRMUtils.removeUnnecessaryVertices(gltf.scene);
             THREE.VRMUtils.removeUnnecessaryJoints(gltf.scene);
@@ -104,19 +119,30 @@ loader.load(
             skeletonHelper = new THREE.SkeletonHelper(gltf.scene);
             scene.add(gltf.scene);
             skeletonHelper.bones[0].rotation.y = Math.PI; // Rotate model 180deg to face camera
-
         }
     },
 
-    (progress) => console.log("Loading model...", 100.0 * (progress.loaded / progress.total), "%"),
+    (progress) =>
+        console.log(
+            "Loading model...",
+            100.0 * (progress.loaded / progress.total),
+            "%"
+        ),
 
     (error) => console.error(error)
 );
 
 // Animate Rotation Helper function
-const rigRotation = (name, rotation = { x: 0, y: 0, z: 0 }, dampener = 1, lerpAmount = 0.3) => {
+const rigRotation = (
+    name,
+    rotation = { x: 0, y: 0, z: 0 },
+    dampener = 1,
+    lerpAmount = 0.3
+) => {
     if (currentVrm) {
-        const Part = currentVrm.humanoid.getBoneNode(THREE.VRMSchema.HumanoidBoneName[name]);
+        const Part = currentVrm.humanoid.getBoneNode(
+            THREE.VRMSchema.HumanoidBoneName[name]
+        );
         if (!Part) {
             return;
         }
@@ -133,14 +159,24 @@ const rigRotation = (name, rotation = { x: 0, y: 0, z: 0 }, dampener = 1, lerpAm
 };
 
 // Animate Position Helper Function
-const rigPosition = (name, position = { x: 0, y: 0, z: 0 }, dampener = 1, lerpAmount = 0.3) => {
+const rigPosition = (
+    name,
+    position = { x: 0, y: 0, z: 0 },
+    dampener = 1,
+    lerpAmount = 0.3
+) => {
     if (currentVrm) {
-
-        const Part = currentVrm.humanoid.getBoneNode(THREE.VRMSchema.HumanoidBoneName[name]);
+        const Part = currentVrm.humanoid.getBoneNode(
+            THREE.VRMSchema.HumanoidBoneName[name]
+        );
         if (!Part) {
             return;
         }
-        let vector = new THREE.Vector3(position.x * dampener, position.y * dampener, position.z * dampener);
+        let vector = new THREE.Vector3(
+            position.x * dampener,
+            position.y * dampener,
+            position.z * dampener
+        );
         Part.position.lerp(vector, lerpAmount); // interpolate
     }
 };
@@ -157,17 +193,43 @@ const rigFace = (riggedFace) => {
 
     // Simple example without winking. Interpolate based on old blendshape, then stabilize blink with `Kalidokit` helper function.
     // for VRM, 1 is closed, 0 is open.
-    riggedFace.eye.l = lerp(clamp(1 - riggedFace.eye.l, 0, 1), Blendshape.getValue(PresetName.Blink), 0.5);
-    riggedFace.eye.r = lerp(clamp(1 - riggedFace.eye.r, 0, 1), Blendshape.getValue(PresetName.Blink), 0.5);
-    riggedFace.eye = Kalidokit.Face.stabilizeBlink(riggedFace.eye, riggedFace.head.y);
+    riggedFace.eye.l = lerp(
+        clamp(1 - riggedFace.eye.l, 0, 1),
+        Blendshape.getValue(PresetName.Blink),
+        0.5
+    );
+    riggedFace.eye.r = lerp(
+        clamp(1 - riggedFace.eye.r, 0, 1),
+        Blendshape.getValue(PresetName.Blink),
+        0.5
+    );
+    riggedFace.eye = Kalidokit.Face.stabilizeBlink(
+        riggedFace.eye,
+        riggedFace.head.y
+    );
     Blendshape.setValue(PresetName.Blink, riggedFace.eye.l);
 
     // Interpolate and set mouth blendshapes
-    Blendshape.setValue(PresetName.I, lerp(riggedFace.mouth.shape.I, Blendshape.getValue(PresetName.I), 0.5));
-    Blendshape.setValue(PresetName.A, lerp(riggedFace.mouth.shape.A, Blendshape.getValue(PresetName.A), 0.5));
-    Blendshape.setValue(PresetName.E, lerp(riggedFace.mouth.shape.E, Blendshape.getValue(PresetName.E), 0.5));
-    Blendshape.setValue(PresetName.O, lerp(riggedFace.mouth.shape.O, Blendshape.getValue(PresetName.O), 0.5));
-    Blendshape.setValue(PresetName.U, lerp(riggedFace.mouth.shape.U, Blendshape.getValue(PresetName.U), 0.5));
+    Blendshape.setValue(
+        PresetName.I,
+        lerp(riggedFace.mouth.shape.I, Blendshape.getValue(PresetName.I), 0.5)
+    );
+    Blendshape.setValue(
+        PresetName.A,
+        lerp(riggedFace.mouth.shape.A, Blendshape.getValue(PresetName.A), 0.5)
+    );
+    Blendshape.setValue(
+        PresetName.E,
+        lerp(riggedFace.mouth.shape.E, Blendshape.getValue(PresetName.E), 0.5)
+    );
+    Blendshape.setValue(
+        PresetName.O,
+        lerp(riggedFace.mouth.shape.O, Blendshape.getValue(PresetName.O), 0.5)
+    );
+    Blendshape.setValue(
+        PresetName.U,
+        lerp(riggedFace.mouth.shape.U, Blendshape.getValue(PresetName.U), 0.5)
+    );
 
     //PUPILS
     //interpolate pupil and keep a copy of the value
@@ -241,7 +303,7 @@ const animateVRM = (vrm, results) => {
     }
 
     // Animate Hands
-    if (leftHandLandmarks && fileType == 'vrm') {
+    if (leftHandLandmarks && fileType == "vrm") {
         riggedLeftHand = Kalidokit.Hand.solve(leftHandLandmarks, "Left");
         rigRotation("LeftHand", {
             // Combine pose rotation Z and hand rotation X Y
@@ -250,22 +312,37 @@ const animateVRM = (vrm, results) => {
             x: riggedLeftHand.LeftWrist.x,
         });
         rigRotation("LeftRingProximal", riggedLeftHand.LeftRingProximal);
-        rigRotation("LeftRingIntermediate", riggedLeftHand.LeftRingIntermediate);
+        rigRotation(
+            "LeftRingIntermediate",
+            riggedLeftHand.LeftRingIntermediate
+        );
         rigRotation("LeftRingDistal", riggedLeftHand.LeftRingDistal);
         rigRotation("LeftIndexProximal", riggedLeftHand.LeftIndexProximal);
-        rigRotation("LeftIndexIntermediate", riggedLeftHand.LeftIndexIntermediate);
+        rigRotation(
+            "LeftIndexIntermediate",
+            riggedLeftHand.LeftIndexIntermediate
+        );
         rigRotation("LeftIndexDistal", riggedLeftHand.LeftIndexDistal);
         rigRotation("LeftMiddleProximal", riggedLeftHand.LeftMiddleProximal);
-        rigRotation("LeftMiddleIntermediate", riggedLeftHand.LeftMiddleIntermediate);
+        rigRotation(
+            "LeftMiddleIntermediate",
+            riggedLeftHand.LeftMiddleIntermediate
+        );
         rigRotation("LeftMiddleDistal", riggedLeftHand.LeftMiddleDistal);
         rigRotation("LeftThumbProximal", riggedLeftHand.LeftThumbProximal);
-        rigRotation("LeftThumbIntermediate", riggedLeftHand.LeftThumbIntermediate);
+        rigRotation(
+            "LeftThumbIntermediate",
+            riggedLeftHand.LeftThumbIntermediate
+        );
         rigRotation("LeftThumbDistal", riggedLeftHand.LeftThumbDistal);
         rigRotation("LeftLittleProximal", riggedLeftHand.LeftLittleProximal);
-        rigRotation("LeftLittleIntermediate", riggedLeftHand.LeftLittleIntermediate);
+        rigRotation(
+            "LeftLittleIntermediate",
+            riggedLeftHand.LeftLittleIntermediate
+        );
         rigRotation("LeftLittleDistal", riggedLeftHand.LeftLittleDistal);
     }
-    if (rightHandLandmarks && fileType == 'vrm') {
+    if (rightHandLandmarks && fileType == "vrm") {
         riggedRightHand = Kalidokit.Hand.solve(rightHandLandmarks, "Right");
         rigRotation("RightHand", {
             // Combine Z axis from pose hand and X/Y axis from hand wrist rotation
@@ -274,29 +351,47 @@ const animateVRM = (vrm, results) => {
             x: riggedRightHand.RightWrist.x,
         });
         rigRotation("RightRingProximal", riggedRightHand.RightRingProximal);
-        rigRotation("RightRingIntermediate", riggedRightHand.RightRingIntermediate);
+        rigRotation(
+            "RightRingIntermediate",
+            riggedRightHand.RightRingIntermediate
+        );
         rigRotation("RightRingDistal", riggedRightHand.RightRingDistal);
         rigRotation("RightIndexProximal", riggedRightHand.RightIndexProximal);
-        rigRotation("RightIndexIntermediate", riggedRightHand.RightIndexIntermediate);
+        rigRotation(
+            "RightIndexIntermediate",
+            riggedRightHand.RightIndexIntermediate
+        );
         rigRotation("RightIndexDistal", riggedRightHand.RightIndexDistal);
         rigRotation("RightMiddleProximal", riggedRightHand.RightMiddleProximal);
-        rigRotation("RightMiddleIntermediate", riggedRightHand.RightMiddleIntermediate);
+        rigRotation(
+            "RightMiddleIntermediate",
+            riggedRightHand.RightMiddleIntermediate
+        );
         rigRotation("RightMiddleDistal", riggedRightHand.RightMiddleDistal);
         rigRotation("RightThumbProximal", riggedRightHand.RightThumbProximal);
-        rigRotation("RightThumbIntermediate", riggedRightHand.RightThumbIntermediate);
+        rigRotation(
+            "RightThumbIntermediate",
+            riggedRightHand.RightThumbIntermediate
+        );
         rigRotation("RightThumbDistal", riggedRightHand.RightThumbDistal);
         rigRotation("RightLittleProximal", riggedRightHand.RightLittleProximal);
-        rigRotation("RightLittleIntermediate", riggedRightHand.RightLittleIntermediate);
+        rigRotation(
+            "RightLittleIntermediate",
+            riggedRightHand.RightLittleIntermediate
+        );
         rigRotation("RightLittleDistal", riggedRightHand.RightLittleDistal);
     }
 
-    if (my_server) my_server.sendBoradcast(JSON.stringify({
-        type: "xf-sysmocap-data",
-        riggedPose: riggedPose,
-        riggedLeftHand: riggedLeftHand,
-        riggedRightHand: riggedRightHand,
-        riggedFace: riggedFace
-    }))
+    if (my_server)
+        my_server.sendBoradcast(
+            JSON.stringify({
+                type: "xf-sysmocap-data",
+                riggedPose: riggedPose,
+                riggedLeftHand: riggedLeftHand,
+                riggedRightHand: riggedRightHand,
+                riggedFace: riggedFace,
+            })
+        );
 };
 
 let videoElement = document.querySelector(".input_video"),
@@ -309,8 +404,8 @@ const onResults = (results) => {
     // Animate model
     animateVRM(currentVrm, results);
     if (!started) {
-        document.getElementById('loading').remove()
-        if (localStorage.getItem('useCamera') == 'file') videoElement.play()
+        document.getElementById("loading").remove();
+        if (localStorage.getItem("useCamera") == "file") videoElement.play();
         started = true;
     }
 };
@@ -352,10 +447,14 @@ const drawResults = (results) => {
     });
     if (results.faceLandmarks && results.faceLandmarks.length === 478) {
         //draw pupils
-        drawLandmarks(canvasCtx, [results.faceLandmarks[468], results.faceLandmarks[468 + 5]], {
-            color: "#ffe603",
-            lineWidth: 2,
-        });
+        drawLandmarks(
+            canvasCtx,
+            [results.faceLandmarks[468], results.faceLandmarks[468 + 5]],
+            {
+                color: "#ffe603",
+                lineWidth: 2,
+            }
+        );
     }
     drawConnectors(canvasCtx, results.leftHandLandmarks, HAND_CONNECTIONS, {
         color: "#eb1064",
@@ -376,8 +475,8 @@ const drawResults = (results) => {
 };
 
 // switch use camera or video file
-if (localStorage.getItem('useCamera') == 'camera') {
-    videoCtrl.parentNode.remove()
+if (localStorage.getItem("useCamera") == "camera") {
+    videoCtrl.parentNode.remove();
     const camera = new Camera(videoElement, {
         onFrame: async () => {
             await holistic.send({ image: videoElement });
@@ -388,47 +487,47 @@ if (localStorage.getItem('useCamera') == 'camera') {
     camera.start();
 } else {
     videoCtrl.oninput = () => {
-        videoElement.currentTime = videoCtrl.value
-    }
+        videoElement.currentTime = videoCtrl.value;
+    };
     // path of video file
-    videoElement.src = localStorage.getItem('videoFile')
-    videoElement.loop = true
+    videoElement.src = localStorage.getItem("videoFile");
+    videoElement.loop = true;
 
     var videoFrameCallback = async () => {
         // videoElement.pause()
         await holistic.send({ image: videoElement });
-        videoCtrl.value = videoElement.currentTime
-        videoCtrl.max = videoElement.duration
-        mdui.updateSliders(videoCtrl.parentNode)
-        videoElement.requestVideoFrameCallback(videoFrameCallback)
+        videoCtrl.value = videoElement.currentTime;
+        videoCtrl.max = videoElement.duration;
+        mdui.updateSliders(videoCtrl.parentNode);
+        videoElement.requestVideoFrameCallback(videoFrameCallback);
         // videoElement.play()
-    }
+    };
 
-    videoElement.requestVideoFrameCallback(videoFrameCallback)
+    videoElement.requestVideoFrameCallback(videoFrameCallback);
 }
 
 // keyborad control camera position
-document.addEventListener("keydown", event => {
-    console.log(event)
-    var x = orbitCamera.position.x
-    var y = orbitCamera.position.y
-    var z = orbitCamera.position.z
-    var step = 0.1
+document.addEventListener("keydown", (event) => {
+    console.log(event);
+    var x = orbitCamera.position.x;
+    var y = orbitCamera.position.y;
+    var z = orbitCamera.position.z;
+    var step = 0.1;
     switch (event.key) {
-        case 'd':
-        case 'ArrowRight':
+        case "d":
+        case "ArrowRight":
             orbitCamera.position.set(x + step, y, z);
             break;
-        case 'a':
-        case 'ArrowLeft':
+        case "a":
+        case "ArrowLeft":
             orbitCamera.position.set(x - step, y, z);
             break;
-        case 'w':
-        case 'ArrowUp':
+        case "w":
+        case "ArrowUp":
             orbitCamera.position.set(x, y + step, z);
             break;
-        case 's':
-        case 'ArrowDown':
+        case "s":
+        case "ArrowDown":
             orbitCamera.position.set(x, y - step, z);
             break;
     }

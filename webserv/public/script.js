@@ -17,7 +17,12 @@ renderer.setPixelRatio(window.devicePixelRatio);
 document.body.appendChild(renderer.domElement);
 
 // camera
-const orbitCamera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.1, 1000);
+const orbitCamera = new THREE.PerspectiveCamera(
+    35,
+    window.innerWidth / window.innerHeight,
+    0.1,
+    1000
+);
 orbitCamera.position.set(0.0, 1.4, 0.7);
 
 // controls
@@ -67,17 +72,29 @@ loader.load(
         });
     },
 
-    (progress) => console.log("Loading model...", 100.0 * (progress.loaded / progress.total), "%"),
+    (progress) =>
+        console.log(
+            "Loading model...",
+            100.0 * (progress.loaded / progress.total),
+            "%"
+        ),
 
     (error) => console.error(error)
 );
 
 // Animate Rotation Helper function
-const rigRotation = (name, rotation = { x: 0, y: 0, z: 0 }, dampener = 1, lerpAmount = 0.3) => {
+const rigRotation = (
+    name,
+    rotation = { x: 0, y: 0, z: 0 },
+    dampener = 1,
+    lerpAmount = 0.3
+) => {
     if (!currentVrm) {
         return;
     }
-    const Part = currentVrm.humanoid.getBoneNode(THREE.VRMSchema.HumanoidBoneName[name]);
+    const Part = currentVrm.humanoid.getBoneNode(
+        THREE.VRMSchema.HumanoidBoneName[name]
+    );
     if (!Part) {
         return;
     }
@@ -93,15 +110,26 @@ const rigRotation = (name, rotation = { x: 0, y: 0, z: 0 }, dampener = 1, lerpAm
 };
 
 // Animate Position Helper Function
-const rigPosition = (name, position = { x: 0, y: 0, z: 0 }, dampener = 1, lerpAmount = 0.3) => {
+const rigPosition = (
+    name,
+    position = { x: 0, y: 0, z: 0 },
+    dampener = 1,
+    lerpAmount = 0.3
+) => {
     if (!currentVrm) {
         return;
     }
-    const Part = currentVrm.humanoid.getBoneNode(THREE.VRMSchema.HumanoidBoneName[name]);
+    const Part = currentVrm.humanoid.getBoneNode(
+        THREE.VRMSchema.HumanoidBoneName[name]
+    );
     if (!Part) {
         return;
     }
-    let vector = new THREE.Vector3(position.x * dampener, position.y * dampener, position.z * dampener);
+    let vector = new THREE.Vector3(
+        position.x * dampener,
+        position.y * dampener,
+        position.z * dampener
+    );
     Part.position.lerp(vector, lerpAmount); // interpolate
 };
 
@@ -118,17 +146,43 @@ const rigFace = (riggedFace) => {
 
     // Simple example without winking. Interpolate based on old blendshape, then stabilize blink with `Kalidokit` helper function.
     // for VRM, 1 is closed, 0 is open.
-    riggedFace.eye.l = lerp(clamp(riggedFace.eye.l, 0, 1), Blendshape.getValue(PresetName.Blink), 0.5);
-    riggedFace.eye.r = lerp(clamp(riggedFace.eye.r, 0, 1), Blendshape.getValue(PresetName.Blink), 0.5);
-    riggedFace.eye = Kalidokit.Face.stabilizeBlink(riggedFace.eye, riggedFace.head.y);
+    riggedFace.eye.l = lerp(
+        clamp(riggedFace.eye.l, 0, 1),
+        Blendshape.getValue(PresetName.Blink),
+        0.5
+    );
+    riggedFace.eye.r = lerp(
+        clamp(riggedFace.eye.r, 0, 1),
+        Blendshape.getValue(PresetName.Blink),
+        0.5
+    );
+    riggedFace.eye = Kalidokit.Face.stabilizeBlink(
+        riggedFace.eye,
+        riggedFace.head.y
+    );
     Blendshape.setValue(PresetName.Blink, riggedFace.eye.l);
 
     // Interpolate and set mouth blendshapes
-    Blendshape.setValue(PresetName.I, lerp(riggedFace.mouth.shape.I, Blendshape.getValue(PresetName.I), 0.5));
-    Blendshape.setValue(PresetName.A, lerp(riggedFace.mouth.shape.A, Blendshape.getValue(PresetName.A), 0.5));
-    Blendshape.setValue(PresetName.E, lerp(riggedFace.mouth.shape.E, Blendshape.getValue(PresetName.E), 0.5));
-    Blendshape.setValue(PresetName.O, lerp(riggedFace.mouth.shape.O, Blendshape.getValue(PresetName.O), 0.5));
-    Blendshape.setValue(PresetName.U, lerp(riggedFace.mouth.shape.U, Blendshape.getValue(PresetName.U), 0.5));
+    Blendshape.setValue(
+        PresetName.I,
+        lerp(riggedFace.mouth.shape.I, Blendshape.getValue(PresetName.I), 0.5)
+    );
+    Blendshape.setValue(
+        PresetName.A,
+        lerp(riggedFace.mouth.shape.A, Blendshape.getValue(PresetName.A), 0.5)
+    );
+    Blendshape.setValue(
+        PresetName.E,
+        lerp(riggedFace.mouth.shape.E, Blendshape.getValue(PresetName.E), 0.5)
+    );
+    Blendshape.setValue(
+        PresetName.O,
+        lerp(riggedFace.mouth.shape.O, Blendshape.getValue(PresetName.O), 0.5)
+    );
+    Blendshape.setValue(
+        PresetName.U,
+        lerp(riggedFace.mouth.shape.U, Blendshape.getValue(PresetName.U), 0.5)
+    );
 
     //PUPILS
     //interpolate pupil and keep a copy of the value
@@ -151,13 +205,13 @@ const animateVRM = (vrm, mydata) => {
 
     // Animate Face
     if (mydata.riggedFace) {
-        riggedFace = mydata.riggedFace
+        riggedFace = mydata.riggedFace;
         rigFace(riggedFace);
     }
 
     // Animate Pose
     if (mydata.riggedPose) {
-        riggedPose = mydata.riggedPose
+        riggedPose = mydata.riggedPose;
         rigRotation("Hips", riggedPose.Hips.rotation, 0.7);
         rigPosition(
             "Hips",
@@ -186,7 +240,7 @@ const animateVRM = (vrm, mydata) => {
 
     // Animate Hands
     if (mydata.riggedLeftHand) {
-        riggedLeftHand = mydata.riggedLeftHand
+        riggedLeftHand = mydata.riggedLeftHand;
         rigRotation("LeftHand", {
             // Combine pose rotation Z and hand rotation X Y
             z: riggedPose.LeftHand.z,
@@ -194,23 +248,38 @@ const animateVRM = (vrm, mydata) => {
             x: riggedLeftHand.LeftWrist.x,
         });
         rigRotation("LeftRingProximal", riggedLeftHand.LeftRingProximal);
-        rigRotation("LeftRingIntermediate", riggedLeftHand.LeftRingIntermediate);
+        rigRotation(
+            "LeftRingIntermediate",
+            riggedLeftHand.LeftRingIntermediate
+        );
         rigRotation("LeftRingDistal", riggedLeftHand.LeftRingDistal);
         rigRotation("LeftIndexProximal", riggedLeftHand.LeftIndexProximal);
-        rigRotation("LeftIndexIntermediate", riggedLeftHand.LeftIndexIntermediate);
+        rigRotation(
+            "LeftIndexIntermediate",
+            riggedLeftHand.LeftIndexIntermediate
+        );
         rigRotation("LeftIndexDistal", riggedLeftHand.LeftIndexDistal);
         rigRotation("LeftMiddleProximal", riggedLeftHand.LeftMiddleProximal);
-        rigRotation("LeftMiddleIntermediate", riggedLeftHand.LeftMiddleIntermediate);
+        rigRotation(
+            "LeftMiddleIntermediate",
+            riggedLeftHand.LeftMiddleIntermediate
+        );
         rigRotation("LeftMiddleDistal", riggedLeftHand.LeftMiddleDistal);
         rigRotation("LeftThumbProximal", riggedLeftHand.LeftThumbProximal);
-        rigRotation("LeftThumbIntermediate", riggedLeftHand.LeftThumbIntermediate);
+        rigRotation(
+            "LeftThumbIntermediate",
+            riggedLeftHand.LeftThumbIntermediate
+        );
         rigRotation("LeftThumbDistal", riggedLeftHand.LeftThumbDistal);
         rigRotation("LeftLittleProximal", riggedLeftHand.LeftLittleProximal);
-        rigRotation("LeftLittleIntermediate", riggedLeftHand.LeftLittleIntermediate);
+        rigRotation(
+            "LeftLittleIntermediate",
+            riggedLeftHand.LeftLittleIntermediate
+        );
         rigRotation("LeftLittleDistal", riggedLeftHand.LeftLittleDistal);
     }
     if (mydata.riggedRightHand) {
-        riggedRightHand = mydata.riggedRightHand
+        riggedRightHand = mydata.riggedRightHand;
         rigRotation("RightHand", {
             // Combine Z axis from pose hand and X/Y axis from hand wrist rotation
             z: riggedPose.RightHand.z,
@@ -218,29 +287,44 @@ const animateVRM = (vrm, mydata) => {
             x: riggedRightHand.RightWrist.x,
         });
         rigRotation("RightRingProximal", riggedRightHand.RightRingProximal);
-        rigRotation("RightRingIntermediate", riggedRightHand.RightRingIntermediate);
+        rigRotation(
+            "RightRingIntermediate",
+            riggedRightHand.RightRingIntermediate
+        );
         rigRotation("RightRingDistal", riggedRightHand.RightRingDistal);
         rigRotation("RightIndexProximal", riggedRightHand.RightIndexProximal);
-        rigRotation("RightIndexIntermediate", riggedRightHand.RightIndexIntermediate);
+        rigRotation(
+            "RightIndexIntermediate",
+            riggedRightHand.RightIndexIntermediate
+        );
         rigRotation("RightIndexDistal", riggedRightHand.RightIndexDistal);
         rigRotation("RightMiddleProximal", riggedRightHand.RightMiddleProximal);
-        rigRotation("RightMiddleIntermediate", riggedRightHand.RightMiddleIntermediate);
+        rigRotation(
+            "RightMiddleIntermediate",
+            riggedRightHand.RightMiddleIntermediate
+        );
         rigRotation("RightMiddleDistal", riggedRightHand.RightMiddleDistal);
         rigRotation("RightThumbProximal", riggedRightHand.RightThumbProximal);
-        rigRotation("RightThumbIntermediate", riggedRightHand.RightThumbIntermediate);
+        rigRotation(
+            "RightThumbIntermediate",
+            riggedRightHand.RightThumbIntermediate
+        );
         rigRotation("RightThumbDistal", riggedRightHand.RightThumbDistal);
         rigRotation("RightLittleProximal", riggedRightHand.RightLittleProximal);
-        rigRotation("RightLittleIntermediate", riggedRightHand.RightLittleIntermediate);
+        rigRotation(
+            "RightLittleIntermediate",
+            riggedRightHand.RightLittleIntermediate
+        );
         rigRotation("RightLittleDistal", riggedRightHand.RightLittleDistal);
     }
 };
 
 ws.onmessage = function (evt) {
-    console.log(evt.data)
+    console.log(evt.data);
 
     var mydata = JSON.parse(evt.data);
-    console.log(mydata)
-   if(!mydata.type)return;
-   if(mydata.type!="xf-sysmocap-data")return;
-   animateVRM(currentVrm, mydata);
+    console.log(mydata);
+    if (!mydata.type) return;
+    if (mydata.type != "xf-sysmocap-data") return;
+    animateVRM(currentVrm, mydata);
 };
