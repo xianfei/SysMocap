@@ -9,7 +9,7 @@
  */
 
 // import setting utils
-const globalSettings = JSON.parse(localStorage.getItem('globalSettings'));
+const globalSettings = JSON.parse(localStorage.getItem("globalSettings"));
 
 // import mocap web server
 var my_server = null;
@@ -66,9 +66,6 @@ orbitControls.update();
 const scene = new THREE.Scene();
 
 // light
-const light = new THREE.DirectionalLight(0xffffff);
-light.position.set(1.0, 1.0, 1.0).normalize();
-scene.add(light);
 
 // Main Render Loop
 const clock = new THREE.Clock();
@@ -88,7 +85,8 @@ animate();
 const loader = new THREE.GLTFLoader();
 loader.crossOrigin = "anonymous";
 
-var modelPath = JSON.parse(localStorage.getItem("modelInfo")).path;
+var modelObj = JSON.parse(localStorage.getItem("modelInfo"));
+var modelPath = modelObj.path;
 
 var fileType = modelPath
     .substring(modelPath.lastIndexOf(".") + 1)
@@ -97,7 +95,8 @@ var fileType = modelPath
 var skeletonHelper;
 
 // init server
-if (my_server) my_server.startServer(parseInt(globalSettings.forward.port), modelPath);
+if (my_server)
+    my_server.startServer(parseInt(globalSettings.forward.port), modelPath);
 
 // Import model from URL, add your own model here
 loader.load(
@@ -111,6 +110,9 @@ loader.load(
 
             THREE.VRM.from(gltf).then((vrm) => {
                 scene.add(vrm.scene);
+                const light = new THREE.DirectionalLight(0xffffff);
+                light.position.set(1.0, 1.0, 1.0).normalize();
+                scene.add(light);
                 currentVrm = vrm;
                 currentVrm.scene.rotation.y = Math.PI; // Rotate model 180deg to face camera
             });
@@ -118,6 +120,10 @@ loader.load(
             // for glb files
             skeletonHelper = new THREE.SkeletonHelper(gltf.scene);
             scene.add(gltf.scene);
+            scene.add(new THREE.HemisphereLight(0xcccccc, 0xffffff));
+            const light = new THREE.DirectionalLight(0x555555);
+            light.position.set(1.0, 1.0, 1.0).normalize();
+            scene.add(light);
             skeletonHelper.bones[0].rotation.y = Math.PI; // Rotate model 180deg to face camera
         }
     },
@@ -146,7 +152,6 @@ const rigRotation = (
         if (!Part) {
             return;
         }
-
         let euler = new THREE.Euler(
             rotation.x * dampener,
             rotation.y * dampener,
@@ -155,6 +160,16 @@ const rigRotation = (
         );
         let quaternion = new THREE.Quaternion().setFromEuler(euler);
         Part.quaternion.slerp(quaternion, lerpAmount); // interpolate
+    } else if (skeletonHelper) {
+        name = modelObj.binding[name]; // convert name with model json binding info
+        var b = skeletonHelper.bones.find((e) => e.name == name);
+        if (b) {
+            b.rotation.x = rotation.x * dampener;
+            b.rotation.y = rotation.y * dampener;
+            b.rotation.z = rotation.z * dampener;
+        } else {
+            console.log("Can not found bone " + name);
+        }
     }
 };
 
@@ -178,6 +193,16 @@ const rigPosition = (
             position.z * dampener
         );
         Part.position.lerp(vector, lerpAmount); // interpolate
+    } else if (skeletonHelper) {
+        // find bone in bones by name
+        var b = skeletonHelper.bones.find((bone) => bone.name == name);
+        if (b) {
+            b.position.x = position.x * dampener;
+            b.position.y = position.y * dampener;
+            b.position.z = position.z * dampener;
+        } else {
+            console.log("Can not found bone " + name);
+        }
     }
 };
 
@@ -219,23 +244,43 @@ const rigFace = (riggedFace) => {
     // Interpolate and set mouth blendshapes
     Blendshape.setValue(
         PresetName.I,
-        lerp(riggedFace.mouth.shape.I/0.8, Blendshape.getValue(PresetName.I), 0.3)
+        lerp(
+            riggedFace.mouth.shape.I / 0.8,
+            Blendshape.getValue(PresetName.I),
+            0.3
+        )
     );
     Blendshape.setValue(
         PresetName.A,
-        lerp(riggedFace.mouth.shape.A/0.8, Blendshape.getValue(PresetName.A), 0.3)
+        lerp(
+            riggedFace.mouth.shape.A / 0.8,
+            Blendshape.getValue(PresetName.A),
+            0.3
+        )
     );
     Blendshape.setValue(
         PresetName.E,
-        lerp(riggedFace.mouth.shape.E/0.8, Blendshape.getValue(PresetName.E), 0.3)
+        lerp(
+            riggedFace.mouth.shape.E / 0.8,
+            Blendshape.getValue(PresetName.E),
+            0.3
+        )
     );
     Blendshape.setValue(
         PresetName.O,
-        lerp(riggedFace.mouth.shape.O/0.8, Blendshape.getValue(PresetName.O), 0.3)
+        lerp(
+            riggedFace.mouth.shape.O / 0.8,
+            Blendshape.getValue(PresetName.O),
+            0.3
+        )
     );
     Blendshape.setValue(
         PresetName.U,
-        lerp(riggedFace.mouth.shape.U/0.8, Blendshape.getValue(PresetName.U), 0.3)
+        lerp(
+            riggedFace.mouth.shape.U / 0.8,
+            Blendshape.getValue(PresetName.U),
+            0.3
+        )
     );
 
     //PUPILS
@@ -274,7 +319,7 @@ const animateVRM = (vrm, results) => {
             video: videoElement,
         });
         rigRotation("Neck", riggedFace.head, 0.7);
-        rigFace(riggedFace);
+        if (fileType == "vrm") rigFace(riggedFace);
     }
 
     // Animate Pose
@@ -426,8 +471,12 @@ const holistic = new Holistic({
 holistic.setOptions({
     modelComplexity: parseInt(globalSettings.mediapipe.modelComplexity),
     smoothLandmarks: globalSettings.mediapipe.smoothLandmarks,
-    minDetectionConfidence: parseFloat(globalSettings.mediapipe.minDetectionConfidence),
-    minTrackingConfidence: parseFloat(globalSettings.mediapipe.minTrackingConfidence),
+    minDetectionConfidence: parseFloat(
+        globalSettings.mediapipe.minDetectionConfidence
+    ),
+    minTrackingConfidence: parseFloat(
+        globalSettings.mediapipe.minTrackingConfidence
+    ),
     refineFaceLandmarks: globalSettings.mediapipe.refineFaceLandmarks,
 });
 // Pass holistic a callback function

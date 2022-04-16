@@ -36,9 +36,23 @@
         "pic": "../models/2.jpg"
     },
     {
-        "name": "Maid",
-        "path": "../models/merged-saber-maid.glb",
+        "name": "冰墩墩",
+        "path": "../models/bdd.glb",
         "type": "glb",
-        "pic": "../models/7.jpg"
+        "pic": "../models/8.jpg",
+        "binding":{
+            "Hips":"Hips",
+            "Neck":"Neck",
+            "Chest":"Chest",
+            "Spine":"Spine",
+            "RightUpperArm":"RightUpperArm",
+            "RightLowerArm":"RightLowerArm",
+            "LeftUpperArm":"LeftUpperArm",
+            "LeftLowerArm":"LeftLowerArm",
+            "LeftUpperLeg":"LeftUpperLeg",
+            "LeftLowerLeg":"LeftLowerLeg",
+            "RightUpperLeg":"RightUpperLeg",
+            "RightLowerLeg":"RightLowerLeg"
+        }
     }
 ]
