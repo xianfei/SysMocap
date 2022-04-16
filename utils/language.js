@@ -49,6 +49,11 @@ module.exports = {
                     bgColor: "背景颜色",
                     bgPicPath: "背景图片（点击更换）",
                 },
+                performance:{
+                    name:"性能",
+                    gl:"当前GL设备：",
+                    forcedDGPU:"在双显卡设备上使用独立显卡（测试性，重启软件生效）"
+                },
                 forward: {
                     name: "动作/虚拟形象转发",
                     enableForwarding:
@@ -62,6 +67,7 @@ module.exports = {
                     name: "开发者",
                     allowDevTools: "显示GUI DevTools入口",
                     openDevToolsWhenMocap: "在启动动作捕捉时打开DevTools窗口",
+                    showGpuInfo: "打开GPU信息页面"
                 },
             },
         },
@@ -108,6 +114,11 @@ module.exports = {
                     mirroringWhenVideoFile:
                         "Horizontal Mirror Flip when Video File as Input",
                 },
+                performance:{
+                    name:"Performance",
+                    gl:"Current GL Device: ",
+                    forcedDGPU:"Use Discrete Graphics on Dual GPU Laptop（Need Reopen Software）"
+                },
                 output: {
                     name: "Virtual Character Output",
                     antialias: "Enable Antialias",
@@ -128,6 +139,7 @@ module.exports = {
                     name: "Developer",
                     allowDevTools: "Show Entrance for DevTools",
                     openDevToolsWhenMocap: "Open DevTools when Mocap Started",
+                    showGpuInfo: "Open GPU Info Page"
                 },
             },
         },

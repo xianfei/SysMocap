@@ -9,7 +9,7 @@
  */
 
 // import setting utils
-const { globalSettings } = require("../utils/setting.js");
+const globalSettings = JSON.parse(localStorage.getItem('globalSettings'));
 
 // import mocap web server
 var my_server = null;
@@ -97,7 +97,7 @@ var fileType = modelPath
 var skeletonHelper;
 
 // init server
-if (my_server) my_server.startServer(globalSettings.forward.port, modelPath);
+if (my_server) my_server.startServer(parseInt(globalSettings.forward.port), modelPath);
 
 // Import model from URL, add your own model here
 loader.load(
@@ -196,39 +196,46 @@ const rigFace = (riggedFace) => {
     riggedFace.eye.l = lerp(
         clamp(1 - riggedFace.eye.l, 0, 1),
         Blendshape.getValue(PresetName.Blink),
-        0.5
+        0.4
     );
     riggedFace.eye.r = lerp(
         clamp(1 - riggedFace.eye.r, 0, 1),
         Blendshape.getValue(PresetName.Blink),
-        0.5
+        0.4
     );
-    riggedFace.eye = Kalidokit.Face.stabilizeBlink(
-        riggedFace.eye,
-        riggedFace.head.y
-    );
-    Blendshape.setValue(PresetName.Blink, riggedFace.eye.l);
+    // riggedFace.eye.l = Kalidokit.Face.stabilizeBlink(
+    //     {l:riggedFace.eye.l,r:riggedFace.eye.l},
+    //     riggedFace.head.y
+    // ).l;
+    // riggedFace.eye.r = Kalidokit.Face.stabilizeBlink(
+    //     {l:riggedFace.eye.r,r:riggedFace.eye.r},
+    //     riggedFace.head.y
+    // ).r;
+    riggedFace.eye.l /= 0.8;
+    riggedFace.eye.r /= 0.8;
+    Blendshape.setValue(PresetName.BlinkL, riggedFace.eye.l);
+    Blendshape.setValue(PresetName.BlinkR, riggedFace.eye.r);
 
     // Interpolate and set mouth blendshapes
     Blendshape.setValue(
         PresetName.I,
-        lerp(riggedFace.mouth.shape.I, Blendshape.getValue(PresetName.I), 0.5)
+        lerp(riggedFace.mouth.shape.I/0.8, Blendshape.getValue(PresetName.I), 0.3)
     );
     Blendshape.setValue(
         PresetName.A,
-        lerp(riggedFace.mouth.shape.A, Blendshape.getValue(PresetName.A), 0.5)
+        lerp(riggedFace.mouth.shape.A/0.8, Blendshape.getValue(PresetName.A), 0.3)
     );
     Blendshape.setValue(
         PresetName.E,
-        lerp(riggedFace.mouth.shape.E, Blendshape.getValue(PresetName.E), 0.5)
+        lerp(riggedFace.mouth.shape.E/0.8, Blendshape.getValue(PresetName.E), 0.3)
     );
     Blendshape.setValue(
         PresetName.O,
-        lerp(riggedFace.mouth.shape.O, Blendshape.getValue(PresetName.O), 0.5)
+        lerp(riggedFace.mouth.shape.O/0.8, Blendshape.getValue(PresetName.O), 0.3)
     );
     Blendshape.setValue(
         PresetName.U,
-        lerp(riggedFace.mouth.shape.U, Blendshape.getValue(PresetName.U), 0.5)
+        lerp(riggedFace.mouth.shape.U/0.8, Blendshape.getValue(PresetName.U), 0.3)
     );
 
     //PUPILS
@@ -417,10 +424,10 @@ const holistic = new Holistic({
 });
 
 holistic.setOptions({
-    modelComplexity: globalSettings.mediapipe.modelComplexity,
+    modelComplexity: parseInt(globalSettings.mediapipe.modelComplexity),
     smoothLandmarks: globalSettings.mediapipe.smoothLandmarks,
-    minDetectionConfidence: globalSettings.mediapipe.minDetectionConfidence,
-    minTrackingConfidence: globalSettings.mediapipe.minTrackingConfidence,
+    minDetectionConfidence: parseFloat(globalSettings.mediapipe.minDetectionConfidence),
+    minTrackingConfidence: parseFloat(globalSettings.mediapipe.minTrackingConfidence),
     refineFaceLandmarks: globalSettings.mediapipe.refineFaceLandmarks,
 });
 // Pass holistic a callback function

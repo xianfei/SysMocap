@@ -7,7 +7,7 @@
         "start": "electron .",
         "start-nogpu": "electron . --disable-gpu",
         "test": "echo \"Error: no test specified\" && exit 1",
-        "package:win64": "electron-packager ./ SysMocap --platform=win32 --arch=x64 --out ./OutApp --download.mirrorOptions.mirror=https://npm.taobao.org/mirrors/electron/"
+        "package:win64": "electron-packager ./ SysMocap --platform=win32 --arch=x64 --out ./OutApp --download.mirrorOptions.mirror=https://npm.taobao.org/mirrors/electron/ --overwrite"
     },
     "author": "xianfei",
     "license": "ISC",
@@ -28,6 +28,7 @@
         "lil-gui": "^0.16.1",
         "marked": "^4.0.12",
         "mdui": "^1.0.2",
+        "pdfjs-dist": "^2.13.216",
         "three": "^0.137.4",
         "vue": "^2.6.14"
     },

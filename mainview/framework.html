@@ -214,7 +214,10 @@
                     <h1 class="mdui-text-color-theme">
                         {{language.tabModelLib.userModel}}
                     </h1>
-                    <button class="mdui-btn mdui-color-theme" onclick="mdui.alert('该功能正在开发，敬请期待')">
+                    <button
+                        class="mdui-btn mdui-color-theme"
+                        onclick="mdui.alert('该功能正在开发，敬请期待')"
+                    >
                         <i class="mdui-icon material-icons">add</i
                         >{{language.tabModelLib.optAdd}}
                     </button>
@@ -367,14 +370,8 @@
                         <div style="height: 10px"></div>
                         {{language.tabSettings.desc}}
                     </div>
-                    <!-- <div style="height: 20px;"></div>
-                <div class="mdui-typo">
-                    <blockquote style="margin: 0;">
-                        <p>希望你能喜欢。</p>
-                        <footer> —— 王衔飞</footer>
-                    </blockquote>
-                </div> -->
                     <div style="height: 20px"></div>
+                    <!-- Setting Tab: Show Document -->
                     <h1 class="mdui-text-color-theme">
                         {{language.tabSettings.document.name}}
                     </h1>
@@ -384,6 +381,7 @@
                     >
                         {{language.tabSettings.document.openDoc}}
                     </div>
+                    <!-- Setting Tab: UI -->
                     <h1 class="mdui-text-color-theme">
                         {{language.tabSettings.ui.name}}
                     </h1>
@@ -427,6 +425,7 @@
                             <option value="en">English</option>
                         </select>
                     </div>
+                    <!-- Setting Tab: Preview -->
                     <h1 class="mdui-text-color-theme">
                         {{language.tabSettings.preview.name}}
                     </h1>
@@ -466,6 +465,7 @@
                             <i class="mdui-switch-icon"></i>
                         </label>
                     </div>
+                    <!-- Setting Tab: Forward -->
                     <h1 class="mdui-text-color-theme">
                         {{language.tabSettings.forward.name}}
                     </h1>
@@ -496,6 +496,37 @@
                             >{{settings.forward.port}}</span
                         >
                     </div>
+                    <!-- Setting Tab: Performance -->
+                    <h1 class="mdui-text-color-theme">
+                        {{language.tabSettings.performance.name}}
+                    </h1>
+                    <div
+                        class="settings-item"
+                        v-bind:onclick="'mdui.alert(`'+glRenderer+'`,`GL Render`)'"
+                    >
+                        <span
+                            style="
+                                overflow: hidden;
+                                display: -webkit-box;
+                                height: 30px;
+                            "
+                            >{{language.tabSettings.performance.gl}}
+                            {{glRenderer.substr(7,glRenderer.length-8)}}</span
+                        >
+                    </div>
+                    <div class="settings-item">
+                        <label class="mdui-switch">
+                            <span
+                                >{{language.tabSettings.performance.forcedDGPU}}</span
+                            >
+                            <input
+                                type="checkbox"
+                                v-model="settings.performance.useDgpu"
+                            />
+                            <i class="mdui-switch-icon"></i>
+                        </label>
+                    </div>
+                    <!-- Setting Tab: Output -->
                     <h1 class="mdui-text-color-theme">
                         {{language.tabSettings.output.name}}
                     </h1>
@@ -550,6 +581,7 @@
                             >{{language.tabSettings.output.usePicInsteadOfColor}}</span
                         >
                     </div>
+                    <!-- Setting Tab: Mocap & Mediapie -->
                     <h1 class="mdui-text-color-theme">
                         {{language.tabSettings.mediapipe.name}}<span
                             style="
@@ -584,6 +616,7 @@
                                 min="0"
                                 max="2"
                                 value="2"
+                                v-model="settings.mediapipe.modelComplexity"
                             />
                         </label>
                     </div>
@@ -667,6 +700,7 @@
                             />
                         </label>
                     </div>
+                    <!-- Setting Tab: Dev -->
                     <h1 class="mdui-text-color-theme">
                         {{language.tabSettings.dev.name}}
                     </h1>
@@ -698,7 +732,7 @@
                         class="settings-item"
                         onclick="require('electron').ipcRenderer.send('openGpuInfo')"
                     >
-                        Show GPU Info
+                        {{language.tabSettings.dev.showGpuInfo}}
                     </div>
                 </div>
             </div>
@@ -741,6 +775,7 @@
                     videoPath: "",
                     settings: globalSettings,
                     appVersion: remote.getGlobal("appInfo").appVersion,
+                    glRenderer: "Unknown",
                 },
                 computed: {
                     bg: function () {
@@ -770,12 +805,16 @@
                                     " mdui-theme-accent-" +
                                     app.settings.ui.themeColor
                             );
-                            saveSettings(JSON.stringify(app.settings));
+                            saveSettings(app.settings);
                             app.language = languages[app.settings.ui.language];
                         },
                         deep: true,
                     },
                 },
+            });
+
+            remote.app.getGPUInfo("complete").then((info) => {
+                app.glRenderer = info.auxAttributes.glRenderer;
             });
 
             document.getElementById("chooseFile").onclick = async function () {
@@ -795,7 +834,11 @@
 
             var isRemoteInit = false;
 
-            mdui.alert('该版本为早期技术预览版，有众多未完工功能。目前只支持VRM模型。Version' + app.appVersion + ', alpha, forced dgpu.')
+            // mdui.alert(
+            //     "该版本为早期技术预览版，有众多未完工功能。目前只支持VRM模型。Version" +
+            //         app.appVersion +
+            //         ", alpha, forced dgpu."
+            // );
 
             function startMocap(e) {
                 if (app.settings.dev.openDevToolsWhenMocap) {
@@ -808,6 +851,10 @@
                     localStorage.setItem("modelInfo", app.selectModel);
                     localStorage.setItem("useCamera", app.videoSource);
                     localStorage.setItem("videoFile", app.videoPath[0]);
+                    localStorage.setItem(
+                        "globalSettings",
+                        JSON.stringify(app.settings)
+                    );
                     document.getElementById("foo").src =
                         "../render/render.html";
                     e.innerHTML =
