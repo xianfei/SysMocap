@@ -162,7 +162,8 @@ const rigRotation = (
         Part.quaternion.slerp(quaternion, lerpAmount); // interpolate
     } else if (skeletonHelper) {
         name = modelObj.binding[name]; // convert name with model json binding info
-        var b = skeletonHelper.bones.find((e) => e.name == name);
+        // find bone in bones by name
+        var b = skeletonHelper.bones.find((bone) => bone.name == name);
         if (b) {
             b.rotation.x = rotation.x * dampener;
             b.rotation.y = rotation.y * dampener;
@@ -194,6 +195,7 @@ const rigPosition = (
         );
         Part.position.lerp(vector, lerpAmount); // interpolate
     } else if (skeletonHelper) {
+        name = modelObj.binding[name]; // convert name with model json binding info
         // find bone in bones by name
         var b = skeletonHelper.bones.find((bone) => bone.name == name);
         if (b) {
@@ -537,8 +539,8 @@ if (localStorage.getItem("useCamera") == "camera") {
         onFrame: async () => {
             await holistic.send({ image: videoElement });
         },
-        width: 1920,
-        height: 1080,
+        width: 1280,
+        height: 720,
     });
     camera.start();
 } else {

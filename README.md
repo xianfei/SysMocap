@@ -36,9 +36,9 @@ A real-time video-based motion capture system for virtual character rendering.
  
 - [ ] Add play/pause button and progress bar when mocap from video 
  
-- [ ] Support bones binding for glTF/glb
+- [x] Support bones binding for glTF/glb
 
-- [ ] Support rendering glTF/glb model
+- [x] Support rendering glTF/glb model
  
 - [ ] Support binding when bones' name is non-uniformed
  
@@ -46,13 +46,13 @@ A real-time video-based motion capture system for virtual character rendering.
  
 - [x] Live plug-in / interface for Open Broadcast Software
  
-- [ ] Output video ( using such as libffmpeg )
+- [ ] ~~Output video ( using such as libffmpeg )~~
  
-- [ ] Support per-frame rendering without drop frame
+- [ ] ~~Support per-frame rendering without drop frame~~
  
-- [ ] Support c-s architecture for online video mocap ( on cloud )
+- [ ] ~~Support c-s architecture for online video mocap ( on cloud )~~
  
-- [ ] Support Material Designed 3 Color System
+- [ ] ~~Support Material Designed 3 Color System~~
  
 - [x] Mocap data forwarding via network
 

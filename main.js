@@ -189,7 +189,7 @@ function showDoc() {
         docWindow = null;
     });
 
-    // docWindow.toggleDevTools();
+    docWindow.toggleDevTools();
 }
 
 ipcMain.on("openDocument", function (event, arg) {

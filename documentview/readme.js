@@ -169,8 +169,8 @@ var os = require("os");
 window.onload = () => {
     $("body").css("background", "#ffffff00");
     $("html").css("background", "#ffffff22");
-    for (var ee of $(".url")) {
-        ee.onclick = (event) => {
+    for (var ee of $("a")) {
+        if(ee.href.includes('http'))ee.onclick = (event) => {
             event.preventDefault();
             shell.openExternal(event.target.href);
         };
