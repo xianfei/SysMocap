@@ -57,3 +57,38 @@ A real-time video-based motion capture system for virtual character rendering.
 - [x] Mocap data forwarding via network
 
 - [x] Adapt for Linux and macOS 
+
+Hanako
+Root
+VM718:1 EyeExtra
+VM718:1 Face
+VM718:1 Shoes
+VM718:1 Body
+VM718:1 Bottoms
+VM718:1 Tops
+
+
+Root
+VM160:1 Hairs
+VM160:1 secondary
+VM160:1 Face
+VM160:1 Body
+
+Armature
+VM244:1 morph
+VM244:1 secondary
+VM244:1 Ponytail
+VM244:1 Tail
+VM244:1 Shoes
+VM244:1 Hair
+VM244:1 Pants
+VM244:1 Cats_ear
+VM244:1 Body
+VM244:1 Hoodie
+VM244:1 Body2
+
+Root
+VM376:1 Hairs
+VM376:1 secondary
+VM376:1 Face
+VM376:1 Body

@@ -94,58 +94,128 @@
                     style="width: calc(100% - 50px); margin: 25px"
                     v-bind:style="{ color: color}"
                 >
-                    <h1
-                        v-bind:style="{ color: color, margin:'30px 0 0 0',fontSize:'32px',fontWeight:'600'}"
-                    >
-                        {{model.name}}
-                    </h1>
-                    <div
-                        v-bind:style="{ backgroundColor: color,color:bgcolor}"
-                        style="
-                            width: 42px;
-                            height: 22px;
-                            border-radius: 5px;
-                            margin-top: 18px;
-                            font-size: 14px;
-                            line-height: 22px;
-                            text-align: center;
-                            font-weight: 600;
-                            display: inline-block;
-                        "
-                    >
-                        {{model.type.toUpperCase()}}
-                    </div>
-                    <div style="display: inline; margin-left: 10px">
-                        <i class="mdui-icon material-icons"
-                            >{{model.type=='vrm'?'done_all':'done'}}</i
-                        ><span style="margin-left: 4px; font-size: 13px"
-                            >{{model.type=='vrm'?'完整动作支持':'部分动作支持'}}</span
+                    <div v-show="!showOpts">
+                        <h1
+                            v-bind:style="{ color: color, margin:'40px 0 0 0',fontSize:'32px',fontWeight:'600'}"
                         >
+                            {{model.name}}
+                        </h1>
+                        <div
+                            v-bind:style="{ backgroundColor: color,color:bgcolor}"
+                            style="
+                                width: 42px;
+                                height: 22px;
+                                border-radius: 5px;
+                                margin-top: 18px;
+                                font-size: 14px;
+                                line-height: 22px;
+                                text-align: center;
+                                font-weight: 600;
+                                display: inline-block;
+                            "
+                        >
+                            {{model.type.toUpperCase()}}
+                        </div>
+                        <div style="display: inline; margin-left: 10px">
+                            <i class="mdui-icon material-icons"
+                                >{{model.type=='vrm'?'done_all':'done'}}</i
+                            ><span style="margin-left: 4px; font-size: 13px"
+                                >{{model.type=='vrm'?'完整动作支持':'部分动作支持'}}</span
+                            >
+                        </div>
+                        <ul class="mdui-list" style="margin-top: 20px">
+                            <li
+                                class="mdui-list-item mdui-ripple"
+                                onclick="app.showSketelon?gui.hide():gui.show();app.showSketelon=!app.showSketelon"
+                            >
+                                <i class="mdui-icon material-icons"
+                                    >device_hub</i
+                                >
+                                <div
+                                    class="mdui-list-item-content"
+                                    style="margin-left: 30px"
+                                >
+                                    {{showSketelon?'隐藏骨骼控制器':'显示骨骼控制器'}}
+                                </div>
+                            </li>
+                            <li
+                                class="mdui-list-item mdui-ripple"
+                                v-on:click="showOpts = true"
+                            >
+                                <i class="mdui-icon material-icons"
+                                    >mode_edit</i
+                                >
+                                <div
+                                    class="mdui-list-item-content"
+                                    style="margin-left: 30px"
+                                >
+                                    <span v-show="model.type == 'vrm'"
+                                        >编辑装饰物</span
+                                    >
+                                    <span v-show="model.type != 'vrm'"
+                                        >编辑骨骼绑定信息</span
+                                    >
+                                </div>
+                            </li>
+                        </ul>
                     </div>
-                    <ul class="mdui-list" style="margin-top: 20px">
+                    <div
+                        style="
+                            margin-left: -25px;
+                            position: fixed;
+                            padding-top: 20px;
+                            top: 0px;
+                            width: 100%;
+                            z-index: 1000;
+                        "
+                        v-bind:style="{ backgroundColor: bgcolor}"
+                    >
                         <li
                             class="mdui-list-item mdui-ripple"
-                            onclick="app.showSketelon?gui.hide():gui.show();app.showSketelon=!app.showSketelon"
+                            v-show="showOpts"
+                            v-on:click="showOpts = false"
+                            style="width: 150px"
                         >
-                            <i class="mdui-icon material-icons">device_hub</i>
+                            <i class="mdui-icon material-icons">arrow_back</i>
                             <div
                                 class="mdui-list-item-content"
-                                style="margin-left: 30px"
+                                style="margin-left: 20px"
                             >
-                                {{showSketelon?'隐藏骨骼控制器':'显示骨骼控制器'}}
+                                返回
                             </div>
                         </li>
-                        <li class="mdui-list-item mdui-ripple">
-                            <i class="mdui-icon material-icons">mode_edit</i>
-                            <div
-                                class="mdui-list-item-content"
-                                style="margin-left: 30px"
+                    </div>
+
+                    <div
+                        v-if="model.type == 'vrm'"
+                        v-show="showOpts"
+                        style="margin-top: 80px"
+                    >
+                        <ul class="mdui-list" style="margin-top: 20px">
+                            <li
+                                v-for="(k,i) in Object.keys(model.accessories)"
+                                class="mdui-list-item mdui-ripple"
+                                xf-show="true"
+                                v-bind:onclick="'toggleShow(`'+model.accessories[k]+'`,this)'"
                             >
-                                编辑骨骼绑定信息
-                            </div>
-                        </li>
-                    </ul>
-                    <div style="display: none">
+                                <i class="mdui-icon material-icons">
+                                    format_paint</i
+                                >
+                                <div
+                                    class="mdui-list-item-content"
+                                    style="margin-left: 30px"
+                                >
+                                    隐藏 {{k}}
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div
+                        v-if="model.type != 'vrm'"
+                        v-show="showOpts"
+                        style="margin-top: 80px"
+                    >
                         <div
                             v-for="b in ['Hips','Chest','Spine','RightUpperArm','RightLowerArm','LeftUpperArm','LeftLowerArm','LeftUpperLeg','LeftLowerLeg','RightUpperLeg','RightLowerLeg']"
                             style="margin-top: 10px; font-size: 16px"
@@ -190,8 +260,32 @@
                     bgcolor: args.backgroundColor,
                     showSketelon: false,
                     bones: [],
+                    showOpts: false,
                 },
             });
+
+            function toggleShow(k, obj) {
+                console.log(k);
+                if (
+                    obj
+                        .querySelector(".mdui-list-item-content")
+                        .innerText.includes("隐藏")
+                ) {
+                    scene.getObjectByName(k).visible = false;
+                    obj.querySelector(".mdui-list-item-content").innerText =
+                        "显示" +
+                        obj
+                            .querySelector(".mdui-list-item-content")
+                            .innerText.substr(2);
+                } else {
+                    scene.getObjectByName(k).visible = true;
+                    obj.querySelector(".mdui-list-item-content").innerText =
+                        "隐藏" +
+                        obj
+                            .querySelector(".mdui-list-item-content")
+                            .innerText.substr(2);
+                }
+            }
 
             const renderer = new THREE.WebGLRenderer({
                 alpha: true,
@@ -262,7 +356,7 @@
                     skeletonHelper.visible = false;
                     scene.add(skeletonHelper);
 
-                    if (model.type == "vrm") {
+                    if (args.model.type == "vrm") {
                         // calling these functions greatly improves the performance
                         THREE.VRMUtils.removeUnnecessaryVertices(gltf.scene);
                         THREE.VRMUtils.removeUnnecessaryJoints(gltf.scene);
@@ -279,8 +373,10 @@
                     } else {
                         console.log(gltf);
                         scene.add(gltf.scene);
-
-                        skeletonHelper.bones[0].rotation.y = Math.PI;
+                        scene.add(
+                            new THREE.HemisphereLight(0xffffff, 0x333333)
+                        );
+                        // skeletonHelper.bones[0].rotation.y = Math.PI;
                     }
                     setupDatGui();
                     var bones = [];

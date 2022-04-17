@@ -3,37 +3,67 @@
         "name": "Ashtra",
         "path": "../models/test.vrm",
         "type": "vrm",
-        "pic": "../models/3.jpg"
+        "pic": "../models/3.jpg",
+        "accessories":{
+            "Shoes":"Bodybaked_4",
+            "Coats":"Bodybaked_5"
+        }
     },
     {
         "name": "Hanako",
         "path": "../models/three-vrm-girl.vrm",
         "type": "vrm",
-        "pic": "../models/1.jpg"
+        "pic": "../models/1.jpg",
+        "accessories":{
+            "Shoes":"Shoes",
+            "Pants":"Bottoms"
+        }
     },
     {
         "name": "VAL",
         "path": "../models/VAL.vrm",
         "type": "vrm",
-        "pic": "../models/4.jpg"
+        "pic": "../models/4.jpg",
+        "accessories":{
+            "Ponytail":"Ponytail",
+            "Tail":"Tail",
+            "Shoes":"Shoes",
+            "Pants":"Pants",
+            "Cats_ear":"Cats_ear",
+            "Coats":"Hoodie"
+        }
     },
     {
         "name": "Sendagaya",
         "path": "../models/shibu_sendagaya.vrm",
         "type": "vrm",
-        "pic": "../models/5.jpg"
+        "pic": "../models/5.jpg",
+        "accessories":{
+            "Shoes":"Bodybaked_3",
+            "Bow tie":"Bodybaked_2",
+            "Pants":"Bodybaked_1"
+        }
     },
     {
         "name": "Amaris",
         "path": "../models/SampleA.vrm",
         "type": "vrm",
-        "pic": "../models/6.jpg"
+        "pic": "../models/6.jpg",
+        "accessories":{
+            "Shoes":"Bodybaked_6",
+            "Coats":"Bodybaked_5",
+            "Pants":"Bodybaked_4"
+        }
     },
     {
         "name": "Natsuki",
         "path": "../models/SampleB.vrm",
         "type": "vrm",
-        "pic": "../models/2.jpg"
+        "pic": "../models/2.jpg",
+        "accessories":{
+            "Shoes":"Bodybaked_6",
+            "Pants":"Bodybaked_5"
+        }
     },
     {
         "name": "冰墩墩",

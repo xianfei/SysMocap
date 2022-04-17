@@ -110,7 +110,7 @@ function createModelViewerWindow(args) {
         height: 540,
         titleBarStyle: "hidden",
         backgroundColor: "#00000000",
-        parent:mainWindow,
+        autoHideMenuBar: true,
         titleBarOverlay: {
             color: args.backgroundColor,
             symbolColor: args.color,
@@ -138,12 +138,46 @@ function createModelViewerWindow(args) {
     });
 }
 
+function createPdfViewerWindow(args) {
+    // Create the browser window.
+    var viewer = new BrowserWindow({
+        width: 1180,
+        height: 750,
+        autoHideMenuBar: true,
+        titleBarStyle: "hidden",
+        titleBarOverlay: {
+            color: '#f9f9fa',
+            symbolColor: '#111111',
+        },
+        // vibrancy: "dark",
+        webPreferences: {
+            nodeIntegration: true,
+            webviewTag: true,
+            contextIsolation: false,
+            enableRemoteModule: true,
+            additionalArguments: ["pdfPath", JSON.stringify(args)],
+        },
+    });
+
+    // and load the index.html of the app.
+    viewer.loadFile("pdfviewer/viewer.html");
+    require("@electron/remote/main").enable(viewer.webContents);
+
+    // Open the DevTools.
+    // viewer.webContents.openDevTools()
+
+    // Emitted when the window is closed.
+    viewer.on("closed", function () {
+        viewer = null;
+    });
+}
+
 function createGpuInfoWindow() {
     // Create the browser window.
     var viewer = new blurBrowserWindow({
         width: 1000,
         height: 600,
-        parent:mainWindow,
+
         title: "GPU Info",
         autoHideMenuBar: true,
         webPreferences: {
@@ -171,7 +205,7 @@ function showDoc() {
         width: 1200,
         height: 700,
         frame: false,
-        parent:mainWindow,
+        autoHideMenuBar: true,
         titleBarStyle: "hidden",
         webPreferences: {
             nodeIntegration: true,
@@ -189,7 +223,7 @@ function showDoc() {
         docWindow = null;
     });
 
-    docWindow.toggleDevTools();
+    // docWindow.toggleDevTools();
 }
 
 ipcMain.on("openDocument", function (event, arg) {
@@ -202,6 +236,10 @@ ipcMain.on("openModelViewer", function (event, arg) {
 
 ipcMain.on("openGpuInfo", function (event, arg) {
     createGpuInfoWindow();
+});
+
+ipcMain.on("openPDF", function (event, arg) {
+    createPdfViewerWindow(arg);
 });
 
 // This method will be called when Electron has finished

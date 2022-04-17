@@ -38,9 +38,9 @@ TODO: 待添加使用说明
 
 ### 动作捕捉
 
-视频驱动的动作捕捉技术采用 BlazePose 算法。
+视频驱动的动作捕捉技术采用 BlazePose & GHUM 算法。
 
-论文：https://arxiv.org/abs/2006.10204
+卷积神经网络模型：[MediaPipe BlazePose GHUM 3D](../pdfs/pose_model_card.pdf)
 
 开源库：
 

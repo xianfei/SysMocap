@@ -43,7 +43,7 @@
                 <!-- Button for Open DevTools -->
                 <button
                     class="clickable"
-                    onclick="require('@electron/remote').getCurrentWebContents().toggleDevTools()"
+                    onclick="remote.getCurrentWebContents().toggleDevTools()"
                     style="
                         height: 30px;
                         position: fixed;
@@ -127,7 +127,7 @@
                         display: none;
                     "
                     id="minbtn"
-                    onclick="require('@electron/remote').getCurrentWebContents().toggleDevTools()"
+                    onclick="remote.getCurrentWebContents().toggleDevTools()"
                     style="font-size: 20px; margin-top: 0"
                 >
                     <div

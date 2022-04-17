@@ -17,11 +17,11 @@ const { globalSettings } = require("../utils/setting.js");
 
 // set theme
 document.body.setAttribute(
-  "class",
-  "mdui-theme-primary-" +
-      globalSettings.ui.themeColor +
-      " mdui-theme-accent-" +
-      globalSettings.ui.themeColor
+    "class",
+    "mdui-theme-primary-" +
+        globalSettings.ui.themeColor +
+        " mdui-theme-accent-" +
+        globalSettings.ui.themeColor
 );
 
 window.$ = window.jQuery = require("../node_modules/jquery/dist/jquery.js");
@@ -170,10 +170,16 @@ window.onload = () => {
     $("body").css("background", "#ffffff00");
     $("html").css("background", "#ffffff22");
     for (var ee of $("a")) {
-        if(ee.href.includes('http'))ee.onclick = (event) => {
-            event.preventDefault();
-            shell.openExternal(event.target.href);
-        };
+        if (ee.href.includes("http")||ee.href.endsWith(".pdf"))
+            ee.onclick = (event) => {
+                event.preventDefault();
+                if (event.target.href.endsWith(".pdf"))
+                    require("electron").ipcRenderer.send(
+                        "openPDF",
+                        event.target.href
+                    );
+                else shell.openExternal(event.target.href);
+            };
         // ee.href = "javascript:void(0)";
     }
 

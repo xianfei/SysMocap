@@ -1,5 +1,7 @@
 /**
  *  SysMocap Web Server
+ * 
+ *  Forwarding motion data with WebSocket and display over HTTP.
  *
  *  A part of SysMocap, open sourced under Mozilla Public License 2.0
  *
