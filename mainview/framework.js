@@ -8,11 +8,17 @@
  *  xianfei 2022.3
  */
 
+var ipcRenderer = null;
+var remote = null;
+var platform = "web";
+
 if (typeof require != "undefined") {
     // import electron remote
-    var remote = require("@electron/remote");
+    remote = require("@electron/remote");
 
-    const { ipcRenderer } = require("electron");
+    ipcRenderer = require("electron").ipcRenderer;
+
+    platform = require("os").platform();
 
     // import setting utils
     const {
@@ -48,6 +54,7 @@ if (typeof require != "undefined") {
             settings: globalSettings,
             appVersion: remote.getGlobal("appInfo").appVersion,
             glRenderer: "Unknown",
+            platform: platform,
         },
         computed: {
             bg: function () {
@@ -134,8 +141,6 @@ if (typeof require != "undefined") {
     //         app.appVersion +
     //         ", alpha, forced dgpu."
     // );
-
-    
 
     var isMax = false;
 
@@ -403,7 +408,6 @@ if (typeof require != "undefined") {
         .then((e) => {
             app.builtIn = e;
             app.selectModel = JSON.stringify(e[0]);
-            
         });
 }
 

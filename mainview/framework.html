@@ -46,18 +46,6 @@
                 --------------------------------- Title Bar ------------------------------------
             -->
             <div class="titlebar" style="height: 40px; align-content: center">
-                <!-- Button for Open DevTools -->
-                <button
-                    class="clickable"
-                    onclick="remote.getCurrentWebContents().toggleDevTools()"
-                    style="
-                        height: 30px;
-                        position: fixed;
-                        left: 0px;
-                        top: 5px;
-                        display: none;
-                    "
-                ></button>
                 <!-- Button for Close Window -->
                 <button
                     class="mdui-btn mdui-btn-icon"
@@ -69,6 +57,7 @@
                         z-index: 11;
                     "
                     id="closebtn"
+                    v-show="platform!=='darwin'&&platform!=='web'"
                     onclick="remote.getCurrentWindow().close()"
                 >
                     <i
@@ -87,6 +76,7 @@
                         -webkit-app-region: no-drag;
                         z-index: 11;
                     "
+                    v-show="platform!=='darwin'&&platform!=='web'"
                     id="maxbtn"
                 >
                     <i
@@ -107,6 +97,7 @@
                         z-index: 11;
                     "
                     id="minbtn"
+                    v-show="platform!=='darwin'&&platform!=='web'"
                     onclick="remote.getCurrentWindow().minimize()"
                     style="font-size: small"
                 >
@@ -126,12 +117,12 @@
                     v-show="settings.dev.allowDevTools"
                     style="
                         position: fixed;
-                        right: 140px;
                         top: 2px;
                         -webkit-app-region: no-drag;
                         z-index: 11;
                         display: none;
                     "
+                    v-bind:style="{ right: platform=='darwin'?'5px':'140px'}"
                     id="minbtn"
                     onclick="remote.getCurrentWebContents().toggleDevTools()"
                     style="font-size: 20px; margin-top: 0"
@@ -153,9 +144,9 @@
                         width: 4px;
                         border-radius: 2px;
                         position: fixed;
-                        left: 10px;
                         top: 9px;
                     "
+                    v-bind:style="{ left: platform=='darwin'?'80px':'10px'}"
                 ></div>
                 <!-- Show App Name -->
                 <div
@@ -163,8 +154,8 @@
                     style="
                         display: inline-block;
                         padding-top: 8px;
-                        margin-left: 22px;
                     "
+                    v-bind:style="{ marginLeft: platform=='darwin'?'92px':'22px'}"
                 >
                     Xianfei's<span style="margin-left: 2px; margin-right: 2px"
                         >Mocap</span
@@ -770,7 +761,12 @@ for (var i of [-1.0, 1.0])
                         >
                     </div>
                     <div class="mdui-dialog-actions">
-                        <button class="mdui-btn mdui-ripple" onclick="(e)=>e.preventDefault()">reset</button>
+                        <button
+                            class="mdui-btn mdui-ripple"
+                            onclick="(e)=>e.preventDefault()"
+                        >
+                            reset
+                        </button>
                         <button
                             class="mdui-btn mdui-ripple"
                             mdui-dialog-confirm

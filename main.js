@@ -63,7 +63,7 @@ const sections = [
 ];
 
 const parser = require("./utils/argv-parser.js");
-var argv = parser(process.argv)
+var argv = parser(process.argv);
 
 if (argv.help) {
     var commandLineUsage = require("command-line-usage");
@@ -166,7 +166,7 @@ if (argv.bsmode) {
         mainWindow = new BrowserWindow({
             width: 1180,
             height: 750,
-            titleBarStyle: "hidden",
+            titleBarStyle: platform === "darwin" ? "hiddenInset" : "hidden",
             // titleBarOverlay: {
             //   color: '#fff',
             //   symbolColor: '#111'
@@ -206,7 +206,7 @@ if (argv.bsmode) {
         var viewer = new blurBrowserWindow({
             width: 820,
             height: 540,
-            titleBarStyle: "hidden",
+            titleBarStyle: platform === "darwin" ? "hiddenInset" : "hidden",
             backgroundColor: "#00000000",
             autoHideMenuBar: true,
             titleBarOverlay: {
@@ -275,7 +275,6 @@ if (argv.bsmode) {
         var viewer = new blurBrowserWindow({
             width: 1000,
             height: 600,
-
             title: "GPU Info",
             autoHideMenuBar: true,
             webPreferences: {
