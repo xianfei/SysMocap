@@ -9,7 +9,16 @@
  */
 
 // import setting utils
-const globalSettings = JSON.parse(localStorage.getItem("globalSettings"));
+const globalSettings = window.parent.app.settings;
+
+// set theme
+document.body.setAttribute(
+    "class",
+    "mdui-theme-primary-" +
+        globalSettings.ui.themeColor +
+        " mdui-theme-accent-" +
+        globalSettings.ui.themeColor
+);
 
 // import mocap web server
 var my_server = null;
@@ -65,13 +74,29 @@ orbitControls.update();
 // scene
 const scene = new THREE.Scene();
 
-// light
+// stats
+
+const statsContainer = document.getElementById('status')
+
+const stats = new Stats();
+stats.domElement.style.position = "absolute";
+stats.domElement.style.top = '26px';
+stats.domElement.style.left = "10px";
+statsContainer.appendChild(stats.dom);
+
+const stats2 = new Stats();
+stats2.domElement.style.position = "absolute";
+stats2.domElement.style.top = '26px';
+stats2.domElement.style.left = "100px";
+statsContainer.appendChild(stats2.dom);
 
 // Main Render Loop
 const clock = new THREE.Clock();
 
 function animate() {
     requestAnimationFrame(animate);
+
+    stats.update();
 
     if (currentVrm) {
         // Update model to render physics
@@ -453,6 +478,7 @@ let videoElement = document.querySelector(".input_video"),
     guideCanvas = document.querySelector("canvas.guides");
 
 const onResults = (results) => {
+    stats2.update();
     // Draw landmark guides
     drawResults(results);
     // Animate model
@@ -466,7 +492,9 @@ const onResults = (results) => {
 
 const holistic = new Holistic({
     locateFile: (file) => {
-        return __dirname + `/../node_modules/@mediapipe/holistic/${file}`;
+        if (typeof require != "undefined")
+            return __dirname + `/../node_modules/@mediapipe/holistic/${file}`;
+        else return `../node_modules/@mediapipe/holistic/${file}`;
     },
 });
 

@@ -41,7 +41,7 @@ function getSettings() {
                 port: "8080",
             },
             mediapipe: {
-                modelComplexity: "1",
+                modelComplexity: "2",
                 smoothLandmarks: true,
                 minDetectionConfidence: "0.7",
                 minTrackingConfidence: "0.7",

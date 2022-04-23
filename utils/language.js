@@ -51,8 +51,8 @@ module.exports = {
                 },
                 performance:{
                     name:"性能",
-                    gl:"当前GL设备：",
-                    forcedDGPU:"在双显卡设备上使用独立显卡（测试性，重启软件生效）"
+                    gl:"当前图形计算设备：",
+                    forcedDGPU:"在双显卡设备优先使用独立显卡进行图形计算（重启软件生效）"
                 },
                 forward: {
                     name: "动作/虚拟形象转发",

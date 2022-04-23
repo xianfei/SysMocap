@@ -1,39 +1,43 @@
 {
-    "name": "sysmocap",
-    "version": "0.1.1",
-    "description": "Video-based motion capture system.",
-    "main": "main.js",
-    "scripts": {
-        "start": "electron .",
-        "start-nogpu": "electron . --disable-gpu",
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "package:win64": "electron-packager ./ SysMocap --platform=win32 --arch=x64 --out ./OutApp --download.mirrorOptions.mirror=https://npm.taobao.org/mirrors/electron/ --overwrite"
-    },
-    "author": "xianfei",
-    "license": "ISC",
-    "dependencies": {
-        "@electron/remote": "^2.0.8",
-        "@mediapipe/camera_utils": "^0.3.1640029074",
-        "@mediapipe/drawing_utils": "^0.3.1620248257",
-        "@mediapipe/holistic": "^0.5.1635989137",
-        "@pixiv/three-vrm": "^0.6.10",
-        "electron-acrylic-window": "^0.5.11",
-        "electron-find": "^1.0.7",
-        "electron-localstorage": "^1.0.5",
-        "express": "^4.17.3",
-        "express-ws": "^5.0.2",
-        "jquery": "^3.6.0",
-        "kalidokit": "^1.1.5",
-        "lato-font": "^3.0.0",
-        "lil-gui": "^0.16.1",
-        "marked": "^4.0.12",
-        "mdui": "^1.0.2",
-        "pdfjs-dist": "^2.13.216",
-        "three": "^0.137.4",
-        "vue": "^2.6.14"
-    },
-    "devDependencies": {
-        "electron": "^18.0.1",
-        "electron-packager": "^15.4.0"
-    }
+  "name": "sysmocap",
+  "version": "0.1.1",
+  "description": "Video-based motion capture system.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "bs": "node bs.js",
+    "start-nogpu": "electron . --disable-gpu",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "package:win64": "electron-packager ./ SysMocap --icon=sysmocap.ico --platform=win32 --arch=x64 --out ./OutApp --download.mirrorOptions.mirror=https://npm.taobao.org/mirrors/electron/ --overwrite"
+  },
+  "author": "xianfei",
+  "license": "ISC",
+  "dependencies": {
+    "@electron/remote": "^2.0.8",
+    "@mediapipe/camera_utils": "^0.3.1640029074",
+    "@mediapipe/drawing_utils": "^0.3.1620248257",
+    "@mediapipe/holistic": "^0.5.1635989137",
+    "@pixiv/three-vrm": "^0.6.10",
+    "command-line-usage": "^6.1.3",
+    "electron-acrylic-window": "^0.5.11",
+    "electron-find": "^1.0.7",
+    "electron-localstorage": "^1.0.5",
+    "express": "^4.17.3",
+    "express-ws": "^5.0.2",
+    "figlet": "^1.5.2",
+    "jquery": "^3.6.0",
+    "kalidokit": "^1.1.5",
+    "lato-font": "^3.0.0",
+    "lil-gui": "^0.16.1",
+    "marked": "^4.0.12",
+    "mdui": "^1.0.2",
+    "pdfjs-dist": "^2.13.216",
+    "simple-argv": "^2.0.4",
+    "three": "^0.137.4",
+    "vue": "^2.6.14"
+  },
+  "devDependencies": {
+    "electron": "^18.0.1",
+    "electron-packager": "^15.4.0"
+  }
 }

@@ -335,13 +335,9 @@
 
             // scene
             const scene = new THREE.Scene();
+            
 
             var skeletonHelper;
-
-            // light
-            const light = new THREE.DirectionalLight(0xffffff);
-            light.position.set(1.0, 1.0, 1.0).normalize();
-            scene.add(light);
 
             // gltf and vrm
             const loader = new THREE.GLTFLoader();
@@ -357,6 +353,9 @@
                     scene.add(skeletonHelper);
 
                     if (args.model.type == "vrm") {
+                        const light = new THREE.PointLight(0xffffff);
+                        light.position.set(1,1,1).normalize();
+                        scene.add(light);
                         // calling these functions greatly improves the performance
                         THREE.VRMUtils.removeUnnecessaryVertices(gltf.scene);
                         THREE.VRMUtils.removeUnnecessaryJoints(gltf.scene);
@@ -376,6 +375,18 @@
                         scene.add(
                             new THREE.HemisphereLight(0xffffff, 0x333333)
                         );
+                        // light
+// light
+            for (var i of [-2.0, 2.0])
+                for (var j of [-2.0, 2.0])
+                    for (var k of [-2.0, 2.0]) {
+                        const light = new THREE.PointLight(0x888888);
+                        light.position.set(i, j, k).normalize();
+                        scene.add(light);
+                    }
+                        const light = new THREE.HemisphereLight(0xffffff);
+                        light.position.set(10.0, 10.0, 10.0).normalize();
+                        scene.add(light);
                         // skeletonHelper.bones[0].rotation.y = Math.PI;
                     }
                     setupDatGui();
