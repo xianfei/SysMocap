@@ -151,10 +151,7 @@
                 <!-- Show App Name -->
                 <div
                     class="dotfont"
-                    style="
-                        display: inline-block;
-                        padding-top: 8px;
-                    "
+                    style="display: inline-block; padding-top: 8px"
                     v-bind:style="{ marginLeft: platform=='darwin'?'92px':'22px'}"
                 >
                     Xianfei's<span style="margin-left: 2px; margin-right: 2px"
@@ -367,12 +364,13 @@
                     </div>
                     <div style="height: 20px"></div>
                     <!-- Setting Tab: Show Document -->
-                    <h1 class="mdui-text-color-theme">
+                    <h1 class="mdui-text-color-theme" v-show="platform!=='web'">
                         {{language.tabSettings.document.name}}
                     </h1>
                     <div
                         class="settings-item"
                         onclick="ipcRenderer.send('openDocument')"
+                        v-show="platform!=='web'"
                     >
                         {{language.tabSettings.document.openDoc}}
                     </div>
@@ -398,7 +396,7 @@
                             <div></div>
                         </div>
                     </div>
-                    <div class="settings-item">
+                    <div class="settings-item" v-show="platform!=='web'">
                         <label class="mdui-switch">
                             <span>{{language.tabSettings.ui.useGlass}}</span>
                             <input
@@ -461,10 +459,10 @@
                         </label>
                     </div>
                     <!-- Setting Tab: Forward -->
-                    <h1 class="mdui-text-color-theme">
+                    <h1 class="mdui-text-color-theme" v-show="platform!=='web'">
                         {{language.tabSettings.forward.name}}
                     </h1>
-                    <div class="settings-item">
+                    <div class="settings-item" v-show="platform!=='web'">
                         <label class="mdui-switch">
                             <span
                                 >{{language.tabSettings.forward.enableForwarding}}</span
@@ -492,12 +490,13 @@
                         >
                     </div>
                     <!-- Setting Tab: Performance -->
-                    <h1 class="mdui-text-color-theme">
+                    <h1 class="mdui-text-color-theme" v-show="platform!=='web'">
                         {{language.tabSettings.performance.name}}
                     </h1>
                     <div
                         class="settings-item"
                         v-bind:onclick="'mdui.alert(`'+glRenderer+'`,`GL Render`)'"
+                        v-show="platform!=='web'"
                     >
                         <span
                             style="
@@ -509,7 +508,7 @@
                             {{glRenderer.substr(7,glRenderer.length-8)}}</span
                         >
                     </div>
-                    <div class="settings-item">
+                    <div class="settings-item" v-show="platform==='win32'">
                         <label class="mdui-switch">
                             <span
                                 >{{language.tabSettings.performance.forcedDGPU}}</span
@@ -704,10 +703,10 @@
                         </label>
                     </div>
                     <!-- Setting Tab: Dev -->
-                    <h1 class="mdui-text-color-theme">
+                    <h1 class="mdui-text-color-theme" v-show="platform!=='web'">
                         {{language.tabSettings.dev.name}}
                     </h1>
-                    <div class="settings-item">
+                    <div class="settings-item" v-show="platform!=='web'">
                         <label class="mdui-switch">
                             <span
                                 >{{language.tabSettings.dev.allowDevTools}}</span
@@ -719,7 +718,7 @@
                             <i class="mdui-switch-icon"></i>
                         </label>
                     </div>
-                    <div class="settings-item">
+                    <div class="settings-item" v-show="platform!=='web'">
                         <label class="mdui-switch">
                             <span
                                 >{{language.tabSettings.dev.openDevToolsWhenMocap}}</span
@@ -734,6 +733,7 @@
                     <div
                         class="settings-item"
                         onclick="ipcRenderer.send('openGpuInfo')"
+                        v-show="platform!=='web'"
                     >
                         {{language.tabSettings.dev.showGpuInfo}}
                     </div>

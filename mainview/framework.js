@@ -364,6 +364,7 @@ if (typeof require != "undefined") {
             settings: globalSettings,
             appVersion: "web alpha",
             glRenderer: "Unknown",
+            platform: platform,
         },
         computed: {
             bg: function () {

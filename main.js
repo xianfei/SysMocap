@@ -138,11 +138,13 @@ if (argv.bsmode) {
     require("@electron/remote/main").initialize();
 
     // Enable Acrylic Effect on Windows by default
-    if (platform === "win32")try{
-        blurBrowserWindow = require("electron-acrylic-window").BrowserWindow;
-    }catch(e){
-        blurBrowserWindow = BrowserWindow;
-    }
+    if (platform === "win32")
+        try {
+            blurBrowserWindow =
+                require("electron-acrylic-window").BrowserWindow;
+        } catch (e) {
+            blurBrowserWindow = BrowserWindow;
+        }
     // if not on Windows, use electron window
     else blurBrowserWindow = BrowserWindow;
 
