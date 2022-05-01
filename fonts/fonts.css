@@ -1,0 +1,22 @@
+@font-face {
+    font-family: "DOTMATRI";
+    src: url("DotMatri.ttf");
+}
+
+@font-face {
+    font-family: "MiSans";
+    src: url("MiSansVF.ttf");
+    font-weight:350;
+}
+
+@font-face {
+    font-family: "Quicksand";
+    src: url("QuicksandVF.ttf");
+    font-weight:530;
+}
+
+@font-face {
+    font-family: "SourceHanSansSC";
+    src: url("SourceHanSansSC-VF.ttf");
+    font-weight: 460;
+}

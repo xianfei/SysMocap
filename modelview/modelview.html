@@ -21,6 +21,7 @@
         <script src="../node_modules/three/examples/js/controls/OrbitControls.js"></script>
         <script src="../node_modules/lil-gui/dist/lil-gui.umd.min.js"></script>
         <script src="../node_modules/@pixiv/three-vrm/lib/three-vrm.js"></script>
+        <link rel="stylesheet" href="../fonts/fonts.css" />
         <style>
             .titlebar {
                 position: fixed;
@@ -42,13 +43,7 @@
         </style>
     </head>
 
-    <body
-        style="
-            font-family: 'LatoWeb', Helvetica, 'PingFang SC', 'Hiragino Sans GB',
-                'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
-            background-color: #0000;
-        "
-    >
+    <body style="font-family: 'Quicksand', 'MiSans'; background-color: #0000">
         <div class="titlebar"></div>
 
         <!-- <button id='reset' >open dev
@@ -120,7 +115,7 @@
                             <i class="mdui-icon material-icons"
                                 >{{model.type=='vrm'?'done_all':'done'}}</i
                             ><span style="margin-left: 4px; font-size: 13px"
-                                >{{model.type=='vrm'?'完整动作支持':'部分动作支持'}}</span
+                                >{{model.type=='vrm'?languages.modelVierer.fullSupport:languages.modelVierer.partialSupport}}</span
                             >
                         </div>
                         <ul class="mdui-list" style="margin-top: 20px">
@@ -135,7 +130,7 @@
                                     class="mdui-list-item-content"
                                     style="margin-left: 30px"
                                 >
-                                    {{showSketelon?'隐藏骨骼控制器':'显示骨骼控制器'}}
+                                    {{showSketelon?languages.modelVierer.hideSketelon:languages.modelVierer.showSketelon}}
                                 </div>
                             </li>
                             <li
@@ -150,7 +145,7 @@
                                     style="margin-left: 30px"
                                 >
                                     <span v-show="model.type == 'vrm'"
-                                        >编辑装饰物</span
+                                        >{{languages.modelVierer.modifyDecoration}}</span
                                     >
                                     <span v-show="model.type != 'vrm'"
                                         >编辑骨骼绑定信息</span
@@ -181,7 +176,7 @@
                                 class="mdui-list-item-content"
                                 style="margin-left: 20px"
                             >
-                                返回
+                                {{languages.modelVierer.back}}
                             </div>
                         </li>
                     </div>
@@ -244,6 +239,9 @@
             </div>
         </div>
         <script>
+            // import languages
+            const { languages } = require("../utils/language.js");
+            const { globalSettings } = require("../utils/setting.js");
             var args;
             for (var i = 0; i < process.argv.length; i++) {
                 if (process.argv[i] == "argsData") {
@@ -251,7 +249,6 @@
                     args = JSON.parse(process.argv[i + 1]);
                 }
             }
-            Vue.config.ignoredElements = ["model-viewer"];
             var app = new Vue({
                 el: "#vue-target",
                 data: {
@@ -261,6 +258,7 @@
                     showSketelon: false,
                     bones: [],
                     showOpts: false,
+                    languages: languages[globalSettings.ui.language],
                 },
             });
 
@@ -335,7 +333,6 @@
 
             // scene
             const scene = new THREE.Scene();
-            
 
             var skeletonHelper;
 
@@ -354,7 +351,7 @@
 
                     if (args.model.type == "vrm") {
                         const light = new THREE.PointLight(0xffffff);
-                        light.position.set(1,1,1).normalize();
+                        light.position.set(1, 1, 1).normalize();
                         scene.add(light);
                         // calling these functions greatly improves the performance
                         THREE.VRMUtils.removeUnnecessaryVertices(gltf.scene);
@@ -376,14 +373,16 @@
                             new THREE.HemisphereLight(0xffffff, 0x333333)
                         );
                         // light
-// light
-            for (var i of [-2.0, 2.0])
-                for (var j of [-2.0, 2.0])
-                    for (var k of [-2.0, 2.0]) {
-                        const light = new THREE.PointLight(0x888888);
-                        light.position.set(i, j, k).normalize();
-                        scene.add(light);
-                    }
+                        // light
+                        for (var i of [-2.0, 2.0])
+                            for (var j of [-2.0, 2.0])
+                                for (var k of [-2.0, 2.0]) {
+                                    const light = new THREE.PointLight(
+                                        0x888888
+                                    );
+                                    light.position.set(i, j, k).normalize();
+                                    scene.add(light);
+                                }
                         const light = new THREE.HemisphereLight(0xffffff);
                         light.position.set(10.0, 10.0, 10.0).normalize();
                         scene.add(light);

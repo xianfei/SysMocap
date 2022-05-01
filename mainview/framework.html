@@ -17,6 +17,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <title>Xianfei's Mocap System</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="../fonts/fonts.css" />
         <link rel="stylesheet" href="style.css" />
         <!-- import thirdpart library -->
         <link rel="stylesheet" href="../node_modules/mdui/dist/css/mdui.css" />
@@ -34,31 +35,26 @@
         <link rel="stylesheet" href="../utils/codemirror/codemirror.css" />
     </head>
 
-    <body
-        style="
-            font-family: 'LatoWeb', Helvetica, 'PingFang SC', 'Hiragino Sans GB',
-                'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
-            background-color: #fff7;
-        "
-    >
+    <body style="font-family: 'Quicksand', 'MiSans'; background-color: #fff7">
         <div id="vue-mount" style="display: none" v-show="true">
             <!--
                 --------------------------------- Title Bar ------------------------------------
             -->
-            <div class="titlebar" style="height: 40px; align-content: center">
+            <div class="titlebar" style="height: 44px; align-content: center">
                 <!-- Button for Close Window -->
                 <button
                     class="mdui-btn mdui-btn-icon"
                     style="
                         position: fixed;
-                        right: 5px;
-                        top: 2px;
+                        right: 7px;
+                        top: 4.5px;
                         -webkit-app-region: no-drag;
                         z-index: 11;
                     "
                     id="closebtn"
                     v-show="platform!=='darwin'&&platform!=='web'"
                     onclick="remote.getCurrentWindow().close()"
+                    mdui-tooltip="{content: 'Close'}"
                 >
                     <i
                         class="mdui-icon material-icons"
@@ -71,13 +67,14 @@
                     class="mdui-btn mdui-btn-icon"
                     style="
                         position: fixed;
-                        right: 50px;
-                        top: 2px;
+                        right: 52px;
+                        top: 4.5px;
                         -webkit-app-region: no-drag;
                         z-index: 11;
                     "
                     v-show="platform!=='darwin'&&platform!=='web'"
                     id="maxbtn"
+                    mdui-tooltip="{content: 'Maximize'}"
                 >
                     <i
                         class="mdui-icon material-icons"
@@ -91,8 +88,8 @@
                     class="mdui-btn mdui-btn-icon"
                     style="
                         position: fixed;
-                        right: 95px;
-                        top: 2px;
+                        right: 97px;
+                        top: 4.5px;
                         -webkit-app-region: no-drag;
                         z-index: 11;
                     "
@@ -100,6 +97,7 @@
                     v-show="platform!=='darwin'&&platform!=='web'"
                     onclick="remote.getCurrentWindow().minimize()"
                     style="font-size: small"
+                    mdui-tooltip="{content: 'Minimize'}"
                 >
                     <div
                         style="
@@ -117,30 +115,26 @@
                     v-show="settings.dev.allowDevTools"
                     style="
                         position: fixed;
-                        top: 2px;
+                        top: 4.5px;
                         -webkit-app-region: no-drag;
                         z-index: 11;
                         display: none;
                     "
-                    v-bind:style="{ right: platform=='darwin'?'5px':'140px'}"
+                    v-bind:style="{ right: platform=='darwin'?'7px':'142px'}"
                     id="minbtn"
                     onclick="remote.getCurrentWebContents().toggleDevTools()"
-                    style="font-size: 20px; margin-top: 0"
+                    mdui-tooltip="{content: 'Open DevTools'}"
                 >
-                    <div
-                        style="
-                            font-size: 14px;
-                            transform: scaleX(0.7);
-                            margin-top: 0;
-                        "
+                    <i
+                        style="font-size: 20px; margin-top: 0"
+                        class="mdui-icon material-icons"
+                        >code</i
                     >
-                        Dev
-                    </div>
                 </button>
                 <div
                     class="mdui-color-theme clickable"
                     style="
-                        height: 24px;
+                        height: 28px;
                         width: 4px;
                         border-radius: 2px;
                         position: fixed;
@@ -150,16 +144,18 @@
                 ></div>
                 <!-- Show App Name -->
                 <div
-                    class="dotfont"
                     style="display: inline-block; padding-top: 8px"
                     v-bind:style="{ marginLeft: platform=='darwin'?'92px':'22px'}"
                 >
-                    Xianfei's<span style="margin-left: 2px; margin-right: 2px"
-                        >Mocap</span
-                    >System
+                    <span class="dotfont">
+                        Xianfei's<span
+                            style="margin-left: 2px; margin-right: 2px"
+                            >Mocap</span
+                        >System</span
+                    >
                     <div
                         class="mdui-text-color-theme"
-                        style="font-size: 10px; color: #555"
+                        style="font-size: 10px; margin-left: -1px"
                     >
                         {{language.app.name}}
                     </div>
@@ -168,21 +164,35 @@
                 <div
                     class="clickable tab-bar"
                     style="
-                        width: 360px;
-                        top: 3px;
+                        width: 355px;
+                        top: 4.5px;
                         position: fixed;
                         left: calc(50vw - 180px);
+                        margin-top: 1px;
                     "
                 >
+                    <!-- <div
+                    class="mdui-color-theme"
+                        style="
+                            width: 350px;
+                            top: 2.5px;
+                            position: fixed;
+                            left: calc(50vw - 180px);
+                            filter: opacity(0.1) brightness(1.8) saturate(0.6);
+                            height: 35px;
+                            border-radius: 20px;
+                            margin-top: 1px;
+                        "
+                    ></div> -->
                     <button
-                        v-bind:class="tab=='model'?'mdui-btn select mdui-text-color-theme':'mdui-btn'"
+                        v-bind:class="tab=='model'?'mdui-btn select mdui-color-theme':'mdui-btn'"
                         onclick="app.tab='model'"
                     >
                         <i class="mdui-icon material-icons">folder_open</i
                         >{{language.titlebar.modelLib}}
                     </button>
                     <button
-                        v-bind:class="tab=='render'?'mdui-btn select mdui-text-color-theme':'mdui-btn'"
+                        v-bind:class="tab=='render'?'mdui-btn select mdui-color-theme':'mdui-btn'"
                         onclick="app.tab='render'"
                     >
                         <i class="mdui-icon material-icons"
@@ -190,7 +200,7 @@
                         >{{language.titlebar.mocap}}
                     </button>
                     <button
-                        v-bind:class="tab=='settings'?'mdui-btn select mdui-text-color-theme':'mdui-btn'"
+                        v-bind:class="tab=='settings'?'mdui-btn select mdui-color-theme':'mdui-btn'"
                         onclick="app.tab='settings'"
                     >
                         <i class="mdui-icon material-icons">settings</i
@@ -198,8 +208,8 @@
                     </button>
                 </div>
             </div>
-            <div class="line" style="position: fixed; top: 40px"></div>
-            <div style="padding: 10px 20px; margin-top: 40px">
+            <div class="line" style="position: fixed; top: 44px"></div>
+            <div style="padding: 10px 20px; margin-top: 44px">
                 <!--
                 ------------------------ Model library ------------------------
             -->
@@ -222,7 +232,7 @@
                         <div
                             v-for="model in builtIn"
                             class="mdui-ripple model-item"
-                            v-on:click="require('electron').ipcRenderer.send('openModelViewer', {model:model,backgroundColor:bg,color:'#fff'});"
+                            v-on:click="require('electron').ipcRenderer.send('openModelViewer', {model:model,backgroundColor:bg,color:'#fff',useGlass:settings.ui.useGlass});"
                         >
                             <img
                                 v-bind:src="model.pic"
@@ -264,7 +274,7 @@
             -->
 
                 <div v-show="tab=='render'">
-                    <div style="width: 730px; margin: auto">
+                    <div style="width: 750px; margin: auto">
                         {{language.tabMocap.chooseModel}}<select
                             class="mdui-select"
                             id="demo-js"
@@ -486,6 +496,7 @@
                                 margin-right: 10px;
                                 font-weight: 600;
                             "
+                            class="mdui-text-color-theme-accent"
                             >{{settings.forward.port}}</span
                         >
                     </div>
@@ -538,6 +549,16 @@
                     </div>
                     <div class="settings-item">
                         <label class="mdui-switch">
+                            <span>Show FPS</span>
+                            <input
+                                type="checkbox"
+                                v-model="settings.output.antialias"
+                            />
+                            <i class="mdui-switch-icon"></i>
+                        </label>
+                    </div>
+                    <div class="settings-item" v-show="false">
+                        <label class="mdui-switch">
                             <span
                                 >{{language.tabSettings.output.usePicInsteadOfColor}}</span
                             >
@@ -550,7 +571,7 @@
                     </div>
                     <div
                         class="settings-item"
-                        v-show="!settings.output.usePicInsteadOfColor"
+                        v-show="false && !settings.output.usePicInsteadOfColor"
                     >
                         <label>
                             <span>{{language.tabSettings.output.bgColor}}</span>
@@ -575,7 +596,11 @@
                             >{{language.tabSettings.output.usePicInsteadOfColor}}</span
                         >
                     </div>
-                    <div class="settings-item" onclick="openLightInput()">
+                    <div
+                        class="settings-item"
+                        onclick="openLightInput()"
+                        v-show="false"
+                    >
                         <span>灯光效果（lambda表达式）</span>
                     </div>
                     <!-- Setting Tab: Mocap & Mediapipe -->

@@ -70,6 +70,15 @@ module.exports = {
                     showGpuInfo: "打开GPU信息页面"
                 },
             },
+            modelVierer:{
+                fullSupport:"完整动作支持",
+                partialSupport:"部分动作支持",
+                noSupport:"不支持",
+                showSketelon:"显示骨骼控制器",
+                hideSketelon:"隐藏骨骼控制器",
+                modifyDecoration:"编辑装饰物",
+                back:"返回",
+            }
         },
         en: {
             app: {
@@ -83,7 +92,7 @@ module.exports = {
             tabModelLib: {
                 userModel: "User's Models",
                 buildinModel: "Built-in Models",
-                optAdd: "导入",
+                optAdd: "Import",
             },
             tabMocap: {
                 chooseModel: "3D Model：",
@@ -142,6 +151,15 @@ module.exports = {
                     showGpuInfo: "Open GPU Info Page"
                 },
             },
+            modelVierer:{
+                fullSupport:"Full Mocap Support",
+                partialSupport:"Partial Mocap Support",
+                noSupport:"No Support",
+                showSketelon:"Show Bones Controller",
+                hideSketelon:"Hide Bones Controller",
+                modifyDecoration:"Modify Decoration",
+                back:"Back",
+            }
         },
     },
 };

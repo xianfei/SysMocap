@@ -2,7 +2,12 @@ body {
     -webkit-user-select: none;
     transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
         color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        /* letter-spacing: 0.3px; */
 }
+
+/* .mdui-select{
+    font-family: 'Quicksand', 'MiSans' !important;
+} */
 
 ::selection {
     background: #def;
@@ -36,18 +41,21 @@ blockquote {
 }
 
 .tab-bar button {
-    width: 115px;
+    width: 110px;
+    height: 32px;
+    line-height: 32px;
+    margin-top: 1px;
+    margin-left: 2px;
+    margin-right: 2px;
     color: #777;
+    text-align: center;
+    padding: 0;
+    border-radius: 20px !important;
 }
 
-.tab-bar .select {
+/* .tab-bar .select {
     font-weight: bold;
-}
-
-@font-face {
-    font-family: "DOTMATRI";
-    src: url("DOTMATRI.TTF");
-}
+} */
 
 .dotfont {
     font-family: "DOTMATRI";
@@ -100,6 +108,7 @@ h1 {
 
 .model-item:hover {
     border: solid 1px #ccc;
+    /* font-weight: bold; */
 }
 
 .settings-item {

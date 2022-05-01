@@ -20,10 +20,11 @@ function getSettings() {
     if (!settings || !settings.valued)
         settings = {
             ui: {
-                themeColor: "deep-purple",
+                themeColor: "indigo",
                 isDark: false,
                 useGlass: true,
                 language: "zh",
+                useNewModelUI: true,
             },
             preview: {
                 showSketelonOnInput: true,

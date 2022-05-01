@@ -205,17 +205,25 @@ if (argv.bsmode) {
 
     function createModelViewerWindow(args) {
         // Create the browser window.
-        var viewer = new blurBrowserWindow({
+        var myBrowserWindow = BrowserWindow;
+        var addtionalArgs = {backgroundColor: "#222"};
+        if(args.useGlass) {
+            myBrowserWindow = blurBrowserWindow;
+            addtionalArgs ={
+                vibrancy :  "dark",
+                backgroundColor: "#00000000"
+            }
+        }
+        var viewer = new myBrowserWindow({
             width: 820,
             height: 540,
             titleBarStyle: platform === "darwin" ? "hiddenInset" : "hidden",
-            backgroundColor: "#00000000",
             autoHideMenuBar: true,
+            ...addtionalArgs,
             titleBarOverlay: {
                 color: args.backgroundColor,
                 symbolColor: args.color,
             },
-            vibrancy: "dark",
             webPreferences: {
                 nodeIntegration: true,
                 webviewTag: true,
@@ -224,6 +232,7 @@ if (argv.bsmode) {
                 additionalArguments: ["argsData", JSON.stringify(args)],
             },
         });
+
 
         // and load the index.html of the app.
         viewer.loadFile("modelview/modelview.html");
