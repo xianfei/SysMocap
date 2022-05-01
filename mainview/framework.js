@@ -12,6 +12,14 @@ var ipcRenderer = null;
 var remote = null;
 var platform = "web";
 
+import {
+    argbFromHex,
+    themeFromSourceColor,
+    themeFromImage,
+    sourceColorFromImage,
+    applyTheme,
+} from "../utils/material-color-utilities/dist/index.js";
+
 if (typeof require != "undefined") {
     // import electron remote
     remote = require("@electron/remote");
@@ -72,6 +80,16 @@ if (typeof require != "undefined") {
                 ).color;
             },
         },
+        mounted() {
+            var modelOnload = async function () {
+                for (var e of document.querySelectorAll(".my-img")) {
+                    var theme = await themeFromImage(e);
+
+                    applyTheme(theme, { target: e.parentElement, dark: false });
+                }
+            };
+            if (this.settings.ui.useNewModelUI) modelOnload();
+        },
         watch: {
             settings: {
                 handler(newVal, oldVal) {
@@ -91,6 +109,8 @@ if (typeof require != "undefined") {
             },
         },
     });
+
+    window.sysmocapApp = app;
 
     remote.app.getGPUInfo("complete").then((info) => {
         app.glRenderer = info.auxAttributes.glRenderer;
@@ -144,15 +164,15 @@ if (typeof require != "undefined") {
 
     var isMax = false;
 
-    function maximizeBtn() {
+    window.maximizeBtn = function () {
         if (isMax) {
             remote.getCurrentWindow().restore();
             document.getElementById("maxbtn").innerHTML =
-                '<i onclick="maximizeBtn()" class="mdui-icon material-icons" style="font-size: 20px; margin-top:0;">fullscreen</i>';
+                '<i onclick="window.maximizeBtn()" class="mdui-icon material-icons" style="font-size: 20px; margin-top:0;">fullscreen</i>';
         } else {
             remote.getCurrentWindow().maximize();
             document.getElementById("maxbtn").innerHTML =
-                '<i onclick="maximizeBtn()" class="mdui-icon material-icons" style="font-size: 20px; margin-top:0;">fullscreen_exit</i>';
+                '<i onclick="window.maximizeBtn()" class="mdui-icon material-icons" style="font-size: 20px; margin-top:0;">fullscreen_exit</i>';
         }
         isMax = !isMax;
     }
@@ -402,6 +422,8 @@ if (typeof require != "undefined") {
         },
     });
 
+    window.sysmocapApp = app;
+
     fetch("../models/models.json")
         .then((e) => {
             return e.json();
@@ -412,7 +434,7 @@ if (typeof require != "undefined") {
         });
 }
 
-function startMocap(e) {
+window.startMocap = function(e) {
     if (e.innerHTML.indexOf(app.language.tabMocap.start) != -1) {
         localStorage.setItem("modelInfo", app.selectModel);
         localStorage.setItem("useCamera", app.videoSource);

@@ -60,9 +60,10 @@
                     cursor: pointer;
                     -webkit-app-region: no-drag;
                 "
+                mdui-tooltip="{content: 'Open DevTools'}"
                 v-bind:style="{ color: color}"
                 onclick="require('@electron/remote').getCurrentWebContents().toggleDevTools()"
-                >extension</i
+                >code</i
             >
             <div
                 id="model"
@@ -87,11 +88,11 @@
             >
                 <div
                     style="width: calc(100% - 50px); margin: 25px"
-                    v-bind:style="{ color: color}"
+                    v-bind:style="{ color: textColor}"
                 >
                     <div v-show="!showOpts">
                         <h1
-                            v-bind:style="{ color: color, margin:'40px 0 0 0',fontSize:'32px',fontWeight:'600'}"
+                            v-bind:style="{ color: textColor, margin:'40px 0 0 0',fontSize:'32px',fontWeight:'600'}"
                         >
                             {{model.name}}
                         </h1>
@@ -111,7 +112,7 @@
                         >
                             {{model.type.toUpperCase()}}
                         </div>
-                        <div style="display: inline; margin-left: 10px">
+                        <div style="display: inline; margin-left: 10px" v-bind:style="{ color: color}">
                             <i class="mdui-icon material-icons"
                                 >{{model.type=='vrm'?'done_all':'done'}}</i
                             ><span style="margin-left: 4px; font-size: 13px"
@@ -255,6 +256,7 @@
                     model: args.model,
                     color: args.color,
                     bgcolor: args.backgroundColor,
+                    textColor: args.textColor?args.textColor:args.color,
                     showSketelon: false,
                     bones: [],
                     showOpts: false,

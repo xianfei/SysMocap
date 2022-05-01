@@ -4,6 +4,7 @@
         "path": "../models/test.vrm",
         "type": "vrm",
         "pic": "../models/3.jpg",
+        "picBg": "../models/img/Ashtra.png",
         "accessories":{
             "Shoes":"Bodybaked_4",
             "Coats":"Bodybaked_5"
@@ -14,6 +15,7 @@
         "path": "../models/three-vrm-girl.vrm",
         "type": "vrm",
         "pic": "../models/1.jpg",
+        "picBg": "../models/img/Hanako.png",
         "accessories":{
             "Shoes":"Shoes",
             "Pants":"Bottoms"
@@ -24,6 +26,7 @@
         "path": "../models/VAL.vrm",
         "type": "vrm",
         "pic": "../models/4.jpg",
+        "picBg": "../models/img/VAL.png",
         "accessories":{
             "Ponytail":"Ponytail",
             "Tail":"Tail",
@@ -38,6 +41,7 @@
         "path": "../models/shibu_sendagaya.vrm",
         "type": "vrm",
         "pic": "../models/5.jpg",
+        "picBg": "../models/img/Sendagaya.png",
         "accessories":{
             "Shoes":"Bodybaked_3",
             "Bow tie":"Bodybaked_2",
@@ -49,6 +53,7 @@
         "path": "../models/SampleA.vrm",
         "type": "vrm",
         "pic": "../models/6.jpg",
+        "picBg": "../models/img/Amaris.png",
         "accessories":{
             "Shoes":"Bodybaked_6",
             "Coats":"Bodybaked_5",
@@ -60,6 +65,7 @@
         "path": "../models/SampleB.vrm",
         "type": "vrm",
         "pic": "../models/2.jpg",
+        "picBg": "../models/img/Natsuki.png",
         "accessories":{
             "Shoes":"Bodybaked_6",
             "Pants":"Bodybaked_5"
@@ -70,6 +76,7 @@
         "path": "../models/bdd.glb",
         "type": "glb",
         "pic": "../models/8.jpg",
+        "picBg": "../models/img/IceDwen.png",
         "binding":{
             "Hips":"Hips",
             "Neck":"Neck",

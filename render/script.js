@@ -9,7 +9,7 @@
  */
 
 // import setting utils
-const globalSettings = window.parent.app.settings;
+const globalSettings = window.parent.window.sysmocapApp.settings;
 
 // set theme
 document.body.setAttribute(
@@ -77,6 +77,10 @@ const scene = new THREE.Scene();
 // stats
 
 const statsContainer = document.getElementById('status')
+
+if(!globalSettings.output.showFPS) {
+    statsContainer.style.display = "none";
+}
 
 const stats = new Stats();
 stats.domElement.style.position = "absolute";
@@ -480,7 +484,7 @@ let videoElement = document.querySelector(".input_video"),
 const onResults = (results) => {
     stats2.update();
     // Draw landmark guides
-    drawResults(results);
+    if(globalSettings.preview.showSketelonOnInput)drawResults(results);
     // Animate model
     animateVRM(currentVrm, results);
     if (!started) {

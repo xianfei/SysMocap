@@ -33,6 +33,7 @@ function getSettings() {
             },
             output: {
                 antialias: true,
+                showFPS: true,
                 usePicInsteadOfColor: false,
                 bgColor: "#ffffff",
                 bgPicPath: "",
@@ -57,7 +58,7 @@ function getSettings() {
                 GPUs:0
             },
             valued: true,
-            ver: 0.2,
+            ver: 0.3,
         };
     return settings;
 }

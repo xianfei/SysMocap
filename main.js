@@ -210,7 +210,7 @@ if (argv.bsmode) {
         if(args.useGlass) {
             myBrowserWindow = blurBrowserWindow;
             addtionalArgs ={
-                vibrancy :  "dark",
+                vibrancy :  "light",
                 backgroundColor: "#00000000"
             }
         }
