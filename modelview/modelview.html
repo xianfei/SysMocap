@@ -62,6 +62,7 @@
                 "
                 mdui-tooltip="{content: 'Open DevTools'}"
                 v-bind:style="{ color: color}"
+                v-show="settings.dev.allowDevTools"
                 onclick="require('@electron/remote').getCurrentWebContents().openDevTools({ mode: 'detach' })"
                 >code</i
             >
@@ -295,6 +296,7 @@
                     bones: [],
                     showOpts: false,
                     languages: languages[globalSettings.ui.language],
+                    settings:globalSettings
                 },
             });
 

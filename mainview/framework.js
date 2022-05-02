@@ -20,7 +20,7 @@ import {
     themeFromImage,
     sourceColorFromImage,
     applyTheme,
-} from "../utils/material-color-utilities/dist/index.js";
+} from "../utils/material-color-utilities/index.js";
 
 function rgba2hex(rgba) {
     rgba = rgba.match(
@@ -466,7 +466,14 @@ if (typeof require != "undefined") {
         });
 }
 
-window.startMocap = function(e) {
+window.startMocap = async function(e) {
+    if(process.platform == 'darwin'&&app.videoSource== "camera")if(remote.systemPreferences.getMediaAccessStatus('camera')!=='granted'){
+        // window.mdui.snackbar('正在申请摄像头权限')
+        if(!await remote.systemPreferences.askForMediaAccess('camera')){
+            alert('需要授予摄像头使用权限');
+            return;
+        } 
+    }
     if (e.innerHTML.indexOf(app.language.tabMocap.start) != -1) {
         localStorage.setItem("modelInfo", app.selectModel);
         localStorage.setItem("useCamera", app.videoSource);

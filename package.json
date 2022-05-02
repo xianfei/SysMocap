@@ -1,6 +1,6 @@
 {
   "name": "sysmocap",
-  "version": "0.3",
+  "version": "0.3.1",
   "description": "Video-based motion capture system.",
   "main": "main.js",
   "scripts": {
@@ -8,7 +8,19 @@
     "bs": "node bs.js",
     "start-nogpu": "electron . --disable-gpu",
     "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "electron-builder",
+    "package:mac64": "electron-packager ./ SysMocap --platform=darwin --arch=x64 --out ./OutApp --download.mirrorOptions.mirror=https://npm.taobao.org/mirrors/electron/ --overwrite --usage-description.Camera='该程序需要摄像头权限'",
     "package:win64": "electron-packager ./ SysMocap --icon=sysmocap.ico --platform=win32 --arch=x64 --out ./OutApp --download.mirrorOptions.mirror=https://npm.taobao.org/mirrors/electron/ --overwrite"
+  },
+  "build": {
+    "mac": {
+      "hardenedRuntime": true,
+      "entitlements": "entitlements.mac.plist",
+      "extendInfo": {
+        "NSMicrophoneUsageDescription": "请允许本程序访问您的麦克风",
+        "NSCameraUsageDescription": "请允许本程序访问您的摄像头"
+      }
+    }
   },
   "author": "xianfei",
   "license": "ISC",
@@ -19,7 +31,6 @@
     "@mediapipe/holistic": "^0.5.1635989137",
     "@pixiv/three-vrm": "^0.6.10",
     "command-line-usage": "^6.1.3",
-    "electron-acrylic-window": "^0.5.11",
     "electron-find": "^1.0.7",
     "electron-localstorage": "^1.0.5",
     "express": "^4.17.3",
@@ -38,6 +49,7 @@
   },
   "devDependencies": {
     "electron": "^18.0.1",
+    "electron-builder": "^23.0.3",
     "electron-packager": "^15.4.0"
   }
 }

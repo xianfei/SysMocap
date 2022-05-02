@@ -168,8 +168,8 @@ if (argv.bsmode) {
         mainWindow = new BrowserWindow({
             width: 1180,
             height: 750,
-            titleBarStyle: platform === "darwin" ? "hiddenInset" : "hidden",
-            trafficLightPosition: { x: 10, y: 10 },
+            titleBarStyle: "hidden",
+            trafficLightPosition: { x: 15, y: 15 },
             // titleBarOverlay: {
             //   color: '#fff',
             //   symbolColor: '#111'
