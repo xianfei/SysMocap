@@ -169,6 +169,7 @@ if (argv.bsmode) {
             width: 1180,
             height: 750,
             titleBarStyle: platform === "darwin" ? "hiddenInset" : "hidden",
+            trafficLightPosition: { x: 10, y: 10 },
             // titleBarOverlay: {
             //   color: '#fff',
             //   symbolColor: '#111'

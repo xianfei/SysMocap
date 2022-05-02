@@ -62,7 +62,7 @@
                 "
                 mdui-tooltip="{content: 'Open DevTools'}"
                 v-bind:style="{ color: color}"
-                onclick="require('@electron/remote').getCurrentWebContents().toggleDevTools()"
+                onclick="require('@electron/remote').getCurrentWebContents().openDevTools({ mode: 'detach' })"
                 >code</i
             >
             <div
@@ -92,7 +92,11 @@
                 >
                     <div v-show="!showOpts">
                         <h1
-                            v-bind:style="{ color: textColor, margin:'40px 0 0 0',fontSize:'32px',fontWeight:'600'}"
+                            style="
+                                display: inline-block;
+                                vertical-align: middle;
+                            "
+                            v-bind:style="{ color: textColor, margin:'20px 0 0 0',fontSize:'32px',fontWeight:'600'}"
                         >
                             {{model.name}}
                         </h1>
@@ -102,22 +106,52 @@
                                 width: 42px;
                                 height: 22px;
                                 border-radius: 5px;
-                                margin-top: 18px;
+                                margin-top: 26px;
                                 font-size: 14px;
                                 line-height: 22px;
                                 text-align: center;
                                 font-weight: 600;
                                 display: inline-block;
+                                bottom: 5px;
+                                vertical-align: middle;
+                                margin-left: 5px;
                             "
                         >
                             {{model.type.toUpperCase()}}
                         </div>
-                        <div style="display: inline; margin-left: 10px" v-bind:style="{ color: color}">
+                        <!-- <div
+                            style="display: inline; margin-left: 10px"
+                            v-bind:style="{ color: color}"
+                        >
                             <i class="mdui-icon material-icons"
                                 >{{model.type=='vrm'?'done_all':'done'}}</i
                             ><span style="margin-left: 4px; font-size: 13px"
                                 >{{model.type=='vrm'?languages.modelVierer.fullSupport:languages.modelVierer.partialSupport}}</span
                             >
+                        </div> -->
+                        <div style="width: 100%; margin-top: 20px;display: none;">
+                            <div
+                                style="
+                                    width: 30vw;
+                                    height: 15vw;
+                                    margin: auto;
+                                    border-radius: 20px;
+                                    overflow: hidden;
+                                    outline-width: 3px;
+                                    outline-style: solid;
+                                    outline-offset: 2px;
+                                "
+                                v-bind:style="{ outlineColor: color}"
+                            >
+                                <img
+                                    v-bind:src="model.picBg"
+                                    style="
+                                        object-fit: cover;
+                                        height: 100%;
+                                        width: 100%;
+                                    "
+                                />
+                            </div>
                         </div>
                         <ul class="mdui-list" style="margin-top: 20px">
                             <li
@@ -256,7 +290,7 @@
                     model: args.model,
                     color: args.color,
                     bgcolor: args.backgroundColor,
-                    textColor: args.textColor?args.textColor:args.color,
+                    textColor: args.textColor ? args.textColor : args.color,
                     showSketelon: false,
                     bones: [],
                     showOpts: false,

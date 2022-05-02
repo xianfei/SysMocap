@@ -35,7 +35,7 @@
         <link rel="stylesheet" href="../utils/codemirror/codemirror.css" />
     </head>
 
-    <body style="font-family: 'Quicksand', 'MiSans'; background-color: #fff7">
+    <body style="font-family: 'Quicksand', 'MiSans';">
         <div id="vue-mount" style="display: none" v-show="true">
             <!--
                 --------------------------------- Title Bar ------------------------------------
@@ -122,7 +122,7 @@
                     "
                     v-bind:style="{ right: platform=='darwin'?'7px':'142px'}"
                     id="minbtn"
-                    onclick="remote.getCurrentWebContents().toggleDevTools()"
+                    onclick="remote.getCurrentWebContents().openDevTools({ mode: 'detach' })"
                     mdui-tooltip="{content: 'Open DevTools'}"
                 >
                     <i
@@ -185,14 +185,14 @@
                         "
                     ></div> -->
                     <button
-                        v-bind:class="tab=='model'?'mdui-btn select mdui-color-theme':'mdui-btn'"
+                        v-bind:class="tab=='model'?'mdui-btn select':'mdui-btn'"
                         onclick="sysmocapApp.tab='model'"
                     >
                         <i class="mdui-icon material-icons">folder_open</i
                         >{{language.titlebar.modelLib}}
                     </button>
                     <button
-                        v-bind:class="tab=='render'?'mdui-btn select mdui-color-theme':'mdui-btn'"
+                        v-bind:class="tab=='render'?'mdui-btn select':'mdui-btn'"
                         onclick="sysmocapApp.tab='render'"
                     >
                         <i class="mdui-icon material-icons"
@@ -200,7 +200,7 @@
                         >{{language.titlebar.mocap}}
                     </button>
                     <button
-                        v-bind:class="tab=='settings'?'mdui-btn select mdui-color-theme':'mdui-btn'"
+                        v-bind:class="tab=='settings'?'mdui-btn select':'mdui-btn'"
                         onclick="sysmocapApp.tab='settings'"
                     >
                         <i class="mdui-icon material-icons">settings</i
@@ -773,7 +773,7 @@
                             <i class="mdui-switch-icon"></i>
                         </label>
                     </div>
-                    <div class="settings-item" v-show="platform!=='web'">
+                    <!-- <div class="settings-item" v-show="platform!=='web'">
                         <label class="mdui-switch">
                             <span
                                 >{{language.tabSettings.dev.openDevToolsWhenMocap}}</span
@@ -784,7 +784,7 @@
                             />
                             <i class="mdui-switch-icon"></i>
                         </label>
-                    </div>
+                    </div> -->
                     <div
                         class="settings-item"
                         onclick="ipcRenderer.send('openGpuInfo')"

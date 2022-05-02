@@ -65,7 +65,7 @@ module.exports = {
                 },
                 dev: {
                     name: "开发者",
-                    allowDevTools: "显示GUI DevTools入口",
+                    allowDevTools: "显示DevTools入口",
                     openDevToolsWhenMocap: "在启动动作捕捉时打开DevTools窗口",
                     showGpuInfo: "打开GPU信息页面"
                 },

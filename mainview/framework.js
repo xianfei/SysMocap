@@ -12,6 +12,8 @@ var ipcRenderer = null;
 var remote = null;
 var platform = "web";
 
+var darkMode = false;
+
 import {
     argbFromHex,
     themeFromSourceColor,
@@ -19,6 +21,18 @@ import {
     sourceColorFromImage,
     applyTheme,
 } from "../utils/material-color-utilities/dist/index.js";
+
+function rgba2hex(rgba) {
+    rgba = rgba.match(
+      /^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i
+    );
+    return rgba && rgba.length === 4
+      ? "#" +
+          ("0" + parseInt(rgba[1], 10).toString(16)).slice(-2) +
+          ("0" + parseInt(rgba[2], 10).toString(16)).slice(-2) +
+          ("0" + parseInt(rgba[3], 10).toString(16)).slice(-2)
+      : "";
+  }
 
 if (typeof require != "undefined") {
     // import electron remote
@@ -44,6 +58,17 @@ if (typeof require != "undefined") {
             globalSettings.ui.themeColor
     );
 
+    var f = async () => {
+        var color =  window.getComputedStyle(
+            document.querySelector(".mdui-color-theme"),
+            null
+        ).backgroundColor;
+        var hex = rgba2hex(color);
+        var theme = await themeFromSourceColor(argbFromHex(hex));
+        applyTheme(theme, { target: document.body, dark: darkMode });
+    };
+    f();
+
     // import languages
     const { languages } = require("../utils/language.js");
 
@@ -63,29 +88,24 @@ if (typeof require != "undefined") {
             appVersion: remote.getGlobal("appInfo").appVersion,
             glRenderer: "Unknown",
             platform: platform,
+            theme:{}
         },
         computed: {
             bg: function () {
                 this.settings.ui.themeColor;
-                return window.getComputedStyle(
+                var color =  window.getComputedStyle(
                     document.querySelector(".mdui-color-theme"),
                     null
                 ).backgroundColor;
-            },
-            fg: function () {
-                this.settings.ui.themeColor;
-                return window.getComputedStyle(
-                    document.querySelector(".mdui-color-theme"),
-                    null
-                ).color;
+                console.log(color)
+                return color;
             },
         },
         mounted() {
             var modelOnload = async function () {
                 for (var e of document.querySelectorAll(".my-img")) {
                     var theme = await themeFromImage(e);
-
-                    applyTheme(theme, { target: e.parentElement, dark: false });
+                    applyTheme(theme, { target: e.parentElement, dark: darkMode });
                 }
             };
             if (this.settings.ui.useNewModelUI) modelOnload();
@@ -102,6 +122,18 @@ if (typeof require != "undefined") {
                             " mdui-theme-accent-" +
                             app.settings.ui.themeColor
                     );
+
+                    var f = async () => {
+                        var color =  window.getComputedStyle(
+                            document.querySelector(".mdui-color-theme"),
+                            null
+                        ).backgroundColor;
+                        var hex = rgba2hex(color);
+                        var theme = await themeFromSourceColor(argbFromHex(hex));
+                        applyTheme(theme, { target: document.body, dark: darkMode });
+                    };
+                    f();
+                    
                     saveSettings(app.settings);
                     app.language = languages[app.settings.ui.language];
                 },
@@ -327,7 +359,7 @@ if (typeof require != "undefined") {
     globalSettings = {
         ui: {
             themeColor: "deep-purple",
-            isDark: false,
+            isdark: darkMode,
             useGlass: true,
             language: "zh",
         },

@@ -2,7 +2,11 @@ body {
     -webkit-user-select: none;
     transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
         color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
-        /* letter-spacing: 0.3px; */
+    /* letter-spacing: 0.3px; */
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+        outline 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+        box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1),
+        -webkit-box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1);
 }
 
 /* .mdui-select{
@@ -53,9 +57,11 @@ blockquote {
     border-radius: 20px !important;
 }
 
-/* .tab-bar .select {
-    font-weight: bold;
-} */
+.tab-bar .select {
+    background-color: var(--md-sys-color-primary-container) !important;
+    color: var(--md-sys-color-primary) !important;
+    font-weight: 600;
+}
 
 .dotfont {
     font-family: "DOTMATRI";
@@ -144,7 +150,6 @@ button {
     color: #fff;
 }
 
-
 .model-item-new {
     position: relative;
     display: inline-block;
@@ -154,13 +159,13 @@ button {
     height: 100px;
     border-radius: 20px;
     overflow: hidden;
-    box-shadow: var(--md-sys-color-primary-container) 0px 0px 5px;
+    box-shadow: var(--md-sys-color-primary-container) 0px 3px 10px;
     /* border: solid #ccc 0.1px; */
     margin: 8px;
 }
 .model-item-new:hover {
     outline: solid var(--md-sys-color-primary) 2px;
-    outline-offset:3px;
+    outline-offset: 3px;
 }
 
 .model-item-new img {
@@ -207,4 +212,8 @@ button {
     line-height: 18px;
     margin-left: calc(100% - 162px);
     font-weight: 200;
+}
+
+.md3-text-color-theme {
+    color: var(--md-sys-color-primary);
 }

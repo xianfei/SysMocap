@@ -1,6 +1,7 @@
 {
   "name": "@material/material-color-utilities",
-  "version": "0.1.1",
+  "version": "0.1.2",
+  "type": "module",
   "description": "Algorithms and utilities that power the Material Design 3 (M3) color system, including choosing theme colors from images and creating tones of colors; all in a new color space.",
   "keywords": [
     "material",
@@ -21,7 +22,8 @@
     "url": "https://github.com/material-foundation/material-color-utilities/issues"
   },
   "homepage": "https://github.com/material-foundation/material-color-utilities/tree/main/typescript",
-  "exports": "./dist/index.js",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist/**/*"
@@ -35,5 +37,8 @@
     "@types/jasmine": "^3.10.3",
     "jasmine": "^4.0.2",
     "typescript": "^4.5.5"
+  },
+  "publishConfig":{
+    "registry":"https://wombat-dressing-room.appspot.com"
   }
 }

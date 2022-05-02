@@ -78,7 +78,7 @@
         "pic": "../models/8.jpg",
         "picBg": "../models/img/IceDwen.png",
         "binding":{
-            "Hips":"Hips",
+            "Hips":"Root",
             "Neck":"Neck",
             "Chest":"Chest",
             "Spine":"Spine",
