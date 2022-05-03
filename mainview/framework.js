@@ -163,6 +163,8 @@ if (typeof require != "undefined") {
 
     var inst = new mdui.Select("#demo-js");
 
+    var inst2 = new mdui.Select("#demo-js-2");
+
     var lightInput = new mdui.Dialog("#light-js");
 
     var hasInitdLight = false;
