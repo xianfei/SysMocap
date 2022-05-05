@@ -24,15 +24,15 @@ import {
 
 function rgba2hex(rgba) {
     rgba = rgba.match(
-      /^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i
+        /^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i
     );
     return rgba && rgba.length === 4
-      ? "#" +
-          ("0" + parseInt(rgba[1], 10).toString(16)).slice(-2) +
-          ("0" + parseInt(rgba[2], 10).toString(16)).slice(-2) +
-          ("0" + parseInt(rgba[3], 10).toString(16)).slice(-2)
-      : "";
-  }
+        ? "#" +
+              ("0" + parseInt(rgba[1], 10).toString(16)).slice(-2) +
+              ("0" + parseInt(rgba[2], 10).toString(16)).slice(-2) +
+              ("0" + parseInt(rgba[3], 10).toString(16)).slice(-2)
+        : "";
+}
 
 if (typeof require != "undefined") {
     // import electron remote
@@ -47,6 +47,8 @@ if (typeof require != "undefined") {
         getSettings,
         globalSettings,
         saveSettings,
+        userModels,
+        addUserModels,
     } = require("../utils/setting.js");
 
     // set theme
@@ -59,7 +61,7 @@ if (typeof require != "undefined") {
     );
 
     var f = async () => {
-        var color =  window.getComputedStyle(
+        var color = window.getComputedStyle(
             document.querySelector(".mdui-color-theme"),
             null
         ).backgroundColor;
@@ -84,23 +86,26 @@ if (typeof require != "undefined") {
             language: languages[globalSettings.ui.language],
             videoSource: "camera",
             videoPath: "",
-            showModelImporter:0,
-            modelImporterName:"",
-            modelImporterType:"",
+            showModelImporter: 0,
+            modelImporterName: "",
+            modelImporterType: "",
+            modelImporterPath: "",
+            modelImporterImg: "",
             settings: globalSettings,
             appVersion: remote.getGlobal("appInfo").appVersion,
             glRenderer: "Unknown",
             platform: platform,
-            theme:{}
+            userModels: userModels,
+            theme: {},
         },
         computed: {
             bg: function () {
                 this.settings.ui.themeColor;
-                var color =  window.getComputedStyle(
+                var color = window.getComputedStyle(
                     document.querySelector(".mdui-color-theme"),
                     null
                 ).backgroundColor;
-                console.log(color)
+                console.log(color);
                 return color;
             },
         },
@@ -108,7 +113,10 @@ if (typeof require != "undefined") {
             var modelOnload = async function () {
                 for (var e of document.querySelectorAll(".my-img")) {
                     var theme = await themeFromImage(e);
-                    applyTheme(theme, { target: e.parentElement, dark: darkMode });
+                    applyTheme(theme, {
+                        target: e.parentElement,
+                        dark: darkMode,
+                    });
                 }
             };
             if (this.settings.ui.useNewModelUI) modelOnload();
@@ -127,16 +135,21 @@ if (typeof require != "undefined") {
                     );
 
                     var f = async () => {
-                        var color =  window.getComputedStyle(
+                        var color = window.getComputedStyle(
                             document.querySelector(".mdui-color-theme"),
                             null
                         ).backgroundColor;
                         var hex = rgba2hex(color);
-                        var theme = await themeFromSourceColor(argbFromHex(hex));
-                        applyTheme(theme, { target: document.body, dark: darkMode });
+                        var theme = await themeFromSourceColor(
+                            argbFromHex(hex)
+                        );
+                        applyTheme(theme, {
+                            target: document.body,
+                            dark: darkMode,
+                        });
                     };
                     f();
-                    
+
                     saveSettings(app.settings);
                     app.language = languages[app.settings.ui.language];
                 },
@@ -212,32 +225,56 @@ if (typeof require != "undefined") {
                 '<i onclick="window.maximizeBtn()" class="mdui-icon material-icons" style="font-size: 20px; margin-top:0;">fullscreen_exit</i>';
         }
         isMax = !isMax;
-    }
-
+    };
 
     var contentDom = document.querySelector("#drag-area");
 
     //阻止相关事件默认行为
-    contentDom.ondragcenter = contentDom.ondragover = contentDom.ondragleave = ()=>{
-        return false;
-    }
+    contentDom.ondragcenter =
+        contentDom.ondragover =
+        contentDom.ondragleave =
+            () => {
+                return false;
+            };
 
     //对拖动释放事件进行处理
-    contentDom.ondrop=(e)=> {
+    contentDom.ondrop = (e) => {
         //console.log(e);
-        var filePath = e.dataTransfer.files[0].path
+        var filePath = e.dataTransfer.files[0].path;
         console.log(filePath);
-        var strs1 = filePath.split('/')
-        var name_ = strs1[strs1.length-1]
-        var name = name_.substr(0,name_.lastIndexOf('.'))
-        var type = name_.substr(name_.lastIndexOf('.')+1)
-        if(app.showModelImporter == 1){
-            app.modelImporterName = name
-            app.modelImporterType = type
-            app.showModelImporter ++;
+        var strs1 = filePath.split("/");
+        var name_ = strs1[strs1.length - 1];
+        var name = name_.substr(0, name_.lastIndexOf("."));
+        var type = name_.substr(name_.lastIndexOf(".") + 1);
+        if (app.showModelImporter == 1) {
+            app.modelImporterName = name;
+            app.modelImporterType = type;
+            app.modelImporterPath = filePath;
+            app.showModelImporter++;
+        } else {
+            app.modelImporterImg = filePath;
         }
-        
-    }
+    };
+
+    window.addUserModels = async function () {
+        var model = {
+            name: app.modelImporterName,
+            type: app.modelImporterType,
+            picBg: app.modelImporterImg,
+            path: app.modelImporterPath,
+            accessories:{}
+        }
+        addUserModels(model);
+        // app.userModels.push(model);
+        app.showModelImporter = 0;
+        setTimeout(async ()=>{for (var e of document.querySelectorAll(".my-img")) {
+            var theme = await themeFromImage(e);
+            applyTheme(theme, {
+                target: e.parentElement,
+                dark: darkMode,
+            });
+        }},500);
+    };
 } else {
     languages = {
         zh: {
@@ -496,14 +533,18 @@ if (typeof require != "undefined") {
         });
 }
 
-window.startMocap = async function(e) {
-    if(process.platform == 'darwin'&&app.videoSource== "camera")if(remote.systemPreferences.getMediaAccessStatus('camera')!=='granted'){
-        // window.mdui.snackbar('正在申请摄像头权限')
-        if(!await remote.systemPreferences.askForMediaAccess('camera')){
-            alert('需要授予摄像头使用权限');
-            return;
-        } 
-    }
+window.startMocap = async function (e) {
+    if (process.platform == "darwin" && app.videoSource == "camera")
+        if (
+            remote.systemPreferences.getMediaAccessStatus("camera") !==
+            "granted"
+        ) {
+            // window.mdui.snackbar('正在申请摄像头权限')
+            if (!(await remote.systemPreferences.askForMediaAccess("camera"))) {
+                alert("需要授予摄像头使用权限");
+                return;
+            }
+        }
     if (e.innerHTML.indexOf(app.language.tabMocap.start) != -1) {
         localStorage.setItem("modelInfo", app.selectModel);
         localStorage.setItem("useCamera", app.videoSource);
@@ -518,4 +559,4 @@ window.startMocap = async function(e) {
             '<i class="mdui-icon material-icons">play_arrow</i>' +
             app.language.tabMocap.start;
     }
-}
+};

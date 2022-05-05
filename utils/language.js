@@ -13,6 +13,11 @@ module.exports = {
                 userModel: "用户模型",
                 buildinModel: "内建模型",
                 optAdd: "导入",
+                optHide: "隐藏",
+                dragModel: "把模型拖到这儿来~",
+                suppotFormat: "支持VRM/GLB/GLTF/FBX，详细说明参见",
+                here: "这里",
+                dragImage: "把图片拖到这儿来~",
             },
             tabMocap: {
                 chooseModel: "选择模型：",
@@ -49,10 +54,11 @@ module.exports = {
                     bgColor: "背景颜色",
                     bgPicPath: "背景图片（点击更换）",
                 },
-                performance:{
-                    name:"性能",
-                    gl:"当前图形计算设备：",
-                    forcedDGPU:"在双显卡设备优先使用独立显卡进行图形计算（重启软件生效）"
+                performance: {
+                    name: "性能",
+                    gl: "当前图形计算设备：",
+                    forcedDGPU:
+                        "在双显卡设备优先使用独立显卡进行图形计算（重启软件生效）",
                 },
                 forward: {
                     name: "动作/虚拟形象转发",
@@ -60,7 +66,7 @@ module.exports = {
                         "启用通过 HTTP / WebSocket 的动作/虚拟形象转发",
                     port: "HTTP / WebSocket 端口号",
                     useSSL: "启用安全协议（HTTPS/WSS）",
-                    supportForWebXR: "启用WebXR-AR支持"
+                    supportForWebXR: "启用WebXR-AR支持",
                 },
                 mediapipe: {
                     name: "动作捕捉",
@@ -69,18 +75,18 @@ module.exports = {
                     name: "开发者",
                     allowDevTools: "显示DevTools入口",
                     openDevToolsWhenMocap: "在启动动作捕捉时打开DevTools窗口",
-                    showGpuInfo: "打开GPU信息页面"
+                    showGpuInfo: "打开GPU信息页面",
                 },
             },
-            modelVierer:{
-                fullSupport:"完整动作支持",
-                partialSupport:"部分动作支持",
-                noSupport:"不支持",
-                showSketelon:"显示骨骼控制器",
-                hideSketelon:"隐藏骨骼控制器",
-                modifyDecoration:"编辑装饰物",
-                back:"返回",
-            }
+            modelVierer: {
+                fullSupport: "完整动作支持",
+                partialSupport: "部分动作支持",
+                noSupport: "不支持",
+                showSketelon: "显示骨骼控制器",
+                hideSketelon: "隐藏骨骼控制器",
+                modifyDecoration: "编辑装饰物",
+                back: "返回",
+            },
         },
         en: {
             app: {
@@ -95,6 +101,11 @@ module.exports = {
                 userModel: "User's Models",
                 buildinModel: "Built-in Models",
                 optAdd: "Import",
+                optHide: "Hide",
+                dragModel: "Drag model here",
+                suppotFormat: "Supported VRM/GLB/GLTF/FBX, details see",
+                here: " here",
+                dragImage: "Drag image here",
             },
             tabMocap: {
                 chooseModel: "3D Model：",
@@ -125,10 +136,11 @@ module.exports = {
                     mirroringWhenVideoFile:
                         "Horizontal Mirror Flip when Video File as Input",
                 },
-                performance:{
-                    name:"Performance",
-                    gl:"Current GL Device: ",
-                    forcedDGPU:"Use Discrete Graphics on Dual GPU Laptop（Need Reopen Software）"
+                performance: {
+                    name: "Performance",
+                    gl: "Current GL Device: ",
+                    forcedDGPU:
+                        "Use Discrete Graphics on Dual GPU Laptop（Need Reopen Software）",
                 },
                 output: {
                     name: "Virtual Character Output",
@@ -143,7 +155,7 @@ module.exports = {
                     enableForwarding: "Enable Forward via HTTP & WebSocket",
                     port: "Port Number of HTTP & WebSocket",
                     useSSL: "Enable Security Protocol（HTTPS/WSS）",
-                    supportForWebXR: "Support for WebXR-AR"
+                    supportForWebXR: "Support for WebXR-AR",
                 },
                 mediapipe: {
                     name: "Motion Capture",
@@ -152,18 +164,18 @@ module.exports = {
                     name: "Developer",
                     allowDevTools: "Show Entrance for DevTools",
                     openDevToolsWhenMocap: "Open DevTools when Mocap Started",
-                    showGpuInfo: "Open GPU Info Page"
+                    showGpuInfo: "Open GPU Info Page",
                 },
             },
-            modelVierer:{
-                fullSupport:"Full Mocap Support",
-                partialSupport:"Partial Mocap Support",
-                noSupport:"No Support",
-                showSketelon:"Show Bones Controller",
-                hideSketelon:"Hide Bones Controller",
-                modifyDecoration:"Modify Decoration",
-                back:"Back",
-            }
+            modelVierer: {
+                fullSupport: "Full Mocap Support",
+                partialSupport: "Partial Mocap Support",
+                noSupport: "No Support",
+                showSketelon: "Show Bones Controller",
+                hideSketelon: "Hide Bones Controller",
+                modifyDecoration: "Modify Decoration",
+                back: "Back",
+            },
         },
     },
 };

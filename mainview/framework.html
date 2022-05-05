@@ -230,32 +230,34 @@
                             height: 30px;
                             line-height: 30px;
                         "
-                        v-on:click="showModelImporter = !showModelImporter"
+                        v-on:click="showModelImporter = !showModelImporter;modelImporterName=modelImporterType=modelImporterImg=''"
                     >
                         <i class="mdui-icon material-icons"
                             >{{showModelImporter?'expand_less':'add'}}</i
-                        >{{showModelImporter?'Hide':language.tabModelLib.optAdd}}
+                        >{{showModelImporter?language.tabModelLib.optHide:language.tabModelLib.optAdd}}
                     </button>
                     <!------- Model Importer ------->
                     <div
                         class="model-importer"
-                        v-bind:style="{height:showModelImporter?'130px':'0px'}"
+                        v-bind:style="{height:showModelImporter?'130px':'0px',marginBottom:showModelImporter?'10px':'0px'}"
                     >
                         <div
                             id="drag-area"
-                            v-bind:style="{width:showModelImporter==2?'calc(45% - 18px)':'calc(100% - 36px)'}"
+                            style="background-size: cover;"
+                            v-bind:style="{width:showModelImporter==2?'calc(45% - 18px)':'calc(100% - 36px)',background:modelImporterImg==''?'':'url('+modelImporterImg+') no-repeat center center',backgroundSize:modelImporterImg==''?'':'cover'}"
                         >
                             <div
                                 v-bind:style="{marginLeft:showModelImporter==2?'8px':'40px',marginTop:showModelImporter==2?'38px':'20px'}"
                             >
                                 <p v-show="showModelImporter==1">
-                                    Drag Model Here.
+                                    {{language.tabModelLib.dragModel}}
                                 </p>
                                 <p v-show="showModelImporter==1">
-                                    Support VRM/GLB/GLTF/FBX, see more here.
+                                    {{language.tabModelLib.suppotFormat}}
+                                    <a href="#">{{language.tabModelLib.here}}</a>
                                 </p>
-                                <p v-show="showModelImporter==2">
-                                    Drag Cover Image Here.
+                                <p v-show="showModelImporter==2&&modelImporterImg==''">
+                                    {{language.tabModelLib.dragImage}}
                                 </p>
                             </div>
                         </div>
@@ -276,6 +278,7 @@
                                     margin-top: 20px;
                                     margin-left: 130px;
                                 "
+                                onclick="window.addUserModels()"
                             >
                                 <i
                                     class="mdui-icon material-icons"
@@ -284,6 +287,28 @@
                                 >finish
                             </button>
                         </div>
+                    </div>
+                    <!-- End Model Importer -->
+                    <div class="flex-container">
+                        <div
+                            v-if="settings.ui.useNewModelUI"
+                            class="model-item-new"
+                            v-for="model in userModels"
+                            v-on:click="require('electron').ipcRenderer.send('openModelViewer', {model:model,backgroundColor:$event.currentTarget.style.getPropertyValue('--md-sys-color-primary-container'),color:$event.currentTarget.style.getPropertyValue('--md-sys-color-primary'),textColor:$event.currentTarget.style.getPropertyValue('--md-sys-color-on-primary-container'),useGlass:settings.ui.useGlass});"
+                        >
+                            <img class="my-img" v-bind:src="model.picBg" />
+                            <div class="desc">
+                                <h2>{{model.name}}</h2>
+                                <div class="type">
+                                    {{model.type.toUpperCase()}}
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            v-for="i in [1,2,3,4,5,6]"
+                            class="model-item-new"
+                            style="visibility: hidden; height: 1px;margin-top: 0;margin-bottom: 0;"
+                        ></div>
                     </div>
                     <!------- Build-in Model ------->
                     <h1 class="mdui-text-color-theme">

@@ -253,7 +253,7 @@ button {
 }
 
 .model-importer {
-    margin: 7px;
+    margin-left: 7px !important;
     width: 450px;
     height: 200px;
     background-color: var(--md-sys-color-primary-container);
@@ -264,6 +264,10 @@ button {
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
 }
+.model-importer a{
+    color: var(--md-sys-color-on-primary-container);
+}
+
 
 #drag-area {
     margin: 15px;
@@ -273,6 +277,7 @@ button {
     border-radius: 15px;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     display: inline-block;
+    background-size: cover !important
 }
 
 #drag-area div {

@@ -69,6 +69,14 @@ function getSettings() {
 
 var globalSettings = getSettings();
 
+function getUserModels() {
+    var models = storage.getItem("sysmocap-user-models");
+    if (!models) models = [];
+    return models;
+}
+
+var models = getUserModels();
+
 function saveSettings(settings) {
     if (!settings) settings = globalSettings;
     storage.setItem("sysmocap-global-settings", settings);
@@ -76,8 +84,17 @@ function saveSettings(settings) {
     else storage.setItem("useDgpu", false);
 }
 
+function addUserModels(model) {
+    if (!model) return;
+    models.push(model);
+    storage.setItem("sysmocap-user-models", models);
+}
+
 module.exports = {
     getSettings: getSettings,
     globalSettings: globalSettings,
     saveSettings: saveSettings,
+    getUserModels: getUserModels,
+    userModels: models,
+    addUserModels: addUserModels,
 };
