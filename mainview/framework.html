@@ -35,7 +35,7 @@
         <link rel="stylesheet" href="../utils/codemirror/codemirror.css" />
     </head>
 
-    <body style="font-family: 'Quicksand', 'MiSans';">
+    <body style="font-family: 'Quicksand', 'MiSans'">
         <div id="vue-mount" style="display: none" v-show="true">
             <!--
                 --------------------------------- Title Bar ------------------------------------
@@ -215,16 +215,77 @@
             -->
 
                 <div v-show="tab=='model'">
-                    <h1 class="mdui-text-color-theme">
+                    <!------- User Model ------->
+                    <h1
+                        class="mdui-text-color-theme"
+                        style="display: inline-block; vertical-align: middle"
+                    >
                         {{language.tabModelLib.userModel}}
                     </h1>
                     <button
-                        class="mdui-btn mdui-color-theme"
-                        onclick="mdui.alert('该功能正在开发，敬请期待')"
+                        class="mdui-btn xf-button"
+                        style="
+                            display: inline-block;
+                            margin: 10px;
+                            height: 30px;
+                            line-height: 30px;
+                        "
+                        v-on:click="showModelImporter = !showModelImporter"
                     >
-                        <i class="mdui-icon material-icons">add</i
-                        >{{language.tabModelLib.optAdd}}
+                        <i class="mdui-icon material-icons"
+                            >{{showModelImporter?'expand_less':'add'}}</i
+                        >{{showModelImporter?'Hide':language.tabModelLib.optAdd}}
                     </button>
+                    <!------- Model Importer ------->
+                    <div
+                        class="model-importer"
+                        v-bind:style="{height:showModelImporter?'130px':'0px'}"
+                    >
+                        <div
+                            id="drag-area"
+                            v-bind:style="{width:showModelImporter==2?'calc(45% - 18px)':'calc(100% - 36px)'}"
+                        >
+                            <div
+                                v-bind:style="{marginLeft:showModelImporter==2?'8px':'40px',marginTop:showModelImporter==2?'38px':'20px'}"
+                            >
+                                <p v-show="showModelImporter==1">
+                                    Drag Model Here.
+                                </p>
+                                <p v-show="showModelImporter==1">
+                                    Support VRM/GLB/GLTF/FBX, see more here.
+                                </p>
+                                <p v-show="showModelImporter==2">
+                                    Drag Cover Image Here.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="modelInfo">
+                            <label>Model Name</label>
+                            <input
+                                class="xf-input"
+                                type="text"
+                                v-model="modelImporterName"
+                            />
+                            <button
+                                class="mdui-btn xf-button-2"
+                                style="
+                                    height: 24px !important;
+                                    line-height: 24px !important;
+                                    width: 80px;
+                                    font-size: 12px;
+                                    margin-top: 20px;
+                                    margin-left: 130px;
+                                "
+                            >
+                                <i
+                                    class="mdui-icon material-icons"
+                                    style="font-size: 18px; margin-left: -8px"
+                                    >check</i
+                                >finish
+                            </button>
+                        </div>
+                    </div>
+                    <!------- Build-in Model ------->
                     <h1 class="mdui-text-color-theme">
                         {{language.tabModelLib.buildinModel}}
                     </h1>
@@ -333,7 +394,7 @@
 
                         <span style="margin-left: 60px"></span>
                         <button
-                            class="mdui-btn mdui-color-theme"
+                            class="mdui-btn xf-button"
                             onclick="window.startMocap(this)"
                         >
                             <i class="mdui-icon material-icons">play_arrow</i
@@ -343,10 +404,7 @@
                             style="margin-top: 10px"
                             v-show="videoSource == 'file'"
                         >
-                            <button
-                                class="mdui-btn mdui-color-theme"
-                                id="chooseFile"
-                            >
+                            <button class="mdui-btn xf-button" id="chooseFile">
                                 选择视频文件
                             </button>
                             <span style="margin-left: 10px"

@@ -63,6 +63,40 @@ blockquote {
     font-weight: 600;
 }
 
+.xf-button {
+    background-color: var(--md-sys-color-primary-container) !important;
+    color: var(--md-sys-color-primary) !important;
+    font-weight: 600;
+    border-radius: 20px !important;
+    outline: solid #fff0 2px !important;
+    outline-offset: 2px !important;
+    height: 32px !important;
+    line-height: 32px !important;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.xf-button:hover {
+    outline: solid var(--md-sys-color-primary) 2px !important;
+    outline-offset: 2px !important;
+}
+
+.xf-button-2 {
+    background-color: var(--md-sys-color-primary) !important;
+    color: var(--md-sys-color-on-primary) !important;
+    font-weight: 600;
+    border-radius: 20px !important;
+    outline: solid #fff0 2px !important;
+    outline-offset: 2px !important;
+    height: 32px !important;
+    line-height: 32px !important;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.xf-button-2:hover {
+    outline: solid var(--md-sys-color-primary) 2px !important;
+    outline-offset: 2px !important;
+}
+
 .dotfont {
     font-family: "DOTMATRI";
 }
@@ -216,4 +250,60 @@ button {
 
 .md3-text-color-theme {
     color: var(--md-sys-color-primary);
+}
+
+.model-importer {
+    margin: 7px;
+    width: 450px;
+    height: 200px;
+    background-color: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
+    border-radius: 20px;
+    /* padding: 20px; */
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+#drag-area {
+    margin: 15px;
+    width: calc(100% - 36px);
+    height: calc(100% - 36px);
+    border: dashed 3px var(--md-sys-color-on-primary-container);
+    border-radius: 15px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-block;
+}
+
+#drag-area div {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.modelInfo{
+    display: inline-block;
+    width: 220px;
+    position: absolute;
+    margin-top: 20px;
+}
+
+.xf-input {
+    width: 98%;
+    color: var(--md-sys-color-on-primary-container);
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 1px;
+    background: rgba(136, 126, 126, 0.04);
+    padding: 5px 10px;
+    border-radius: 20px;
+    outline: none;
+    box-sizing: border-box;
+    border: 2px solid rgba(0, 0, 0, 0.02);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-top: 6px;
+}
+
+
+.xf-input:focus {
+    border: 2px solid var(--md-sys-color-on-primary-container) !important;
+
 }

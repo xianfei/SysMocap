@@ -255,6 +255,7 @@ if (argv.bsmode) {
             height: 750,
             autoHideMenuBar: true,
             titleBarStyle: "hidden",
+            trafficLightPosition: { x: 10, y: 8 },
             titleBarOverlay: {
                 color: "#f9f9fa",
                 symbolColor: "#111111",

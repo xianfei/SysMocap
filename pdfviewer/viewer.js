@@ -76,6 +76,14 @@ for (var i = 0; i < process.argv.length; i++) {
         pdfPath= JSON.parse(process.argv[i + 1]);
     }
 }
+
+window.addEventListener('load',()=>{
+  if(process.platform=="win32"){
+    document.getElementById("toolbarViewerRight").style.marginRight = '136px'
+  }else if(process.platform=="darwin"){
+    document.getElementById("toolbarViewerLeft").style.marginLeft = '70px'
+  }
+})
 // end modified
 
 const defaultOptions = {

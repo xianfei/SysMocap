@@ -84,6 +84,9 @@ if (typeof require != "undefined") {
             language: languages[globalSettings.ui.language],
             videoSource: "camera",
             videoPath: "",
+            showModelImporter:0,
+            modelImporterName:"",
+            modelImporterType:"",
             settings: globalSettings,
             appVersion: remote.getGlobal("appInfo").appVersion,
             glRenderer: "Unknown",
@@ -209,6 +212,31 @@ if (typeof require != "undefined") {
                 '<i onclick="window.maximizeBtn()" class="mdui-icon material-icons" style="font-size: 20px; margin-top:0;">fullscreen_exit</i>';
         }
         isMax = !isMax;
+    }
+
+
+    var contentDom = document.querySelector("#drag-area");
+
+    //阻止相关事件默认行为
+    contentDom.ondragcenter = contentDom.ondragover = contentDom.ondragleave = ()=>{
+        return false;
+    }
+
+    //对拖动释放事件进行处理
+    contentDom.ondrop=(e)=> {
+        //console.log(e);
+        var filePath = e.dataTransfer.files[0].path
+        console.log(filePath);
+        var strs1 = filePath.split('/')
+        var name_ = strs1[strs1.length-1]
+        var name = name_.substr(0,name_.lastIndexOf('.'))
+        var type = name_.substr(name_.lastIndexOf('.')+1)
+        if(app.showModelImporter == 1){
+            app.modelImporterName = name
+            app.modelImporterType = type
+            app.showModelImporter ++;
+        }
+        
     }
 } else {
     languages = {
