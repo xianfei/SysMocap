@@ -240,9 +240,9 @@ if (typeof require != "undefined") {
     //对拖动释放事件进行处理
     contentDom.ondrop = (e) => {
         //console.log(e);
-        var filePath = e.dataTransfer.files[0].path;
+        var filePath = e.dataTransfer.files[0].path.replaceAll('\\','/');
         console.log(filePath);
-        var strs1 = filePath.split(/(\/|\\)/g);
+        var strs1 = filePath.split('/');
         var name_ = strs1[strs1.length - 1];
         var name = name_.substr(0, name_.lastIndexOf("."));
         var type = name_.substr(name_.lastIndexOf(".") + 1);
