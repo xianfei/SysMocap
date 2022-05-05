@@ -14,10 +14,12 @@ const storage = require("electron-localstorage");
 var remote = require("@electron/remote");
 storage.setStoragePath(remote.getGlobal("storagePath").jsonPath);
 
+var currentVer = 0.4;
+
 function getSettings() {
     var settings =  storage.getItem("sysmocap-global-settings");
     // load default settings when cannot read from localStroage
-    if (!settings || !settings.valued)
+    if (!settings || !settings.valued || settings.ver < currentVer )
         settings = {
             ui: {
                 themeColor: "indigo",
@@ -41,6 +43,8 @@ function getSettings() {
             forward: {
                 enableForwarding: false,
                 port: "8080",
+                useSSL: false,
+                supportForWebXR:false
             },
             mediapipe: {
                 modelComplexity: "2",
@@ -58,7 +62,7 @@ function getSettings() {
                 GPUs:0
             },
             valued: true,
-            ver: 0.3,
+            ver: currentVer,
         };
     return settings;
 }

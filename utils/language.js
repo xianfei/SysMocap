@@ -59,6 +59,8 @@ module.exports = {
                     enableForwarding:
                         "启用通过 HTTP / WebSocket 的动作/虚拟形象转发",
                     port: "HTTP / WebSocket 端口号",
+                    useSSL: "启用安全协议（HTTPS/WSS）",
+                    supportForWebXR: "启用WebXR-AR支持"
                 },
                 mediapipe: {
                     name: "动作捕捉",
@@ -140,6 +142,8 @@ module.exports = {
                     name: "Mocap Data Forward",
                     enableForwarding: "Enable Forward via HTTP & WebSocket",
                     port: "Port Number of HTTP & WebSocket",
+                    useSSL: "Enable Security Protocol（HTTPS/WSS）",
+                    supportForWebXR: "Support for WebXR-AR"
                 },
                 mediapipe: {
                     name: "Motion Capture",

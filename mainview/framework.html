@@ -588,6 +588,30 @@
                             >{{settings.forward.port}}</span
                         >
                     </div>
+                    <div class="settings-item" v-show="settings.forward.enableForwarding">
+                        <label class="mdui-switch">
+                            <span
+                                >{{language.tabSettings.forward.useSSL}}</span
+                            >
+                            <input
+                                type="checkbox"
+                                v-model="settings.forward.useSSL"
+                            />
+                            <i class="mdui-switch-icon"></i>
+                        </label>
+                    </div>
+                    <div class="settings-item" v-show="settings.forward.enableForwarding">
+                        <label class="mdui-switch">
+                            <span
+                                >{{language.tabSettings.forward.supportForWebXR}}</span
+                            >
+                            <input
+                                type="checkbox"
+                                v-model="settings.forward.supportForWebXR"
+                            />
+                            <i class="mdui-switch-icon"></i>
+                        </label>
+                    </div>
                     <!-- Setting Tab: Performance -->
                     <h1 class="mdui-text-color-theme" v-show="platform!=='web'">
                         {{language.tabSettings.performance.name}}
@@ -684,13 +708,13 @@
                             >{{language.tabSettings.output.usePicInsteadOfColor}}</span
                         >
                     </div>
-                    <div
+                    <!-- <div
                         class="settings-item"
                         onclick="openLightInput()"
                         v-show="false"
                     >
                         <span>灯光效果（lambda表达式）</span>
-                    </div>
+                    </div> -->
                     <!-- Setting Tab: Mocap & Mediapipe -->
                     <h1 class="mdui-text-color-theme">
                         {{language.tabSettings.mediapipe.name}}<span
@@ -849,43 +873,6 @@
                         v-show="platform!=='web'"
                     >
                         {{language.tabSettings.dev.showGpuInfo}}
-                    </div>
-                </div>
-                <!----
-                    ------------------------ compile light express ------------------------
-                                                                                ----->
-                <div class="mdui-dialog" id="light-js">
-                    <div class="mdui-dialog-title">灯光效果</div>
-                    <div style="height: 300px">
-                        <textarea id="light-input">
-/**
- * @object THREE: THREE Libraries for lights
- * @variable scene: where light to be added
- * @desc: Available lights: AmbientLight  DirectionalLight  
- *                     HemisphereLight  PointLight and etc.
- */
-for (var i of [-1.0, 1.0])
-    for (var j of [-1.0, 1.0])
-        for (var k of [-1.0, 1.0]) {
-            const light = new THREE.DirectionalLight(0x888888);
-            light.position.set(i, j, k).normalize();
-            scene.add(light);
-        }</textarea
-                        >
-                    </div>
-                    <div class="mdui-dialog-actions">
-                        <button
-                            class="mdui-btn mdui-ripple"
-                            onclick="(e)=>e.preventDefault()"
-                        >
-                            reset
-                        </button>
-                        <button
-                            class="mdui-btn mdui-ripple"
-                            mdui-dialog-confirm
-                        >
-                            ok
-                        </button>
                     </div>
                 </div>
             </div>

@@ -5,7 +5,9 @@ const clamp = Kalidokit.Utils.clamp;
 const lerp = Kalidokit.Vector.lerp;
 
 // websocket setup
-var ws = new WebSocket("ws://" + window.location.host + "/");
+const socket = io();
+
+import { ARButton } from "/node_modules/three/examples/jsm/webxr/ARButton.js";
 
 /* THREEJS WORLD SETUP */
 let currentVrm;
@@ -14,21 +16,31 @@ let currentVrm;
 const renderer = new THREE.WebGLRenderer({ alpha: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(window.devicePixelRatio);
+
+const useXRres = await fetch("/useWebXR");
+const useXR = JSON.stringify(useXRres);
+if (useXR) {
+    renderer.xr.enabled = true;
+    document.body.appendChild(
+        ARButton.createButton(renderer)
+    );
+}
+
 document.body.appendChild(renderer.domElement);
 
 // camera
 const orbitCamera = new THREE.PerspectiveCamera(
-    35,
+    50,
     window.innerWidth / window.innerHeight,
     0.1,
     1000
 );
-orbitCamera.position.set(0.0, 1.4, 0.7);
+orbitCamera.position.set(0.0, 0.2, 1.8);
 
 // controls
 const orbitControls = new THREE.OrbitControls(orbitCamera, renderer.domElement);
 orbitControls.screenSpacePanning = true;
-orbitControls.target.set(0.0, 1.4, 0.0);
+orbitControls.target.set(0.0, 0.2, 0.0);
 orbitControls.update();
 
 // scene
@@ -52,6 +64,17 @@ function animate() {
     renderer.render(scene, orbitCamera);
 }
 animate();
+
+
+if (useXR) renderer.setAnimationLoop( function () {
+
+	if (currentVrm) {
+        // Update model to render physics
+        currentVrm.update(clock.getDelta());
+    }
+    renderer.render(scene, orbitCamera);
+
+} );
 
 /* VRM CHARACTER SETUP */
 
@@ -243,7 +266,7 @@ const animateVRM = (vrm, mydata) => {
             "Hips",
             {
                 x: riggedPose.Hips.position.x, // Reverse direction
-                y: riggedPose.Hips.position.y + 1, // Add a bit of height
+                y: riggedPose.Hips.position.y, // Add a bit of height
                 z: -riggedPose.Hips.position.z, // Reverse direction
             },
             1,
@@ -345,12 +368,12 @@ const animateVRM = (vrm, mydata) => {
     }
 };
 
-ws.onmessage = function (evt) {
+socket.on("message",  function (evt) {
     console.log(evt.data);
 
-    var mydata = JSON.parse(evt.data);
+    var mydata = JSON.parse(evt);
     console.log(mydata);
     if (!mydata.type) return;
     if (mydata.type != "xf-sysmocap-data") return;
     animateVRM(currentVrm, mydata);
-};
+});
