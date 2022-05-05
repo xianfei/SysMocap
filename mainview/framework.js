@@ -242,7 +242,7 @@ if (typeof require != "undefined") {
         //console.log(e);
         var filePath = e.dataTransfer.files[0].path;
         console.log(filePath);
-        var strs1 = filePath.split("/");
+        var strs1 = filePath.split(/(\/|\\)/g);
         var name_ = strs1[strs1.length - 1];
         var name = name_.substr(0, name_.lastIndexOf("."));
         var type = name_.substr(name_.lastIndexOf(".") + 1);
