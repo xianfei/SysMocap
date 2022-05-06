@@ -177,7 +177,7 @@ if (typeof require != "undefined") {
         if (result) app.videoPath = result;
     };
 
-    var inst = new mdui.Select("#demo-js");
+    // var inst = new mdui.Select("#demo-js");
 
     var inst2 = new mdui.Select("#demo-js-2");
 
@@ -240,9 +240,9 @@ if (typeof require != "undefined") {
     //对拖动释放事件进行处理
     contentDom.ondrop = (e) => {
         //console.log(e);
-        var filePath = e.dataTransfer.files[0].path.replaceAll('\\','/');
+        var filePath = e.dataTransfer.files[0].path.replaceAll("\\", "/");
         console.log(filePath);
-        var strs1 = filePath.split('/');
+        var strs1 = filePath.split("/");
         var name_ = strs1[strs1.length - 1];
         var name = name_.substr(0, name_.lastIndexOf("."));
         var type = name_.substr(name_.lastIndexOf(".") + 1);
@@ -256,24 +256,85 @@ if (typeof require != "undefined") {
         }
     };
 
+    function addRightClick() {
+        for (var i of document.querySelectorAll(".model-item-new.user-model")) {
+            i.oncontextmenu = function (e) {
+                console.log(e);
+                e.preventDefault();
+                const rightmenu = document.getElementById("rightmenu");
+                const rightclick = document.getElementById("rightclick");
+                rightmenu.style.transform = "scaleY(1)";
+                rightclick.style.display = "";
+                rightmenu.style.top = e.clientY + "px";
+                rightmenu.style.left = e.clientX + "px";
+                rightclick.onclick = function () {
+                    rightmenu.style.transform = "scaleY(0)";
+                    rightclick.style.display = "none";
+                };
+                rightclick.oncontextmenu = rightclick.onclick;
+                document.getElementById("btnopen").onclick = function () {
+                    e.target.click();
+                    rightclick.onclick();
+                };
+                document.getElementById("btndefault").onclick = function () {
+                    e.target.querySelector('h2').innerText
+                    rightclick.onclick();
+                };
+                document.getElementById("btnshow").style.display = "";
+                document.getElementById("btnremove").style.display = "";
+
+            };
+        }
+
+        for (var i of document.querySelectorAll(
+            ".model-item-new.buildin-model"
+        )) {
+            i.oncontextmenu = function (e) {
+                e.preventDefault();
+                const rightmenu = document.getElementById("rightmenu");
+                const rightclick = document.getElementById("rightclick");
+                rightmenu.style.transform = "scaleY(1)";
+                rightclick.style.display = "";
+                rightmenu.style.top = e.clientY + "px";
+                rightmenu.style.left = e.clientX + "px";
+                rightclick.onclick = function () {
+                    rightmenu.style.transform = "scaleY(0)";
+                    rightclick.style.display = "none";
+                };
+                rightclick.oncontextmenu = rightclick.onclick;
+                document.getElementById("btnopen").onclick = function () {
+                    e.target.click();
+                    rightclick.onclick();
+                };
+                document.getElementById("btnshow").style.display = "none";
+                document.getElementById("btnremove").style.display = "none";
+                
+            };
+        }
+    }
+
+    addRightClick();
+
     window.addUserModels = async function () {
         var model = {
             name: app.modelImporterName,
             type: app.modelImporterType,
             picBg: app.modelImporterImg,
             path: app.modelImporterPath,
-            accessories:{}
-        }
+            accessories: {},
+        };
         addUserModels(model);
         // app.userModels.push(model);
         app.showModelImporter = 0;
-        setTimeout(async ()=>{for (var e of document.querySelectorAll(".my-img")) {
-            var theme = await themeFromImage(e);
-            applyTheme(theme, {
-                target: e.parentElement,
-                dark: darkMode,
-            });
-        }},500);
+        setTimeout(async () => {
+            for (var e of document.querySelectorAll(".my-img")) {
+                var theme = await themeFromImage(e);
+                applyTheme(theme, {
+                    target: e.parentElement,
+                    dark: darkMode,
+                });
+            }
+        }, 500);
     };
 } else {
     languages = {

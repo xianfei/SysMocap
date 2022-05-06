@@ -215,6 +215,46 @@
             -->
 
                 <div v-show="tab=='model'">
+                    <div
+                        id="rightclick"
+                        style="
+                            display: none;
+                            position: fixed;
+                            top: 0;
+                            right: 0;
+                            height: 100%;
+                            width: 100%;
+                            background: #fff0;
+                            z-index: 999;
+                        "
+                    ></div>
+                    <div
+                        id="rightmenu"
+                        class="card"
+                        style="transform: scaleY(0)"
+                    >
+                        <div id="btnopen" class="carditem">
+                            <i class="mdui-icon material-icons cardicon">open_in_new</i
+                            >{{language.tabModelLib.open}}
+                        </div>
+                        <div class="line2"></div>
+                        <div id="btndefault" class="carditem">
+                            <i class="mdui-icon material-icons cardicon">star</i
+                            >{{language.tabModelLib.setAsDefault}}
+                        </div>
+                        <div class="line2"></div>
+                        <div id="btnshow" class="carditem">
+                            <i class="mdui-icon material-icons cardicon"
+                                >folder_open</i
+                            >{{language.tabModelLib.showInFinder}}
+                        </div>
+                        <div class="line2"></div>
+                        <div id="btnremove" class="carditem">
+                            <i class="mdui-icon material-icons cardicon"
+                                >delete</i
+                            >{{language.tabModelLib.remove}}
+                        </div>
+                    </div>
                     <!------- User Model ------->
                     <h1
                         class="mdui-text-color-theme"
@@ -243,7 +283,7 @@
                     >
                         <div
                             id="drag-area"
-                            style="background-size: cover;"
+                            style="background-size: cover"
                             v-bind:style="{width:showModelImporter==2?'calc(45% - 18px)':'calc(100% - 36px)',background:modelImporterImg==''?'':'url('+modelImporterImg+') no-repeat center center',backgroundSize:modelImporterImg==''?'':'cover'}"
                         >
                             <div
@@ -254,9 +294,13 @@
                                 </p>
                                 <p v-show="showModelImporter==1">
                                     {{language.tabModelLib.suppotFormat}}
-                                    <a href="#">{{language.tabModelLib.here}}</a>
+                                    <a href="#"
+                                        >{{language.tabModelLib.here}}</a
+                                    >
                                 </p>
-                                <p v-show="showModelImporter==2&&modelImporterImg==''">
+                                <p
+                                    v-show="showModelImporter==2&&modelImporterImg==''"
+                                >
                                     {{language.tabModelLib.dragImage}}
                                 </p>
                             </div>
@@ -292,7 +336,7 @@
                     <div class="flex-container">
                         <div
                             v-if="settings.ui.useNewModelUI"
-                            class="model-item-new"
+                            class="model-item-new user-model"
                             v-for="model in userModels"
                             v-on:click="require('electron').ipcRenderer.send('openModelViewer', {model:model,backgroundColor:$event.currentTarget.style.getPropertyValue('--md-sys-color-primary-container'),color:$event.currentTarget.style.getPropertyValue('--md-sys-color-primary'),textColor:$event.currentTarget.style.getPropertyValue('--md-sys-color-on-primary-container'),useGlass:settings.ui.useGlass});"
                         >
@@ -307,7 +351,12 @@
                         <div
                             v-for="i in [1,2,3,4,5,6]"
                             class="model-item-new"
-                            style="visibility: hidden; height: 1px;margin-top: 0;margin-bottom: 0;"
+                            style="
+                                visibility: hidden;
+                                height: 1px;
+                                margin-top: 0;
+                                margin-bottom: 0;
+                            "
                         ></div>
                     </div>
                     <!------- Build-in Model ------->
@@ -317,7 +366,7 @@
                     <div class="flex-container" id="userModels">
                         <div
                             v-if="settings.ui.useNewModelUI"
-                            class="model-item-new"
+                            class="model-item-new buildin-model"
                             v-for="model in builtIn"
                             v-on:click="require('electron').ipcRenderer.send('openModelViewer', {model:model,backgroundColor:$event.currentTarget.style.getPropertyValue('--md-sys-color-primary-container'),color:$event.currentTarget.style.getPropertyValue('--md-sys-color-primary'),textColor:$event.currentTarget.style.getPropertyValue('--md-sys-color-on-primary-container'),useGlass:settings.ui.useGlass});"
                         >
@@ -386,12 +435,22 @@
                             id="demo-js"
                             v-model="selectModel"
                         >
-                            <option
-                                v-for="model in builtIn"
-                                v-bind:value="JSON.stringify(model)"
-                            >
-                                {{model.name}}
-                            </option>
+                            <optgroup label="User's">
+                                <option
+                                    v-for="model in userModels"
+                                    v-bind:value="JSON.stringify(model)"
+                                >
+                                    {{model.name}}
+                                </option>
+                            </optgroup>
+                            <optgroup label="Build-in">
+                                <option
+                                    v-for="model in builtIn"
+                                    v-bind:value="JSON.stringify(model)"
+                                >
+                                    {{model.name}}
+                                </option>
+                            </optgroup>
                         </select>
                         <span style="margin-left: 60px"></span>
                         {{language.tabMocap.dataSource}}
@@ -531,7 +590,7 @@
                             <i class="mdui-switch-icon"></i>
                         </label>
                     </div>
-                    <div class="settings-item" v-show="platform!=='web'">
+                    <div class="settings-item" v-show="false">
                         <label class="mdui-switch">
                             <span>使用新版模型库UI (beta)</span>
                             <input
@@ -613,11 +672,12 @@
                             >{{settings.forward.port}}</span
                         >
                     </div>
-                    <div class="settings-item" v-show="settings.forward.enableForwarding">
+                    <div
+                        class="settings-item"
+                        v-show="settings.forward.enableForwarding"
+                    >
                         <label class="mdui-switch">
-                            <span
-                                >{{language.tabSettings.forward.useSSL}}</span
-                            >
+                            <span>{{language.tabSettings.forward.useSSL}}</span>
                             <input
                                 type="checkbox"
                                 v-model="settings.forward.useSSL"
@@ -625,7 +685,10 @@
                             <i class="mdui-switch-icon"></i>
                         </label>
                     </div>
-                    <div class="settings-item" v-show="settings.forward.enableForwarding">
+                    <div
+                        class="settings-item"
+                        v-show="settings.forward.enableForwarding"
+                    >
                         <label class="mdui-switch">
                             <span
                                 >{{language.tabSettings.forward.supportForWebXR}}</span

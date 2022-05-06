@@ -18,6 +18,10 @@ module.exports = {
                 suppotFormat: "支持VRM/GLB/GLTF/FBX，详细说明参见",
                 here: "这里",
                 dragImage: "把图片拖到这儿来~",
+                open: "打开",
+                setAsDefault: "设为默认",
+                showInFinder: "在 Finder 中显示",
+                remove: "移除",
             },
             tabMocap: {
                 chooseModel: "选择模型：",
@@ -106,6 +110,10 @@ module.exports = {
                 suppotFormat: "Supported VRM/GLB/GLTF/FBX, details see",
                 here: " here",
                 dragImage: "Drag image here",
+                open: "Open",
+                setAsDefault: "Set as default",
+                showInFinder: "Show in Finder",
+                remove: "Remove",
             },
             tabMocap: {
                 chooseModel: "3D Model：",

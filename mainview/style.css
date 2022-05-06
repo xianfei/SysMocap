@@ -312,3 +312,47 @@ button {
     border: 2px solid var(--md-sys-color-on-primary-container) !important;
 
 }
+
+
+.card{
+    position: fixed;
+    left: 100px;
+    top: 100px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    border-radius: 5px;
+    width: 200px;
+    background: #fffa;
+    backdrop-filter: blur(25px) saturate(180%);
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: left top;
+    z-index: 1000;
+  }
+  
+  .carditem{
+    color: #555;
+    margin: 5px;
+    height: 34px;
+    border-radius: 5px;
+    line-height: 34px;
+  }
+
+  .carditem i{
+      transform: scale(0.75);
+      margin-top: -3px;
+  }
+  
+  .carditem:hover{
+    background: #aaa3;
+  }
+  
+  .cardicon{
+    margin-left: 5px;
+    margin-right: 10px;
+  }
+
+  .line2 {
+    width: 90%;
+    height: 0.5px;
+    margin-left: 5%;
+    background-color: #dddd;
+}
