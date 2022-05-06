@@ -96,6 +96,9 @@ if (argv.bsmode) {
     const { app, BrowserWindow, ipcMain, nativeTheme } = require("electron");
     const os = require("os");
     const platform = os.platform();
+    const { Worker} = require('worker_threads');
+    const { fork } = require('child_process');
+
 
     // Make profile file on user home dir
     const path = require("path");
@@ -353,16 +356,16 @@ if (argv.bsmode) {
     });
 
     ipcMain.on("startWebServer", function (event, ...arg) {
-        var my_server = require("./webserv/server.js");
-        my_server.startServer(...arg);
+        const child = fork("./webserv/worker.js");
+        child.send({type:"startWebServer", arg:arg});
 
         ipcMain.on("sendBoradcast", function (event, arg) {
-            if(my_server)my_server.sendBoradcast(arg);
+            child.send({type:"sendBroadcast", arg:arg});
         });
 
         ipcMain.on("stopWebServer", function (event, arg) {
-            if(my_server)my_server.stopServer();
-            my_server = null;
+            child.send({type:"stopWebServer"});
+            // child.kill();
         });
     });
 

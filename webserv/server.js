@@ -7,7 +7,7 @@
  *
  *  https://github.com/xianfei/SysMocap
  *
- *  xianfei 2022.4
+ *  xianfei 2022.5
  */
 
 const express = require("express");
@@ -64,7 +64,7 @@ module.exports = {
             server = null;
         } else console.error("[ Mocap Forwarding Server ] Server not running.");
     },
-    sendBoradcast: function (obj) {
+    sendBroadcast: function (obj) {
         // for (var ws of expressWs.getWss().clients) {
         //     ws.send(obj);
         // }
