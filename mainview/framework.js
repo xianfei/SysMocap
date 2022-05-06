@@ -113,6 +113,7 @@ if (typeof require != "undefined") {
         mounted() {
             var modelOnload = async function () {
                 for (var e of document.querySelectorAll(".my-img")) {
+                    if(e.src.includes('framework.html')) continue;
                     var theme = await themeFromImage(e);
                     applyTheme(theme, {
                         target: e.parentElement,
@@ -338,6 +339,7 @@ if (typeof require != "undefined") {
         setTimeout(async () => {
             addRightClick();
             for (var e of document.querySelectorAll(".my-img")) {
+                if(e.src.includes('framework.html')) continue;
                 var theme = await themeFromImage(e);
                 applyTheme(theme, {
                     target: e.parentElement,
