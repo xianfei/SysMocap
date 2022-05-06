@@ -90,6 +90,16 @@ function addUserModels(model) {
     storage.setItem("sysmocap-user-models", models);
 }
 
+// remove from models name is same as the one to be removed
+function removeUserModels(name) {
+    var index = models.findIndex(function (element) {
+        return element.name === name;
+    }
+    );
+    if (index > -1) models.splice(index, 1);
+    storage.setItem("sysmocap-user-models", models);
+}
+
 module.exports = {
     getSettings: getSettings,
     globalSettings: globalSettings,
@@ -97,4 +107,5 @@ module.exports = {
     getUserModels: getUserModels,
     userModels: models,
     addUserModels: addUserModels,
+    removeUserModels: removeUserModels,
 };

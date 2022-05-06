@@ -49,6 +49,7 @@ if (typeof require != "undefined") {
         saveSettings,
         userModels,
         addUserModels,
+        removeUserModels
     } = require("../utils/setting.js");
 
     // set theme
@@ -259,8 +260,13 @@ if (typeof require != "undefined") {
     function addRightClick() {
         for (var i of document.querySelectorAll(".model-item-new.user-model")) {
             i.oncontextmenu = function (e) {
-                console.log(e);
+                console.log(e.target);
                 e.preventDefault();
+
+                var target = e.target;
+                while(!target.classList.contains("model-item-new")){
+                    target = target.parentElement;
+                }
                 const rightmenu = document.getElementById("rightmenu");
                 const rightclick = document.getElementById("rightclick");
                 rightmenu.style.transform = "scaleY(1)";
@@ -277,11 +283,16 @@ if (typeof require != "undefined") {
                     rightclick.onclick();
                 };
                 document.getElementById("btndefault").onclick = function () {
-                    e.target.querySelector("h2").innerText;
+                    target.querySelector("h2").innerText;
                     rightclick.onclick();
                 };
                 document.getElementById("btnshow").style.display = "";
                 document.getElementById("btnremove").style.display = "";
+
+                document.getElementById("btnremove").onclick = function () {
+                    removeUserModels(target.querySelector("h2").innerText);
+                    rightclick.onclick();
+                }
             };
         }
 
@@ -325,6 +336,7 @@ if (typeof require != "undefined") {
         // app.userModels.push(model);
         app.showModelImporter = 0;
         setTimeout(async () => {
+            addRightClick();
             for (var e of document.querySelectorAll(".my-img")) {
                 var theme = await themeFromImage(e);
                 applyTheme(theme, {
