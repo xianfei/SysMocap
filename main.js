@@ -97,7 +97,7 @@ if (argv.bsmode) {
     const os = require("os");
     const platform = os.platform();
     const { Worker} = require('worker_threads');
-    const { fork } = require('child_process');
+    
 
 
     // Make profile file on user home dir
@@ -356,16 +356,15 @@ if (argv.bsmode) {
     });
 
     ipcMain.on("startWebServer", function (event, ...arg) {
-        const child = fork("./webserv/worker.js");
-        child.send({type:"startWebServer", arg:arg});
+        const worker = new Worker(__dirname + "/webserv/worker.js");
+        worker.postMessage({type:"startWebServer", arg:arg});
 
         ipcMain.on("sendBoradcast", function (event, arg) {
-            child.send({type:"sendBroadcast", arg:arg});
+            worker.postMessage({type:"sendBroadcast", arg:arg});
         });
 
         ipcMain.on("stopWebServer", function (event, arg) {
-            child.send({type:"stopWebServer"});
-            // child.kill();
+            worker.postMessage({type:"stopWebServer"});
         });
     });
 
