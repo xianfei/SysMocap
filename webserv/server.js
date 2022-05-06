@@ -43,23 +43,26 @@ app.get("/model", (req, res) => {
     else res.send("Model file undefined");
 });
 
+var useWebXR = false;
+
 app.get("/useWebXR", (req, res) => {
-    res.send("false");
+    res.send(JSON.stringify(useWebXR));
 });
 
 module.exports = {
-    startServer: function (port, modelPath_) {
+    startServer: function (port, modelPath_,useXR) {
         modelPath = path.resolve(__dirname, modelPath_);
+        useWebX = useXR;
         server = httpxServer.listen(port, "0.0.0.0", function () {
-            console.log("[ Mocap Web Server ] Server Started.");
+            console.log("[ Mocap Forwarding Server ] Server Started.");
         });
     },
     stopServer: function () {
         if (server) {
             server.close();
-            console.log("[ Mocap Web Server ] Server Stoped.");
+            console.log("[ Mocap Forwarding Server ] Server Stoped.");
             server = null;
-        } else console.error("[ Mocap Web Server ] Server not running.");
+        } else console.error("[ Mocap Forwarding Server ] Server not running.");
     },
     sendBoradcast: function (obj) {
         // for (var ws of expressWs.getWss().clients) {

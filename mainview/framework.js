@@ -277,12 +277,11 @@ if (typeof require != "undefined") {
                     rightclick.onclick();
                 };
                 document.getElementById("btndefault").onclick = function () {
-                    e.target.querySelector('h2').innerText
+                    e.target.querySelector("h2").innerText;
                     rightclick.onclick();
                 };
                 document.getElementById("btnshow").style.display = "";
                 document.getElementById("btnremove").style.display = "";
-
             };
         }
 
@@ -308,7 +307,6 @@ if (typeof require != "undefined") {
                 };
                 document.getElementById("btnshow").style.display = "none";
                 document.getElementById("btnremove").style.display = "none";
-                
             };
         }
     }
@@ -616,6 +614,7 @@ window.startMocap = async function (e) {
             app.language.tabMocap.stop;
     } else {
         document.getElementById("foo").src = "about:blank";
+        if (ipcRenderer) ipcRenderer.send("stopWebServer");
         e.innerHTML =
             '<i class="mdui-icon material-icons">play_arrow</i>' +
             app.language.tabMocap.start;

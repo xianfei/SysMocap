@@ -352,6 +352,20 @@ if (argv.bsmode) {
         createPdfViewerWindow(arg);
     });
 
+    ipcMain.on("startWebServer", function (event, ...arg) {
+        var my_server = require("./webserv/server.js");
+        my_server.startServer(...arg);
+
+        ipcMain.on("sendBoradcast", function (event, arg) {
+            if(my_server)my_server.sendBoradcast(arg);
+        });
+
+        ipcMain.on("stopWebServer", function (event, arg) {
+            if(my_server)my_server.stopServer();
+            my_server = null;
+        });
+    });
+
     // This method will be called when Electron has finished
     // initialization and is ready to create browser windows.
     // Some APIs can only be used after this event occurs.

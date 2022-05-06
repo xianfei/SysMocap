@@ -22,8 +22,10 @@ document.body.setAttribute(
 
 // import mocap web server
 var my_server = null;
+var ipcRenderer = null;
 if (globalSettings.forward.enableForwarding)
-    my_server = require("../webserv/server.js");
+    ipcRenderer = require("electron").ipcRenderer;
+// my_server = require("../webserv/server.js");
 
 // import Helper Functions from Kalidokit
 const remap = Kalidokit.Utils.remap;
@@ -76,21 +78,21 @@ const scene = new THREE.Scene();
 
 // stats
 
-const statsContainer = document.getElementById('status')
+const statsContainer = document.getElementById("status");
 
-if(!globalSettings.output.showFPS) {
+if (!globalSettings.output.showFPS) {
     statsContainer.style.display = "none";
 }
 
 const stats = new Stats();
 stats.domElement.style.position = "absolute";
-stats.domElement.style.top = '26px';
+stats.domElement.style.top = "26px";
 stats.domElement.style.left = "10px";
 statsContainer.appendChild(stats.dom);
 
 const stats2 = new Stats();
 stats2.domElement.style.position = "absolute";
-stats2.domElement.style.top = '26px';
+stats2.domElement.style.top = "26px";
 stats2.domElement.style.left = "100px";
 statsContainer.appendChild(stats2.dom);
 
@@ -124,8 +126,14 @@ var fileType = modelPath
 var skeletonHelper;
 
 // init server
-if (my_server)
-    my_server.startServer(parseInt(globalSettings.forward.port), modelPath);
+if (ipcRenderer)
+    ipcRenderer.send(
+        "startWebServer",
+        parseInt(globalSettings.forward.port),
+        modelPath,
+        globalSettings.forward.supportForWebXR
+    );
+// my_server.startServer(parseInt(globalSettings.forward.port), modelPath);
 
 // Import model from URL, add your own model here
 loader.load(
@@ -465,8 +473,20 @@ const animateVRM = (vrm, results) => {
         rigRotation("RightLittleDistal", riggedRightHand.RightLittleDistal);
     }
 
-    if (my_server)
-        my_server.sendBoradcast(
+    // if (my_server)
+    //     my_server.sendBoradcast(
+    //         JSON.stringify({
+    //             type: "xf-sysmocap-data",
+    //             riggedPose: riggedPose,
+    //             riggedLeftHand: riggedLeftHand,
+    //             riggedRightHand: riggedRightHand,
+    //             riggedFace: riggedFace,
+    //         })
+    //     );
+
+    if (ipcRenderer)
+        ipcRenderer.send(
+            "sendBoradcast",
             JSON.stringify({
                 type: "xf-sysmocap-data",
                 riggedPose: riggedPose,
@@ -484,7 +504,7 @@ let videoElement = document.querySelector(".input_video"),
 const onResults = (results) => {
     stats2.update();
     // Draw landmark guides
-    if(globalSettings.preview.showSketelonOnInput)drawResults(results);
+    if (globalSettings.preview.showSketelonOnInput) drawResults(results);
     // Animate model
     animateVRM(currentVrm, results);
     if (!started) {
