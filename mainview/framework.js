@@ -40,6 +40,8 @@ if (typeof require != "undefined") {
 
     ipcRenderer = require("electron").ipcRenderer;
 
+    const { shell } = require("electron");
+
     platform = require("os").platform();
 
     // import setting utils
@@ -258,6 +260,22 @@ if (typeof require != "undefined") {
         }
     };
 
+    // find by name in app.userModels
+    function findModelByName(name) {
+        if(app.userModels) for (var i = 0; i < app.userModels.length; i++) {
+            if (app.userModels[i].name == name) {
+                return app.userModels[i];
+            }
+        }
+
+        for (var i = 0; i < app.builtIn.length; i++) {
+            if (app.builtIn[i].name == name) {
+                return app.builtIn[i];
+            }
+        }
+        return null;
+    }
+
     function addRightClick() {
         for (var i of document.querySelectorAll(".model-item-new.user-model")) {
             i.oncontextmenu = function (e) {
@@ -284,7 +302,7 @@ if (typeof require != "undefined") {
                     rightclick.onclick();
                 };
                 document.getElementById("btndefault").onclick = function () {
-                    target.querySelector("h2").innerText;
+                    app.selectModel = JSON.stringify(findModelByName(target.querySelector("h2").innerText))
                     rightclick.onclick();
                 };
                 document.getElementById("btnshow").style.display = "";
@@ -292,6 +310,12 @@ if (typeof require != "undefined") {
 
                 document.getElementById("btnremove").onclick = function () {
                     removeUserModels(target.querySelector("h2").innerText);
+                    rightclick.onclick();
+                }
+
+                document.getElementById("btnshow").onclick = function () {
+                    var path = findModelByName(target.querySelector("h2").innerText).path
+                    shell.openExternal('file://'+path.substr(0,path.lastIndexOf('/')))
                     rightclick.onclick();
                 }
             };
@@ -302,6 +326,10 @@ if (typeof require != "undefined") {
         )) {
             i.oncontextmenu = function (e) {
                 e.preventDefault();
+                var target = e.target;
+                while(!target.classList.contains("model-item-new")){
+                    target = target.parentElement;
+                }
                 const rightmenu = document.getElementById("rightmenu");
                 const rightclick = document.getElementById("rightclick");
                 rightmenu.style.transform = "scaleY(1)";
@@ -319,6 +347,11 @@ if (typeof require != "undefined") {
                 };
                 document.getElementById("btnshow").style.display = "none";
                 document.getElementById("btnremove").style.display = "none";
+
+                document.getElementById("btndefault").onclick = function () {
+                    app.selectModel = JSON.stringify(findModelByName(target.querySelector("h2").innerText))
+                    rightclick.onclick();
+                };
             };
         }
     }
