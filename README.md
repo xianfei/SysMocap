@@ -8,6 +8,10 @@ Available for Windows, macOS (packaged) & Linux (source code only)
 
 <img src="https://github.com/xianfei/SysMocap/actions/workflows/main.yml/badge.svg"> [Download Now](https://github.com/xianfei/SysMocap/releases)
 
+(This is a multi-language software, including English. )
+
+本科毕业设计作品。点击此处阅读中文说明。
+
 ### Highlights
 
 🌟 Beautiful GUI with Material Design 3 Color System
@@ -16,9 +20,25 @@ Available for Windows, macOS (packaged) & Linux (source code only)
 
 🌟 Easy to used. You can import 3D models just with drags.
 
-<video autoplay muted loop src="README.assets/test.mp4" data-canonical-src="README.assets/test.mp4" class="d-block rounded-bottom-2 width-fit"></video>
+https://user-images.githubusercontent.com/8101613/167257555-8b8d4b99-f99f-4b79-8891-967b8723e3f8.mp4
 
-### Required Skeleton Node in glTF/glb Model File for Macap:
+🌟 Support WebXR API on Mocap Forwarding (HTTPS only)
+
+https://user-images.githubusercontent.com/8101613/167257906-596919a5-4c0e-4795-865f-384a15c0d39f.mp4
+
+### Bugs
+
+1. Only support VRM file now.
+
+2. On Windows platform, "Use Discrete Graphics on Dual GPU Laptop" and "Mocap Data Forward" can not use at same time.
+
+### Notice
+
+1. HTTP & HTTPS will use **same port** in Mocap Data Forward.
+
+### Required Skeleton Node in glTF/glb/FBX Model File for Macap:
+
+(If not same as above, you need rebind them manually.)
 
 - Hips (Main Node, both Position and Rotation. Ratation only for other nodes)
 
