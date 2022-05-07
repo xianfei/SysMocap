@@ -112,24 +112,33 @@ const rigRotation = (
     dampener = 1,
     lerpAmount = 0.3
 ) => {
-    if (!currentVrm) {
-        return;
+    if (currentVrm) {
+        const Part = currentVrm.humanoid.getBoneNode(
+            THREE.VRMSchema.HumanoidBoneName[name]
+        );
+        if (!Part) {
+            return;
+        }
+        let euler = new THREE.Euler(
+            rotation.x * dampener,
+            rotation.y * dampener,
+            rotation.z * dampener,
+            rotation.rotationOrder || "XYZ"
+        );
+        let quaternion = new THREE.Quaternion().setFromEuler(euler);
+        Part.quaternion.slerp(quaternion, lerpAmount); // interpolate
+    } else if (skeletonHelper) {
+        name = modelObj.binding[name]; // convert name with model json binding info
+        // find bone in bones by name
+        var b = skeletonHelper.bones.find((bone) => bone.name == name);
+        if (b) {
+            b.rotation.x = rotation.x * dampener;
+            b.rotation.y = rotation.y * dampener;
+            b.rotation.z = rotation.z * dampener;
+        } else {
+            console.log("Can not found bone " + name);
+        }
     }
-    const Part = currentVrm.humanoid.getBoneNode(
-        THREE.VRMSchema.HumanoidBoneName[name]
-    );
-    if (!Part) {
-        return;
-    }
-
-    let euler = new THREE.Euler(
-        rotation.x * dampener,
-        rotation.y * dampener,
-        rotation.z * dampener,
-        rotation.rotationOrder || "XYZ"
-    );
-    let quaternion = new THREE.Quaternion().setFromEuler(euler);
-    Part.quaternion.slerp(quaternion, lerpAmount); // interpolate
 };
 
 // Animate Position Helper Function
@@ -139,21 +148,31 @@ const rigPosition = (
     dampener = 1,
     lerpAmount = 0.3
 ) => {
-    if (!currentVrm) {
-        return;
+    if (currentVrm) {
+        const Part = currentVrm.humanoid.getBoneNode(
+            THREE.VRMSchema.HumanoidBoneName[name]
+        );
+        if (!Part) {
+            return;
+        }
+        let vector = new THREE.Vector3(
+            position.x * dampener,
+            position.y * dampener,
+            position.z * dampener
+        );
+        Part.position.lerp(vector, lerpAmount); // interpolate
+    } else if (skeletonHelper) {
+        name = modelObj.binding[name]; // convert name with model json binding info
+        // find bone in bones by name
+        var b = skeletonHelper.bones.find((bone) => bone.name == name);
+        if (b) {
+            b.position.x = position.x * dampener;
+            b.position.y = position.y * dampener;
+            b.position.z = position.z * dampener;
+        } else {
+            console.log("Can not found bone " + name);
+        }
     }
-    const Part = currentVrm.humanoid.getBoneNode(
-        THREE.VRMSchema.HumanoidBoneName[name]
-    );
-    if (!Part) {
-        return;
-    }
-    let vector = new THREE.Vector3(
-        position.x * dampener,
-        position.y * dampener,
-        position.z * dampener
-    );
-    Part.position.lerp(vector, lerpAmount); // interpolate
 };
 
 let oldLookTarget = new THREE.Euler();
@@ -169,12 +188,12 @@ const rigFace = (riggedFace) => {
     // Simple example without winking. Interpolate based on old blendshape, then stabilize blink with `Kalidokit` helper function.
     // for VRM, 1 is closed, 0 is open.
     riggedFace.eye.l = lerp(
-        clamp(riggedFace.eye.l, 0, 1),
+        clamp(1 - riggedFace.eye.l, 0, 1),
         Blendshape.getValue(PresetName.Blink),
         0.4
     );
     riggedFace.eye.r = lerp(
-        clamp(riggedFace.eye.r, 0, 1),
+        clamp(1 - riggedFace.eye.r, 0, 1),
         Blendshape.getValue(PresetName.Blink),
         0.4
     );
@@ -245,6 +264,8 @@ const rigFace = (riggedFace) => {
     currentVrm.lookAt.applyer.lookAt(lookTarget);
 };
 
+
+
 /* VRM Character Animator */
 const animateVRM = (vrm, mydata) => {
     if (!vrm) {
@@ -255,6 +276,7 @@ const animateVRM = (vrm, mydata) => {
     // Animate Face
     if (mydata.riggedFace) {
         riggedFace = mydata.riggedFace;
+        rigRotation("Neck", riggedFace.head, 0.7);
         rigFace(riggedFace);
     }
 

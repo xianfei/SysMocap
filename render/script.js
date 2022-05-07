@@ -351,22 +351,48 @@ const animateVRM = (vrm, results) => {
     const leftHandLandmarks = results.rightHandLandmarks;
     const rightHandLandmarks = results.leftHandLandmarks;
 
-    // Animate Face
     if (faceLandmarks) {
         riggedFace = Kalidokit.Face.solve(faceLandmarks, {
             runtime: "mediapipe",
             video: videoElement,
         });
+    }
+
+    if (pose2DLandmarks && pose3DLandmarks) {
+        riggedPose = Kalidokit.Pose.solve(pose3DLandmarks, pose2DLandmarks, {
+            runtime: "mediapipe",
+            video: videoElement,
+        });
+    }
+
+    if (leftHandLandmarks) {
+        riggedLeftHand = Kalidokit.Hand.solve(leftHandLandmarks, "Left");
+    }
+
+    if (rightHandLandmarks && fileType == "vrm") {
+        riggedRightHand = Kalidokit.Hand.solve(rightHandLandmarks, "Right");
+    }
+
+    if (ipcRenderer)
+        ipcRenderer.send(
+            "sendBoradcast",
+            JSON.stringify({
+                type: "xf-sysmocap-data",
+                riggedPose: riggedPose,
+                riggedLeftHand: riggedLeftHand,
+                riggedRightHand: riggedRightHand,
+                riggedFace: riggedFace,
+            })
+        );
+
+    // Animate Face
+    if (faceLandmarks) {
         rigRotation("Neck", riggedFace.head, 0.7);
         if (fileType == "vrm") rigFace(riggedFace);
     }
 
     // Animate Pose
     if (pose2DLandmarks && pose3DLandmarks) {
-        riggedPose = Kalidokit.Pose.solve(pose3DLandmarks, pose2DLandmarks, {
-            runtime: "mediapipe",
-            video: videoElement,
-        });
         rigRotation("Hips", riggedPose.Hips.rotation, 0.7);
         rigPosition(
             "Hips",
@@ -395,7 +421,6 @@ const animateVRM = (vrm, results) => {
 
     // Animate Hands
     if (leftHandLandmarks && fileType == "vrm") {
-        riggedLeftHand = Kalidokit.Hand.solve(leftHandLandmarks, "Left");
         rigRotation("LeftHand", {
             // Combine pose rotation Z and hand rotation X Y
             z: riggedPose.LeftHand.z,
@@ -434,7 +459,7 @@ const animateVRM = (vrm, results) => {
         rigRotation("LeftLittleDistal", riggedLeftHand.LeftLittleDistal);
     }
     if (rightHandLandmarks && fileType == "vrm") {
-        riggedRightHand = Kalidokit.Hand.solve(rightHandLandmarks, "Right");
+        // riggedRightHand = Kalidokit.Hand.solve(rightHandLandmarks, "Right");
         rigRotation("RightHand", {
             // Combine Z axis from pose hand and X/Y axis from hand wrist rotation
             z: riggedPose.RightHand.z,
@@ -483,18 +508,6 @@ const animateVRM = (vrm, results) => {
     //             riggedFace: riggedFace,
     //         })
     //     );
-
-    if (ipcRenderer)
-        ipcRenderer.send(
-            "sendBoradcast",
-            JSON.stringify({
-                type: "xf-sysmocap-data",
-                riggedPose: riggedPose,
-                riggedLeftHand: riggedLeftHand,
-                riggedRightHand: riggedRightHand,
-                riggedFace: riggedFace,
-            })
-        );
 };
 
 let videoElement = document.querySelector(".input_video"),

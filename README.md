@@ -1,8 +1,24 @@
-# SysMocap
+![Snipaste_2022-05-07_13-31-46](README.assets/Snipaste_2022-05-07_13-31-46.png)
 
-A real-time video-based motion capture system for virtual character rendering.
+## SysMocap
 
-## Required Skeleton Node in glTF/glb Model File for Macap:
+A cross-platform real-time video-driven motion capture and 3D virtual character rendering system for VTuber/Live/AR/VR.
+
+Available for Windows, macOS (packaged) & Linux (source code only)
+
+<img src="https://github.com/xianfei/SysMocap/actions/workflows/main.yml/badge.svg"> [Download Now](https://github.com/xianfei/SysMocap/releases)
+
+### Highlights
+
+🌟 Beautiful GUI with Material Design 3 Color System
+
+![image85](README.assets/image85.png)
+
+🌟 Easy to used. You can import 3D models just with drags.
+
+<video autoplay muted loop src="README.assets/test3.webm" data-canonical-src="README.assets/test3.webm" class="d-block rounded-bottom-2 width-fit"></video>
+
+### Required Skeleton Node in glTF/glb Model File for Macap:
 
 - Hips (Main Node, both Position and Rotation. Ratation only for other nodes)
 
@@ -28,67 +44,32 @@ A real-time video-based motion capture system for virtual character rendering.
 
 - RightLowerLeg
 
-## Development progress
+### Development progress
 
-### To-Do
+#### To-Do
 
 - [x] Settings page and global settings utils
- 
+
 - [ ] Add play/pause button and progress bar when mocap from video 
- 
+
 - [x] Support bones binding for glTF/glb
 
 - [x] Support rendering glTF/glb model
- 
+
 - [ ] Support binding when bones' name is non-uniformed
- 
-- [ ] Model library add user's custom 3D model
- 
+
+- [x] Model library add user's custom 3D model
+
 - [x] Live plug-in / interface for Open Broadcast Software
- 
+
 - [ ] ~~Output video ( using such as libffmpeg )~~
- 
+
 - [ ] ~~Support per-frame rendering without drop frame~~
- 
+
 - [ ] ~~Support c-s architecture for online video mocap ( on cloud )~~
- 
-- [ ] ~~Support Material Designed 3 Color System~~
- 
+
+- [x] Support Material Designed 3 Color System (color picking)
+
 - [x] Mocap data forwarding via network
 
 - [x] Adapt for Linux and macOS 
-
-Hanako
-Root
-VM718:1 EyeExtra
-VM718:1 Face
-VM718:1 Shoes
-VM718:1 Body
-VM718:1 Bottoms
-VM718:1 Tops
-
-
-Root
-VM160:1 Hairs
-VM160:1 secondary
-VM160:1 Face
-VM160:1 Body
-
-Armature
-VM244:1 morph
-VM244:1 secondary
-VM244:1 Ponytail
-VM244:1 Tail
-VM244:1 Shoes
-VM244:1 Hair
-VM244:1 Pants
-VM244:1 Cats_ear
-VM244:1 Body
-VM244:1 Hoodie
-VM244:1 Body2
-
-Root
-VM376:1 Hairs
-VM376:1 secondary
-VM376:1 Face
-VM376:1 Body
