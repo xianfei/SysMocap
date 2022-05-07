@@ -6,7 +6,7 @@ A cross-platform real-time video-driven motion capture and 3D virtual character 
 
 Available for Windows, macOS (packaged) & Linux (source code only)
 
-<img src="https://github.com/xianfei/SysMocap/actions/workflows/main.yml/badge.svg"> [Download Now](https://github.com/xianfei/SysMocap/releases)
+<img src="https://github.com/xianfei/SysMocap/actions/workflows/main.yml/badge.svg">  [Download Now](https://github.com/xianfei/SysMocap/releases) (zipped, without installation)
 
 (This is a multi-language software, including English. )
 
@@ -25,6 +25,20 @@ https://user-images.githubusercontent.com/8101613/167257555-8b8d4b99-f99f-4b79-8
 🌟 Support WebXR API on Mocap Forwarding (HTTPS only)
 
 https://user-images.githubusercontent.com/8101613/167257906-596919a5-4c0e-4795-865f-384a15c0d39f.mp4
+
+🌟 Model viewer with bones & dressing controller
+
+![WX20220507-222225@2x](README.assets/WX20220507-222225@2x.png)
+
+🌟 Support OBS live-streaming
+
+![WechatIMG21](README.assets/WechatIMG21.jpeg)
+
+🌟 Does not require a discrete graphics card and runs smoothly even on eight-year-old computers (i7-4790k/GTX770/16G RAM)
+
+### System architecture
+
+![WX20220507-222732@2x](README.assets/WX20220507-222732@2x.png)
 
 ### Bugs
 
