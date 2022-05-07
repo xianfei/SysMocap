@@ -1,7 +1,7 @@
 # main.yml
 
 # Workflow's name
-name: Build Electron App For Win/Mac
+name: Build SysMocap For Win/Mac
 
 # Workflow's trigger
 on:
@@ -14,7 +14,7 @@ jobs:
   # job's id
   release:
     # job's name
-    name: build and release electron app
+    name: build and release sysmocap
     
     # the type of machine to run the job on
     runs-on: ${{ matrix.os }}
