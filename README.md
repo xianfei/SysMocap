@@ -16,7 +16,7 @@ Available for Windows, macOS (packaged) & Linux (source code only)
 
 🌟 Easy to used. You can import 3D models just with drags.
 
-<video autoplay muted loop src="README.assets/test3.webm" data-canonical-src="README.assets/test3.webm" class="d-block rounded-bottom-2 width-fit"></video>
+<video autoplay muted loop src="README.assets/test.mp4" data-canonical-src="README.assets/test.mp4" class="d-block rounded-bottom-2 width-fit"></video>
 
 ### Required Skeleton Node in glTF/glb Model File for Macap:
 
