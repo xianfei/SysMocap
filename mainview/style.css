@@ -14,7 +14,8 @@ body {
 } */
 
 ::selection {
-    background: #def;
+    background-color: var(--md-sys-color-primary) !important;
+    color: var(--md-sys-color-on-primary) !important;
 }
 
 blockquote {
@@ -194,6 +195,9 @@ button {
     border-radius: 20px;
     overflow: hidden;
     box-shadow: var(--md-sys-color-primary-container) 0px 3px 10px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    outline: solid #fff0 2px;
+    outline-offset: 3px;
     /* border: solid #ccc 0.1px; */
     margin: 8px;
 }

@@ -210,7 +210,7 @@ if (argv.bsmode) {
     function createModelViewerWindow(args) {
         // Create the browser window.
         var myBrowserWindow = BrowserWindow;
-        var addtionalArgs = {backgroundColor: "#222"};
+        var addtionalArgs = {backgroundColor: "#eee"};
         if(args.useGlass) {
             myBrowserWindow = blurBrowserWindow;
             addtionalArgs ={
