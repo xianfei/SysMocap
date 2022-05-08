@@ -674,7 +674,7 @@
                     </div>
                     <div
                         class="settings-item"
-                        v-show="settings.forward.enableForwarding"
+                        v-show="false && settings.forward.enableForwarding"
                     >
                         <label class="mdui-switch">
                             <span>{{language.tabSettings.forward.useSSL}}</span>
@@ -691,7 +691,11 @@
                     >
                         <label class="mdui-switch">
                             <span
-                                >{{language.tabSettings.forward.supportForWebXR}}</span
+                                >{{language.tabSettings.forward.supportForWebXR}}<i
+                                class="mdui-icon material-icons"
+                                mdui-tooltip="{content: window.sysmocapApp.language.tabSettings.forward.webXRtips}"
+                                >help_outline</i
+                            ></span
                             >
                             <input
                                 type="checkbox"

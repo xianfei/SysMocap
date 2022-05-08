@@ -8,6 +8,8 @@ const lerp = Kalidokit.Vector.lerp;
 const socket = io();
 
 import { ARButton } from "/node_modules/three/examples/jsm/webxr/ARButton.js";
+import { VRButton } from "/node_modules/three/examples/jsm/webxr/VRButton.js";
+
 
 /* THREEJS WORLD SETUP */
 let currentVrm;
@@ -18,12 +20,15 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(window.devicePixelRatio);
 
 const useXRres = await fetch("/useWebXR");
-const useXR = JSON.stringify(useXRres);
+const useXR = await useXRres.json();
 if (useXR) {
     renderer.xr.enabled = true;
-    document.body.appendChild(
-        ARButton.createButton(renderer)
-    );
+    const ar = ARButton.createButton(renderer)
+    const vr = VRButton.createButton(renderer)
+    ar.style.marginLeft = '-75px'
+    vr.style.marginLeft = '75px'
+    document.body.appendChild(ar);
+    document.body.appendChild(vr);
 }
 
 document.body.appendChild(renderer.domElement);

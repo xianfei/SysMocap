@@ -52,7 +52,7 @@ app.get("/useWebXR", (req, res) => {
 module.exports = {
     startServer: function (port, modelPath_,useXR) {
         modelPath = path.resolve(__dirname, modelPath_);
-        useWebX = useXR;
+        useWebXR = useXR;
         server = httpxServer.listen(port, "0.0.0.0", function () {
             console.log("[ Mocap Forwarding Server ] Server Started.");
         });

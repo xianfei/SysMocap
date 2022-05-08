@@ -43,8 +43,8 @@ function getSettings() {
             forward: {
                 enableForwarding: false,
                 port: "8080",
-                useSSL: false,
-                supportForWebXR:false
+                useSSL: true,
+                supportForWebXR:'false'
             },
             mediapipe: {
                 modelComplexity: "2",

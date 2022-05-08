@@ -70,7 +70,8 @@ module.exports = {
                         "启用通过 HTTP / WebSocket 的动作/虚拟形象转发",
                     port: "HTTP / WebSocket 端口号",
                     useSSL: "启用安全协议（HTTPS/WSS）",
-                    supportForWebXR: "启用WebXR-AR支持",
+                    supportForWebXR: "启用WebXR（AR、VR）支持",
+                    webXRtips:"WebXR需要HTTPS协议，该系统会在同一端口同时监听HTTPS和HTTP请求",
                 },
                 mediapipe: {
                     name: "动作捕捉",
@@ -163,7 +164,8 @@ module.exports = {
                     enableForwarding: "Enable Forward via HTTP & WebSocket",
                     port: "Port Number of HTTP & WebSocket",
                     useSSL: "Enable Security Protocol（HTTPS/WSS）",
-                    supportForWebXR: "Support for WebXR-AR",
+                    supportForWebXR: "Support for WebXR (AR/VR) ",
+                    webXRtips:"WebXR needs HTTPS protocol, this system will listen both HTTPS and HTTP at same port.",
                 },
                 mediapipe: {
                     name: "Motion Capture",
