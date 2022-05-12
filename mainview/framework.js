@@ -100,6 +100,7 @@ if (typeof require != "undefined") {
             platform: platform,
             userModels: userModels,
             theme: {},
+            document:document
         },
         computed: {
             bg: function () {
@@ -381,6 +382,9 @@ if (typeof require != "undefined") {
             }
         }, 500);
     };
+
+    mdui.mutation()
+
 } else {
     languages = {
         zh: {

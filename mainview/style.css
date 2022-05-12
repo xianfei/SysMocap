@@ -56,11 +56,15 @@ blockquote {
     text-align: center;
     padding: 0;
     border-radius: 20px !important;
+    background-color:#fff0;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
 }
 
 .tab-bar .select {
     background-color: var(--md-sys-color-primary-container) !important;
     color: var(--md-sys-color-primary) !important;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     font-weight: 600;
 }
 
@@ -200,6 +204,7 @@ button {
     outline-offset: 3px;
     /* border: solid #ccc 0.1px; */
     margin: 8px;
+    background-color: var(--md-sys-color-primary-container);
 }
 .model-item-new:hover {
     outline: solid var(--md-sys-color-primary) 2px;
@@ -210,6 +215,14 @@ button {
     position: absolute;
     height: 100%;
     margin-left: -20px;
+}
+
+.model-item-new i{
+    position: absolute;
+    height: 100%;
+    font-size: 40px;
+    margin: 30px;
+    color: #7777;
 }
 
 .model-item-new .desc {
@@ -359,4 +372,10 @@ button {
     height: 0.5px;
     margin-left: 5%;
     background-color: #dddd;
+}
+
+
+
+.mdui-slider-discrete .mdui-slider-thumb span {
+    top: 0 !important;
 }

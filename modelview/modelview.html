@@ -18,6 +18,8 @@
         <script src="../node_modules/vue/dist/vue.js"></script>
         <script src="../node_modules/three/build/three.js"></script>
         <script src="../node_modules/three/examples/js/loaders/GLTFLoader.js"></script>
+        <script src="../node_modules/three/examples/js/loaders/FBXLoader.js"></script>
+        <script src="../node_modules/three/examples/js/libs/fflate.min.js"></script>
         <script src="../node_modules/three/examples/js/controls/OrbitControls.js"></script>
         <script src="../node_modules/lil-gui/dist/lil-gui.umd.min.js"></script>
         <script src="../node_modules/@pixiv/three-vrm/lib/three-vrm.js"></script>
@@ -79,6 +81,60 @@
             <div
                 style="
                     position: fixed;
+                    left: calc(30.9vw - 60px);
+                    bottom: 10px;
+                    width: 120px;
+                    height: 40px;
+                    border-radius: 20px;
+                    background-color: #fffe;
+                "
+                class="mdui-shadow-5"
+                v-show="!loaded"
+            >
+                <div
+                    class="mdui-spinner mdui-spinner-colorful"
+                    style="margin: 10px 15px; width: 20px; height: 20px"
+                ></div>
+                <span style="line-height: 40px; position: fixed; color: #555"
+                    >loading</span
+                >
+            </div>
+            <div
+                style="
+                    position: fixed;
+                    left: calc(30.9vw - 60px);
+                    bottom: 10px;
+                    width: 120px;
+                    height: 40px;
+                    border-radius: 20px;
+                    background-color: #fffe;
+                "
+                class="mdui-shadow-5"
+                v-show="failed"
+            >
+                <div
+                    style="
+                        margin: 8px 15px;
+                        width: 20px;
+                        height: 20px;
+                        color: rgb(172, 39, 39);
+                        display: inline-block;
+                    "
+                >
+                    <i class="mdui-icon material-icons">error_outline</i>
+                </div>
+                <span
+                    style="
+                        line-height: 40px;
+                        position: fixed;
+                        color: rgb(172, 39, 39);
+                    "
+                    >Error!</span
+                >
+            </div>
+            <div
+                style="
+                    position: fixed;
                     left: 61.8vw;
                     top: 0px;
                     height: 100vh;
@@ -130,7 +186,9 @@
                                 >{{model.type=='vrm'?languages.modelVierer.fullSupport:languages.modelVierer.partialSupport}}</span
                             >
                         </div> -->
-                        <div style="width: 100%; margin-top: 20px;display: none;">
+                        <div
+                            style="width: 100%; margin-top: 20px; display: none"
+                        >
                             <div
                                 style="
                                     width: 30vw;
@@ -296,7 +354,9 @@
                     bones: [],
                     showOpts: false,
                     languages: languages[globalSettings.ui.language],
-                    settings:globalSettings
+                    settings: globalSettings,
+                    loaded: false,
+                    failed: false,
                 },
             });
 
@@ -327,6 +387,8 @@
                 alpha: true,
                 antialias: true,
             });
+            renderer.shadowMapEnabled = true;
+
             renderer.setSize(
                 document.querySelector("#model").clientWidth,
                 document.querySelector("#model").clientHeight
@@ -374,8 +436,21 @@
 
             var skeletonHelper;
 
+            const light = new THREE.AmbientLight(0xffffff, 0.8);
+            light.position.set(10.0, 10.0, 10.0).normalize();
+            scene.add(light);
+            var light2 = new THREE.DirectionalLight(0xffffff, 1);
+            light2.position.set(0, 3, 2);
+            light2.castShadow = true;
+            scene.add(light2);
+
             // gltf and vrm
-            const loader = new THREE.GLTFLoader();
+            var loader = null;
+            if (args.model.type == "fbx") {
+                loader = new THREE.FBXLoader();
+            } else {
+                loader = new THREE.GLTFLoader();
+            }
             loader.crossOrigin = "anonymous";
             loader.load(
                 // URL of the VRM you want to load
@@ -383,49 +458,56 @@
 
                 // called when the resource is loaded
                 (gltf) => {
-                    skeletonHelper = new THREE.SkeletonHelper(gltf.scene);
+                    var model = null;
+                    if (args.model.type == "fbx") {
+                        model = gltf;
+                        gltf.scale.set(0.01, 0.01, 0.01);
+                    } else {
+                        model = gltf.scene;
+                    }
+                    skeletonHelper = new THREE.SkeletonHelper(model);
                     skeletonHelper.visible = false;
                     scene.add(skeletonHelper);
 
                     if (args.model.type == "vrm") {
-                        const light = new THREE.PointLight(0xffffff);
-                        light.position.set(1, 1, 1).normalize();
-                        scene.add(light);
+                        // const light = new THREE.PointLight(0xffffff);
+                        // light.position.set(1, 1, 1).normalize();
+                        // scene.add(light);
                         // calling these functions greatly improves the performance
-                        THREE.VRMUtils.removeUnnecessaryVertices(gltf.scene);
-                        THREE.VRMUtils.removeUnnecessaryJoints(gltf.scene);
+                        THREE.VRMUtils.removeUnnecessaryVertices(model);
+                        THREE.VRMUtils.removeUnnecessaryJoints(model);
 
                         // generate VRM instance from gltf
                         THREE.VRM.from(gltf).then((vrm) => {
                             console.log(vrm);
                             scene.add(vrm.scene);
+                            app.loaded = true;
 
                             vrm.humanoid.getBoneNode(
                                 THREE.VRMSchema.HumanoidBoneName.Hips
                             ).rotation.y = Math.PI;
                         });
                     } else {
-                        console.log(gltf);
-                        scene.add(gltf.scene);
-                        scene.add(
-                            new THREE.HemisphereLight(0xffffff, 0x333333)
-                        );
-                        // light
-                        // light
-                        for (var i of [-2.0, 2.0])
-                            for (var j of [-2.0, 2.0])
-                                for (var k of [-2.0, 2.0]) {
-                                    const light = new THREE.PointLight(
-                                        0x888888
-                                    );
-                                    light.position.set(i, j, k).normalize();
-                                    scene.add(light);
-                                }
-                        const light = new THREE.HemisphereLight(0xffffff);
-                        light.position.set(10.0, 10.0, 10.0).normalize();
-                        scene.add(light);
+                        console.log(model);
+                        model.castShadow = true;
+                        scene.add(model);
+                        // for (var i of [-2.0, 680.0])
+                        //     for (var j of [-2.0, 680.0])
+                        //         for (var k of [-2.0, 680.0]) {
+                        //             const light = new THREE.PointLight(
+                        //                 0xffffff
+                        //             );
+                        //             light.position.set(i, j, k).normalize();
+                        //             scene.add(light);
+                        //         }
+
+                        app.loaded = true;
+                        // var light3 = new THREE.SpotLight(0xffffff,1);
+                        // light3.position.set(0,2,2);
+                        // scene.add(light3);
                         // skeletonHelper.bones[0].rotation.y = Math.PI;
                     }
+
                     setupDatGui();
                     var bones = [];
                     for (var i in skeletonHelper.bones)
@@ -446,11 +528,15 @@
                     ),
 
                 // called when loading has errors
-                (error) => console.error(error)
+                (error) => {
+                    app.failed = app.loaded = true;
+                    console.log(error);
+                }
             );
 
             // helpers
             const gridHelper = new THREE.GridHelper(10, 10);
+            gridHelper.receiveShadow = true;
             scene.add(gridHelper);
 
             const axesHelper = new THREE.AxesHelper(5);

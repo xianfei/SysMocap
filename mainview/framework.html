@@ -234,7 +234,8 @@
                         style="transform: scaleY(0)"
                     >
                         <div id="btnopen" class="carditem">
-                            <i class="mdui-icon material-icons cardicon">open_in_new</i
+                            <i class="mdui-icon material-icons cardicon"
+                                >open_in_new</i
                             >{{language.tabModelLib.open}}
                         </div>
                         <div class="line2"></div>
@@ -338,9 +339,15 @@
                             v-if="settings.ui.useNewModelUI"
                             class="model-item-new user-model"
                             v-for="model in userModels"
-                            v-on:click="require('electron').ipcRenderer.send('openModelViewer', {model:model,backgroundColor:$event.currentTarget.style.getPropertyValue('--md-sys-color-primary-container'),color:$event.currentTarget.style.getPropertyValue('--md-sys-color-primary'),textColor:$event.currentTarget.style.getPropertyValue('--md-sys-color-on-primary-container'),useGlass:settings.ui.useGlass});"
+                            v-on:click="require('electron').ipcRenderer.send('openModelViewer', {model:model,backgroundColor:$event.currentTarget.style.getPropertyValue('--md-sys-color-primary-container')?$event.currentTarget.style.getPropertyValue('--md-sys-color-primary-container'):document.body.style.getPropertyValue('--md-sys-color-primary-container'),color:$event.currentTarget.style.getPropertyValue('--md-sys-color-primary')?$event.currentTarget.style.getPropertyValue('--md-sys-color-primary'):document.body.style.getPropertyValue('--md-sys-color-primary'),textColor:$event.currentTarget.style.getPropertyValue('--md-sys-color-on-primary-container')?$event.currentTarget.style.getPropertyValue('--md-sys-color-on-primary-container'):document.body.style.getPropertyValue('--md-sys-color-on-primary-container'),useGlass:settings.ui.useGlass});"
                         >
                             <img class="my-img" v-bind:src="model.picBg" />
+                            <i
+                                class="mdui-icon material-icons"
+                                v-show="model.picBg==''"
+                            >
+                                person_outline</i
+                            >
                             <div class="desc">
                                 <h2>{{model.name}}</h2>
                                 <div class="type">
@@ -368,7 +375,7 @@
                             v-if="settings.ui.useNewModelUI"
                             class="model-item-new buildin-model"
                             v-for="model in builtIn"
-                            v-on:click="require('electron').ipcRenderer.send('openModelViewer', {model:model,backgroundColor:$event.currentTarget.style.getPropertyValue('--md-sys-color-primary-container'),color:$event.currentTarget.style.getPropertyValue('--md-sys-color-primary'),textColor:$event.currentTarget.style.getPropertyValue('--md-sys-color-on-primary-container'),useGlass:settings.ui.useGlass});"
+                            v-on:click="require('electron').ipcRenderer.send('openModelViewer', {model:model,backgroundColor:$event.currentTarget.style.getPropertyValue('--md-sys-color-primary-container')?$event.currentTarget.style.getPropertyValue('--md-sys-color-primary-container'):document.body.style.getPropertyValue('--md-sys-color-primary-container'),color:$event.currentTarget.style.getPropertyValue('--md-sys-color-primary')?$event.currentTarget.style.getPropertyValue('--md-sys-color-primary'):document.body.style.getPropertyValue('--md-sys-color-primary'),textColor:$event.currentTarget.style.getPropertyValue('--md-sys-color-on-primary-container')?$event.currentTarget.style.getPropertyValue('--md-sys-color-on-primary-container'):document.body.style.getPropertyValue('--md-sys-color-on-primary-container'),useGlass:settings.ui.useGlass});"
                         >
                             <img class="my-img" v-bind:src="model.picBg" />
                             <div class="desc">
@@ -692,10 +699,10 @@
                         <label class="mdui-switch">
                             <span
                                 >{{language.tabSettings.forward.supportForWebXR}}<i
-                                class="mdui-icon material-icons"
-                                mdui-tooltip="{content: window.sysmocapApp.language.tabSettings.forward.webXRtips}"
-                                >help_outline</i
-                            ></span
+                                    class="mdui-icon material-icons"
+                                    mdui-tooltip="{content: window.sysmocapApp.language.tabSettings.forward.webXRtips}"
+                                    >help_outline</i
+                                ></span
                             >
                             <input
                                 type="checkbox"
