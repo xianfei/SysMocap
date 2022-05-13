@@ -45,7 +45,7 @@ jobs:
           npm run package:win64
           npm run zip:win64
         env:
-          GH_TOKEN: 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
+          GH_TOKEN: ${{ secrets.SECRET_TOKEN }}
       
       - name: build mac app
         if: matrix.os == 'macos-latest'
@@ -53,7 +53,7 @@ jobs:
           npm run package:mac64
           npm run dmg
         env:
-          GH_TOKEN: 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
+          GH_TOKEN: ${{ secrets.SECRET_TOKEN }}
 
       # step6: upload artifacts
       - name: upload artifacts

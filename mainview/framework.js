@@ -649,7 +649,6 @@ window.startMocap = async function (e) {
             remote.systemPreferences.getMediaAccessStatus("camera") !==
             "granted"
         ) {
-            // window.mdui.snackbar('正在申请摄像头权限')
             if (!(await remote.systemPreferences.askForMediaAccess("camera"))) {
                 alert("需要授予摄像头使用权限");
                 return;
