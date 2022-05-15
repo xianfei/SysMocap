@@ -77,19 +77,69 @@
         "type": "glb",
         "pic": "../models/8.jpg",
         "picBg": "../models/img/IceDwen.png",
-        "binding":{
-            "Hips":"Root",
-            "Neck":"Neck",
-            "Chest":"Chest",
-            "Spine":"Spine",
-            "RightUpperArm":"RightUpperArm",
-            "RightLowerArm":"RightLowerArm",
-            "LeftUpperArm":"LeftUpperArm",
-            "LeftLowerArm":"LeftLowerArm",
-            "LeftUpperLeg":"LeftUpperLeg",
-            "LeftLowerLeg":"LeftLowerLeg",
-            "RightUpperLeg":"RightUpperLeg",
-            "RightLowerLeg":"RightLowerLeg"
+        "cameraTarget":{
+            "x":0.5,
+            "y":8.5,
+            "z":-1
+        },
+        "cameraRotation":{
+            "x": 3.0748256625542174,
+            "y": 0.6561263858143132,
+            "z": -3.1008232787709633
+        },
+        "cameraPosition":{
+            "x": 3.0126227828289567,
+            "y": 8.282267793698868,
+            "z": -4.256228398745762
+        },
+        "init":{
+            "RightUpperArm": {"x":0.02513,"y":0.17592,"z":1.57079},
+            "LeftUpperArm": {"x":0.02513,"y":0.10053,"z":-1.52053}
+        },
+        "binding": {
+            "Hips": {
+                "name": "Root",
+                "func": { "fx": "-x", "fy": "z", "fz": "-y" }
+            },
+            "Neck": {
+                "name": "Head",
+                "func": { "fx": "-x", "fy": "y", "fz": "-z" }
+            },
+            "Chest": {
+                "name": "None"
+            },
+            "Spine": {
+                "name": "Body",
+                "func": { "fx": "-x", "fy": "y", "fz": "-z" }
+            },
+            "RightUpperArm": {
+                "name": "Arm-R",
+                "func": { "fx": "-x", "fy": "y", "fz": "-z" }
+            },
+            "RightLowerArm": {
+                "name": "None"
+            },
+            "LeftUpperArm": {
+                "name": "Arm-L",
+                "func": { "fx": "-x", "fy": "y", "fz": "-z" }
+            },
+            "LeftLowerArm": {
+                "name": "None"
+            },
+            "LeftUpperLeg": {
+                "name": "Leg-L",
+                "func": { "fx": "-x", "fy": "y", "fz": "-z" }
+            },
+            "LeftLowerLeg": {
+                "name": "None"
+            },
+            "RightUpperLeg": {
+                "name": "Leg-R",
+                "func": { "fx": "-x", "fy": "y", "fz": "-z" }
+            },
+            "RightLowerLeg": {
+                "name": "None"
+            }
         }
     }
 ]

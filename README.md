@@ -2,11 +2,13 @@
 
 ## SysMocap
 
+<img src="https://github.com/xianfei/SysMocap/actions/workflows/main.yml/badge.svg">  
+
 A cross-platform real-time video-driven motion capture and 3D virtual character rendering system for VTuber/Live/AR/VR.
 
 Available for Windows, macOS (packaged) & Linux (source code only)
 
-<img src="https://github.com/xianfei/SysMocap/actions/workflows/main.yml/badge.svg">  [Download Now](https://github.com/xianfei/SysMocap/releases) (zipped, without installation)
+[Download Now](https://github.com/xianfei/SysMocap/releases) (zipped, without installation)
 
 (This is a multi-language software, including English. )
 
@@ -42,9 +44,7 @@ https://user-images.githubusercontent.com/8101613/167257906-596919a5-4c0e-4795-8
 
 ### Bugs
 
-1. Only support VRM file now.
-
-2. On Windows platform, "Use Discrete Graphics on Dual GPU Laptop" and "Mocap Data Forward" can not use at same time.
+1. On Windows platform, "Use Discrete Graphics on Dual GPU Laptop" and "Mocap Data Forward" can not use at same time.
 
 ### Notice
 
@@ -90,7 +90,7 @@ https://user-images.githubusercontent.com/8101613/167257906-596919a5-4c0e-4795-8
 
 - [x] Support rendering glTF/glb model
 
-- [ ] Support binding when bones' name is non-uniformed
+- [x] Support binding when bones' name is non-uniformed
 
 - [x] Model library add user's custom 3D model
 

@@ -112,12 +112,10 @@ function animate() {
 }
 animate();
 
-// Import Character VRM
-const loader = new THREE.GLTFLoader();
-loader.crossOrigin = "anonymous";
-
 var modelObj = JSON.parse(localStorage.getItem("modelInfo"));
 var modelPath = modelObj.path;
+
+
 
 var fileType = modelPath
     .substring(modelPath.lastIndexOf(".") + 1)
@@ -135,11 +133,40 @@ if (ipcRenderer)
     );
 // my_server.startServer(parseInt(globalSettings.forward.port), modelPath);
 
+const light = new THREE.AmbientLight(0xffffff, 0.8);
+light.position.set(10.0, 10.0, -10.0).normalize();
+scene.add(light);
+var light2 = new THREE.DirectionalLight(0xffffff, 1);
+light2.position.set(0, 3, -2);
+light2.castShadow = true;
+scene.add(light2);
+
+var initRotation = {};
+
+
 // Import model from URL, add your own model here
+var loader = null;
+if (fileType == "fbx") {
+    loader = new THREE.FBXLoader();
+} else {
+    loader = new THREE.GLTFLoader();
+}
+// Import Character
+loader.crossOrigin = "anonymous";
 loader.load(
     modelPath,
 
     (gltf) => {
+        var model = null;
+        if (fileType == "fbx") {
+            model = gltf;
+            gltf.scale.set(0.01, 0.01, 0.01);
+        } else {
+            model = gltf.scene;
+        }
+        skeletonHelper = new THREE.SkeletonHelper(model);
+        skeletonHelper.visible = false;
+        scene.add(skeletonHelper);
         if (fileType == "vrm") {
             // calling these functions greatly improves the performance
             THREE.VRMUtils.removeUnnecessaryVertices(gltf.scene);
@@ -147,21 +174,47 @@ loader.load(
 
             THREE.VRM.from(gltf).then((vrm) => {
                 scene.add(vrm.scene);
-                const light = new THREE.DirectionalLight(0xffffff);
-                light.position.set(1.0, 1.0, 1.0).normalize();
-                scene.add(light);
                 currentVrm = vrm;
                 currentVrm.scene.rotation.y = Math.PI; // Rotate model 180deg to face camera
             });
         } else {
             // for glb files
-            skeletonHelper = new THREE.SkeletonHelper(gltf.scene);
-            scene.add(gltf.scene);
-            scene.add(new THREE.HemisphereLight(0xcccccc, 0xffffff));
-            const light = new THREE.DirectionalLight(0x555555);
-            light.position.set(1.0, 1.0, 1.0).normalize();
-            scene.add(light);
-            skeletonHelper.bones[0].rotation.y = Math.PI; // Rotate model 180deg to face camera
+            scene.add(model);
+            model.rotation.y = Math.PI; // Rotate model 180deg to face camera
+            var rot = {
+                x: 0,
+                y: 0,
+                z: -3.1129221599796764,
+            };
+            for (var i in rot) orbitCamera.rotation[i] = rot[i];
+            var pos = {
+                x: -0,
+                y: 0.5922529898344698,
+                z: -1.4448572419883419,
+            };
+            for (var i in pos) orbitCamera.position[i] = pos[i];
+
+            orbitControls.target.y = 0.5;
+            orbitControls.update();
+
+            if (modelObj.cameraTarget) {
+                orbitControls.target.set(
+                    modelObj.cameraTarget.x,
+                    modelObj.cameraTarget.y,
+                    modelObj.cameraTarget.z
+                );
+                orbitControls.update();
+            }
+            if(modelObj.cameraPosition){
+                for (var i in modelObj.cameraPosition) orbitCamera.position[i] = modelObj.cameraPosition[i];
+            }
+            if(modelObj.cameraRotation){
+                for (var i in modelObj.cameraRotation) orbitCamera.rotation[i] = modelObj.cameraRotation[i];
+            }
+
+            if(modelObj.init){
+                initRotation = modelObj.init;
+            }
         }
     },
 
@@ -198,13 +251,31 @@ const rigRotation = (
         let quaternion = new THREE.Quaternion().setFromEuler(euler);
         Part.quaternion.slerp(quaternion, lerpAmount); // interpolate
     } else if (skeletonHelper) {
-        name = modelObj.binding[name]; // convert name with model json binding info
+        var skname = modelObj.binding[name].name; // convert name with model json binding info
         // find bone in bones by name
-        var b = skeletonHelper.bones.find((bone) => bone.name == name);
+        var b = skeletonHelper.bones.find((bone) => bone.name == skname);
+
         if (b) {
-            b.rotation.x = rotation.x * dampener;
-            b.rotation.y = rotation.y * dampener;
-            b.rotation.z = rotation.z * dampener;
+            if (!initRotation[name]) {
+                initRotation[name] = {
+                    x: b.rotation.x,
+                    y: b.rotation.y,
+                    z: b.rotation.z,
+                };
+            }
+            var bindingFunc = modelObj.binding[name].func;
+            const x = rotation.x * dampener;
+            const y = rotation.y * dampener;
+            const z = rotation.z * dampener;
+
+            let euler = new THREE.Euler(
+                initRotation[name].x + eval(bindingFunc.fx),
+                initRotation[name].y + eval(bindingFunc.fy),
+                initRotation[name].z + eval(bindingFunc.fz),
+                rotation.rotationOrder || "XYZ"
+            );
+            let quaternion = new THREE.Quaternion().setFromEuler(euler);
+            b.quaternion.slerp(quaternion, lerpAmount); // interpolate
         } else {
             console.log("Can not found bone " + name);
         }
@@ -232,13 +303,16 @@ const rigPosition = (
         );
         Part.position.lerp(vector, lerpAmount); // interpolate
     } else if (skeletonHelper) {
-        name = modelObj.binding[name]; // convert name with model json binding info
+        name = modelObj.binding[name].name; // convert name with model json binding info
         // find bone in bones by name
         var b = skeletonHelper.bones.find((bone) => bone.name == name);
         if (b) {
-            b.position.x = position.x * dampener;
-            b.position.y = position.y * dampener;
-            b.position.z = position.z * dampener;
+            let vector = new THREE.Vector3(
+                position.x * dampener,
+                position.y * dampener,
+                position.z * dampener
+            );
+            b.position.lerp(vector, lerpAmount); // interpolate
         } else {
             console.log("Can not found bone " + name);
         }
