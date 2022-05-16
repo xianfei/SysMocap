@@ -12,6 +12,57 @@ var ipcRenderer = null;
 var remote = null;
 var platform = "web";
 
+var mixamorig = {
+    "Hips": {
+        "name": "mixamorigHips",
+        "func": { "fx": "-x", "fy": "y", "fz": "-z" }
+    },
+    "Neck": {
+        "name": "mixamorigNeck",
+        "func": { "fx": "-x", "fy": "y", "fz": "-z" }
+    },
+    "Chest": {
+        "name": "mixamorigSpine2",
+        "func": { "fx": "-x", "fy": "y", "fz": "-z" }
+    },
+    "Spine": {
+        "name": "mixamorigSpine",
+        "func": { "fx": "-x", "fy": "y", "fz": "-z" }
+    },
+    "RightUpperArm": {
+        "name": "mixamorigRightArm",
+        "func": { "fx": "-z", "fy": "x", "fz": "-y" }
+    },
+    "RightLowerArm": {
+        "name": "mixamorigRightForeArm",
+        "func": { "fx": "-z", "fy": "x", "fz": "-y" }
+    },
+    "LeftUpperArm": {
+        "name": "mixamorigLeftArm",
+        "func": { "fx": "z", "fy": "-x", "fz": "-y" }
+    },
+    "LeftLowerArm": {
+        "name": "mixamorigLeftForeArm",
+        "func": { "fx": "z", "fy": "-x", "fz": "-y" }
+    },
+    "LeftUpperLeg": {
+        "name": "mixamorigLeftUpLeg",
+        "func": { "fx": "-x", "fy": "y", "fz": "-z" }
+    },
+    "LeftLowerLeg": {
+        "name": "mixamorigLeftLeg",
+        "func": { "fx": "-x", "fy": "y", "fz": "-z" }
+    },
+    "RightUpperLeg": {
+        "name": "mixamorigRightUpLeg",
+        "func": { "fx": "-x", "fy": "y", "fz": "-z" }
+    },
+    "RightLowerLeg": {
+        "name": "mixamorigRightLeg",
+        "func": { "fx": "-x", "fy": "y", "fz": "-z" }
+    }
+}
+
 var darkMode = false;
 
 import {
@@ -316,7 +367,8 @@ if (typeof require != "undefined") {
 
                 document.getElementById("btnshow").onclick = function () {
                     var path = findModelByName(target.querySelector("h2").innerText).path
-                    shell.showItemInFolder('file://'+path)
+                    if(platform!=='darwin')shell.showItemInFolder('file://'+path)
+                    else shell.openExternal('file://'+path.substr(0,path.lastIndexOf('/')))
                     rightclick.onclick();
                 }
             };
@@ -366,6 +418,7 @@ if (typeof require != "undefined") {
             picBg: app.modelImporterImg,
             path: app.modelImporterPath,
             accessories: {},
+            binding:app.modelImporterType=='fbx'?mixamorig:{}
         };
         addUserModels(model);
         // app.userModels.push(model);

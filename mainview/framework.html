@@ -551,7 +551,24 @@
                         onclick="ipcRenderer.send('openDocument')"
                         v-show="platform!=='web'"
                     >
+                    <i
+                            class="mdui-icon material-icons"
+                            style="margin-right: 10px; margin-top: -3px"
+                            >library_books</i
+                        >
                         {{language.tabSettings.document.openDoc}}
+                    </div>
+                    <div
+                        class="settings-item"
+                        onclick="ipcRenderer.send('openPDF','../pdfs/bylw.pdf')"
+                        v-show="platform!=='web'"
+                    >
+                        <i
+                            class="mdui-icon material-icons"
+                            style="margin-right: 10px; margin-top: -3px"
+                            >school</i
+                        >
+                        阅读毕业设计论文
                     </div>
                     <!-- Setting Tab: UI -->
                     <h1 class="mdui-text-color-theme">
@@ -576,6 +593,11 @@
                         </div>
                     </div>
                     <div class="settings-item">
+                        <i
+                            class="mdui-icon material-icons"
+                            style="margin-right: 10px; margin-top: -3px"
+                            >language</i
+                        >
                         <span>{{language.tabSettings.ui.language}}</span>
                         <select
                             v-model="settings.ui.language"
@@ -589,7 +611,12 @@
                     </div>
                     <div class="settings-item" v-show="platform!=='web'">
                         <label class="mdui-switch">
-                            <span>{{language.tabSettings.ui.useGlass}}</span>
+                            
+                            <span><i
+                                class="mdui-icon material-icons"
+                                style="margin-right: 10px; margin-top: -3px"
+                                >layers</i
+                            >{{language.tabSettings.ui.useGlass}}</span>
                             <input
                                 type="checkbox"
                                 v-model="settings.ui.useGlass"
@@ -613,8 +640,13 @@
                     </h1>
                     <div class="settings-item">
                         <label class="mdui-switch">
+                            
                             <span
-                                >{{language.tabSettings.preview.showSketelonOnInput}}</span
+                                ><i
+                                class="mdui-icon material-icons"
+                                style="margin-right: 10px; margin-top: -3px"
+                                >directions_run</i
+                            >{{language.tabSettings.preview.showSketelonOnInput}}</span
                             >
                             <input
                                 type="checkbox"
@@ -626,7 +658,11 @@
                     <div class="settings-item">
                         <label class="mdui-switch">
                             <span
-                                >{{language.tabSettings.preview.mirroringWhenCamera}}</span
+                                ><i
+                                class="mdui-icon material-icons"
+                                style="margin-right: 10px; margin-top: -3px"
+                                >switch_camera</i
+                            >{{language.tabSettings.preview.mirroringWhenCamera}}</span
                             >
                             <input
                                 type="checkbox"
@@ -638,7 +674,11 @@
                     <div class="settings-item">
                         <label class="mdui-switch">
                             <span
-                                >{{language.tabSettings.preview.mirroringWhenVideoFile}}</span
+                                ><i
+                                class="mdui-icon material-icons"
+                                style="margin-right: 10px; margin-top: -3px"
+                                >switch_video</i
+                            >{{language.tabSettings.preview.mirroringWhenVideoFile}}</span
                             >
                             <input
                                 type="checkbox"
@@ -654,7 +694,11 @@
                     <div class="settings-item" v-show="platform!=='web'">
                         <label class="mdui-switch">
                             <span
-                                >{{language.tabSettings.forward.enableForwarding}}</span
+                                ><i
+                                class="mdui-icon material-icons"
+                                style="margin-right: 10px; margin-top: -3px"
+                                >wifi_tethering</i
+                            >{{language.tabSettings.forward.enableForwarding}}</span
                             >
                             <input
                                 type="checkbox"
@@ -945,7 +989,11 @@
                     <div class="settings-item" v-show="platform!=='web'">
                         <label class="mdui-switch">
                             <span
-                                >{{language.tabSettings.dev.allowDevTools}}</span
+                                ><i
+                                class="mdui-icon material-icons"
+                                style="margin-right: 10px; margin-top: -3px"
+                                >code</i
+                            >{{language.tabSettings.dev.allowDevTools}}</span
                             >
                             <input
                                 type="checkbox"
@@ -970,7 +1018,11 @@
                         class="settings-item"
                         onclick="ipcRenderer.send('openGpuInfo')"
                         v-show="platform!=='web'"
-                    >
+                    ><i
+                    class="mdui-icon material-icons"
+                    style="margin-right: 10px; margin-top: -3px"
+                    >open_in_new</i
+                >
                         {{language.tabSettings.dev.showGpuInfo}}
                     </div>
                 </div>

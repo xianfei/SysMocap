@@ -3,7 +3,6 @@
         "name": "Ashtra",
         "path": "../models/test.vrm",
         "type": "vrm",
-        "pic": "../models/3.jpg",
         "picBg": "../models/img/Ashtra.png",
         "accessories":{
             "Shoes":"Bodybaked_4",
@@ -14,7 +13,6 @@
         "name": "Hanako",
         "path": "../models/three-vrm-girl.vrm",
         "type": "vrm",
-        "pic": "../models/1.jpg",
         "picBg": "../models/img/Hanako.png",
         "accessories":{
             "Shoes":"Shoes",
@@ -25,7 +23,6 @@
         "name": "VAL",
         "path": "../models/VAL.vrm",
         "type": "vrm",
-        "pic": "../models/4.jpg",
         "picBg": "../models/img/VAL.png",
         "accessories":{
             "Ponytail":"Ponytail",
@@ -40,7 +37,6 @@
         "name": "Sendagaya",
         "path": "../models/shibu_sendagaya.vrm",
         "type": "vrm",
-        "pic": "../models/5.jpg",
         "picBg": "../models/img/Sendagaya.png",
         "accessories":{
             "Shoes":"Bodybaked_3",
@@ -52,7 +48,6 @@
         "name": "Amaris",
         "path": "../models/SampleA.vrm",
         "type": "vrm",
-        "pic": "../models/6.jpg",
         "picBg": "../models/img/Amaris.png",
         "accessories":{
             "Shoes":"Bodybaked_6",
@@ -64,7 +59,6 @@
         "name": "Natsuki",
         "path": "../models/SampleB.vrm",
         "type": "vrm",
-        "pic": "../models/2.jpg",
         "picBg": "../models/img/Natsuki.png",
         "accessories":{
             "Shoes":"Bodybaked_6",
@@ -75,7 +69,6 @@
         "name": "IceDwen",
         "path": "../models/bdd.glb",
         "type": "glb",
-        "pic": "../models/8.jpg",
         "picBg": "../models/img/IceDwen.png",
         "cameraTarget":{
             "x":0.5,
@@ -139,6 +132,120 @@
             },
             "RightLowerLeg": {
                 "name": "None"
+            }
+        }
+    },
+    {
+        "name": "Mousey",
+        "type": "fbx",
+        "picBg": "../models/img/Mousey.png",
+        "path": "../models/Mousey.fbx",
+        "accessories": {},
+        "binding": {
+            "Hips": {
+                "name": "mixamorigHips",
+                "func": { "fx": "-x", "fy": "y", "fz": "-z" }
+            },
+            "Neck": {
+                "name": "mixamorigNeck",
+                "func": { "fx": "-x", "fy": "y", "fz": "-z" }
+            },
+            "Chest": {
+                "name": "mixamorigSpine2",
+                "func": { "fx": "-x", "fy": "y", "fz": "-z" }
+            },
+            "Spine": {
+                "name": "mixamorigSpine",
+                "func": { "fx": "-x", "fy": "y", "fz": "-z" }
+            },
+            "RightUpperArm": {
+                "name": "mixamorigRightArm",
+                "func": { "fx": "-z", "fy": "x", "fz": "-y" }
+            },
+            "RightLowerArm": {
+                "name": "mixamorigRightForeArm",
+                "func": { "fx": "-z", "fy": "x", "fz": "-y" }
+            },
+            "LeftUpperArm": {
+                "name": "mixamorigLeftArm",
+                "func": { "fx": "z", "fy": "-x", "fz": "-y" }
+            },
+            "LeftLowerArm": {
+                "name": "mixamorigLeftForeArm",
+                "func": { "fx": "z", "fy": "-x", "fz": "-y" }
+            },
+            "LeftUpperLeg": {
+                "name": "mixamorigLeftUpLeg",
+                "func": { "fx": "-x", "fy": "y", "fz": "-z" }
+            },
+            "LeftLowerLeg": {
+                "name": "mixamorigLeftLeg",
+                "func": { "fx": "-x", "fy": "y", "fz": "-z" }
+            },
+            "RightUpperLeg": {
+                "name": "mixamorigRightUpLeg",
+                "func": { "fx": "-x", "fy": "y", "fz": "-z" }
+            },
+            "RightLowerLeg": {
+                "name": "mixamorigRightLeg",
+                "func": { "fx": "-x", "fy": "y", "fz": "-z" }
+            }
+        }
+    },
+    {
+        "name": "Vanguard",
+        "type": "fbx",
+        "picBg": "../models/img/Vanguard.png",
+        "path": "../models/Vanguard.fbx",
+        "accessories": {},
+        "binding": {
+            "Hips": {
+                "name": "mixamorigHips",
+                "func": { "fx": "-x", "fy": "y", "fz": "-z" }
+            },
+            "Neck": {
+                "name": "mixamorigNeck",
+                "func": { "fx": "-x", "fy": "y", "fz": "-z" }
+            },
+            "Chest": {
+                "name": "mixamorigSpine2",
+                "func": { "fx": "-x", "fy": "y", "fz": "-z" }
+            },
+            "Spine": {
+                "name": "mixamorigSpine",
+                "func": { "fx": "-x", "fy": "y", "fz": "-z" }
+            },
+            "RightUpperArm": {
+                "name": "mixamorigRightArm",
+                "func": { "fx": "-z", "fy": "x", "fz": "-y" }
+            },
+            "RightLowerArm": {
+                "name": "mixamorigRightForeArm",
+                "func": { "fx": "-z", "fy": "x", "fz": "-y" }
+            },
+            "LeftUpperArm": {
+                "name": "mixamorigLeftArm",
+                "func": { "fx": "z", "fy": "-x", "fz": "-y" }
+            },
+            "LeftLowerArm": {
+                "name": "mixamorigLeftForeArm",
+                "func": { "fx": "z", "fy": "-x", "fz": "-y" }
+            },
+            "LeftUpperLeg": {
+                "name": "mixamorigLeftUpLeg",
+                "func": { "fx": "-x", "fy": "y", "fz": "-z" }
+            },
+            "LeftLowerLeg": {
+                "name": "mixamorigLeftLeg",
+                "func": { "fx": "-x", "fy": "y", "fz": "-z" }
+            },
+            "RightUpperLeg": {
+                "name": "mixamorigRightUpLeg",
+                "func": { "fx": "-x", "fy": "y", "fz": "-z" }
+            },
+            "RightLowerLeg": {
+                "name": "mixamorigRightLeg",
+                "func": { "fx": "-x", "fy": "y", "fz": "-z" }
             }
         }
     }

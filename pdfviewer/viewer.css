@@ -1094,7 +1094,7 @@ html[dir="rtl"] #outerContainer.sidebarOpen #sidebarContainer {
   -webkit-overflow-scrolling: touch;
   position: absolute;
   width: 100%;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 255, 255, 0.7);
 }
 html[dir="ltr"] #sidebarContent {
   left: 0;
