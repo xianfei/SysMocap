@@ -252,6 +252,7 @@ const rigRotation = (
         Part.quaternion.slerp(quaternion, lerpAmount); // interpolate
     } else if (skeletonHelper) {
         var skname = modelObj.binding[name].name; // convert name with model json binding info
+        if(skname == "None"){return}
         // find bone in bones by name
         var b = skeletonHelper.bones.find((bone) => bone.name == skname);
 

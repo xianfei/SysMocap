@@ -39,6 +39,7 @@
     "express-ws": "^5.0.2",
     "figlet": "^1.5.2",
     "jquery": "^3.6.0",
+    "jsoneditor": "^9.7.4",
     "kalidokit": "^1.1.5",
     "lato-font": "^3.0.0",
     "lil-gui": "^0.16.1",

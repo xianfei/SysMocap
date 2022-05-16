@@ -316,7 +316,7 @@ if (typeof require != "undefined") {
 
                 document.getElementById("btnshow").onclick = function () {
                     var path = findModelByName(target.querySelector("h2").innerText).path
-                    shell.openExternal('file://'+path.substr(0,path.lastIndexOf('/')))
+                    shell.showItemInFolder('file://'+path)
                     rightclick.onclick();
                 }
             };

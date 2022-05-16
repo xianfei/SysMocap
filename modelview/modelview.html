@@ -24,6 +24,9 @@
         <script src="../node_modules/lil-gui/dist/lil-gui.umd.min.js"></script>
         <script src="../node_modules/@pixiv/three-vrm/lib/three-vrm.js"></script>
         <link rel="stylesheet" href="../fonts/fonts.css" />
+        <script src="../node_modules/jsoneditor/dist/jsoneditor.js"></script>
+        <link rel="stylesheet" href="../node_modules/jsoneditor/dist/jsoneditor.css" />
+
         <style>
             .titlebar {
                 position: fixed;
@@ -41,6 +44,10 @@
 
             ::-webkit-scrollbar {
                 display: none;
+            }
+
+            .jsoneditor {
+                border: none !important;
             }
         </style>
     </head>
@@ -147,7 +154,7 @@
                     style="width: calc(100% - 50px); margin: 25px"
                     v-bind:style="{ color: textColor}"
                 >
-                    <div v-show="!showOpts">
+                    <div v-show="!(showOpts||showOpts2)">
                         <h1
                             style="
                                 display: inline-block;
@@ -232,7 +239,7 @@
                                 v-on:click="showOpts = true"
                             >
                                 <i class="mdui-icon material-icons"
-                                    >mode_edit</i
+                                    >color_lens</i
                                 >
                                 <div
                                     class="mdui-list-item-content"
@@ -244,6 +251,20 @@
                                     <span v-show="model.type != 'vrm'"
                                         >编辑骨骼绑定信息</span
                                     >
+                                </div>
+                            </li>
+                            <li
+                                class="mdui-list-item mdui-ripple"
+                                v-on:click="showOpts2 = true"
+                            >
+                                <i class="mdui-icon material-icons"
+                                    >mode_edit</i
+                                >
+                                <div
+                                    class="mdui-list-item-content"
+                                    style="margin-left: 30px"
+                                >
+                                    编辑虚拟形象信息
                                 </div>
                             </li>
                         </ul>
@@ -261,8 +282,8 @@
                     >
                         <li
                             class="mdui-list-item mdui-ripple"
-                            v-show="showOpts"
-                            v-on:click="showOpts = false"
+                            v-show="showOpts||showOpts2"
+                            v-on:click="showOpts = showOpts2 = false"
                             style="width: 150px"
                         >
                             <i class="mdui-icon material-icons">arrow_back</i>
@@ -274,6 +295,8 @@
                             </div>
                         </li>
                     </div>
+
+                    
 
                     <div
                         v-if="model.type == 'vrm'"
@@ -330,6 +353,13 @@
                         </div>
                     </div>
                 </div>
+
+                <div
+                        v-show="showOpts2"
+                        id="jsoneditor"
+                        style="margin-top: 70px;background: #000;width: calc(100% - 1px); height: calc(100vh - 71px);"
+                    >
+                </div>
             </div>
         </div>
         <script>
@@ -353,12 +383,25 @@
                     showSketelon: false,
                     bones: [],
                     showOpts: false,
+                    showOpts2: false,
                     languages: languages[globalSettings.ui.language],
                     settings: globalSettings,
                     loaded: false,
                     failed: false,
                 },
             });
+
+            const container = document.getElementById("jsoneditor")
+        const options = {}
+        const editor = new JSONEditor(container, options)
+
+
+
+        // set json
+        
+        editor.set(args.model) 
+        editor.expandAll()
+
 
             function toggleShow(k, obj) {
                 console.log(k);
