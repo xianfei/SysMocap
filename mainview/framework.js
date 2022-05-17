@@ -212,7 +212,7 @@ if (typeof require != "undefined") {
             appVersion: remote.getGlobal("appInfo").appVersion,
             glRenderer: "Unknown",
             platform: platform,
-            userModels: userModels,
+            userModels: JSON.parse(JSON.stringify(userModels)),
             theme: {},
             document: document,
         },
@@ -422,9 +422,9 @@ if (typeof require != "undefined") {
                 document.getElementById("btnremove").style.display = "";
 
                 document.getElementById("btnremove").onclick = function () {
-                    // removeUserModels(target.querySelector("h2").innerText);
-                    console.log(target)
+                    var modelName = target.querySelector("h2").innerText
                     domBoom(target)
+                    setTimeout(() => {removeUserModels(modelName);},1000)
                     rightclick.onclick();
                 };
 
