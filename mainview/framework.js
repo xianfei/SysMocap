@@ -63,7 +63,7 @@ var mixamorig = {
     },
 };
 
-function domBoom(target) {
+function domBoom(target,onfinish) {
     target.style.animation = "shake 800ms ease-in-out";
     var targetBoundingClientRectX =
         target.getBoundingClientRect().x;
@@ -93,7 +93,7 @@ function domBoom(target) {
     document.body.appendChild(mydiv);
     
 
-    setTimeout(html2canvas(mydiv, { backgroundColor: null }).then(function (
+    setTimeout(()=>html2canvas(mydiv, { backgroundColor: null }).then(function (
         canvas
     ) {
         targetBak.style.filter = "opacity(0)";
@@ -105,7 +105,7 @@ function domBoom(target) {
         document.body.appendChild(canvas);
         var boomOption2 = {
         // 粒子间隔
-        gap: 6,
+        gap: 10,
         // 粒子大小
         radius: 3,
         // 最小水平喷射速度
@@ -118,12 +118,14 @@ function domBoom(target) {
         maxVy: 0.1,
         // speed:2,
         onBoomEnd: function () {
-            targetBak.remove();
+            targetBak.remove(); 
+            // targetBak.style.filter = '';
+            if(onfinish)onfinish();
             canvas.remove();
         },
     };
         new ParticleBoom(canvas, boomOption2);
-    }),500);
+    }),200);
 }
 
 var darkMode = false;
@@ -274,7 +276,7 @@ if (typeof require != "undefined") {
                 },
                 deep: true,
             },
-        },
+        }
     });
 
     window.sysmocapApp = app;
@@ -492,7 +494,7 @@ if (typeof require != "undefined") {
             binding: app.modelImporterType == "fbx" ? mixamorig : {},
         };
         addUserModels(model);
-        // app.userModels.push(model);
+        app.userModels.push(model);
         app.showModelImporter = 0;
         setTimeout(async () => {
             addRightClick();
