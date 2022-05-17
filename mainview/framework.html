@@ -56,7 +56,7 @@
                 >
                     <i
                         class="mdui-icon material-icons"
-                        style="font-size: 20px; margin-top: 0"
+                        style="font-size: 20px; margin-top: 0.5px"
                         >close</i
                     >
                 </button>
@@ -73,13 +73,14 @@
                     v-show="platform!=='darwin'&&platform!=='web'"
                     id="maxbtn"
                     mdui-tooltip="{content: 'Maximize'}"
+                    onclick="window.maximizeBtn()"
                 >
-                    <i
-                        class="mdui-icon material-icons"
-                        onclick="window.maximizeBtn()"
-                        style="font-size: 20px; margin-top: 0"
-                        >fullscreen</i
+                    <span
+                        class="material-icons-outlined"
+                        style="margin-left: 5px; margin-top: 0"
                     >
+                        crop_square
+                    </span>
                 </button>
                 <!-- Button for Minimize Window -->
                 <button
@@ -186,7 +187,8 @@
                         v-bind:class="tab=='model'?'mdui-btn select':'mdui-btn'"
                         onclick="sysmocapApp.tab='model'"
                     >
-                        <i class="mdui-icon material-icons">folder_open</i
+                        <span class="material-icons-outlined">
+                            account_balance </span
                         >{{language.titlebar.modelLib}}
                     </button>
                     <button
@@ -201,7 +203,7 @@
                         v-bind:class="tab=='settings'?'mdui-btn select':'mdui-btn'"
                         onclick="sysmocapApp.tab='settings'"
                     >
-                        <i class="mdui-icon material-icons">settings</i
+                        <span class="material-icons-outlined"> settings </span
                         >{{language.titlebar.settings}}
                     </button>
                 </div>
@@ -351,6 +353,23 @@
                                 <div class="type">
                                     {{model.type.toUpperCase()}}
                                 </div>
+                                <div
+                                    style="
+                                        margin-left: calc(100% - 191px);
+                                        text-align: left;
+                                        margin-top: -19px;
+                                        color: var(--md-sys-color-primary);
+                                    "
+                                    v-show="selectModel==JSON.stringify(model)"
+                                >
+                                    <span
+                                        class="material-icons-outlined"
+                                        style="font-size: 20px"
+                                        mdui-tooltip="{content: '默认使用形象'}"
+                                    >
+                                    grade
+                                    </span>
+                                </div>
                             </div>
                         </div>
                         <div
@@ -380,6 +399,23 @@
                                 <h2>{{model.name}}</h2>
                                 <div class="type">
                                     {{model.type.toUpperCase()}}
+                                </div>
+                                <div
+                                    style="
+                                        margin-left: calc(100% - 191px);
+                                        text-align: left;
+                                        margin-top: -19px;
+                                        color: var(--md-sys-color-primary);
+                                    "
+                                    v-show="selectModel==JSON.stringify(model)"
+                                >
+                                    <span
+                                        class="material-icons-outlined"
+                                        style="font-size: 20px"
+                                        mdui-tooltip="{content: '默认使用形象'}"
+                                    >
+                                    grade
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -440,7 +476,7 @@
                             id="demo-js"
                             v-model="selectModel"
                         >
-                            <optgroup label="User's">
+                            <optgroup v-bind:label="language.tabModelLib.userModel">
                                 <option
                                     v-for="model in userModels"
                                     v-bind:value="JSON.stringify(model)"
@@ -448,7 +484,7 @@
                                     {{model.name}}
                                 </option>
                             </optgroup>
-                            <optgroup label="Build-in">
+                            <optgroup v-bind:label="language.tabModelLib.buildinModel">
                                 <option
                                     v-for="model in builtIn"
                                     v-bind:value="JSON.stringify(model)"
@@ -549,11 +585,12 @@
                         onclick="ipcRenderer.send('openDocument')"
                         v-show="platform!=='web'"
                     >
-                    <i
+                        <i
                             class="mdui-icon material-icons"
                             style="margin-right: 10px; margin-top: -3px"
-                            >library_books</i
+                            >help_outline</i
                         >
+
                         {{language.tabSettings.document.openDoc}}
                     </div>
                     <div
@@ -609,12 +646,13 @@
                     </div>
                     <div class="settings-item" v-show="platform!=='web'">
                         <label class="mdui-switch">
-                            
-                            <span><i
-                                class="mdui-icon material-icons"
-                                style="margin-right: 10px; margin-top: -3px"
-                                >layers</i
-                            >{{language.tabSettings.ui.useGlass}}</span>
+                            <span
+                                ><i
+                                    class="mdui-icon material-icons"
+                                    style="margin-right: 10px; margin-top: -3px"
+                                    >layers</i
+                                >{{language.tabSettings.ui.useGlass}}</span
+                            >
                             <input
                                 type="checkbox"
                                 v-model="settings.ui.useGlass"
@@ -638,13 +676,10 @@
                     </h1>
                     <div class="settings-item">
                         <label class="mdui-switch">
-                            
                             <span
-                                ><i
-                                class="mdui-icon material-icons"
-                                style="margin-right: 10px; margin-top: -3px"
-                                >directions_run</i
-                            >{{language.tabSettings.preview.showSketelonOnInput}}</span
+                                ><span class="material-icons-outlined">
+                                    accessibility_new </span
+                                >{{language.tabSettings.preview.showSketelonOnInput}}</span
                             >
                             <input
                                 type="checkbox"
@@ -656,11 +691,9 @@
                     <div class="settings-item">
                         <label class="mdui-switch">
                             <span
-                                ><i
-                                class="mdui-icon material-icons"
-                                style="margin-right: 10px; margin-top: -3px"
-                                >switch_camera</i
-                            >{{language.tabSettings.preview.mirroringWhenCamera}}</span
+                                ><span class="material-icons-outlined">
+                                    voice_chat </span
+                                >{{language.tabSettings.preview.mirroringWhenCamera}}</span
                             >
                             <input
                                 type="checkbox"
@@ -672,11 +705,9 @@
                     <div class="settings-item">
                         <label class="mdui-switch">
                             <span
-                                ><i
-                                class="mdui-icon material-icons"
-                                style="margin-right: 10px; margin-top: -3px"
-                                >switch_video</i
-                            >{{language.tabSettings.preview.mirroringWhenVideoFile}}</span
+                                ><span class="material-icons-outlined">
+                                    mms </span
+                                >{{language.tabSettings.preview.mirroringWhenVideoFile}}</span
                             >
                             <input
                                 type="checkbox"
@@ -693,10 +724,10 @@
                         <label class="mdui-switch">
                             <span
                                 ><i
-                                class="mdui-icon material-icons"
-                                style="margin-right: 10px; margin-top: -3px"
-                                >wifi_tethering</i
-                            >{{language.tabSettings.forward.enableForwarding}}</span
+                                    class="mdui-icon material-icons"
+                                    style="margin-right: 10px; margin-top: -3px"
+                                    >wifi_tethering</i
+                                >{{language.tabSettings.forward.enableForwarding}}</span
                             >
                             <input
                                 type="checkbox"
@@ -710,7 +741,10 @@
                         v-show="settings.forward.enableForwarding"
                         onclick="mdui.prompt('','修改端口号',(s)=>{window.sysmocapApp.settings.forward.port = parseInt(s)},()=>{},{defaultValue:window.sysmocapApp.settings.forward.port})"
                     >
-                        <span>{{language.tabSettings.forward.port}}</span>
+                        <span
+                            ><span class="material-icons-outlined"> cable </span
+                            >{{language.tabSettings.forward.port}}</span
+                        >
                         <span
                             style="
                                 float: right;
@@ -740,10 +774,13 @@
                     >
                         <label class="mdui-switch">
                             <span
+                                ><span class="material-icons-outlined">
+                                    view_in_ar </span
                                 >{{language.tabSettings.forward.supportForWebXR}}<i
                                     class="mdui-icon material-icons"
                                     mdui-tooltip="{content: window.sysmocapApp.language.tabSettings.forward.webXRtips}"
-                                    >help_outline</i
+                                    style="margin-top: -2.5px; margin-left: 2px"
+                                    >info_outline</i
                                 ></span
                             >
                             <input
@@ -768,6 +805,8 @@
                                 display: -webkit-box;
                                 height: 30px;
                             "
+                            ><span class="material-icons-outlined">
+                                memory </span
                             >{{language.tabSettings.performance.gl}}
                             {{glRenderer.substr(7,glRenderer.length-8)}}</span
                         >
@@ -775,6 +814,8 @@
                     <div class="settings-item" v-show="platform==='win32'">
                         <label class="mdui-switch">
                             <span
+                                ><span class="material-icons-outlined">
+                                    storm </span
                                 >{{language.tabSettings.performance.forcedDGPU}}</span
                             >
                             <input
@@ -791,6 +832,8 @@
                     <div class="settings-item">
                         <label class="mdui-switch">
                             <span
+                                ><span class="material-icons-outlined">
+                                    directions_off </span
                                 >{{language.tabSettings.output.antialias}}</span
                             >
                             <input
@@ -802,7 +845,11 @@
                     </div>
                     <div class="settings-item">
                         <label class="mdui-switch">
-                            <span>Show FPS</span>
+                            <span
+                                ><span class="material-icons-outlined">
+                                    60fps_select </span
+                                >Show FPS</span
+                            >
                             <input
                                 type="checkbox"
                                 v-model="settings.output.showFPS"
@@ -879,7 +926,8 @@
                             <i
                                 class="mdui-icon material-icons"
                                 mdui-tooltip="{content: 'Complexity of the pose landmark model: 0, 1 or 2. Landmark accuracy as well as inference latency generally go up with the model complexity. Default to 1.'}"
-                                >help_outline</i
+                                style="margin-top: -2.5px"
+                                >info_outline</i
                             >
                         </span>
                         <label
@@ -907,7 +955,8 @@
                                 <i
                                     class="mdui-icon material-icons"
                                     mdui-tooltip="{content: 'If set to true, the solution filters pose landmarks across different input images to reduce jitter. Default to true.'}"
-                                    >help_outline</i
+                                    style="margin-top: -2.5px"
+                                    >info_outline</i
                                 >
                             </span>
                             <input type="checkbox" checked />
@@ -921,7 +970,8 @@
                                 <i
                                     class="mdui-icon material-icons"
                                     mdui-tooltip="{content: 'Whether to further refine the landmark coordinates around the eyes and lips, and output additional landmarks around the irises. Default to false.'}"
-                                    >help_outline</i
+                                    style="margin-top: -2.5px"
+                                    >info_outline</i
                                 >
                             </span>
                             <input type="checkbox" checked />
@@ -934,7 +984,8 @@
                             <i
                                 class="mdui-icon material-icons"
                                 mdui-tooltip="{content: 'Minimum confidence value ([0.0, 1.0]) from the person-detection model for the detection to be considered successful. Default to 0.5.'}"
-                                >help_outline</i
+                                style="margin-top: -2.5px"
+                                >info_outline</i
                             >
                         </span>
                         <label
@@ -960,7 +1011,8 @@
                             <i
                                 class="mdui-icon material-icons"
                                 mdui-tooltip="{content: 'Minimum confidence value ([0.0, 1.0]) from the landmark-tracking model for the pose landmarks to be considered tracked successfully, or otherwise person detection will be invoked automatically on the next input image. Setting it to a higher value can increase robustness of the solution, at the expense of a higher latency. Default to 0.5.'}"
-                                >help_outline</i
+                                style="margin-top: -2.5px"
+                                >info_outline</i
                             >
                         </span>
                         <label
@@ -988,10 +1040,10 @@
                         <label class="mdui-switch">
                             <span
                                 ><i
-                                class="mdui-icon material-icons"
-                                style="margin-right: 10px; margin-top: -3px"
-                                >code</i
-                            >{{language.tabSettings.dev.allowDevTools}}</span
+                                    class="mdui-icon material-icons"
+                                    style="margin-right: 10px; margin-top: -3px"
+                                    >code</i
+                                >{{language.tabSettings.dev.allowDevTools}}</span
                             >
                             <input
                                 type="checkbox"
@@ -1016,11 +1068,12 @@
                         class="settings-item"
                         onclick="ipcRenderer.send('openGpuInfo')"
                         v-show="platform!=='web'"
-                    ><i
-                    class="mdui-icon material-icons"
-                    style="margin-right: 10px; margin-top: -3px"
-                    >open_in_new</i
-                >
+                    >
+                        <i
+                            class="mdui-icon material-icons"
+                            style="margin-right: 10px; margin-top: -3px"
+                            >open_in_new</i
+                        >
                         {{language.tabSettings.dev.showGpuInfo}}
                     </div>
                 </div>

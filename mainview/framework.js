@@ -13,55 +13,55 @@ var remote = null;
 var platform = "web";
 
 var mixamorig = {
-    "Hips": {
-        "name": "mixamorigHips",
-        "func": { "fx": "-x", "fy": "y", "fz": "-z" }
+    Hips: {
+        name: "mixamorigHips",
+        func: { fx: "-x", fy: "y", fz: "-z" },
     },
-    "Neck": {
-        "name": "mixamorigNeck",
-        "func": { "fx": "-x", "fy": "y", "fz": "-z" }
+    Neck: {
+        name: "mixamorigNeck",
+        func: { fx: "-x", fy: "y", fz: "-z" },
     },
-    "Chest": {
-        "name": "mixamorigSpine2",
-        "func": { "fx": "-x", "fy": "y", "fz": "-z" }
+    Chest: {
+        name: "mixamorigSpine2",
+        func: { fx: "-x", fy: "y", fz: "-z" },
     },
-    "Spine": {
-        "name": "mixamorigSpine",
-        "func": { "fx": "-x", "fy": "y", "fz": "-z" }
+    Spine: {
+        name: "mixamorigSpine",
+        func: { fx: "-x", fy: "y", fz: "-z" },
     },
-    "RightUpperArm": {
-        "name": "mixamorigRightArm",
-        "func": { "fx": "-z", "fy": "x", "fz": "-y" }
+    RightUpperArm: {
+        name: "mixamorigRightArm",
+        func: { fx: "-z", fy: "x", fz: "-y" },
     },
-    "RightLowerArm": {
-        "name": "mixamorigRightForeArm",
-        "func": { "fx": "-z", "fy": "x", "fz": "-y" }
+    RightLowerArm: {
+        name: "mixamorigRightForeArm",
+        func: { fx: "-z", fy: "x", fz: "-y" },
     },
-    "LeftUpperArm": {
-        "name": "mixamorigLeftArm",
-        "func": { "fx": "z", "fy": "-x", "fz": "-y" }
+    LeftUpperArm: {
+        name: "mixamorigLeftArm",
+        func: { fx: "z", fy: "-x", fz: "-y" },
     },
-    "LeftLowerArm": {
-        "name": "mixamorigLeftForeArm",
-        "func": { "fx": "z", "fy": "-x", "fz": "-y" }
+    LeftLowerArm: {
+        name: "mixamorigLeftForeArm",
+        func: { fx: "z", fy: "-x", fz: "-y" },
     },
-    "LeftUpperLeg": {
-        "name": "mixamorigLeftUpLeg",
-        "func": { "fx": "-x", "fy": "y", "fz": "-z" }
+    LeftUpperLeg: {
+        name: "mixamorigLeftUpLeg",
+        func: { fx: "-x", fy: "y", fz: "-z" },
     },
-    "LeftLowerLeg": {
-        "name": "mixamorigLeftLeg",
-        "func": { "fx": "-x", "fy": "y", "fz": "-z" }
+    LeftLowerLeg: {
+        name: "mixamorigLeftLeg",
+        func: { fx: "-x", fy: "y", fz: "-z" },
     },
-    "RightUpperLeg": {
-        "name": "mixamorigRightUpLeg",
-        "func": { "fx": "-x", "fy": "y", "fz": "-z" }
+    RightUpperLeg: {
+        name: "mixamorigRightUpLeg",
+        func: { fx: "-x", fy: "y", fz: "-z" },
     },
-    "RightLowerLeg": {
-        "name": "mixamorigRightLeg",
-        "func": { "fx": "-x", "fy": "y", "fz": "-z" }
-    }
-}
+    RightLowerLeg: {
+        name: "mixamorigRightLeg",
+        func: { fx: "-x", fy: "y", fz: "-z" },
+    },
+};
 
 function domBoom(target) {
     target.style.animation = "shake 800ms ease-in-out";
@@ -165,7 +165,7 @@ if (typeof require != "undefined") {
         saveSettings,
         userModels,
         addUserModels,
-        removeUserModels
+        removeUserModels,
     } = require("../utils/setting.js");
 
     // set theme
@@ -214,7 +214,7 @@ if (typeof require != "undefined") {
             platform: platform,
             userModels: userModels,
             theme: {},
-            document:document
+            document: document,
         },
         computed: {
             bg: function () {
@@ -230,7 +230,7 @@ if (typeof require != "undefined") {
         mounted() {
             var modelOnload = async function () {
                 for (var e of document.querySelectorAll(".my-img")) {
-                    if(e.src.includes('framework.html')) continue;
+                    if (e.src.includes("framework.html")) continue;
                     var theme = await themeFromImage(e);
                     applyTheme(theme, {
                         target: e.parentElement,
@@ -334,16 +334,11 @@ if (typeof require != "undefined") {
     var isMax = false;
 
     window.maximizeBtn = function () {
-        if (isMax) {
+        if (remote.getCurrentWindow().isMaximized()) {
             remote.getCurrentWindow().restore();
-            document.getElementById("maxbtn").innerHTML =
-                '<i onclick="window.maximizeBtn()" class="mdui-icon material-icons" style="font-size: 20px; margin-top:0;">fullscreen</i>';
         } else {
             remote.getCurrentWindow().maximize();
-            document.getElementById("maxbtn").innerHTML =
-                '<i onclick="window.maximizeBtn()" class="mdui-icon material-icons" style="font-size: 20px; margin-top:0;">fullscreen_exit</i>';
         }
-        isMax = !isMax;
     };
 
     var contentDom = document.querySelector("#drag-area");
@@ -377,11 +372,12 @@ if (typeof require != "undefined") {
 
     // find by name in app.userModels
     function findModelByName(name) {
-        if(app.userModels) for (var i = 0; i < app.userModels.length; i++) {
-            if (app.userModels[i].name == name) {
-                return app.userModels[i];
+        if (app.userModels)
+            for (var i = 0; i < app.userModels.length; i++) {
+                if (app.userModels[i].name == name) {
+                    return app.userModels[i];
+                }
             }
-        }
 
         for (var i = 0; i < app.builtIn.length; i++) {
             if (app.builtIn[i].name == name) {
@@ -398,7 +394,7 @@ if (typeof require != "undefined") {
                 e.preventDefault();
 
                 var target = e.target;
-                while(!target.classList.contains("model-item-new")){
+                while (!target.classList.contains("model-item-new")) {
                     target = target.parentElement;
                 }
                 const rightmenu = document.getElementById("rightmenu");
@@ -417,7 +413,9 @@ if (typeof require != "undefined") {
                     rightclick.onclick();
                 };
                 document.getElementById("btndefault").onclick = function () {
-                    app.selectModel = JSON.stringify(findModelByName(target.querySelector("h2").innerText))
+                    app.selectModel = JSON.stringify(
+                        findModelByName(target.querySelector("h2").innerText)
+                    );
                     rightclick.onclick();
                 };
                 document.getElementById("btnshow").style.display = "";
@@ -428,14 +426,20 @@ if (typeof require != "undefined") {
                     console.log(target)
                     domBoom(target)
                     rightclick.onclick();
-                }
+                };
 
                 document.getElementById("btnshow").onclick = function () {
-                    var path = findModelByName(target.querySelector("h2").innerText).path
-                    if(platform!=='darwin')shell.showItemInFolder('file://'+path)
-                    else shell.openExternal('file://'+path.substr(0,path.lastIndexOf('/')))
+                    var path = findModelByName(
+                        target.querySelector("h2").innerText
+                    ).path;
+                    if (platform !== "darwin")
+                        shell.showItemInFolder("file://" + path);
+                    else
+                        shell.openExternal(
+                            "file://" + path.substr(0, path.lastIndexOf("/"))
+                        );
                     rightclick.onclick();
-                }
+                };
             };
         }
 
@@ -445,7 +449,7 @@ if (typeof require != "undefined") {
             i.oncontextmenu = function (e) {
                 e.preventDefault();
                 var target = e.target;
-                while(!target.classList.contains("model-item-new")){
+                while (!target.classList.contains("model-item-new")) {
                     target = target.parentElement;
                 }
                 const rightmenu = document.getElementById("rightmenu");
@@ -467,7 +471,9 @@ if (typeof require != "undefined") {
                 document.getElementById("btnremove").style.display = "none";
 
                 document.getElementById("btndefault").onclick = function () {
-                    app.selectModel = JSON.stringify(findModelByName(target.querySelector("h2").innerText))
+                    app.selectModel = JSON.stringify(
+                        findModelByName(target.querySelector("h2").innerText)
+                    );
                     rightclick.onclick();
                 };
             };
@@ -483,7 +489,7 @@ if (typeof require != "undefined") {
             picBg: app.modelImporterImg,
             path: app.modelImporterPath,
             accessories: {},
-            binding:app.modelImporterType=='fbx'?mixamorig:{}
+            binding: app.modelImporterType == "fbx" ? mixamorig : {},
         };
         addUserModels(model);
         // app.userModels.push(model);
@@ -491,7 +497,7 @@ if (typeof require != "undefined") {
         setTimeout(async () => {
             addRightClick();
             for (var e of document.querySelectorAll(".my-img")) {
-                if(e.src.includes('framework.html')) continue;
+                if (e.src.includes("framework.html")) continue;
                 var theme = await themeFromImage(e);
                 applyTheme(theme, {
                     target: e.parentElement,
@@ -501,8 +507,7 @@ if (typeof require != "undefined") {
         }, 500);
     };
 
-    mdui.mutation()
-
+    mdui.mutation();
 } else {
     languages = {
         zh: {

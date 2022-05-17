@@ -45,6 +45,13 @@ blockquote {
     margin-right: 5px;
 }
 
+.mdui-btn .material-icons-outlined {
+    transform: scale(0.75);
+    margin-top: -3px;
+    padding-bottom: 48px;
+    margin-right: 5px;
+}
+
 .tab-bar button {
     width: 110px;
     height: 32px;
@@ -63,6 +70,7 @@ blockquote {
 
 .tab-bar .select {
     background-color: var(--md-sys-color-primary-container) !important;
+    box-shadow: var(--md-sys-color-primary-container) 0px 1px 5px;
     color: var(--md-sys-color-primary) !important;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     font-weight: 600;
@@ -70,6 +78,7 @@ blockquote {
 
 .xf-button {
     background-color: var(--md-sys-color-primary-container) !important;
+    box-shadow: var(--md-sys-color-primary-container) 0px 1px 5px;
     color: var(--md-sys-color-primary) !important;
     font-weight: 600;
     border-radius: 20px !important;
@@ -160,6 +169,16 @@ h1 {
     height: 50px;
     line-height: 30px;
     cursor: pointer;
+}
+
+.settings-item .material-icons-outlined{
+    margin-right: 10px;
+    margin-top: -4px;
+    margin-left: 2px;
+    vertical-align: middle;
+    font-size: 22px;
+    color: #777;
+    width: fit-content;
 }
 
 .settings-item label {
