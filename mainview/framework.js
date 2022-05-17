@@ -63,6 +63,69 @@ var mixamorig = {
     }
 }
 
+function domBoom(target) {
+    target.style.animation = "shake 800ms ease-in-out";
+    var targetBoundingClientRectX =
+        target.getBoundingClientRect().x;
+    var targetBoundingClientRectY =
+        target.getBoundingClientRect().y;
+
+    var mydiv = document.createElement("div");
+    mydiv.id = "newDivId";
+    mydiv.style.height = window.innerHeight + "px";
+    mydiv.style.width = window.innerWidth + "px";
+    mydiv.style.position = "absolute";
+    mydiv.style.top = "0px";
+    mydiv.style.left = "0px";
+    mydiv.style.zIndex = "9999";
+
+    var targetBak = target;
+    target = target.cloneNode(true);
+    
+    target.style.margin = "0";
+    target.style.position = "absolute";
+    target.style.top = targetBoundingClientRectY + "px";
+    target.style.left = targetBoundingClientRectX + "px";
+    target.style.zIndex = "9999";
+
+    mydiv.append(target);
+    mydiv.style.filter = "opacity(0)";
+    document.body.appendChild(mydiv);
+    
+
+    setTimeout(html2canvas(mydiv, { backgroundColor: null }).then(function (
+        canvas
+    ) {
+        targetBak.style.filter = "opacity(0)";
+        mydiv.remove();
+        canvas.style.position = "absolute";
+        canvas.style.top = "0px";
+        canvas.style.left = "0px";
+        canvas.style.zIndex = "9999";
+        document.body.appendChild(canvas);
+        var boomOption2 = {
+        // 粒子间隔
+        gap: 6,
+        // 粒子大小
+        radius: 3,
+        // 最小水平喷射速度
+        minVx: -20,
+        // 最大水平喷射速度
+        maxVx: 25,
+        // 最小垂直喷射速度
+        minVy: -25,
+        // 最大垂直喷射速度
+        maxVy: 0.1,
+        // speed:2,
+        onBoomEnd: function () {
+            targetBak.remove();
+            canvas.remove();
+        },
+    };
+        new ParticleBoom(canvas, boomOption2);
+    }),500);
+}
+
 var darkMode = false;
 
 import {
@@ -361,7 +424,9 @@ if (typeof require != "undefined") {
                 document.getElementById("btnremove").style.display = "";
 
                 document.getElementById("btnremove").onclick = function () {
-                    removeUserModels(target.querySelector("h2").innerText);
+                    // removeUserModels(target.querySelector("h2").innerText);
+                    console.log(target)
+                    domBoom(target)
                     rightclick.onclick();
                 }
 
