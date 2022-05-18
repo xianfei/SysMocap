@@ -201,7 +201,7 @@ if (typeof require != "undefined") {
         data: {
             tab: "model",
             builtIn: builtInModels,
-            selectModel: JSON.stringify(builtInModels[0]),
+            selectModel: localStorage.getItem('selectModel')?localStorage.getItem('selectModel'):JSON.stringify(builtInModels[0]),
             language: languages[globalSettings.ui.language],
             videoSource: "camera",
             videoPath: "",
@@ -275,7 +275,11 @@ if (typeof require != "undefined") {
                     app.language = languages[app.settings.ui.language];
                 },
                 deep: true,
-            },
+            },selectModel:{
+                handler(newVal, oldVal) {
+                    localStorage.setItem('selectModel',app.selectModel)
+                },deep:true
+            }
         }
     });
 

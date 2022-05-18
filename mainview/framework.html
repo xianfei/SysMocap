@@ -240,7 +240,7 @@
                         </div>
                         <div class="line2"></div>
                         <div id="btndefault" class="carditem">
-                            <i class="mdui-icon material-icons cardicon">star</i
+                            <i class="mdui-icon material-icons cardicon">check</i
                             >{{language.tabModelLib.setAsDefault}}
                         </div>
                         <div class="line2"></div>
@@ -355,19 +355,19 @@
                                 </div>
                                 <div
                                     style="
-                                        margin-left: calc(100% - 191px);
+                                        margin-left: calc(100% - 187px);
                                         text-align: left;
-                                        margin-top: -19px;
+                                        margin-top: -17px;
                                         color: var(--md-sys-color-primary);
                                     "
                                     v-show="selectModel==JSON.stringify(model)"
                                 >
                                     <span
                                         class="material-icons-outlined"
-                                        style="font-size: 20px"
-                                        mdui-tooltip="{content: '默认使用形象'}"
+                                        style="font-size: 16px"
+                                        mdui-tooltip="{content: '默认使用的形象'}"
                                     >
-                                    grade
+                                        done
                                     </span>
                                 </div>
                             </div>
@@ -402,19 +402,19 @@
                                 </div>
                                 <div
                                     style="
-                                        margin-left: calc(100% - 191px);
+                                        margin-left: calc(100% - 187px);
                                         text-align: left;
-                                        margin-top: -19px;
+                                        margin-top: -17px;
                                         color: var(--md-sys-color-primary);
                                     "
                                     v-show="selectModel==JSON.stringify(model)"
                                 >
                                     <span
                                         class="material-icons-outlined"
-                                        style="font-size: 20px"
-                                        mdui-tooltip="{content: '默认使用形象'}"
+                                        style="font-size: 16px"
+                                        mdui-tooltip="{content: '默认使用的形象'}"
                                     >
-                                    grade
+                                    done
                                     </span>
                                 </div>
                             </div>
@@ -476,7 +476,9 @@
                             id="demo-js"
                             v-model="selectModel"
                         >
-                            <optgroup v-bind:label="language.tabModelLib.userModel">
+                            <optgroup
+                                v-bind:label="language.tabModelLib.userModel"
+                            >
                                 <option
                                     v-for="model in userModels"
                                     v-bind:value="JSON.stringify(model)"
@@ -484,7 +486,9 @@
                                     {{model.name}}
                                 </option>
                             </optgroup>
-                            <optgroup v-bind:label="language.tabModelLib.buildinModel">
+                            <optgroup
+                                v-bind:label="language.tabModelLib.buildinModel"
+                            >
                                 <option
                                     v-for="model in builtIn"
                                     v-bind:value="JSON.stringify(model)"
