@@ -308,11 +308,17 @@ const rigPosition = (
         // find bone in bones by name
         var b = skeletonHelper.bones.find((bone) => bone.name == name);
         if (b) {
+            if(fileType=='fbx'){
+                dampener *=100;
+            } 
             let vector = new THREE.Vector3(
                 position.x * dampener,
                 position.y * dampener,
-                position.z * dampener
+                -position.z * dampener
             );
+            if(fileType=='fbx'){
+                vector.y-=1.2* dampener;
+            } 
             b.position.lerp(vector, lerpAmount); // interpolate
         } else {
             console.log("Can not found bone " + name);

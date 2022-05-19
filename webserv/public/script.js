@@ -15,7 +15,7 @@ import { VRButton } from "/node_modules/three/examples/jsm/webxr/VRButton.js";
 let currentVrm;
 
 // renderer
-const renderer = new THREE.WebGLRenderer({ alpha: true });
+const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(window.devicePixelRatio);
 
@@ -403,4 +403,31 @@ socket.on("message",  function (evt) {
     if (!mydata.type) return;
     if (mydata.type != "xf-sysmocap-data") return;
     animateVRM(currentVrm, mydata);
+});
+
+
+document.addEventListener("keydown", (event) => {
+    console.log(event);
+    var x = camera.position.x;
+    var y = camera.position.y;
+    var z = camera.position.z;
+    var step = 0.03;
+    switch (event.key) {
+        case "d":
+        case "ArrowRight":
+            camera.position.set(x + step, y, z);
+            break;
+        case "a":
+        case "ArrowLeft":
+            camera.position.set(x - step, y, z);
+            break;
+        case "w":
+        case "ArrowUp":
+            camera.position.set(x, y + step, z);
+            break;
+        case "s":
+        case "ArrowDown":
+            camera.position.set(x, y - step, z);
+            break;
+    }
 });
