@@ -412,7 +412,7 @@ const rigFace = (riggedFace) => {
 var positionOffset = {
     x: 0,
     y: 1,
-    z: 0.3
+    z: 0
 };
 
 /* VRM Character Animator */
@@ -708,6 +708,33 @@ if (localStorage.getItem("useCamera") == "camera") {
     };
 
     videoElement.requestVideoFrameCallback(videoFrameCallback);
+}
+
+var app = new Vue({
+    el: "#controller",
+    data: {
+        target:"face"
+    }
+});
+
+function changeTarget(target){
+    app.target = target;
+    if(target == "face"){
+        positionOffset = {x: 0, y: 1, z: 0}
+
+    }else if(target == "half"){
+        positionOffset =  {
+            "x": 0,
+            "y": 1.1,
+            "z": 1
+        }
+    }else if(target == "full"){
+        positionOffset = {
+            "x": 0,
+            "y": 1.4,
+            "z": 2
+        }
+    }
 }
 
 // keyborad control camera position

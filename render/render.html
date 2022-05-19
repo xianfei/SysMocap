@@ -135,6 +135,68 @@
             <span style="position: absolute; left: 100px">Mocap</span>
         </div>
 
+        <div
+            id="controller"
+            style="position: absolute; bottom: 100px; right: 20px"
+        >
+            <div
+                style="
+                    display: inline-block;
+                    margin-left: -85px;
+                    color: #777;
+                    position: absolute;
+                "
+            >
+                <i
+                    class="mdui-icon material-icons"
+                    style="transform: scale(0.8)"
+                    >videocam</i
+                ><span style="font-size: 12px; margin-left: 5px">相机视角</span>
+            </div>
+            <div
+                class="targetButton mdui-ripple"
+                v-bind:class="{'mdui-color-theme':target == 'full'}"
+                onclick="changeTarget('full')"
+            >
+                <div class="my-icon">
+                    <i
+                        class="mdui-icon material-icons"
+                        style="transform: scale(0.8); margin-top: -3px"
+                        >accessibility</i
+                    >
+                </div>
+                <span>全身</span>
+            </div>
+            <div
+                class="targetButton mdui-ripple"
+                v-bind:class="{'mdui-color-theme':target == 'half'}"
+                onclick="changeTarget('half')"
+            >
+                <div class="my-icon">
+                    <i
+                        class="mdui-icon material-icons"
+                        style="transform: scale(1.2); margin-top: 3px"
+                        >accessibility</i
+                    >
+                </div>
+                <span>半身</span>
+            </div>
+            <div
+                class="targetButton mdui-ripple"
+                v-bind:class="{'mdui-color-theme':target == 'face'}"
+                onclick="changeTarget('face')"
+            >
+                <div class="my-icon">
+                    <i
+                        class="mdui-icon material-icons"
+                        style="transform: scale(1.2)"
+                        >person</i
+                    >
+                </div>
+                <span>特写</span>
+            </div>
+        </div>
+
         <script src="../node_modules/kalidokit/dist/kalidokit.umd.js"></script>
         <script src="./script.js" defer></script>
     </body>

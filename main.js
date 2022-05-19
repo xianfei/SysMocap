@@ -96,9 +96,7 @@ if (argv.bsmode) {
     const { app, BrowserWindow, ipcMain, nativeTheme } = require("electron");
     const os = require("os");
     const platform = os.platform();
-    const { Worker} = require('worker_threads');
-    
-
+    const { Worker } = require("worker_threads");
 
     // Make profile file on user home dir
     const path = require("path");
@@ -121,18 +119,21 @@ if (argv.bsmode) {
     const { spawn } = require("child_process");
     if (
         platform === "win32" &&
-        process.env.GPUSET !== "true" &&
+        // process.env.GPUSET !== "true" &&
         storage.getItem("useDgpu")
     ) {
-        spawn(process.execPath, process.argv, {
-            env: {
-                ...process.env,
-                SHIM_MCCOMPAT: "0x800000001", // this forces windows to use the dedicated GPU for the process
-                GPUSET: "true",
-            },
-            detached: true,
-        });
-        process.exit(0);
+        // Force using discrete GPU when there are multiple GPUs available.
+        // Improve performance when your PC has discrete GPU
+        app.commandLine.appendSwitch("force_high_performance_gpu", true);
+        // spawn(process.execPath, process.argv, {
+        //     env: {
+        //         ...process.env,
+        //         SHIM_MCCOMPAT: "0x800000001", // this forces windows to use the dedicated GPU for the process
+        //         GPUSET: "true",
+        //     },
+        //     detached: true,
+        // });
+        // process.exit(0);
     }
 
     // Modules to control application life and create native browser window
@@ -157,10 +158,6 @@ if (argv.bsmode) {
     // Prevents Chromium from lowering the priority of invisible pages' renderer processes.
     // Improve performance when Mocap is running and forward motion data in background
     app.commandLine.appendSwitch("disable-renderer-backgrounding", true);
-
-    // Force using discrete GPU when there are multiple GPUs available.
-    // Improve performance when your PC has discrete GPU
-    app.commandLine.appendSwitch("force_high_performance_gpu", true);
 
     // Keep a global reference of the window object, if you don't, the window will
     // be closed automatically when the JavaScript object is garbage collected.
@@ -210,13 +207,13 @@ if (argv.bsmode) {
     function createModelViewerWindow(args) {
         // Create the browser window.
         var myBrowserWindow = BrowserWindow;
-        var addtionalArgs = {backgroundColor: "#eee"};
-        if(args.useGlass) {
+        var addtionalArgs = { backgroundColor: "#eee" };
+        if (args.useGlass) {
             myBrowserWindow = blurBrowserWindow;
-            addtionalArgs ={
-                vibrancy :  "light",
-                backgroundColor: "#00000000"
-            }
+            addtionalArgs = {
+                vibrancy: "light",
+                backgroundColor: "#00000000",
+            };
         }
         var viewer = new myBrowserWindow({
             width: 820,
@@ -236,7 +233,6 @@ if (argv.bsmode) {
                 additionalArguments: ["argsData", JSON.stringify(args)],
             },
         });
-
 
         // and load the index.html of the app.
         viewer.loadFile("modelview/modelview.html");
@@ -357,14 +353,14 @@ if (argv.bsmode) {
 
     ipcMain.on("startWebServer", function (event, ...arg) {
         const worker = new Worker(__dirname + "/webserv/worker.js");
-        worker.postMessage({type:"startWebServer", arg:arg});
+        worker.postMessage({ type: "startWebServer", arg: arg });
 
         ipcMain.on("sendBoradcast", function (event, arg) {
-            worker.postMessage({type:"sendBroadcast", arg:arg});
+            worker.postMessage({ type: "sendBroadcast", arg: arg });
         });
 
         ipcMain.on("stopWebServer", function (event, arg) {
-            worker.postMessage({type:"stopWebServer"});
+            worker.postMessage({ type: "stopWebServer" });
         });
     });
 
