@@ -409,6 +409,12 @@ const rigFace = (riggedFace) => {
     currentVrm.lookAt.applyer.lookAt(lookTarget);
 };
 
+var positionOffset = {
+    x: 0,
+    y: 1,
+    z: 0.3
+};
+
 /* VRM Character Animator */
 const animateVRM = (vrm, results) => {
     if (!vrm && !skeletonHelper) {
@@ -472,9 +478,9 @@ const animateVRM = (vrm, results) => {
         rigPosition(
             "Hips",
             {
-                x: riggedPose.Hips.position.x, // Reverse direction
-                y: riggedPose.Hips.position.y + 1, // Add a bit of height
-                z: -riggedPose.Hips.position.z, // Reverse direction
+                x: riggedPose.Hips.position.x + positionOffset.x, // Reverse direction
+                y: riggedPose.Hips.position.y + positionOffset.y, // Add a bit of height
+                z: -riggedPose.Hips.position.z + positionOffset.z, // Reverse direction
             },
             1,
             0.07
@@ -706,27 +712,23 @@ if (localStorage.getItem("useCamera") == "camera") {
 
 // keyborad control camera position
 document.addEventListener("keydown", (event) => {
-    console.log(event);
-    var x = orbitCamera.position.x;
-    var y = orbitCamera.position.y;
-    var z = orbitCamera.position.z;
     var step = 0.1;
     switch (event.key) {
         case "d":
         case "ArrowRight":
-            orbitCamera.position.set(x + step, y, z);
+            positionOffset.x -= step;
             break;
         case "a":
         case "ArrowLeft":
-            orbitCamera.position.set(x - step, y, z);
+            positionOffset.x += step;
             break;
         case "w":
         case "ArrowUp":
-            orbitCamera.position.set(x, y + step, z);
+            positionOffset.y += step;
             break;
         case "s":
         case "ArrowDown":
-            orbitCamera.position.set(x, y - step, z);
+            positionOffset.y -= step;
             break;
     }
 });
