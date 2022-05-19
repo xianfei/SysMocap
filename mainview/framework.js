@@ -105,7 +105,7 @@ function domBoom(target,onfinish) {
         document.body.appendChild(canvas);
         var boomOption2 = {
         // 粒子间隔
-        gap: 10,
+        gap: 5,
         // 粒子大小
         radius: 3,
         // 最小水平喷射速度
@@ -116,7 +116,7 @@ function domBoom(target,onfinish) {
         minVy: -25,
         // 最大垂直喷射速度
         maxVy: 0.1,
-        // speed:2,
+        speed:10,
         onBoomEnd: function () {
             targetBak.remove(); 
             // targetBak.style.filter = '';
