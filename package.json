@@ -6,9 +6,9 @@
   "scripts": {
     "start": "electron .",
     "start-nogpu": "electron . --disable-gpu",
-    "package:mac64": "electron-packager ./ SysMocap --platform=darwin --arch=x64 --out ./OutApp --download.mirrorOptions.mirror=https://npm.taobao.org/mirrors/electron/ --overwrite --usage-description.Camera='该程序需要摄像头权限' --electronVersion 19.0.0-beta.7",
-    "package:macarm": "electron-packager ./ SysMocap --platform=darwin --arch=arm64 --out ./OutApp --download.mirrorOptions.mirror=https://npm.taobao.org/mirrors/electron/ --overwrite --usage-description.Camera='该程序需要摄像头权限' --electronVersion 19.0.0-beta.7",
-    "package:win64": "electron-packager ./ SysMocap --icon=sysmocap.ico --platform=win32 --arch=x64 --out ./OutApp --download.mirrorOptions.mirror=https://npm.taobao.org/mirrors/electron/ --overwrite --electronVersion 19.0.0-beta.7",
+    "package:mac64": "electron-packager ./ SysMocap --platform=darwin --arch=x64 --out ./OutApp --download.mirrorOptions.mirror=https://npm.taobao.org/mirrors/electron/ --overwrite --usage-description.Camera='该程序需要摄像头权限' --electronVersion 19.0.0-beta.7 --asar",
+    "package:macarm": "electron-packager ./ SysMocap --platform=darwin --arch=arm64 --out ./OutApp --download.mirrorOptions.mirror=https://npm.taobao.org/mirrors/electron/ --overwrite --usage-description.Camera='该程序需要摄像头权限' --electronVersion 19.0.0-beta.7 --asar",
+    "package:win64": "electron-packager ./ SysMocap --icon=sysmocap.ico --platform=win32 --arch=x64 --out ./OutApp --download.mirrorOptions.mirror=https://npm.taobao.org/mirrors/electron/ --overwrite --electronVersion 19.0.0-beta.7 --asar",
     "zip:win64": "electron-installer-zip ./OutApp/SysMocap-win32-x64/ ./OutApp/packages/SysMocap-Windows-x64.zip --overwrite",
     "zip:mac64": "electron-installer-zip ./OutApp/SysMocap-darwin-x64/ ./OutApp/packages/SysMocap-macOS-x64.zip --overwrite",
     "dmg": "electron-installer-dmg ./OutApp/SysMocap-darwin-x64/SysMocap.app SysMocap-macOS-x64 --out ./OutApp/packages/ --overwrite",
