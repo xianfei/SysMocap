@@ -22,7 +22,7 @@ jobs:
     # create a build matrix for jobs
     strategy:
       matrix:
-        os: [windows-latest, macos-latest]
+        os: [windows-2019, macos-latest]
 
     steps:
       # step1: check out repository
@@ -40,7 +40,7 @@ jobs:
 
       # step4: build app for mac/win
       - name: build windows app
-        if: matrix.os == 'windows-latest'
+        if: matrix.os == 'windows-2019'
         run: |
           npm i electron-acrylic-window
           npm run package:win64
