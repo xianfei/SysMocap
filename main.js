@@ -293,18 +293,21 @@ ipcMain.on("openPDF", function (event, arg) {
     createPdfViewerWindow(arg);
 });
 
+var worker = null
+
 ipcMain.on("startWebServer", function (event, ...arg) {
-    const worker = new Worker(__dirname + "/webserv/worker.js");
+    worker = new Worker(__dirname + "/webserv/worker.js");
     worker.postMessage({ type: "startWebServer", arg: arg });
+});
 
-    ipcMain.on("sendBoradcast", function (event, arg) {
-        mainWindow.webContents.send("sendRenderDataForward",arg)
-        worker.postMessage({ type: "sendBroadcast", arg: JSON.stringify(arg) });
-    });
+ipcMain.on("sendBoradcast", function (event, arg) {
+    mainWindow.webContents.send("sendRenderDataForward",arg)
+    if(worker)worker.postMessage({ type: "sendBroadcast", arg: JSON.stringify(arg) });
+});
 
-    ipcMain.on("stopWebServer", function (event, arg) {
-        worker.postMessage({ type: "stopWebServer" });
-    });
+ipcMain.on("stopWebServer", function (event, arg) {
+    if(worker)worker.postMessage({ type: "stopWebServer" });
+    worker = null;
 });
 
 // This method will be called when Electron has finished
