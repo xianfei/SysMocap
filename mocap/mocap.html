@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+    <!-- 
+/**
+ *  Render Page (display when mocap started)
+ *
+ *  A part of SysMocap, open sourced under Mozilla Public License 2.0
+ * 
+ *  https://github.com/xianfei/SysMocap
+ * 
+ *  xianfei 2022.3
+ */ 
+-->
+    <head>
+        <meta charset="utf-8" />
+        <title>Mocap</title>
+
+        <meta
+            name="viewport"
+            content="viewport-fit=cover, user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1"
+        />
+        <!-- Three.js -->
+        <script src="../node_modules/three/build/three.js"></script>
+        <!-- GLTF Loader for Three.js -->
+        <script src="../node_modules/three/examples/js/loaders/GLTFLoader.js"></script>
+        <script src="../node_modules/three/examples/js/loaders/FBXLoader.js"></script>
+        <script src="../node_modules/three/examples/js/libs/fflate.min.js"></script>
+        <!-- Orbit Controls for Three.js -->
+        <script src="../node_modules/three/examples/js/controls/OrbitControls.js"></script>
+
+        <script src="../node_modules/three/examples/js/libs/stats.min.js"></script>
+
+        <!-- VRM Loader for Three.js -->
+        <script src="../node_modules/@pixiv/three-vrm/lib/three-vrm.js"></script>
+        <!-- Mediapipe -->
+        <script src="../node_modules/@mediapipe/holistic/holistic.js"></script>
+        <!-- Mediapipe Drawing Tools -->
+        <script src="../node_modules/@mediapipe/drawing_utils/drawing_utils.js"></script>
+        <!-- Mediapipe Camera Tools -->
+        <script src="../node_modules/@mediapipe/camera_utils/camera_utils.js"></script>
+        <script src="../node_modules/vue/dist/vue.js"></script>
+        <style>
+            ::-webkit-scrollbar {
+                display: none;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="preview">
+            <!-- canvas for show body skeleton -->
+            <canvas
+                class="guides"
+                style="
+                    width: calc(100% - 20px);
+                    border: solid 1px #ccc;
+                    border-radius: 10px;
+                    height: auto;
+                    overflow: hidden;
+                    position: fixed;
+                    top: 10px;
+                    left: 10px;
+                    z-index: 1000;
+                    pointer-events: none;
+                    transform: scale(-1, 1);
+                "
+            ></canvas>
+            <!-- show camera or video input  -->
+            <video
+                class="input_video"
+                muted
+                style="
+                    width: calc(100% - 20px);
+                    border: solid 1px #ccc;
+                    border-radius: 10px;
+                    height: auto;
+                    overflow: hidden;
+                    position: fixed;
+                    top: 10px;
+                    left: 10px;
+                    transform: scale(-1, 1);
+                "
+            ></video>
+        </div>
+
+        <script src="../node_modules/kalidokit/dist/kalidokit.umd.js"></script>
+        <script src="./mocap.js" defer></script>
+    </body>
+</html>

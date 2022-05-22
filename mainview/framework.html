@@ -546,7 +546,7 @@
                         src="about:blank"
                         style="
                             width: calc(100vw - 40px);
-                            height: calc((100vw - 40px) * 10 / 32 + 220px);
+                            height: calc((100vw - 40px) * 10 / 32 + 120px);
                             margin-top: 20px;
                             border: none;
                         "
@@ -1056,7 +1056,7 @@
                             <i class="mdui-switch-icon"></i>
                         </label>
                     </div>
-                    <!-- <div class="settings-item" v-show="platform!=='web'">
+                    <div class="settings-item" v-show="platform!=='web'">
                         <label class="mdui-switch">
                             <span
                                 >{{language.tabSettings.dev.openDevToolsWhenMocap}}</span
@@ -1067,7 +1067,7 @@
                             />
                             <i class="mdui-switch-icon"></i>
                         </label>
-                    </div> -->
+                    </div>
                     <div
                         class="settings-item"
                         onclick="ipcRenderer.send('openGpuInfo')"
