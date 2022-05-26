@@ -3,91 +3,98 @@
         "name": "Ashtra",
         "path": "../models/test.vrm",
         "type": "vrm",
+        "isBuildIn": true,
         "picBg": "../models/img/Ashtra.png",
-        "accessories":{
-            "Shoes":"Bodybaked_4",
-            "Coats":"Bodybaked_5"
+        "accessories": {
+            "Shoes": "Bodybaked_4",
+            "Coats": "Bodybaked_5"
         }
     },
     {
         "name": "Hanako",
         "path": "../models/three-vrm-girl.vrm",
         "type": "vrm",
+        "isBuildIn": true,
         "picBg": "../models/img/Hanako.png",
-        "accessories":{
-            "Shoes":"Shoes",
-            "Pants":"Bottoms"
+        "accessories": {
+            "Shoes": "Shoes",
+            "Pants": "Bottoms"
         }
     },
     {
         "name": "VAL",
         "path": "../models/VAL.vrm",
         "type": "vrm",
+        "isBuildIn": true,
         "picBg": "../models/img/VAL.png",
-        "accessories":{
-            "Ponytail":"Ponytail",
-            "Tail":"Tail",
-            "Shoes":"Shoes",
-            "Pants":"Pants",
-            "Cats_ear":"Cats_ear",
-            "Coats":"Hoodie"
+        "accessories": {
+            "Ponytail": "Ponytail",
+            "Tail": "Tail",
+            "Shoes": "Shoes",
+            "Pants": "Pants",
+            "Cats_ear": "Cats_ear",
+            "Coats": "Hoodie"
         }
     },
     {
         "name": "Sendagaya",
         "path": "../models/shibu_sendagaya.vrm",
         "type": "vrm",
+        "isBuildIn": true,
         "picBg": "../models/img/Sendagaya.png",
-        "accessories":{
-            "Shoes":"Bodybaked_3",
-            "Bow tie":"Bodybaked_2",
-            "Pants":"Bodybaked_1"
+        "accessories": {
+            "Shoes": "Bodybaked_3",
+            "Bow tie": "Bodybaked_2",
+            "Pants": "Bodybaked_1"
         }
     },
     {
         "name": "Amaris",
         "path": "../models/SampleA.vrm",
         "type": "vrm",
+        "isBuildIn": true,
         "picBg": "../models/img/Amaris.png",
-        "accessories":{
-            "Shoes":"Bodybaked_6",
-            "Coats":"Bodybaked_4",
-            "Pants":"Bodybaked_5"
+        "accessories": {
+            "Shoes": "Bodybaked_6",
+            "Coats": "Bodybaked_4",
+            "Pants": "Bodybaked_5"
         }
     },
     {
         "name": "Natsuki",
         "path": "../models/SampleB.vrm",
         "type": "vrm",
+        "isBuildIn": true,
         "picBg": "../models/img/Natsuki.png",
-        "accessories":{
-            "Shoes":"Bodybaked_6",
-            "Pants":"Bodybaked_5"
+        "accessories": {
+            "Shoes": "Bodybaked_6",
+            "Pants": "Bodybaked_5"
         }
     },
     {
         "name": "IceDwen",
         "path": "../models/bdd.glb",
         "type": "glb",
+        "isBuildIn": true,
         "picBg": "../models/img/IceDwen.png",
-        "cameraTarget":{
-            "x":0.5,
-            "y":8.5,
-            "z":-1
+        "cameraTarget": {
+            "x": 0.5,
+            "y": 8.5,
+            "z": -1
         },
-        "cameraRotation":{
+        "cameraRotation": {
             "x": 3.0748256625542174,
             "y": 0.6561263858143132,
             "z": -3.1008232787709633
         },
-        "cameraPosition":{
+        "cameraPosition": {
             "x": 3.0126227828289567,
             "y": 8.282267793698868,
             "z": -4.256228398745762
         },
-        "init":{
-            "RightUpperArm": {"x":0.02513,"y":0.17592,"z":1.57079},
-            "LeftUpperArm": {"x":0.02513,"y":0.10053,"z":-1.52053}
+        "init": {
+            "RightUpperArm": { "x": 0.02513, "y": 0.17592, "z": 1.57079 },
+            "LeftUpperArm": { "x": 0.02513, "y": 0.10053, "z": -1.52053 }
         },
         "binding": {
             "Hips": {
@@ -138,6 +145,7 @@
     {
         "name": "Mousey",
         "type": "fbx",
+        "isBuildIn": true,
         "picBg": "../models/img/Mousey.png",
         "path": "../models/Mousey.fbx",
         "accessories": {},
@@ -195,6 +203,7 @@
     {
         "name": "Vanguard",
         "type": "fbx",
+        "isBuildIn": true,
         "picBg": "../models/img/Vanguard.png",
         "path": "../models/Vanguard.fbx",
         "accessories": {},
