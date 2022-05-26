@@ -73,11 +73,14 @@
                     top: 10px;
                     left: 50%;
                     z-index: 1000;
+                    pointer-events: none;
+                    transform: scale(-1, 1);
                 "
             ></canvas>
             <!-- show camera or video input  -->
             <video
                 class="input_video"
+                muted
                 style="
                     width: 48%;
                     border: solid 1px #ccc;
@@ -87,6 +90,7 @@
                     position: fixed;
                     top: 10px;
                     left: 50%;
+                    transform: scale(-1, 1);
                 "
             ></video>
         </div>
@@ -110,34 +114,15 @@
         >
             正在初始化，请稍后
         </div>
-        <div
-            style="
-                position: absolute;
-                bottom: 200px;
-                width: calc(100% - 40px);
-                margin: 15px;
-            "
-        >
-            <label class="mdui-slider mdui-slider-discrete">
-                <input
-                    type="range"
-                    step="0.1"
-                    min="0"
-                    max="100"
-                    value="0"
-                    id="videoCtrl"
-                />
-            </label>
-        </div>
 
-        <div id="status" style="position: absolute; bottom: 180px">
+        <div id="status" style="position: absolute; bottom: 120px">
             <span style="position: absolute; left: 10px">Render</span>
             <span style="position: absolute; left: 100px">Mocap</span>
         </div>
 
         <div
             id="controller"
-            style="position: absolute; bottom: 100px; right: 20px"
+            style="position: absolute; bottom: 80px; right: 20px"
         >
             <div
                 style="

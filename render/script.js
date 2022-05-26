@@ -598,7 +598,6 @@ const animateVRM = (vrm, results) => {
 };
 
 let videoElement = document.querySelector(".input_video"),
-    videoCtrl = document.querySelector("#videoCtrl"),
     guideCanvas = document.querySelector("canvas.guides");
 
 const onResults = (results) => {
@@ -686,7 +685,6 @@ const drawResults = (results) => {
 
 // switch use camera or video file
 if (localStorage.getItem("useCamera") == "camera") {
-    videoCtrl.parentNode.remove();
     const camera = new Camera(videoElement, {
         onFrame: async () => {
             await holistic.send({ image: videoElement });
@@ -696,19 +694,19 @@ if (localStorage.getItem("useCamera") == "camera") {
     });
     camera.start();
 } else {
-    videoCtrl.oninput = () => {
-        videoElement.currentTime = videoCtrl.value;
-    };
     // path of video file
     videoElement.src = localStorage.getItem("videoFile");
     videoElement.loop = true;
+    videoElement.controls = true;
+
+    document.querySelector("#model").style.transform = "scale(-1, 1)";
+
+    videoElement.style.transform = "";
+    guideCanvas.style.transform = "";
 
     var videoFrameCallback = async () => {
         // videoElement.pause()
         await holistic.send({ image: videoElement });
-        videoCtrl.value = videoElement.currentTime;
-        videoCtrl.max = videoElement.duration;
-        mdui.updateSliders(videoCtrl.parentNode);
         videoElement.requestVideoFrameCallback(videoFrameCallback);
         // videoElement.play()
     };
