@@ -405,12 +405,13 @@
         editor.expandAll()
 
         function saveJson(){
+            const jsonChanged = editor.get()
+            if(JSON.stringify(args.model)==JSON.stringify(jsonChanged))return
             if(args.model.isBuildIn){
                 app.failedText = '内建模型不能修改！'
                 app.failed = true
                 return
             }
-            const jsonChanged = editor.get()
             removeUserModels(app.model.name)
             addUserModels(jsonChanged)
             app.model = jsonChanged
