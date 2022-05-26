@@ -79,6 +79,7 @@ global.appInfo = { appVersion: app.getVersion(), appName: app.getName() };
 // Prevents Chromium from lowering the priority of invisible pages' renderer processes.
 // Improve performance when Mocap is running and forward motion data in background
 app.commandLine.appendSwitch("disable-renderer-backgrounding", true);
+app.commandLine.appendSwitch('enable-unsafe-webgpu');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -142,6 +143,7 @@ function createWindow() {
         // Dereference the window object, usually you would store windows
         // in an array if your app supports multi windows, this is the time
         // when you should delete the corresponding element.
+        renderView = null;
         mainWindow = null;
     });
 }

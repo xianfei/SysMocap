@@ -109,9 +109,9 @@
             <div
                 style="
                     position: fixed;
-                    left: calc(30.9vw - 60px);
+                    left: calc(30.9vw - 100px);
                     bottom: 10px;
-                    width: 120px;
+                    width: 200px;
                     height: 40px;
                     border-radius: 20px;
                     background-color: #fffe;
@@ -136,7 +136,7 @@
                         position: fixed;
                         color: rgb(172, 39, 39);
                     "
-                    >Error!</span
+                    >{{failedText}}</span
                 >
             </div>
             <div
@@ -284,6 +284,7 @@
                             class="mdui-list-item mdui-ripple"
                             v-show="showOpts||showOpts2"
                             v-on:click="showOpts = showOpts2 = false"
+                            onclick="saveJson()"
                             style="width: 150px"
                         >
                             <i class="mdui-icon material-icons">arrow_back</i>
@@ -365,7 +366,7 @@
         <script>
             // import languages
             const { languages } = require("../utils/language.js");
-            const { globalSettings } = require("../utils/setting.js");
+            const { globalSettings,removeUserModels,addUserModels } = require("../utils/setting.js");
             var args;
             for (var i = 0; i < process.argv.length; i++) {
                 if (process.argv[i] == "argsData") {
@@ -388,6 +389,7 @@
                     settings: globalSettings,
                     loaded: false,
                     failed: false,
+                    failedText:"加载失败"
                 },
             });
 
@@ -401,6 +403,21 @@
         
         editor.set(args.model) 
         editor.expandAll()
+
+        function saveJson(){
+            if(args.model.isBuildIn){
+                app.failedText = '内建模型不能修改！'
+                app.failed = true
+                return
+            }
+            const jsonChanged = editor.get()
+            removeUserModels(app.model.name)
+            addUserModels(jsonChanged)
+            app.model = jsonChanged
+            // if(args.model.name == jsonChanged.name){
+
+            // }
+        }
 
 
             function toggleShow(k, obj) {
