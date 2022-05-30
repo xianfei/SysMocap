@@ -36,11 +36,26 @@ https://user-images.githubusercontent.com/8101613/167257906-596919a5-4c0e-4795-8
 
 ![WechatIMG21](README.assets/WechatIMG21.jpeg)
 
+🌟 Support full-body motion capture
+
+![Screen Shot 2022-05-23 at 00 31 27](https://user-images.githubusercontent.com/8101613/171019881-8b95a1fd-c513-430e-b55e-a449a3524e7b.png)
+
 🌟 Does not require a discrete graphics card and runs smoothly even on eight-year-old computers (i7-4790k/GTX770/16G RAM)
 
 ### System architecture
 
 ![WX20220507-222732@2x](README.assets/WX20220507-222732@2x.png)
+
+### How to use
+
+Run on your computer from source code (need lastest Node.js):
+
+```shell
+git clone https://github.com/xianfei/SysMocap.git
+cd SysMocap
+npm i
+npm start
+```
 
 ### Bugs
 

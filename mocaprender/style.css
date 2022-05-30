@@ -1,0 +1,38 @@
+.mdui-slider span {
+    line-height: 30px;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+.targetButton{
+    width: 80px;
+    transform: scale(0.8);
+    height: 28px;
+    border: solid 1px #ccc;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    display: inline-block;
+    margin: -3px;
+    color: #777;
+}
+
+.targetButton .my-icon{
+    margin-left: 5px;
+    margin-top: 5px;
+    height: 20px;
+    width: 22px;
+    display: inline-block;
+    overflow: hidden;
+    text-align: center;
+    line-height: 20px;
+}
+.targetButton span{
+    position: absolute;
+    line-height: 28px;
+    font-size: 16px;
+    text-transform:uppercase;
+    margin-left: 6px;
+}

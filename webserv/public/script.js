@@ -293,7 +293,7 @@ const animateVRM = (vrm, mydata) => {
             "Hips",
             {
                 x: riggedPose.Hips.position.x, // Reverse direction
-                y: riggedPose.Hips.position.y-0.5, // Add a bit of height
+                y: riggedPose.Hips.position.y - useXR?0.5:0.0, // Add a bit of height
                 z: -riggedPose.Hips.position.z, // Reverse direction
             },
             1,
@@ -407,6 +407,7 @@ socket.on("message",  function (evt) {
 
 
 document.addEventListener("keydown", (event) => {
+    const camera = orbitCamera
     console.log(event);
     var x = camera.position.x;
     var y = camera.position.y;

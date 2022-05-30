@@ -566,6 +566,8 @@ window.startMocap = async function (e) {
             if (window.sysmocapApp.settings.dev.openDevToolsWhenMocap)
                 bw.webContents.openDevTools({ mode: "detach" });
             document.getElementById("foo").src = "../render/render.html";
+        }else{
+            document.getElementById("foo").src = "../mocaprender/render.html";
         }
 
         e.innerHTML =

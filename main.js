@@ -303,6 +303,10 @@ ipcMain.on("startWebServer", function (event, ...arg) {
 });
 
 ipcMain.on("sendBoradcast", function (event, arg) {
+    if(worker)worker.postMessage({ type: "sendBroadcast", arg: JSON.stringify(arg) });
+});
+
+ipcMain.on("sendBoradcastNew", function (event, arg) {
     mainWindow.webContents.send("sendRenderDataForward",arg)
     if(worker)worker.postMessage({ type: "sendBroadcast", arg: JSON.stringify(arg) });
 });

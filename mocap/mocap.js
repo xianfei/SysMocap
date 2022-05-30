@@ -74,7 +74,7 @@ const animateVRM = (vrm, results) => {
 
     if (globalSettings.forward.enableForwarding)
         ipcRenderer.send(
-            "sendBoradcast",
+            "sendBoradcastNew",
             {
                 type: "xf-sysmocap-data",
                 riggedPose: riggedPose,
