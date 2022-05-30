@@ -88,6 +88,7 @@ function saveSettings(settings) {
     else storage.setItem("useDgpu", false);
     if (settings.performance.useDescrertionProcess) storage.setItem("useDMoc", true);
     else storage.setItem("useDMoc", false);
+    storage.setItem("used", true);
 }
 
 function addUserModels(model) {

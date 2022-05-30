@@ -112,7 +112,7 @@ function createWindow() {
 
     if (
         storage.getItem("useDMoc") ||
-        (storage.getItem("useDMoc") == null && platform == "darwin")
+        (!storage.getItem("used") && platform == "darwin")
     ) {
         console.log('BrowserView Inited')
         renderView = new BrowserView({
