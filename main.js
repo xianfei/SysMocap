@@ -110,6 +110,9 @@ function createWindow() {
     mainWindow.loadFile("mainview/framework.html");
     nativeTheme.themeSource = "light";
 
+    if(storage.getItem("useDgpu") || (storage.getItem("useDgpu")==null&&platform=="darwin")){
+    
+
     renderView = new BrowserView({
         webPreferences: {
             nodeIntegration: true,
@@ -125,6 +128,7 @@ function createWindow() {
     renderView.webContents.loadURL("about:blank");
     // renderView.webContents.openDevTools({ mode: "detach" });
     electronRemoteMain.enable(renderView.webContents);
+}
 
     ipcMain.on("sendRenderData", function (event, arg) {
         // console.log("sendRenderData")

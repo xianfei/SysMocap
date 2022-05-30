@@ -86,6 +86,8 @@ function saveSettings(settings) {
     storage.setItem("sysmocap-global-settings", settings);
     if (settings.performance.useDgpu) storage.setItem("useDgpu", true);
     else storage.setItem("useDgpu", false);
+    if (settings.performance.useDescrertionProcess) storage.setItem("useDMoc", true);
+    else storage.setItem("useDMoc", false);
 }
 
 function addUserModels(model) {
