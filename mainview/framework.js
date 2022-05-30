@@ -592,7 +592,7 @@ window.startMocap = async function (e) {
     }
 };
 
-window.addEventListener(
+if (window.sysmocapApp.settings.performance.useDescrertionProcess) window.addEventListener(
     "resize",
     function () {
         if (!isMocaping) return;

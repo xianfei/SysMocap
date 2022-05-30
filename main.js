@@ -79,7 +79,7 @@ global.appInfo = { appVersion: app.getVersion(), appName: app.getName() };
 // Prevents Chromium from lowering the priority of invisible pages' renderer processes.
 // Improve performance when Mocap is running and forward motion data in background
 app.commandLine.appendSwitch("disable-renderer-backgrounding", true);
-app.commandLine.appendSwitch('enable-unsafe-webgpu');
+app.commandLine.appendSwitch("enable-unsafe-webgpu");
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -110,29 +110,31 @@ function createWindow() {
     mainWindow.loadFile("mainview/framework.html");
     nativeTheme.themeSource = "light";
 
-    if(storage.getItem("useDgpu") || (storage.getItem("useDgpu")==null&&platform=="darwin")){
-    
-
-    renderView = new BrowserView({
-        webPreferences: {
-            nodeIntegration: true,
-            webviewTag: true,
-            contextIsolation: false,
-            enableRemoteModule: true,
-            backgroundThrottling: false,
-            nodeIntegrationInSubFrames: true,
-        },
-    });
-    mainWindow.setBrowserView(renderView);
-    renderView.setBounds({ x: 0, y: 0, width: 0, height: 0 });
-    renderView.webContents.loadURL("about:blank");
-    // renderView.webContents.openDevTools({ mode: "detach" });
-    electronRemoteMain.enable(renderView.webContents);
-}
+    if (
+        storage.getItem("useDMoc") ||
+        (storage.getItem("useDMoc") == null && platform == "darwin")
+    ) {
+        console.log('BrowserView Inited')
+        renderView = new BrowserView({
+            webPreferences: {
+                nodeIntegration: true,
+                webviewTag: true,
+                contextIsolation: false,
+                enableRemoteModule: true,
+                backgroundThrottling: false,
+                nodeIntegrationInSubFrames: true,
+            },
+        });
+        mainWindow.setBrowserView(renderView);
+        renderView.setBounds({ x: 0, y: 0, width: 0, height: 0 });
+        renderView.webContents.loadURL("about:blank");
+        // renderView.webContents.openDevTools({ mode: "detach" });
+        electronRemoteMain.enable(renderView.webContents);
+    }
 
     ipcMain.on("sendRenderData", function (event, arg) {
         // console.log("sendRenderData")
-        mainWindow.webContents.send("sendRenderDataForward",arg)
+        mainWindow.webContents.send("sendRenderDataForward", arg);
     });
 
     // createWelcomeWindow()
@@ -299,7 +301,7 @@ ipcMain.on("openPDF", function (event, arg) {
     createPdfViewerWindow(arg);
 });
 
-var worker = null
+var worker = null;
 
 ipcMain.on("startWebServer", function (event, ...arg) {
     worker = new Worker(__dirname + "/webserv/worker.js");
@@ -307,16 +309,18 @@ ipcMain.on("startWebServer", function (event, ...arg) {
 });
 
 ipcMain.on("sendBoradcast", function (event, arg) {
-    if(worker)worker.postMessage({ type: "sendBroadcast", arg: JSON.stringify(arg) });
+    if (worker)
+        worker.postMessage({ type: "sendBroadcast", arg: JSON.stringify(arg) });
 });
 
 ipcMain.on("sendBoradcastNew", function (event, arg) {
-    mainWindow.webContents.send("sendRenderDataForward",arg)
-    if(worker)worker.postMessage({ type: "sendBroadcast", arg: JSON.stringify(arg) });
+    mainWindow.webContents.send("sendRenderDataForward", arg);
+    if (worker)
+        worker.postMessage({ type: "sendBroadcast", arg: JSON.stringify(arg) });
 });
 
 ipcMain.on("stopWebServer", function (event, arg) {
-    if(worker)worker.postMessage({ type: "stopWebServer" });
+    if (worker) worker.postMessage({ type: "stopWebServer" });
     worker = null;
 });
 
