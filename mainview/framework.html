@@ -829,6 +829,20 @@
                             <i class="mdui-switch-icon"></i>
                         </label>
                     </div>
+                    <div class="settings-item" v-show="platform!=='web'">
+                        <label class="mdui-switch">
+                            <span
+                                ><span class="material-icons-outlined">
+                                    account_tree</span
+                                >{{language.tabSettings.performance.useDescrertionProcess}}</span
+                            >
+                            <input
+                                type="checkbox"
+                                v-model="settings.performance.useDescrertionProcess"
+                            />
+                            <i class="mdui-switch-icon"></i>
+                        </label>
+                    </div>
                     <!-- Setting Tab: Output -->
                     <h1 class="mdui-text-color-theme">
                         {{language.tabSettings.output.name}}

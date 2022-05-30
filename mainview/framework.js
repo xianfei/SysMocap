@@ -527,10 +527,10 @@ if (typeof require != "undefined") {
 
 var isMocaping = false;
 
-const iframeWindow = document.getElementById("foo").contentWindow
+const iframeWindow = document.getElementById("foo").contentWindow;
 
 ipcRenderer.on("sendRenderDataForward", (ev, data) => {
-    if(iframeWindow.onMocapData)iframeWindow.onMocapData(data)
+    if (iframeWindow.onMocapData) iframeWindow.onMocapData(data);
 });
 
 window.startMocap = async function (e) {
@@ -546,33 +546,44 @@ window.startMocap = async function (e) {
         }
     if (e.innerHTML.indexOf(app.language.tabMocap.start) != -1) {
         isMocaping = true;
-        const win = remote.getCurrentWindow();
-        const bw = win.getBrowserView();
-        var winWidth = parseInt(win.getSize()[0]);
-        bw.setBounds({
-            x: parseInt(winWidth / 2),
-            y: parseInt(document.querySelector("#foo").getBoundingClientRect().y),
-            width: parseInt(winWidth / 2)- 20,
-            height: parseInt(((winWidth - 40) * 10) / 32),
-        });
-        bw.webContents.loadFile("mocap/mocap.html");
-        if(window.sysmocapApp.settings.dev.openDevToolsWhenMocap)
-        bw.webContents.openDevTools({ mode: "detach" });
         localStorage.setItem("modelInfo", app.selectModel);
         localStorage.setItem("useCamera", app.videoSource);
         localStorage.setItem("videoFile", app.videoPath[0]);
-        document.getElementById("foo").src = "../render/render.html";
+
+        if (window.sysmocapApp.settings.performance.useDescrertionProcess) {
+            const win = remote.getCurrentWindow();
+            const bw = win.getBrowserView();
+            var winWidth = parseInt(win.getSize()[0]);
+            bw.setBounds({
+                x: parseInt(winWidth / 2),
+                y: parseInt(
+                    document.querySelector("#foo").getBoundingClientRect().y
+                ),
+                width: parseInt(winWidth / 2) - 20,
+                height: parseInt(((winWidth - 40) * 10) / 32),
+            });
+            bw.webContents.loadFile("mocap/mocap.html");
+            if (window.sysmocapApp.settings.dev.openDevToolsWhenMocap)
+                bw.webContents.openDevTools({ mode: "detach" });
+            document.getElementById("foo").src = "../render/render.html";
+        }
+
         e.innerHTML =
             '<i class="mdui-icon material-icons">stop</i>' +
             app.language.tabMocap.stop;
     } else {
-        isMocaping = false
-        const win = remote.getCurrentWindow();
-        const bw = win.getBrowserView();
-        bw.setBounds({ x: 0, y: 0, width: 0, height: 0 });
-        bw.webContents.loadURL("about:blank");
+        isMocaping = false;
+        if (window.sysmocapApp.settings.performance.useDescrertionProcess) {
+            const win = remote.getCurrentWindow();
+            const bw = win.getBrowserView();
+            bw.setBounds({ x: 0, y: 0, width: 0, height: 0 });
+            bw.webContents.loadURL("about:blank");
+        }
         document.getElementById("foo").src = "about:blank";
-        if (window.sysmocapApp.settings.forward.enableForwarding) ipcRenderer.send("stopWebServer");
+
+        if (window.sysmocapApp.settings.forward.enableForwarding)
+            ipcRenderer.send("stopWebServer");
+
         e.innerHTML =
             '<i class="mdui-icon material-icons">play_arrow</i>' +
             app.language.tabMocap.start;
@@ -582,14 +593,16 @@ window.startMocap = async function (e) {
 window.addEventListener(
     "resize",
     function () {
-        if(!isMocaping) return;
+        if (!isMocaping) return;
         const win = remote.getCurrentWindow();
         const bw = win.getBrowserView();
         var winWidth = parseInt(win.getSize()[0]);
         bw.setBounds({
             x: parseInt(winWidth / 2),
-            y: parseInt(document.querySelector("#foo").getBoundingClientRect().y),
-            width: parseInt(winWidth / 2)- 20,
+            y: parseInt(
+                document.querySelector("#foo").getBoundingClientRect().y
+            ),
+            width: parseInt(winWidth / 2) - 20,
             height: parseInt(((winWidth - 40) * 10) / 32),
         });
     },

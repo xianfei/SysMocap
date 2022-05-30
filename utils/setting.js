@@ -14,18 +14,21 @@ const storage = require("electron-localstorage");
 var remote = require("@electron/remote");
 storage.setStoragePath(remote.getGlobal("storagePath").jsonPath);
 
-var currentVer = 0.4;
+var currentVer = 0.5;
 
 function getSettings() {
-    var settings =  storage.getItem("sysmocap-global-settings");
+    var settings = storage.getItem("sysmocap-global-settings");
     // load default settings when cannot read from localStroage
-    if (!settings || !settings.valued || settings.ver < currentVer )
+    if (!settings || !settings.valued || settings.ver < currentVer)
         settings = {
             ui: {
                 themeColor: "indigo",
                 isDark: false,
                 useGlass: true,
-                language: "zh",
+                language:
+                    window.navigator.language.split("-")[0] == "zh"
+                        ? "zh"
+                        : "en",
                 useNewModelUI: true,
             },
             preview: {
@@ -44,7 +47,7 @@ function getSettings() {
                 enableForwarding: false,
                 port: "8080",
                 useSSL: true,
-                supportForWebXR:'false'
+                supportForWebXR: "false",
             },
             mediapipe: {
                 modelComplexity: "2",
@@ -59,7 +62,8 @@ function getSettings() {
             },
             performance: {
                 useDgpu: false,
-                GPUs:0
+                GPUs: 0,
+                useDescrertionProcess: require("os").platform() == "darwin",
             },
             valued: true,
             ver: currentVer,
@@ -94,8 +98,7 @@ function addUserModels(model) {
 function removeUserModels(name) {
     var index = models.findIndex(function (element) {
         return element.name === name;
-    }
-    );
+    });
     if (index > -1) models.splice(index, 1);
     storage.setItem("sysmocap-user-models", models);
 }

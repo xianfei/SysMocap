@@ -63,6 +63,7 @@ module.exports = {
                     gl: "当前图形计算设备：",
                     forcedDGPU:
                         "在双显卡设备优先使用独立显卡进行图形计算（重启软件生效）",
+                        useDescrertionProcess: "使用独立进程用于动作捕捉",
                 },
                 forward: {
                     name: "动作/虚拟形象转发",
@@ -149,7 +150,8 @@ module.exports = {
                     name: "Performance",
                     gl: "Current GL Device: ",
                     forcedDGPU:
-                        "Use Discrete Graphics on Dual GPU Laptop（Need Reopen Software）",
+                        "Use Discrete Graphics when Dual GPU （Need Reopen）",
+                        useDescrertionProcess: "Use Descretion Process for Motion Capture",
                 },
                 output: {
                     name: "Virtual Character Output",
