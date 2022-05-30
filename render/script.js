@@ -33,7 +33,7 @@ const clamp = Kalidokit.Utils.clamp;
 const lerp = Kalidokit.Vector.lerp;
 
 // VRM object
-let currentVrm;
+let currentVrm = null;
 
 // Whether mediapipe ready
 var started = false;
@@ -115,13 +115,11 @@ animate();
 var modelObj = JSON.parse(localStorage.getItem("modelInfo"));
 var modelPath = modelObj.path;
 
-
-
 var fileType = modelPath
     .substring(modelPath.lastIndexOf(".") + 1)
     .toLowerCase();
 
-var skeletonHelper;
+var skeletonHelper = null;
 
 // init server
 if (ipcRenderer)
@@ -143,7 +141,6 @@ scene.add(light2);
 
 var initRotation = {};
 
-
 // Import model from URL, add your own model here
 var loader = null;
 if (fileType == "fbx") {
@@ -164,9 +161,7 @@ loader.load(
         } else {
             model = gltf.scene;
         }
-        skeletonHelper = new THREE.SkeletonHelper(model);
-        skeletonHelper.visible = false;
-        scene.add(skeletonHelper);
+
         if (fileType == "vrm") {
             // calling these functions greatly improves the performance
             THREE.VRMUtils.removeUnnecessaryVertices(gltf.scene);
@@ -178,6 +173,9 @@ loader.load(
                 currentVrm.scene.rotation.y = Math.PI; // Rotate model 180deg to face camera
             });
         } else {
+            skeletonHelper = new THREE.SkeletonHelper(model);
+            skeletonHelper.visible = false;
+            scene.add(skeletonHelper);
             // for glb files
             scene.add(model);
             model.rotation.y = Math.PI; // Rotate model 180deg to face camera
@@ -205,14 +203,16 @@ loader.load(
                 );
                 orbitControls.update();
             }
-            if(modelObj.cameraPosition){
-                for (var i in modelObj.cameraPosition) orbitCamera.position[i] = modelObj.cameraPosition[i];
+            if (modelObj.cameraPosition) {
+                for (var i in modelObj.cameraPosition)
+                    orbitCamera.position[i] = modelObj.cameraPosition[i];
             }
-            if(modelObj.cameraRotation){
-                for (var i in modelObj.cameraRotation) orbitCamera.rotation[i] = modelObj.cameraRotation[i];
+            if (modelObj.cameraRotation) {
+                for (var i in modelObj.cameraRotation)
+                    orbitCamera.rotation[i] = modelObj.cameraRotation[i];
             }
 
-            if(modelObj.init){
+            if (modelObj.init) {
                 initRotation = modelObj.init;
             }
         }
@@ -252,7 +252,9 @@ const rigRotation = (
         Part.quaternion.slerp(quaternion, lerpAmount); // interpolate
     } else if (skeletonHelper) {
         var skname = modelObj.binding[name].name; // convert name with model json binding info
-        if(skname == "None"){return}
+        if (skname == "None") {
+            return;
+        }
         // find bone in bones by name
         var b = skeletonHelper.bones.find((bone) => bone.name == skname);
 
@@ -308,17 +310,17 @@ const rigPosition = (
         // find bone in bones by name
         var b = skeletonHelper.bones.find((bone) => bone.name == name);
         if (b) {
-            if(fileType=='fbx'){
-                dampener *=100;
-            } 
+            if (fileType == "fbx") {
+                dampener *= 100;
+            }
             let vector = new THREE.Vector3(
                 position.x * dampener,
                 position.y * dampener,
                 -position.z * dampener
             );
-            if(fileType=='fbx'){
-                vector.y-=1.2* dampener;
-            } 
+            if (fileType == "fbx") {
+                vector.y -= 1.2 * dampener;
+            }
             b.position.lerp(vector, lerpAmount); // interpolate
         } else {
             console.log("Can not found bone " + name);
@@ -418,7 +420,7 @@ const rigFace = (riggedFace) => {
 var positionOffset = {
     x: 0,
     y: 1,
-    z: 0
+    z: 0,
 };
 
 /* VRM Character Animator */
@@ -717,27 +719,26 @@ if (localStorage.getItem("useCamera") == "camera") {
 var app = new Vue({
     el: "#controller",
     data: {
-        target:"face"
-    }
+        target: "face",
+    },
 });
 
-function changeTarget(target){
+function changeTarget(target) {
     app.target = target;
-    if(target == "face"){
-        positionOffset = {x: 0, y: 1, z: 0}
-
-    }else if(target == "half"){
-        positionOffset =  {
-            "x": 0,
-            "y": 1.1,
-            "z": 1
-        }
-    }else if(target == "full"){
+    if (target == "face") {
+        positionOffset = { x: 0, y: 1, z: 0 };
+    } else if (target == "half") {
         positionOffset = {
-            "x": 0,
-            "y": 1.4,
-            "z": 2
-        }
+            x: 0,
+            y: 1.1,
+            z: 1,
+        };
+    } else if (target == "full") {
+        positionOffset = {
+            x: 0,
+            y: 1.4,
+            z: 2,
+        };
     }
 }
 
