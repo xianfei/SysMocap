@@ -126,3 +126,15 @@ npm start
 - [x] Mocap data forwarding via network
 
 - [x] Adapt for Linux and macOS 
+
+### Thanks
+
+You can see all `dependencies` in [package.json](https://github.com/xianfei/SysMocap/blob/main/package.json)
+
+- [google/mediapipe/Holistic](https://google.github.io/mediapipe/solutions/holistic.html) for Mocap
+
+- [kalidokit](https://github.com/yeemachine/kalidokit) for Calulate Mocap Data
+
+- [electron](https://github.com/electron/electron) and Vue.js for GUI Framework
+
+- [Material color utilities](https://github.com/material-foundation/material-color-utilities) for Color Picking
