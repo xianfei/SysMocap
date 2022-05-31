@@ -103,7 +103,7 @@ npm start
 
 - [x] Settings page and global settings utils
 
-- [ ] Add play/pause button and progress bar when mocap from video 
+- [x] Add play/pause button and progress bar when mocap from video 
 
 - [x] Support bones binding for glTF/glb
 
@@ -126,3 +126,13 @@ npm start
 - [x] Mocap data forwarding via network
 
 - [x] Adapt for Linux and macOS 
+
+#### Mainly Open Source Library
+
+- [google/mediapipe/Holistic](https://google.github.io/mediapipe/solutions/holistic.html) for Mocap
+
+- [kalidokit](https://github.com/yeemachine/kalidokit) for Calulate Mocap Data
+
+- [electron](https://github.com/electron/electron) and Vue.js for GUI Framework
+
+- [Material color utilities](https://github.com/material-foundation/material-color-utilities) for Color Picking
