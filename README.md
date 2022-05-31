@@ -127,7 +127,9 @@ npm start
 
 - [x] Adapt for Linux and macOS 
 
-#### Mainly Open Source Library
+#### Thanks
+
+You can see all `dependencies` in [package.json](https://github.com/xianfei/SysMocap/blob/main/package.json)
 
 - [google/mediapipe/Holistic](https://google.github.io/mediapipe/solutions/holistic.html) for Mocap
 
