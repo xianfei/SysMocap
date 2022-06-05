@@ -50,10 +50,6 @@ https://user-images.githubusercontent.com/8101613/167257906-596919a5-4c0e-4795-8
 
 ![10](README.assets/10.webp)
 
-![2](README.assets/2.webp)
-
-![1](README.assets/1.webp)
-
 🌟 Support Auto Skeleton Detection for All VRM files and Mixamo Format FBX files
 
 ![4](README.assets/4.webp)
@@ -66,9 +62,17 @@ https://user-images.githubusercontent.com/8101613/167257906-596919a5-4c0e-4795-8
 
 🌟 Powered by Mediapipe and Kalidokit with Web Technologies
 
+### Effect demonstration
+
 ![7](README.assets/7.webp)
 
 ![9](README.assets/9.webp)
+
+![6](README.assets/6.webp)
+
+![2](README.assets/2.webp)
+
+![1](README.assets/1.webp)
 
 ### System architecture
 

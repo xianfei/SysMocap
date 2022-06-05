@@ -52,10 +52,6 @@ https://user-images.githubusercontent.com/8101613/167257906-596919a5-4c0e-4795-8
 
 ![10](README.assets/10.webp)
 
-![2](README.assets/2.webp)
-
-![1](README.assets/1.webp)
-
 🌟 支持自动检测骨骼类型并完成映射（ for All VRM files and Mixamo Format FBX files）
 
 ![4](README.assets/4.webp)
@@ -68,9 +64,17 @@ https://user-images.githubusercontent.com/8101613/167257906-596919a5-4c0e-4795-8
 
 🌟 感谢 Mediapipe and Kalidokit 提供技术支持，基于Web 技术开发
 
+## 效果展示
+
 ![7](README.assets/7.webp)
 
 ![9](README.assets/9.webp)
+
+![6](README.assets/6.webp)
+
+![2](README.assets/2.webp)
+
+![1](README.assets/1.webp)
 
 ### 系统架构
 
