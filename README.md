@@ -48,27 +48,27 @@ https://user-images.githubusercontent.com/8101613/167257906-596919a5-4c0e-4795-8
 
 ![Screen Shot 2022-05-23 at 00 31 27](https://user-images.githubusercontent.com/8101613/171019881-8b95a1fd-c513-430e-b55e-a449a3524e7b.png)
 
-![10](https://user-images.githubusercontent.com/8101613/172043152-03239ea2-77a8-4a6c-bfdb-80b2b4d2d0cf.gif)
+![10](README.assets/10.webp)
 
-![2](https://user-images.githubusercontent.com/8101613/172043163-c60a7dce-9547-4a21-a07e-7a28c4a53021.gif)
+![2](README.assets/2.webp)
 
-![1](https://user-images.githubusercontent.com/8101613/172043173-9a6f6620-a3c4-433f-9a35-93b3cc3eb091.gif)
+![1](README.assets/1.webp)
 
 🌟 Support Auto Skeleton Detection for All VRM files and Mixamo Format FBX files
 
-![4](https://user-images.githubusercontent.com/8101613/172043233-d09fb829-290c-466e-9f81-5c79a2c04ad4.gif)
+![4](README.assets/4.webp)
 
 🌟 Support Any Skeleton Structure with Manual Mapping
 
-![5](https://user-images.githubusercontent.com/8101613/172043269-82a90435-08ca-412f-87cc-6c76b301ab09.gif)
+![5](README.assets/5.webp)
 
 🌟 Does not require a discrete graphics card and runs smoothly even on eight-year-old computers (i7-4790k/GTX770/16G RAM)
 
 🌟 Powered by Mediapipe and Kalidokit with Web Technologies
 
-![7](https://user-images.githubusercontent.com/8101613/172043337-9da13783-d8e9-4c8e-9f45-bdbe027d70d7.gif)
+![7](README.assets/7.webp)
 
-![9](https://user-images.githubusercontent.com/8101613/172043340-9ee27a62-8972-47ab-bfdc-38ff16fd10da.gif)
+![9](README.assets/9.webp)
 
 ### System architecture
 
