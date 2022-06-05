@@ -22,8 +22,6 @@ Available for Windows, macOS (packaged) & Linux (source code only)
 
 (This is a multi-language software, including English. )
 
-本科毕业设计作品。点击此处阅读中文说明。(还没写 等等吧😂)
-
 ### Highlights
 
 🌟 Beautiful GUI with Material Design 3 Color System
