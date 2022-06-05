@@ -64,13 +64,21 @@ https://user-images.githubusercontent.com/8101613/167257906-596919a5-4c0e-4795-8
 
 🌟 感谢 Mediapipe and Kalidokit 提供技术支持，基于Web 技术开发
 
-## 效果展示
+## 更多效果展示
 
-![7](README.assets/7.webp)
+🌟 面部
 
 ![9](README.assets/9.webp)
 
+🌟 半身
+
+![7](README.assets/7.webp)
+
+🌟 半身与手部
+
 ![6](README.assets/6.webp)
+
+🌟 全身
 
 ![2](README.assets/2.webp)
 

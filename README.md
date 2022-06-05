@@ -62,13 +62,21 @@ https://user-images.githubusercontent.com/8101613/167257906-596919a5-4c0e-4795-8
 
 🌟 Powered by Mediapipe and Kalidokit with Web Technologies
 
-### Effect demonstration
+### More Effect Demonstration
 
-![7](README.assets/7.webp)
+🌟 Facial
 
 ![9](README.assets/9.webp)
 
+🌟 Half-body
+
+![7](README.assets/7.webp)
+
+🌟 Half-body with Hands
+
 ![6](README.assets/6.webp)
+
+🌟 Full-body
 
 ![2](README.assets/2.webp)
 
