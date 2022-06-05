@@ -46,7 +46,7 @@ https://user-images.githubusercontent.com/8101613/167257906-596919a5-4c0e-4795-8
 
 ![1](https://user-images.githubusercontent.com/8101613/172043173-9a6f6620-a3c4-433f-9a35-93b3cc3eb091.gif)
 
-🌟 Support Auto Skeleton Detection for mixamo format FBX files
+🌟 Support Auto Skeleton Detection for All VRM files and Mixamo Format FBX files
 
 ![4](https://user-images.githubusercontent.com/8101613/172043233-d09fb829-290c-466e-9f81-5c79a2c04ad4.gif)
 
