@@ -534,10 +534,10 @@
                             v-show="videoSource == 'file'"
                         >
                             <button class="mdui-btn xf-button" id="chooseFile">
-                                选择视频文件
+                                {{language.tabMocap.chooseVideo}}
                             </button>
                             <span style="margin-left: 10px"
-                                >已选择视频文件：{{videoPath==''?'未选择':videoPath}}</span
+                                >{{language.tabMocap.choosedVideo + (videoPath==''?language.tabMocap.unchoosed:videoPath)}}</span
                             >
                         </div>
                     </div>
@@ -600,7 +600,7 @@
                     <div
                         class="settings-item"
                         onclick="ipcRenderer.send('openPDF','../pdfs/bylw.pdf')"
-                        v-show="platform!=='web'"
+                        v-show="false"
                     >
                         <i
                             class="mdui-icon material-icons"

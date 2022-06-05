@@ -52,7 +52,7 @@
         </style>
     </head>
 
-    <body style="font-family: 'Quicksand', 'MiSans'; background-color: #0000">
+    <body style="font-family: 'Quicksand', 'MiSans'; background-color: #fff3">
         <div class="titlebar"></div>
 
         <!-- <button id='reset' >open dev
@@ -249,7 +249,7 @@
                                         >{{languages.modelVierer.modifyDecoration}}</span
                                     >
                                     <span v-show="model.type != 'vrm'"
-                                        >编辑骨骼绑定信息</span
+                                        >{{languages.modelVierer.changeBonesBinding}}</span
                                     >
                                 </div>
                             </li>
@@ -264,7 +264,7 @@
                                     class="mdui-list-item-content"
                                     style="margin-left: 30px"
                                 >
-                                    编辑虚拟形象信息
+                                    {{languages.modelVierer.edit}}
                                 </div>
                             </li>
                         </ul>
@@ -318,7 +318,7 @@
                                     class="mdui-list-item-content"
                                     style="margin-left: 30px"
                                 >
-                                    隐藏 {{k}}
+                                    {{languages.modelVierer.hide + ' ' + k}}
                                 </div>
                             </li>
                         </ul>
@@ -426,21 +426,21 @@
                 if (
                     obj
                         .querySelector(".mdui-list-item-content")
-                        .innerText.includes("隐藏")
+                        .innerText.includes(app.languages.modelVierer.hide)
                 ) {
                     scene.getObjectByName(k).visible = false;
                     obj.querySelector(".mdui-list-item-content").innerText =
-                        "显示" +
+                    app.languages.modelVierer.show +
                         obj
                             .querySelector(".mdui-list-item-content")
-                            .innerText.substr(2);
+                            .innerText.substr(app.languages.modelVierer.hide.length);
                 } else {
                     scene.getObjectByName(k).visible = true;
                     obj.querySelector(".mdui-list-item-content").innerText =
-                        "隐藏" +
+                    app.languages.modelVierer.hide +
                         obj
                             .querySelector(".mdui-list-item-content")
-                            .innerText.substr(2);
+                            .innerText.substr(app.languages.modelVierer.show.length);
                 }
             }
 
@@ -497,13 +497,23 @@
 
             var skeletonHelper;
 
-            const light = new THREE.AmbientLight(0xffffff, 0.8);
+            var lightBoosterAmbient = app.model.lightAmbient ? app.model.lightAmbient : 1.0;
+            var lightBoosterDirectionalHigh     = app.model.lightDirectionalHigh ? app.model.lightDirectionalHigh : 1.0;
+            var lightBoosterDirectional     = app.model.lightDirectional ? app.model.lightDirectional : 0.0;
+
+            const light = new THREE.AmbientLight(0xffffff, 0.8 * lightBoosterAmbient);
             light.position.set(10.0, 10.0, 10.0).normalize();
             scene.add(light);
-            var light2 = new THREE.DirectionalLight(0xffffff, 1);
+            var light2 = new THREE.DirectionalLight(0xffffff, 1 * lightBoosterDirectionalHigh);
             light2.position.set(0, 3, 2);
             light2.castShadow = true;
             scene.add(light2);
+            var light3 = new THREE.DirectionalLight(0xffffff, 1 * lightBoosterDirectional);
+            light3.position.set(0, 0, 2);
+            light3.castShadow = true;
+            scene.add(light3);
+
+            var avatar = null
 
             // gltf and vrm
             var loader = null;
@@ -528,6 +538,8 @@
                     }
                     skeletonHelper = new THREE.SkeletonHelper(model);
                     skeletonHelper.visible = false;
+                    skeletonHelper.material.linewidth = 30;
+
                     scene.add(skeletonHelper);
 
                     if (args.model.type == "vrm") {
@@ -542,6 +554,7 @@
                         THREE.VRM.from(gltf).then((vrm) => {
                             console.log(vrm);
                             scene.add(vrm.scene);
+                            avatar = vrm.scene
                             app.loaded = true;
 
                             vrm.humanoid.getBoneNode(
@@ -552,6 +565,7 @@
                         console.log(model);
                         model.castShadow = true;
                         scene.add(model);
+                        avatar = model
                         // for (var i of [-2.0, 680.0])
                         //     for (var j of [-2.0, 680.0])
                         //         for (var k of [-2.0, 680.0]) {
@@ -616,17 +630,22 @@
             gui.hide();
 
             function setupDatGui() {
-                let folder = gui.addFolder("骨骼解析");
+                let folder = gui.addFolder("Skeletons");
 
                 folder.add(skeletonHelper, "visible");
-                folder.controllers[0].name("展示骨架");
+                setTimeout(() => {
+                    folder.add(avatar, "visible");
+                    folder.controllers[1].name("Show Avatar");
+                }, 5000);
+                folder.controllers[0].name("Show Skeleton");
+                
 
                 const bones = skeletonHelper.bones;
 
                 for (let i = 0; i < bones.length; i++) {
                     const bone = bones[i];
 
-                    folder = gui.addFolder("骨骼" + bone.name);
+                    folder = gui.addFolder("Bone: " + bone.name);
 
                     if (i == 0) {
                         folder.add(
