@@ -1,8 +1,18 @@
 ![Snipaste_2022-05-07_13-31-46](README.assets/Snipaste_2022-05-07_13-31-46.png)
 
-## SysMocap
+<h1 align="center">
+SysMocap
+</h1>
 
-<img src="https://github.com/xianfei/SysMocap/actions/workflows/main.yml/badge.svg">  
+<p align="center">
+<a href="https://github.com/xianfei/SysMocap/actions" target="_blank">
+<img src="https://github.com/xianfei/SysMocap/actions/workflows/main.yml/badge.svg" alt="GitHub Actions" />
+</a>
+</p>
+
+<p align="center">
+English Version | <a href="./README.zh-cn.md">中文版本</a> 
+</p>
 
 A cross-platform real-time video-driven motion capture and 3D virtual character rendering system for VTuber/Live/AR/VR.
 
