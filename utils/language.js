@@ -33,6 +33,7 @@ module.exports = {
                 chooseVideo: "选择视频文件",
                 choosedVideo: "已选择视频文件:",
                 unchoosed: "未选择",
+                chooseCamera: "选择摄像头：",
             },
             tabSettings: {
                 desc: "计算机学院 2018级 王衔飞 毕业设计作品",
@@ -134,6 +135,7 @@ module.exports = {
                 chooseVideo: "Choose Video File",
                 choosedVideo: "Choosed Video File: ",
                 unchoosed: "Unchoosed",
+                chooseCamera: "Choose Camera",
             },
             tabSettings: {
                 desc: "By Xianfei, as Undergraduate Graduation Design Works",

@@ -542,24 +542,6 @@
                                 (videoPath==''?language.tabMocap.unchoosed:videoPath)}}</span
                             >
                         </div>
-                        <div
-                            style="margin-top: 10px"
-                            v-show="videoSource == 'camera'"
-                        >
-                            Choose camera device: <select
-                            style="margin-left: 10px;"
-                                class="mdui-select"
-                                v-model="camera"
-                            >
-
-                                    <option
-                                        v-for="c in cameras"
-                                        v-bind:value="c.id"
-                                    >
-                                        {{c.label}}
-                                    </option>
-                            </select>
-                        </div>
                     </div>
                     <iframe
                         id="foo"
@@ -698,6 +680,22 @@
                     <h1 class="mdui-text-color-theme">
                         {{language.tabSettings.preview.name}}
                     </h1>
+                    <div class="settings-item">
+                        <span
+                                ><span class="material-icons-outlined">
+                                    camera </span
+                                >{{language.tabMocap.chooseCamera}}</span
+                            >
+                        <select
+                            v-model="camera"
+                            class="mdui-select"
+                            style="float: right; margin-right: 10px"
+                        >
+                            <option v-for="c in cameras" v-bind:value="c.id">
+                                {{c.label}}
+                            </option>
+                        </select>
+                    </div>
                     <div class="settings-item">
                         <label class="mdui-switch">
                             <span
