@@ -463,16 +463,13 @@ const animateVRM = (vrm, results) => {
     }
 
     if (ipcRenderer)
-        ipcRenderer.send(
-            "sendBoradcast",
-            {
-                type: "xf-sysmocap-data",
-                riggedPose: riggedPose,
-                riggedLeftHand: riggedLeftHand,
-                riggedRightHand: riggedRightHand,
-                riggedFace: riggedFace,
-            }
-        );
+        ipcRenderer.send("sendBoradcast", {
+            type: "xf-sysmocap-data",
+            riggedPose: riggedPose,
+            riggedLeftHand: riggedLeftHand,
+            riggedRightHand: riggedRightHand,
+            riggedFace: riggedFace,
+        });
 
     // Animate Face
     if (faceLandmarks) {
@@ -687,14 +684,23 @@ const drawResults = (results) => {
 
 // switch use camera or video file
 if (localStorage.getItem("useCamera") == "camera") {
-    const camera = new Camera(videoElement, {
-        onFrame: async () => {
-            await holistic.send({ image: videoElement });
-        },
-        width: 1280,
-        height: 720,
-    });
-    camera.start();
+    navigator.mediaDevices
+        .getUserMedia({ video: { deviceId: localStorage.getItem("cameraId"),width: 1280, height: 720 } })
+        .then(function (stream) {
+            videoElement.srcObject = stream;
+            videoElement.play();
+            var videoFrameCallback = async () => {
+                // videoElement.pause()
+                await holistic.send({ image: videoElement });
+                videoElement.requestVideoFrameCallback(videoFrameCallback);
+                // videoElement.play()
+            };
+
+            videoElement.requestVideoFrameCallback(videoFrameCallback);
+        })
+        .catch(function (err0r) {
+            alert(err0r);
+        });
 } else {
     // path of video file
     videoElement.src = localStorage.getItem("videoFile");

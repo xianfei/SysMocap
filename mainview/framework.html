@@ -240,7 +240,8 @@
                         </div>
                         <div class="line2"></div>
                         <div id="btndefault" class="carditem">
-                            <i class="mdui-icon material-icons cardicon">check</i
+                            <i class="mdui-icon material-icons cardicon"
+                                >check</i
                             >{{language.tabModelLib.setAsDefault}}
                         </div>
                         <div class="line2"></div>
@@ -414,7 +415,7 @@
                                         style="font-size: 16px"
                                         mdui-tooltip="{content: '默认使用的形象'}"
                                     >
-                                    done
+                                        done
                                     </span>
                                 </div>
                             </div>
@@ -537,8 +538,27 @@
                                 {{language.tabMocap.chooseVideo}}
                             </button>
                             <span style="margin-left: 10px"
-                                >{{language.tabMocap.choosedVideo + (videoPath==''?language.tabMocap.unchoosed:videoPath)}}</span
+                                >{{language.tabMocap.choosedVideo +
+                                (videoPath==''?language.tabMocap.unchoosed:videoPath)}}</span
                             >
+                        </div>
+                        <div
+                            style="margin-top: 10px"
+                            v-show="videoSource == 'camera'"
+                        >
+                            Choose camera device: <select
+                            style="margin-left: 10px;"
+                                class="mdui-select"
+                                v-model="camera"
+                            >
+
+                                    <option
+                                        v-for="c in cameras"
+                                        v-bind:value="c.id"
+                                    >
+                                        {{c.label}}
+                                    </option>
+                            </select>
                         </div>
                     </div>
                     <iframe

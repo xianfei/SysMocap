@@ -220,6 +220,8 @@ if (typeof require != "undefined") {
             userModels: JSON.parse(JSON.stringify(userModels)),
             theme: {},
             document: document,
+            camera: "",
+            cameras: [],
         },
         computed: {
             bg: function () {
@@ -286,6 +288,17 @@ if (typeof require != "undefined") {
                 deep: true,
             },
         },
+    });
+
+    navigator.mediaDevices.enumerateDevices().then((mediaDevices) => {
+        for (var mediaDevice of mediaDevices)
+            if (mediaDevice.kind === "videoinput") {
+                app.cameras.push({
+                    id: mediaDevice.deviceId,
+                    label: mediaDevice.label,
+                });
+            }
+        if (app.cameras?.length > 0) app.camera = app.cameras[0].id;
     });
 
     window.sysmocapApp = app;
@@ -548,6 +561,7 @@ window.startMocap = async function (e) {
         isMocaping = true;
         localStorage.setItem("modelInfo", app.selectModel);
         localStorage.setItem("useCamera", app.videoSource);
+        localStorage.setItem("cameraId", app.camera);
         localStorage.setItem("videoFile", app.videoPath[0]);
 
         if (window.sysmocapApp.settings.performance.useDescrertionProcess) {
@@ -566,7 +580,7 @@ window.startMocap = async function (e) {
             if (window.sysmocapApp.settings.dev.openDevToolsWhenMocap)
                 bw.webContents.openDevTools({ mode: "detach" });
             document.getElementById("foo").src = "../render/render.html";
-        }else{
+        } else {
             document.getElementById("foo").src = "../mocaprender/render.html";
         }
 
@@ -592,21 +606,22 @@ window.startMocap = async function (e) {
     }
 };
 
-if (window.sysmocapApp.settings.performance.useDescrertionProcess) window.addEventListener(
-    "resize",
-    function () {
-        if (!isMocaping) return;
-        const win = remote.getCurrentWindow();
-        const bw = win.getBrowserView();
-        var winWidth = parseInt(win.getSize()[0]);
-        bw.setBounds({
-            x: parseInt(winWidth / 2),
-            y: parseInt(
-                document.querySelector("#foo").getBoundingClientRect().y
-            ),
-            width: parseInt(winWidth / 2) - 20,
-            height: parseInt(((winWidth - 40) * 10) / 32),
-        });
-    },
-    false
-);
+if (window.sysmocapApp.settings.performance.useDescrertionProcess)
+    window.addEventListener(
+        "resize",
+        function () {
+            if (!isMocaping) return;
+            const win = remote.getCurrentWindow();
+            const bw = win.getBrowserView();
+            var winWidth = parseInt(win.getSize()[0]);
+            bw.setBounds({
+                x: parseInt(winWidth / 2),
+                y: parseInt(
+                    document.querySelector("#foo").getBoundingClientRect().y
+                ),
+                width: parseInt(winWidth / 2) - 20,
+                height: parseInt(((winWidth - 40) * 10) / 32),
+            });
+        },
+        false
+    );
