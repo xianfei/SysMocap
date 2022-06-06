@@ -33,7 +33,7 @@ module.exports = {
                 chooseVideo: "选择视频文件",
                 choosedVideo: "已选择视频文件:",
                 unchoosed: "未选择",
-                chooseCamera: "选择摄像头：",
+                chooseCamera: "选择摄像头",
             },
             tabSettings: {
                 desc: "计算机学院 2018级 王衔飞 毕业设计作品",
@@ -87,6 +87,9 @@ module.exports = {
                     openDevToolsWhenMocap: "在启动动作捕捉时打开DevTools窗口",
                     showGpuInfo: "打开GPU信息页面",
                 },
+                input:{
+                    name: "输入",
+                }
             },
             modelVierer: {
                 fullSupport: "完整动作支持",
@@ -183,6 +186,9 @@ module.exports = {
                 },
                 mediapipe: {
                     name: "Motion Capture",
+                },
+                input:{
+                    name: "Input",
                 },
                 dev: {
                     name: "Developer",
