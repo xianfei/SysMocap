@@ -30,7 +30,7 @@
     "express-ws": "^5.0.2",
     "figlet": "^1.5.2",
     "jquery": "^3.6.0",
-    "jsoneditor": "^9.7.4",
+    "jsoneditor": "^9.8.0",
     "kalidokit": "^1.1.5",
     "lato-font": "^3.0.0",
     "lil-gui": "^0.16.1",
@@ -39,6 +39,7 @@
     "pdfjs-dist": "^2.13.216",
     "simple-argv": "^2.0.4",
     "socket.io": "^4.5.0",
+    "svelte-jsoneditor": "^0.3.59",
     "three": "^0.137.4",
     "vue": "^2.6.14"
   },
