@@ -299,6 +299,9 @@ if (typeof require != "undefined") {
                 });
             }
         if (app.cameras?.length > 0) app.camera = app.cameras[0].id;
+        app.$nextTick(()=>{
+            new mdui.Select("#demo-js-3");
+        })
     });
 
     window.sysmocapApp = app;
@@ -323,6 +326,8 @@ if (typeof require != "undefined") {
     // var inst = new mdui.Select("#demo-js");
 
     var inst2 = new mdui.Select("#demo-js-2");
+    
+
 
     var lightInput = new mdui.Dialog("#light-js");
 

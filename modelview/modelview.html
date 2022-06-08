@@ -7,7 +7,7 @@
             name="viewport"
             content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
         />
-        <title>Document</title>
+        <title>ModelVierer</title>
         <link rel="stylesheet" href="../node_modules/mdui/dist/css/mdui.css" />
         <link
             rel="stylesheet"
@@ -24,11 +24,6 @@
         <script src="../node_modules/lil-gui/dist/lil-gui.umd.min.js"></script>
         <script src="../node_modules/@pixiv/three-vrm/lib/three-vrm.js"></script>
         <link rel="stylesheet" href="../fonts/fonts.css" />
-        <script src="../node_modules/jsoneditor/dist/jsoneditor.js"></script>
-        <link
-            rel="stylesheet"
-            href="../node_modules/jsoneditor/dist/jsoneditor.css"
-        />
 
         <style>
             .titlebar {
@@ -298,7 +293,7 @@
                             v-show="showOpts||showOpts2"
                             v-on:click="showOpts = showOpts2 = false"
                             onclick="window.saveJson()"
-                            style="width: 180px"
+                            style="width: 175px"
                         >
                             <i class="mdui-icon material-icons">arrow_back</i>
                             <div
@@ -395,6 +390,9 @@
                     args = JSON.parse(process.argv[i + 1]);
                 }
             }
+
+            window.document.title = args.model.name
+
             var app = new Vue({
                 el: "#vue-target",
                 data: {
