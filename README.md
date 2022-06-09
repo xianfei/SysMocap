@@ -90,8 +90,6 @@ https://user-images.githubusercontent.com/8101613/167257906-596919a5-4c0e-4795-8
 
 ![2](README.assets/2.webp)
 
-![1](README.assets/1.webp)
-
 ### System architecture
 
 ![WX20220507-222732@2x](README.assets/WX20220507-222732@2x.png)
