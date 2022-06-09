@@ -1,4 +1,4 @@
-![Snipaste_2022-05-07_13-31-46](README.assets/Snipaste_2022-05-07_13-31-46.png)
+![banner](https://user-images.githubusercontent.com/8101613/172903631-e9610e0b-ed46-4c8c-a3f9-3a098265f820.png)
 
 <h1 align="center">
 SysMocap
@@ -8,6 +8,16 @@ SysMocap
 <a href="https://github.com/xianfei/SysMocap/actions" target="_blank">
 <img src="https://github.com/xianfei/SysMocap/actions/workflows/main.yml/badge.svg" alt="GitHub Actions" />
 </a>
+<a href="https://github.com/xianfei/SysMocap/releases" target="_blank">
+<img src="https://badgen.net/github/release/xianfei/SysMocap?color=cyan" alt="release" />
+</a>
+<a href="#" target="_blank">
+<img src="https://badgen.net/github/forks/xianfei/SysMocap" alt="forks" />
+</a>
+<a href="#" target="_blank">
+<img src="https://badgen.net/github/stars/xianfei/SysMocap?color=yellow" alt="stars" />
+</a>
+
 </p>
 
 <p align="center">
@@ -26,7 +36,7 @@ Available for Windows, macOS (packaged) & Linux (source code only)
 
 🌟 Beautiful GUI with Material Design 3 Color System
 
-![image85](README.assets/image85.png)
+![GUI](https://user-images.githubusercontent.com/8101613/172905805-16c7d081-66ff-4324-b92a-4cdfa1eb2ac9.png)
 
 🌟 Easy to used. You can import 3D models just with drags.
 
@@ -38,15 +48,15 @@ https://user-images.githubusercontent.com/8101613/167257906-596919a5-4c0e-4795-8
 
 🌟 Model viewer with bones & dressing controller
 
-![WX20220507-222225@2x](README.assets/WX20220507-222225@2x.png)
+![Model viewer](https://user-images.githubusercontent.com/8101613/172905954-d77fad63-8847-4c95-831c-5d8917f6ee18.png)
 
 🌟 Support OBS live-streaming
 
-![WechatIMG21](README.assets/WechatIMG21.jpeg)
+![OBS](https://user-images.githubusercontent.com/8101613/172906807-8ef482c2-95cc-4290-8b9b-38f2d5f7a188.jpg)
 
 🌟 Support full-body motion capture
 
-![Screen Shot 2022-05-23 at 00 31 27](https://user-images.githubusercontent.com/8101613/171019881-8b95a1fd-c513-430e-b55e-a449a3524e7b.png)
+![Full-body](https://user-images.githubusercontent.com/8101613/171019881-8b95a1fd-c513-430e-b55e-a449a3524e7b.png)
 
 ![10](README.assets/10.webp)
 
