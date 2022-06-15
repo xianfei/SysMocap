@@ -61,15 +61,15 @@ https://user-images.githubusercontent.com/8101613/167257906-596919a5-4c0e-4795-8
 
 ![Full-body](https://user-images.githubusercontent.com/8101613/171019881-8b95a1fd-c513-430e-b55e-a449a3524e7b.png)
 
-![10](README.assets/10.webp)
+![Full-body-animotion](https://user-images.githubusercontent.com/8101613/173759813-4f0d4540-abab-41dd-b343-5fc5b9be4840.png)
 
 🌟 支持自动检测骨骼类型并完成映射（ for All VRM files and Mixamo Format FBX files）
 
-![4](README.assets/4.webp)
+![fbx-mixamo-animotion](https://user-images.githubusercontent.com/8101613/173759682-f38c80f8-8c9a-407d-9cec-19a925cae1c0.png)
 
 🌟 支持通过手动进行骨骼映射来驱动各种骨骼类型FBX、GLB、GLTF模型文件
 
-![5](README.assets/5.webp)
+![bdd-animotion](https://user-images.githubusercontent.com/8101613/173759924-cbc5cc6c-2b96-444d-a070-3d761d6e04bb.png)
 
 🌟 无需独立显卡，甚至在八年前的老电脑上都能流畅使用 (i7-4790k/GTX770/16G RAM)
 
@@ -79,23 +79,23 @@ https://user-images.githubusercontent.com/8101613/167257906-596919a5-4c0e-4795-8
 
 🌟 面部
 
-![9](README.assets/9.webp)
+![Facial-animotion](https://user-images.githubusercontent.com/8101613/173760130-1cac01ad-b597-438b-a7f5-eaae43ff2538.png)
 
 🌟 半身
 
-![7](README.assets/7.webp)
+![Half-body-animotion](https://user-images.githubusercontent.com/8101613/173760381-19117cc7-5ed7-4483-a898-ca540bb67855.png)
 
 🌟 半身与手部
 
-![6](README.assets/6.webp)
+![Half-body with Hands animotion](https://user-images.githubusercontent.com/8101613/173760449-ad3c9c78-c309-43b7-a0bb-873f23b069ec.png)
 
 🌟 全身
 
-![2](README.assets/2.webp)
+![Full-body-animotion](https://user-images.githubusercontent.com/8101613/173760510-0f7b2958-11c7-4c98-8950-778af2272d3f.png)
 
 ### 系统架构
 
-![WX20220507-222732@2x](README.assets/WX20220507-222732@2x.png)
+![System architecture](https://user-images.githubusercontent.com/8101613/173760568-a409beac-c966-43d6-a11f-11baf091e078.png)
 
 ### 如何使用
 
