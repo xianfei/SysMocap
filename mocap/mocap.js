@@ -31,7 +31,7 @@ if (globalSettings.forward.enableForwarding)
     ipcRenderer.send(
         "startWebServer",
         parseInt(globalSettings.forward.port),
-        modelPath,
+        JSON.stringify(modelObj),
         globalSettings.forward.supportForWebXR
     );
 

@@ -1,3 +1,14 @@
+/**
+ *  Web Render Part with WebXR API
+ *
+ *  A part of SysMocap, open sourced under Mozilla Public License 2.0
+ *
+ *  https://github.com/xianfei/SysMocap
+ *
+ *  xianfei 2022.3
+ */
+
+
 // import * as Kalidokit from "../dist";
 //Import Helper Functions from Kalidokit
 const remap = Kalidokit.Utils.remap;
@@ -13,6 +24,9 @@ import { VRButton } from "/node_modules/three/examples/jsm/webxr/VRButton.js";
 
 /* THREEJS WORLD SETUP */
 let currentVrm;
+
+var mocapData = null;
+
 
 // renderer
 const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
@@ -52,52 +66,107 @@ orbitControls.update();
 const scene = new THREE.Scene();
 
 // light
-const light = new THREE.DirectionalLight(0xffffff);
-light.position.set(1.0, 1.0, 1.0).normalize();
+const light = new THREE.AmbientLight(0xffffff, 0.8);
+light.position.set(10.0, 10.0, -10.0).normalize();
 scene.add(light);
+var light2 = new THREE.DirectionalLight(0xffffff, 1);
+light2.position.set(0, 3, -2);
+light2.castShadow = true;
+scene.add(light2);
+
+// model info
+const modelInfoRes = await fetch("/modelInfo");
+var modelObj = await modelInfoRes.json();
+var modelPath = modelObj.path;
 
 // Main Render Loop
 const clock = new THREE.Clock();
 
-function animate() {
-    requestAnimationFrame(animate);
 
-    if (currentVrm) {
-        // Update model to render physics
-        currentVrm.update(clock.getDelta());
-    }
-    renderer.render(scene, orbitCamera);
-}
-animate();
+var fileType =  modelObj.type
 
-
-if (useXR) renderer.setAnimationLoop( function () {
-
-	if (currentVrm) {
-        // Update model to render physics
-        currentVrm.update(clock.getDelta());
-    }
-    renderer.render(scene, orbitCamera);
-
-} );
+var skeletonHelper;
 
 /* VRM CHARACTER SETUP */
 
 // Import Character VRM
-const loader = new THREE.GLTFLoader();
-loader.crossOrigin = "anonymous";
+var initRotation = {};
+
 // Import model from URL, add your own model here
+var loader = null;
+if (fileType == "fbx") {
+    loader = new THREE.FBXLoader();
+} else {
+    loader = new THREE.GLTFLoader();
+}
+// Import Character
+loader.crossOrigin = "anonymous";
 loader.load(
-    "/model",
+    modelPath,
 
     (gltf) => {
-        THREE.VRMUtils.removeUnnecessaryJoints(gltf.scene);
+        var model = null;
+        if (fileType == "fbx") {
+            model = gltf;
+            gltf.scale.set(0.01, 0.01, 0.01);
+        } else {
+            model = gltf.scene;
+        }
 
-        THREE.VRM.from(gltf).then((vrm) => {
-            scene.add(vrm.scene);
-            currentVrm = vrm;
-            currentVrm.scene.rotation.y = Math.PI; // Rotate model 180deg to face camera
-        });
+        if (fileType == "vrm") {
+            // calling these functions greatly improves the performance
+            THREE.VRMUtils.removeUnnecessaryVertices(gltf.scene);
+            THREE.VRMUtils.removeUnnecessaryJoints(gltf.scene);
+
+            THREE.VRM.from(gltf).then((vrm) => {
+                scene.add(vrm.scene);
+                currentVrm = vrm;
+                currentVrm.scene.rotation.y = Math.PI; // Rotate model 180deg to face camera
+            });
+        } else {
+            skeletonHelper = new THREE.SkeletonHelper(model);
+            skeletonHelper.visible = false;
+            scene.add(skeletonHelper);
+            // for glb files
+            scene.add(model);
+            model.rotation.y = Math.PI; // Rotate model 180deg to face camera
+            var rot = {
+                x: 0,
+                y: 0,
+                z: -3.1129221599796764,
+            };
+            for (var i in rot) orbitCamera.rotation[i] = rot[i];
+            var pos = {
+                x: -0,
+                y: 0.5922529898344698,
+                z: -1.4448572419883419,
+            };
+            for (var i in pos) orbitCamera.position[i] = pos[i];
+
+            orbitControls.target.y = 0.5;
+            orbitControls.update();
+
+            if (modelObj.cameraTarget) {
+                orbitControls.target.set(
+                    modelObj.cameraTarget.x,
+                    modelObj.cameraTarget.y,
+                    modelObj.cameraTarget.z
+                );
+                orbitControls.update();
+            }
+            if (modelObj.cameraPosition) {
+                for (var i in modelObj.cameraPosition)
+                    orbitCamera.position[i] = modelObj.cameraPosition[i];
+            }
+            if (modelObj.cameraRotation) {
+                for (var i in modelObj.cameraRotation)
+                    orbitCamera.rotation[i] = modelObj.cameraRotation[i];
+            }
+
+            if (modelObj.init) {
+                initRotation = modelObj.init;
+            }
+        }
     },
 
     (progress) =>
@@ -109,6 +178,7 @@ loader.load(
 
     (error) => console.error(error)
 );
+
 
 // Animate Rotation Helper function
 const rigRotation = (
@@ -133,13 +203,34 @@ const rigRotation = (
         let quaternion = new THREE.Quaternion().setFromEuler(euler);
         Part.quaternion.slerp(quaternion, lerpAmount); // interpolate
     } else if (skeletonHelper) {
-        name = modelObj.binding[name]; // convert name with model json binding info
+        var skname = modelObj.binding[name].name; // convert name with model json binding info
+        if (skname == "None") {
+            return;
+        }
         // find bone in bones by name
-        var b = skeletonHelper.bones.find((bone) => bone.name == name);
+        var b = skeletonHelper.bones.find((bone) => bone.name == skname);
+
         if (b) {
-            b.rotation.x = rotation.x * dampener;
-            b.rotation.y = rotation.y * dampener;
-            b.rotation.z = rotation.z * dampener;
+            if (!initRotation[name]) {
+                initRotation[name] = {
+                    x: b.rotation.x,
+                    y: b.rotation.y,
+                    z: b.rotation.z,
+                };
+            }
+            var bindingFunc = modelObj.binding[name].func;
+            const x = rotation.x * dampener;
+            const y = rotation.y * dampener;
+            const z = rotation.z * dampener;
+
+            let euler = new THREE.Euler(
+                initRotation[name].x + eval(bindingFunc.fx),
+                initRotation[name].y + eval(bindingFunc.fy),
+                initRotation[name].z + eval(bindingFunc.fz),
+                rotation.rotationOrder || "XYZ"
+            );
+            let quaternion = new THREE.Quaternion().setFromEuler(euler);
+            b.quaternion.slerp(quaternion, lerpAmount); // interpolate
         } else {
             console.log("Can not found bone " + name);
         }
@@ -167,13 +258,22 @@ const rigPosition = (
         );
         Part.position.lerp(vector, lerpAmount); // interpolate
     } else if (skeletonHelper) {
-        name = modelObj.binding[name]; // convert name with model json binding info
+        name = modelObj.binding[name].name; // convert name with model json binding info
         // find bone in bones by name
         var b = skeletonHelper.bones.find((bone) => bone.name == name);
         if (b) {
-            b.position.x = position.x * dampener;
-            b.position.y = position.y * dampener;
-            b.position.z = position.z * dampener;
+            if (fileType == "fbx") {
+                dampener *= 100;
+            }
+            let vector = new THREE.Vector3(
+                position.x * dampener,
+                position.y * dampener,
+                -position.z * dampener
+            );
+            if (fileType == "fbx") {
+                vector.y -= 1.2 * dampener;
+            }
+            b.position.lerp(vector, lerpAmount); // interpolate
         } else {
             console.log("Can not found bone " + name);
         }
@@ -202,14 +302,11 @@ const rigFace = (riggedFace) => {
         Blendshape.getValue(PresetName.Blink),
         0.4
     );
-    // riggedFace.eye.l = Kalidokit.Face.stabilizeBlink(
+    // riggedFace.eye = Kalidokit.Face.stabilizeBlink(
     //     {l:riggedFace.eye.l,r:riggedFace.eye.l},
     //     riggedFace.head.y
-    // ).l;
-    // riggedFace.eye.r = Kalidokit.Face.stabilizeBlink(
-    //     {l:riggedFace.eye.r,r:riggedFace.eye.r},
-    //     riggedFace.head.y
-    // ).r;
+    // );
+    
     riggedFace.eye.l /= 0.8;
     riggedFace.eye.r /= 0.8;
     Blendshape.setValue(PresetName.BlinkL, riggedFace.eye.l);
@@ -269,25 +366,26 @@ const rigFace = (riggedFace) => {
     currentVrm.lookAt.applyer.lookAt(lookTarget);
 };
 
-
-
 /* VRM Character Animator */
-const animateVRM = (vrm, mydata) => {
-    if (!vrm) {
+const animateVRM = (vrm, results) => {
+    if (!vrm && !skeletonHelper) {
         return;
     }
-    let riggedPose, riggedLeftHand, riggedRightHand, riggedFace;
+    if(!results) return;
+    // Take the results from `Holistic` and animate character based on its Face, Pose, and Hand Keypoints.
+    let riggedPose = results.riggedPose,
+        riggedLeftHand = results.riggedLeftHand,
+        riggedRightHand = results.riggedRightHand,
+        riggedFace = results.riggedFace;
 
     // Animate Face
-    if (mydata.riggedFace) {
-        riggedFace = mydata.riggedFace;
+    if (riggedFace ) {
         rigRotation("Neck", riggedFace.head, 0.7);
-        rigFace(riggedFace);
+        if (fileType == "vrm") rigFace(structuredClone(riggedFace));
     }
 
     // Animate Pose
-    if (mydata.riggedPose) {
-        riggedPose = mydata.riggedPose;
+    if (riggedPose) {
         rigRotation("Hips", riggedPose.Hips.rotation, 0.7);
         rigPosition(
             "Hips",
@@ -303,20 +401,19 @@ const animateVRM = (vrm, mydata) => {
         rigRotation("Chest", riggedPose.Spine, 0.25, 0.3);
         rigRotation("Spine", riggedPose.Spine, 0.45, 0.3);
 
-        rigRotation("RightUpperArm", riggedPose.RightUpperArm, 1, 0.3);
-        rigRotation("RightLowerArm", riggedPose.RightLowerArm, 1, 0.3);
-        rigRotation("LeftUpperArm", riggedPose.LeftUpperArm, 1, 0.3);
-        rigRotation("LeftLowerArm", riggedPose.LeftLowerArm, 1, 0.3);
+        rigRotation("RightUpperArm", riggedPose.RightUpperArm);
+        rigRotation("RightLowerArm", riggedPose.RightLowerArm);
+        rigRotation("LeftUpperArm", riggedPose.LeftUpperArm);
+        rigRotation("LeftLowerArm", riggedPose.LeftLowerArm);
 
-        rigRotation("LeftUpperLeg", riggedPose.LeftUpperLeg, 1, 0.3);
-        rigRotation("LeftLowerLeg", riggedPose.LeftLowerLeg, 1, 0.3);
-        rigRotation("RightUpperLeg", riggedPose.RightUpperLeg, 1, 0.3);
-        rigRotation("RightLowerLeg", riggedPose.RightLowerLeg, 1, 0.3);
+        rigRotation("LeftUpperLeg", riggedPose.LeftUpperLeg);
+        rigRotation("LeftLowerLeg", riggedPose.LeftLowerLeg);
+        rigRotation("RightUpperLeg", riggedPose.RightUpperLeg);
+        rigRotation("RightLowerLeg", riggedPose.RightLowerLeg);
     }
 
     // Animate Hands
-    if (mydata.riggedLeftHand) {
-        riggedLeftHand = mydata.riggedLeftHand;
+    if (riggedLeftHand  && fileType == "vrm") {
         rigRotation("LeftHand", {
             // Combine pose rotation Z and hand rotation X Y
             z: riggedPose.LeftHand.z,
@@ -354,8 +451,8 @@ const animateVRM = (vrm, mydata) => {
         );
         rigRotation("LeftLittleDistal", riggedLeftHand.LeftLittleDistal);
     }
-    if (mydata.riggedRightHand) {
-        riggedRightHand = mydata.riggedRightHand;
+    if (riggedRightHand && fileType == "vrm") {
+        // riggedRightHand = Kalidokit.Hand.solve(rightHandLandmarks, "Right");
         rigRotation("RightHand", {
             // Combine Z axis from pose hand and X/Y axis from hand wrist rotation
             z: riggedPose.RightHand.z,
@@ -393,16 +490,41 @@ const animateVRM = (vrm, mydata) => {
         );
         rigRotation("RightLittleDistal", riggedRightHand.RightLittleDistal);
     }
+
 };
 
+
+function animate() {
+    requestAnimationFrame(animate);
+    animateVRM(currentVrm, mocapData);
+    if (currentVrm) {
+        // Update model to render physics
+        currentVrm.update(clock.getDelta());
+    }
+    renderer.render(scene, orbitCamera);
+}
+animate();
+
+
+if (useXR) renderer.setAnimationLoop( function () {
+    animateVRM(currentVrm, mocapData);
+	if (currentVrm) {
+        // Update model to render physics
+        currentVrm.update(clock.getDelta());
+    }
+    renderer.render(scene, orbitCamera);
+
+} );
+
 socket.on("message",  function (evt) {
-    console.log(evt.data);
+    // console.log(evt.data);
 
     var mydata = JSON.parse(evt);
-    console.log(mydata);
+    // console.log(mydata);
     if (!mydata.type) return;
     if (mydata.type != "xf-sysmocap-data") return;
-    animateVRM(currentVrm, mydata);
+    mocapData = mydata;
+    // animateVRM(currentVrm, mydata);
 });
 
 

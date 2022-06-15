@@ -20,10 +20,6 @@ document.body.setAttribute(
         globalSettings.ui.themeColor
 );
 
-// import mocap web server
-var my_server = null;
-var ipcRenderer = require("electron").ipcRenderer;
-// my_server = require("../webserv/server.js");
 
 // import Helper Functions from Kalidokit
 const remap = Kalidokit.Utils.remap;
@@ -94,11 +90,13 @@ stats2.domElement.style.top = "20px";
 stats2.domElement.style.left = "100px";
 statsContainer.appendChild(stats2.dom);
 
+// model info
+var modelObj = JSON.parse(localStorage.getItem("modelInfo"));
+var modelPath = modelObj.path;
+
 // Main Render Loop
 const clock = new THREE.Clock();
 
-var modelObj = JSON.parse(localStorage.getItem("modelInfo"));
-var modelPath = modelObj.path;
 
 var fileType = modelPath
     .substring(modelPath.lastIndexOf(".") + 1)
@@ -138,9 +136,7 @@ loader.load(
         } else {
             model = gltf.scene;
         }
-        skeletonHelper = new THREE.SkeletonHelper(model);
-        skeletonHelper.visible = false;
-        scene.add(skeletonHelper);
+
         if (fileType == "vrm") {
             // calling these functions greatly improves the performance
             THREE.VRMUtils.removeUnnecessaryVertices(gltf.scene);
@@ -152,6 +148,9 @@ loader.load(
                 currentVrm.scene.rotation.y = Math.PI; // Rotate model 180deg to face camera
             });
         } else {
+            skeletonHelper = new THREE.SkeletonHelper(model);
+            skeletonHelper.visible = false;
+            scene.add(skeletonHelper);
             // for glb files
             scene.add(model);
             model.rotation.y = Math.PI; // Rotate model 180deg to face camera
@@ -203,6 +202,7 @@ loader.load(
 
     (error) => console.error(error)
 );
+
 
 // Animate Rotation Helper function
 const rigRotation = (
@@ -524,16 +524,6 @@ const animateVRM = (vrm, results) => {
         rigRotation("RightLittleDistal", riggedRightHand.RightLittleDistal);
     }
 
-    // if (my_server)
-    //     my_server.sendBoradcast(
-    //         JSON.stringify({
-    //             type: "xf-sysmocap-data",
-    //             riggedPose: riggedPose,
-    //             riggedLeftHand: riggedLeftHand,
-    //             riggedRightHand: riggedRightHand,
-    //             riggedFace: riggedFace,
-    //         })
-    //     );
 };
 
 function animate() {

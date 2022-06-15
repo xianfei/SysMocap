@@ -126,7 +126,7 @@ if (ipcRenderer)
     ipcRenderer.send(
         "startWebServer",
         parseInt(globalSettings.forward.port),
-        modelPath,
+        JSON.stringify(modelObj),
         globalSettings.forward.supportForWebXR
     );
 // my_server.startServer(parseInt(globalSettings.forward.port), modelPath);
