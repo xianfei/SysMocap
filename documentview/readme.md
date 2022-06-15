@@ -8,31 +8,41 @@
 
 # 导入模型
 
-此系统支持导入 VRM、glb/glTF、FBX 模型文件。其中 VRM 模型文件规定其必须自带标准的人体骨骼架构，所以无特殊要求。glb/glTF、FBX 模型文件应包含骨骼信息，且骨骼节点建议按照下文中**使用 Blender 创建形象**所提及的骨骼命名方式（这样不需要重新映射）。
+此系统支持导入 VRM、glb/glTF、FBX 模型文件。其中 VRM 模型文件规定其必须自带标准的人体骨骼架构，所以无特殊要求。glb/glTF、FBX 模型文件应包含骨骼信息。
+
+导入封面图片是可选的，如果导入图片建议使用16:9比例。
 
 ### 从 VRoidHub 获取
 
-TODO: 待添加使用说明
+网站（中国大陆可能需要特殊渠道访问）：https://hub.vroid.com/en
+
+注册登录后，如果您喜欢的虚拟形象“Can you use this model?”为Yes，您即可下载该形象。下载到的VRM可在程序中“模型库”页面通过拖拽导入。
+
+![](img/Snipaste_2022-05-30_23-58-50.jpg)
 
 ### 从 Mixamo 获取
 
-TODO: 待添加使用说明
+网站：https://www.mixamo.com/#/?page=1&type=Character
+
+注册登录后，在左上角“Character”中查找自己喜欢的虚拟角色，然后点击黄色“Download”按钮即可
+
+![](img/Snipaste_2022-05-31_00-02-30.jpg)
 
 ### 使用 VRoidStudio 创建
 
-TODO: 待添加使用说明
+(也可从stream下载该软件)  网站（中国大陆可能需要特殊渠道访问）：https://vroid.com/en/studio
 
-### 使用 Blender 创建
-
-TODO: 待添加使用说明
+可在搜索引擎中找到该软件的汉化版，导出VRM形象即可
 
 # 动作数据转发
 
-TODO: 待添加使用说明
+如果需要在WebXR环境或浏览器、OBS环境使用动作数据转发，需要在设置打开此功能。
 
 ### 使用 OBS 进行直播
 
-TODO: 待添加使用说明
+在 OBS 中添加来源并选择浏览器，输入 http://127.0.0.1:8080  （其中8080是您设置的端口号）即可。
+
+导入后可以点击 交互 按钮 改变虚拟形象的位置。（通过WASD键及鼠标拖动、鼠标滚轮）
 
 # 开源库
 
@@ -69,9 +79,5 @@ GUI 基于 fxDrawer 技术构建，使用 Web 前端技术。
 -   Vue: 渐进式 JavaScript 框架 https://cn.vuejs.org/
 
 > <span>该项目GUI部分基于前端技术构建<br>using Node.js <span id="node-version"></span>, Chromium <span id="chrome-version"></span>, and Electron <span id="electron-version"></span>.</span>
-
-Powered by:
-
-![](img/icons.png)
 
 Copyright © 2021-2022 Xianfei. All rights reserved.

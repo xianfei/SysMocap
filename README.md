@@ -68,6 +68,10 @@ https://user-images.githubusercontent.com/8101613/167257906-596919a5-4c0e-4795-8
 
 ![5](README.assets/5.webp)
 
+🌟 Support full-body motion capture
+
+![Screen Shot 2022-05-23 at 00 31 27](https://user-images.githubusercontent.com/8101613/171019881-8b95a1fd-c513-430e-b55e-a449a3524e7b.png)
+
 🌟 Does not require a discrete graphics card and runs smoothly even on eight-year-old computers (i7-4790k/GTX770/16G RAM)
 
 🌟 Powered by Mediapipe and Kalidokit with Web Technologies
@@ -174,3 +178,15 @@ npm start
 - [x] Mocap data forwarding via network
 
 - [x] Adapt for Linux and macOS 
+
+### Thanks
+
+You can see all `dependencies` in [package.json](https://github.com/xianfei/SysMocap/blob/main/package.json)
+
+- [google/mediapipe/Holistic](https://google.github.io/mediapipe/solutions/holistic.html) for Mocap
+
+- [kalidokit](https://github.com/yeemachine/kalidokit) for Calulate Mocap Data
+
+- [electron](https://github.com/electron/electron) and Vue.js for GUI Framework
+
+- [Material color utilities](https://github.com/material-foundation/material-color-utilities) for Color Picking

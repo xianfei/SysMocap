@@ -68,8 +68,12 @@ module.exports = {
         // for (var ws of expressWs.getWss().clients) {
         //     ws.send(obj);
         // }
+        try{
         if(wss)wss.emit('message',obj)
         if(ws)ws.emit('message',obj)
+    }catch(e){
+        console.log(e)
+    }
         
     },
 };

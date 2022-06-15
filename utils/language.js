@@ -30,6 +30,10 @@ module.exports = {
                 videoFile: "视频文件",
                 start: "开始",
                 stop: "停止",
+                chooseVideo: "选择视频文件",
+                choosedVideo: "已选择视频文件:",
+                unchoosed: "未选择",
+                chooseCamera: "选择摄像头",
             },
             tabSettings: {
                 desc: "计算机学院 2018级 王衔飞 毕业设计作品",
@@ -63,6 +67,7 @@ module.exports = {
                     gl: "当前图形计算设备：",
                     forcedDGPU:
                         "在双显卡设备优先使用独立显卡进行图形计算（重启软件生效）",
+                        useDescrertionProcess: "使用独立进程用于动作捕捉（重启软件生效）",
                 },
                 forward: {
                     name: "动作/虚拟形象转发",
@@ -82,6 +87,9 @@ module.exports = {
                     openDevToolsWhenMocap: "在启动动作捕捉时打开DevTools窗口",
                     showGpuInfo: "打开GPU信息页面",
                 },
+                input:{
+                    name: "输入",
+                }
             },
             modelVierer: {
                 fullSupport: "完整动作支持",
@@ -90,7 +98,11 @@ module.exports = {
                 showSketelon: "显示骨骼控制器",
                 hideSketelon: "隐藏骨骼控制器",
                 modifyDecoration: "编辑装饰物",
-                back: "返回",
+                back: "保存并返回",
+                changeBonesBinding: "更换骨骼绑定",
+                edit: "编辑虚拟形象信息",
+                hide: "隐藏",
+                show: "显示",
             },
         },
         en: {
@@ -123,6 +135,10 @@ module.exports = {
                 videoFile: "Video File",
                 start: "Start",
                 stop: "Stop",
+                chooseVideo: "Choose Video File",
+                choosedVideo: "Choosed Video File: ",
+                unchoosed: "Unchoosed",
+                chooseCamera: "Choose Camera",
             },
             tabSettings: {
                 desc: "By Xianfei, as Undergraduate Graduation Design Works",
@@ -149,7 +165,8 @@ module.exports = {
                     name: "Performance",
                     gl: "Current GL Device: ",
                     forcedDGPU:
-                        "Use Discrete Graphics on Dual GPU Laptop（Need Reopen Software）",
+                        "Use Discrete Graphics when Dual GPU （Need Reopen）",
+                        useDescrertionProcess: "Use Descretion Process for Motion Capture（Need Reopen）",
                 },
                 output: {
                     name: "Virtual Character Output",
@@ -170,6 +187,9 @@ module.exports = {
                 mediapipe: {
                     name: "Motion Capture",
                 },
+                input:{
+                    name: "Input",
+                },
                 dev: {
                     name: "Developer",
                     allowDevTools: "Show Entrance for DevTools",
@@ -184,7 +204,11 @@ module.exports = {
                 showSketelon: "Show Bones Controller",
                 hideSketelon: "Hide Bones Controller",
                 modifyDecoration: "Modify Decoration",
-                back: "Back",
+                back: "Save & Back",
+                changeBonesBinding: "Change Bones Binding",
+                edit: "Edit Avatar Info",
+                hide: "Hide",
+                show: "Show",
             },
         },
     },

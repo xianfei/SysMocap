@@ -38,7 +38,7 @@
         <script src="../node_modules/@mediapipe/drawing_utils/drawing_utils.js"></script>
         <!-- Mediapipe Camera Tools -->
         <script src="../node_modules/@mediapipe/camera_utils/camera_utils.js"></script>
-        <link rel="stylesheet" href="render.css" />
+        <link rel="stylesheet" href="style.css" />
         <link rel="stylesheet" href="../node_modules/mdui/dist/css/mdui.css" />
         <script src="../node_modules/vue/dist/vue.js"></script>
         <script src="../node_modules/mdui/dist/js/mdui.js"></script>
@@ -58,16 +58,71 @@
                 overflow: hidden;
                 position: fixed;
             "
-        ></div>     
+        ></div>
+        <div class="preview">
+            <!-- canvas for show body skeleton -->
+            <canvas
+                class="guides"
+                style="
+                    width: 48%;
+                    border: solid 1px #ccc;
+                    border-radius: 10px;
+                    height: auto;
+                    overflow: hidden;
+                    position: fixed;
+                    top: 10px;
+                    left: 50%;
+                    z-index: 1000;
+                    pointer-events: none;
+                    transform: scale(-1, 1);
+                "
+            ></canvas>
+            <!-- show camera or video input  -->
+            <video
+                class="input_video"
+                muted
+                style="
+                    width: 48%;
+                    border: solid 1px #ccc;
+                    border-radius: 10px;
+                    height: auto;
+                    overflow: hidden;
+                    position: fixed;
+                    top: 10px;
+                    left: 50%;
+                    transform: scale(-1, 1);
+                "
+            ></video>
+        </div>
 
-        <div id="status" style="position: absolute; bottom: 140px">
-            <span style="position: absolute; left: 10px;font-size: 12px;">Render</span>
-            <span style="position: absolute; left: 100px;font-size: 12px;">Mocap</span>
+        <div
+            style="
+                position: fixed;
+                width: 400px;
+                height: 120px;
+                left: calc(50vw - 200px);
+                top: calc(50vh - 60px);
+                z-index: 1000;
+                background: #fffa;
+                border: solid 1px #ccc;
+                text-align: center;
+                line-height: 120px;
+                border-radius: 10px;
+                backdrop-filter: blur(20px) saturate(1.8);
+            "
+            id="loading"
+        >
+            正在初始化，请稍后
+        </div>
+
+        <div id="status" style="position: absolute; bottom: 120px">
+            <span style="position: absolute; left: 10px">Render</span>
+            <span style="position: absolute; left: 100px">Mocap</span>
         </div>
 
         <div
             id="controller"
-            style="position: absolute; bottom: 95px; right: 20px"
+            style="position: absolute; bottom: 80px; right: 20px"
         >
             <div
                 style="
@@ -127,29 +182,7 @@
             </div>
         </div>
 
-        <div
-                style="
-                    position: fixed;
-                    left: calc(50vw - 100px);
-                    bottom: 80px;
-                    width: 200px;
-                    height: 40px;
-                    border-radius: 20px;
-                    background-color: #fffe;
-                "
-                class="mdui-shadow-5"
-                id="loading"
-            >
-                <div
-                    class="mdui-spinner mdui-spinner-colorful"
-                    style="margin: 10px 15px; width: 20px; height: 20px"
-                ></div>
-                <span style="line-height: 40px; position: fixed; color: #555;font-size: 14px;margin-left: -3px;"
-                    >初始化动作捕捉引擎…</span
-                >
-            </div>
-
         <script src="../node_modules/kalidokit/dist/kalidokit.umd.js"></script>
-        <script src="./render.js" defer></script>
+        <script src="./script.js" defer></script>
     </body>
 </html>

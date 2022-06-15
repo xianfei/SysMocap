@@ -240,7 +240,8 @@
                         </div>
                         <div class="line2"></div>
                         <div id="btndefault" class="carditem">
-                            <i class="mdui-icon material-icons cardicon">check</i
+                            <i class="mdui-icon material-icons cardicon"
+                                >check</i
                             >{{language.tabModelLib.setAsDefault}}
                         </div>
                         <div class="line2"></div>
@@ -414,7 +415,7 @@
                                         style="font-size: 16px"
                                         mdui-tooltip="{content: '默认使用的形象'}"
                                     >
-                                    done
+                                        done
                                     </span>
                                 </div>
                             </div>
@@ -534,10 +535,11 @@
                             v-show="videoSource == 'file'"
                         >
                             <button class="mdui-btn xf-button" id="chooseFile">
-                                选择视频文件
+                                {{language.tabMocap.chooseVideo}}
                             </button>
                             <span style="margin-left: 10px"
-                                >已选择视频文件：{{videoPath==''?'未选择':videoPath}}</span
+                                >{{language.tabMocap.choosedVideo +
+                                (videoPath==''?language.tabMocap.unchoosed:videoPath)}}</span
                             >
                         </div>
                     </div>
@@ -600,7 +602,7 @@
                     <div
                         class="settings-item"
                         onclick="ipcRenderer.send('openPDF','../pdfs/bylw.pdf')"
-                        v-show="platform!=='web'"
+                        v-show="false"
                     >
                         <i
                             class="mdui-icon material-icons"
@@ -673,6 +675,27 @@
                             />
                             <i class="mdui-switch-icon"></i>
                         </label>
+                    </div>
+                     <!-- Setting Tab: input -->
+                     <h1 class="mdui-text-color-theme">
+                        {{language.tabSettings.input.name}}
+                    </h1>
+                    <div class="settings-item">
+                        <span
+                                ><span class="material-icons-outlined">
+                                    camera </span
+                                >{{language.tabMocap.chooseCamera}}</span
+                            >
+                        <select
+                            v-model="camera"
+                            class="mdui-select"
+                            style="float: right; margin-right: 10px"
+                            id="demo-js-3"
+                        >
+                            <option v-for="c in cameras" v-bind:value="c.id">
+                                {{c.label}}
+                            </option>
+                        </select>
                     </div>
                     <!-- Setting Tab: Preview -->
                     <h1 class="mdui-text-color-theme">
@@ -825,6 +848,20 @@
                             <input
                                 type="checkbox"
                                 v-model="settings.performance.useDgpu"
+                            />
+                            <i class="mdui-switch-icon"></i>
+                        </label>
+                    </div>
+                    <div class="settings-item" v-show="platform!=='web'">
+                        <label class="mdui-switch">
+                            <span
+                                ><span class="material-icons-outlined">
+                                    account_tree</span
+                                >{{language.tabSettings.performance.useDescrertionProcess}}</span
+                            >
+                            <input
+                                type="checkbox"
+                                v-model="settings.performance.useDescrertionProcess"
                             />
                             <i class="mdui-switch-icon"></i>
                         </label>
@@ -1056,7 +1093,7 @@
                             <i class="mdui-switch-icon"></i>
                         </label>
                     </div>
-                    <!-- <div class="settings-item" v-show="platform!=='web'">
+                    <div class="settings-item" v-show="platform!=='web'">
                         <label class="mdui-switch">
                             <span
                                 >{{language.tabSettings.dev.openDevToolsWhenMocap}}</span
@@ -1067,7 +1104,7 @@
                             />
                             <i class="mdui-switch-icon"></i>
                         </label>
-                    </div> -->
+                    </div>
                     <div
                         class="settings-item"
                         onclick="ipcRenderer.send('openGpuInfo')"

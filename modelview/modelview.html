@@ -7,7 +7,7 @@
             name="viewport"
             content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
         />
-        <title>Document</title>
+        <title>ModelVierer</title>
         <link rel="stylesheet" href="../node_modules/mdui/dist/css/mdui.css" />
         <link
             rel="stylesheet"
@@ -24,8 +24,6 @@
         <script src="../node_modules/lil-gui/dist/lil-gui.umd.min.js"></script>
         <script src="../node_modules/@pixiv/three-vrm/lib/three-vrm.js"></script>
         <link rel="stylesheet" href="../fonts/fonts.css" />
-        <script src="../node_modules/jsoneditor/dist/jsoneditor.js"></script>
-        <link rel="stylesheet" href="../node_modules/jsoneditor/dist/jsoneditor.css" />
 
         <style>
             .titlebar {
@@ -49,10 +47,20 @@
             .jsoneditor {
                 border: none !important;
             }
+
+            .jse-absolute-popup{
+                transform: scale(0.75);
+                transform-origin: 100% 100%;
+            }
+
+            .jse-sort{display: none;}
+            .jse-transform{display: none;}
+            .jse-powered-by{display: none;}
+            /* .jse-search{display: none;} */
         </style>
     </head>
 
-    <body style="font-family: 'Quicksand', 'MiSans'; background-color: #0000">
+    <body style="font-family: 'Quicksand', 'MiSans'; background-color: #fff3">
         <div class="titlebar"></div>
 
         <!-- <button id='reset' >open dev
@@ -249,7 +257,7 @@
                                         >{{languages.modelVierer.modifyDecoration}}</span
                                     >
                                     <span v-show="model.type != 'vrm'"
-                                        >编辑骨骼绑定信息</span
+                                        >{{languages.modelVierer.changeBonesBinding}}</span
                                     >
                                 </div>
                             </li>
@@ -264,7 +272,7 @@
                                     class="mdui-list-item-content"
                                     style="margin-left: 30px"
                                 >
-                                    编辑虚拟形象信息
+                                    {{languages.modelVierer.edit}}
                                 </div>
                             </li>
                         </ul>
@@ -284,8 +292,8 @@
                             class="mdui-list-item mdui-ripple"
                             v-show="showOpts||showOpts2"
                             v-on:click="showOpts = showOpts2 = false"
-                            onclick="saveJson()"
-                            style="width: 150px"
+                            onclick="window.saveJson()"
+                            style="width: 175px"
                         >
                             <i class="mdui-icon material-icons">arrow_back</i>
                             <div
@@ -296,8 +304,6 @@
                             </div>
                         </li>
                     </div>
-
-                    
 
                     <div
                         v-if="model.type == 'vrm'"
@@ -318,7 +324,7 @@
                                     class="mdui-list-item-content"
                                     style="margin-left: 30px"
                                 >
-                                    隐藏 {{k}}
+                                    {{languages.modelVierer.hide + ' ' + k}}
                                 </div>
                             </li>
                         </ul>
@@ -356,17 +362,27 @@
                 </div>
 
                 <div
-                        v-show="showOpts2"
-                        id="jsoneditor"
-                        style="margin-top: 70px;background: #000;width: calc(100% - 1px); height: calc(100vh - 71px);"
-                    >
-                </div>
+                    v-show="showOpts2"
+                    id="jsoneditor"
+                    style="
+                        position: fixed;
+                        top: 70px;
+                        background: #000;
+                        height: calc(100vh - 71px);
+                        z-index: 1000;
+                        width: calc(38.2vw - 1px);
+                    "
+                ></div>
             </div>
         </div>
         <script>
             // import languages
             const { languages } = require("../utils/language.js");
-            const { globalSettings,removeUserModels,addUserModels } = require("../utils/setting.js");
+            const {
+                globalSettings,
+                removeUserModels,
+                addUserModels,
+            } = require("../utils/setting.js");
             var args;
             for (var i = 0; i < process.argv.length; i++) {
                 if (process.argv[i] == "argsData") {
@@ -374,6 +390,9 @@
                     args = JSON.parse(process.argv[i + 1]);
                 }
             }
+
+            window.document.title = args.model.name
+
             var app = new Vue({
                 el: "#vue-target",
                 data: {
@@ -389,58 +408,45 @@
                     settings: globalSettings,
                     loaded: false,
                     failed: false,
-                    failedText:"加载失败"
+                    failedText: "加载失败",
                 },
             });
 
-            const container = document.getElementById("jsoneditor")
-        const options = {}
-        const editor = new JSONEditor(container, options)
+            //     const container = document.getElementById("jsoneditor")
+            // const options = {}
+            // const editor = new JSONEditor(container, options)
 
+            // // set json
 
+            // editor.set(args.model)
+            // editor.expandAll()
 
-        // set json
-        
-        editor.set(args.model) 
-        editor.expandAll()
-
-        function saveJson(){
-            const jsonChanged = editor.get()
-            if(JSON.stringify(args.model)==JSON.stringify(jsonChanged))return
-            if(args.model.isBuildIn){
-                app.failedText = '内建模型不能修改！'
-                app.failed = true
-                return
-            }
-            removeUserModels(app.model.name)
-            addUserModels(jsonChanged)
-            app.model = jsonChanged
-            // if(args.model.name == jsonChanged.name){
-
-            // }
-        }
-
+            
 
             function toggleShow(k, obj) {
                 console.log(k);
                 if (
                     obj
                         .querySelector(".mdui-list-item-content")
-                        .innerText.includes("隐藏")
+                        .innerText.includes(app.languages.modelVierer.hide)
                 ) {
                     scene.getObjectByName(k).visible = false;
                     obj.querySelector(".mdui-list-item-content").innerText =
-                        "显示" +
+                        app.languages.modelVierer.show +
                         obj
                             .querySelector(".mdui-list-item-content")
-                            .innerText.substr(2);
+                            .innerText.substr(
+                                app.languages.modelVierer.hide.length
+                            );
                 } else {
                     scene.getObjectByName(k).visible = true;
                     obj.querySelector(".mdui-list-item-content").innerText =
-                        "隐藏" +
+                        app.languages.modelVierer.hide +
                         obj
                             .querySelector(".mdui-list-item-content")
-                            .innerText.substr(2);
+                            .innerText.substr(
+                                app.languages.modelVierer.show.length
+                            );
                 }
             }
 
@@ -497,13 +503,38 @@
 
             var skeletonHelper;
 
-            const light = new THREE.AmbientLight(0xffffff, 0.8);
+            var lightBoosterAmbient = app.model.lightAmbient
+                ? app.model.lightAmbient
+                : 1.0;
+            var lightBoosterDirectionalHigh = app.model.lightDirectionalHigh
+                ? app.model.lightDirectionalHigh
+                : 1.0;
+            var lightBoosterDirectional = app.model.lightDirectional
+                ? app.model.lightDirectional
+                : 0.0;
+
+            const light = new THREE.AmbientLight(
+                0xffffff,
+                0.8 * lightBoosterAmbient
+            );
             light.position.set(10.0, 10.0, 10.0).normalize();
             scene.add(light);
-            var light2 = new THREE.DirectionalLight(0xffffff, 1);
+            var light2 = new THREE.DirectionalLight(
+                0xffffff,
+                1 * lightBoosterDirectionalHigh
+            );
             light2.position.set(0, 3, 2);
             light2.castShadow = true;
             scene.add(light2);
+            var light3 = new THREE.DirectionalLight(
+                0xffffff,
+                1 * lightBoosterDirectional
+            );
+            light3.position.set(0, 0, 2);
+            light3.castShadow = true;
+            scene.add(light3);
+
+            var avatar = null;
 
             // gltf and vrm
             var loader = null;
@@ -528,6 +559,8 @@
                     }
                     skeletonHelper = new THREE.SkeletonHelper(model);
                     skeletonHelper.visible = false;
+                    skeletonHelper.material.linewidth = 30;
+
                     scene.add(skeletonHelper);
 
                     if (args.model.type == "vrm") {
@@ -542,6 +575,7 @@
                         THREE.VRM.from(gltf).then((vrm) => {
                             console.log(vrm);
                             scene.add(vrm.scene);
+                            avatar = vrm.scene;
                             app.loaded = true;
 
                             vrm.humanoid.getBoneNode(
@@ -552,6 +586,7 @@
                         console.log(model);
                         model.castShadow = true;
                         scene.add(model);
+                        avatar = model;
                         // for (var i of [-2.0, 680.0])
                         //     for (var j of [-2.0, 680.0])
                         //         for (var k of [-2.0, 680.0]) {
@@ -616,17 +651,21 @@
             gui.hide();
 
             function setupDatGui() {
-                let folder = gui.addFolder("骨骼解析");
+                let folder = gui.addFolder("Skeletons");
 
                 folder.add(skeletonHelper, "visible");
-                folder.controllers[0].name("展示骨架");
+                setTimeout(() => {
+                    folder.add(avatar, "visible");
+                    folder.controllers[1].name("Show Avatar");
+                }, 5000);
+                folder.controllers[0].name("Show Skeleton");
 
                 const bones = skeletonHelper.bones;
 
                 for (let i = 0; i < bones.length; i++) {
                     const bone = bones[i];
 
-                    folder = gui.addFolder("骨骼" + bone.name);
+                    folder = gui.addFolder("Bone: " + bone.name);
 
                     if (i == 0) {
                         folder.add(
@@ -716,6 +755,51 @@
                         break;
                 }
             });
+        </script>
+
+        <script type="module">
+                        import { JSONEditor } from '../node_modules/svelte-jsoneditor/dist/jsoneditor.js'
+
+            let content = {
+              text: undefined,
+              json: args.model
+            }
+
+            const target = document.getElementById('jsoneditor')
+
+            target.style.setProperty('--jse-theme-color', app.bgcolor);
+            target.style.setProperty('--jse-theme-color-highlight', '#00000015');
+            target.style.setProperty('--jse-menu-color', app.color);
+
+            const editor = new JSONEditor({
+              target: target,
+              props: {
+                content,
+                onChange: (updatedContent, previousContent, patchResult) => {
+                  // content is an object { json: JSONData } | { text: string }
+                  console.log('onChange', updatedContent, previousContent, patchResult)
+                  content = updatedContent
+                }
+              }
+            })
+
+            window.saveJson = function () {
+                // return;
+                const jsonChanged = editor.get().json?editor.get().json:JSON.parse(editor.get().text);
+                if (JSON.stringify(args.model) == JSON.stringify(jsonChanged))
+                    return;
+                if (args.model.isBuildIn) {
+                    app.failedText = "内建模型不能修改！";
+                    app.failed = true;
+                    return;
+                }
+                removeUserModels(app.model.name);
+                addUserModels(jsonChanged);
+                app.model = jsonChanged;
+                // if(args.model.name == jsonChanged.name){
+
+                // }
+            }
         </script>
     </body>
 </html>
