@@ -1,6 +1,6 @@
 {
   "name": "sysmocap",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Video-based motion capture system.",
   "main": "main.js",
   "scripts": {
