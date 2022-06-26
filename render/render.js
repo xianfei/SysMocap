@@ -607,3 +607,24 @@ document.addEventListener("keydown", (event) => {
 if (localStorage.getItem("useCamera") !== "camera") {
     document.querySelector("#model").style.transform = "scale(-1, 1)";
 }
+
+var contentDom = document.querySelector("#model");
+
+//阻止相关事件默认行为
+contentDom.ondragcenter =
+    contentDom.ondragover =
+    contentDom.ondragleave =
+        () => {
+            return false;
+        };
+
+//对拖动释放事件进行处理
+contentDom.ondrop = (e) => {
+    //console.log(e);
+    var filePath = e.dataTransfer.files[0].path.replaceAll("\\", "/");
+    console.log(filePath);
+    contentDom.style.backgroundImage = `url(${filePath})`;
+    contentDom.style.backgroundSize = "cover";
+    contentDom.style.backgroundPosition = "center";
+    contentDom.style.backgroundRepeat = "no-repeat";
+};

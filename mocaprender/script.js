@@ -685,7 +685,13 @@ const drawResults = (results) => {
 // switch use camera or video file
 if (localStorage.getItem("useCamera") == "camera") {
     navigator.mediaDevices
-        .getUserMedia({ video: { deviceId: localStorage.getItem("cameraId"),width: 1280, height: 720 } })
+        .getUserMedia({
+            video: {
+                deviceId: localStorage.getItem("cameraId"),
+                width: 1280,
+                height: 720,
+            },
+        })
         .then(function (stream) {
             videoElement.srcObject = stream;
             videoElement.play();
@@ -770,3 +776,24 @@ document.addEventListener("keydown", (event) => {
             break;
     }
 });
+
+var contentDom = document.querySelector("#model");
+
+//阻止相关事件默认行为
+contentDom.ondragcenter =
+    contentDom.ondragover =
+    contentDom.ondragleave =
+        () => {
+            return false;
+        };
+
+//对拖动释放事件进行处理
+contentDom.ondrop = (e) => {
+    //console.log(e);
+    var filePath = e.dataTransfer.files[0].path.replaceAll("\\", "/");
+    console.log(filePath);
+    contentDom.style.backgroundImage = `url(${filePath})`;
+    contentDom.style.backgroundSize = "cover";
+    contentDom.style.backgroundPosition = "center";
+    contentDom.style.backgroundRepeat = "no-repeat";
+};
