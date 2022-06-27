@@ -182,6 +182,33 @@
             </div>
         </div>
 
+        <div
+            id="recording"
+            style="
+                position: fixed;
+                bottom: 20px;
+                height: 40px;
+                width: 200px;
+                background-color: #a40601;
+                left: calc(50% - 100px);
+                border-radius: 20px;
+                text-align: center;
+                line-height: 40px;
+                display: none;
+                color: #fff;
+            "
+        >
+            正在录制，按R键停止
+        </div>
+
+        <canvas
+            id="background-canvas"
+            style="position: absolute; top: -99999999px; left: -9999999999px"
+        ></canvas>
+
+        <script src="../utils/html2canvas.js"></script>
+        <script src="../utils/RecordRTC.js"></script>
+
         <script src="../node_modules/kalidokit/dist/kalidokit.umd.js"></script>
         <script src="./script.js" defer></script>
     </body>

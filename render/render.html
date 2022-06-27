@@ -58,11 +58,15 @@
                 overflow: hidden;
                 position: fixed;
             "
-        ></div>     
+        ></div>
 
         <div id="status" style="position: absolute; bottom: 140px">
-            <span style="position: absolute; left: 10px;font-size: 12px;">Render</span>
-            <span style="position: absolute; left: 100px;font-size: 12px;">Mocap</span>
+            <span style="position: absolute; left: 10px; font-size: 12px"
+                >Render</span
+            >
+            <span style="position: absolute; left: 100px; font-size: 12px"
+                >Mocap</span
+            >
         </div>
 
         <div
@@ -128,27 +132,60 @@
         </div>
 
         <div
+            style="
+                position: fixed;
+                left: calc(50vw - 100px);
+                bottom: 80px;
+                width: 200px;
+                height: 40px;
+                border-radius: 20px;
+                background-color: #fffe;
+            "
+            class="mdui-shadow-5"
+            id="loading"
+        >
+            <div
+                class="mdui-spinner mdui-spinner-colorful"
+                style="margin: 10px 15px; width: 20px; height: 20px"
+            ></div>
+            <span
                 style="
+                    line-height: 40px;
                     position: fixed;
-                    left: calc(50vw - 100px);
-                    bottom: 80px;
-                    width: 200px;
-                    height: 40px;
-                    border-radius: 20px;
-                    background-color: #fffe;
+                    color: #555;
+                    font-size: 14px;
+                    margin-left: -3px;
                 "
-                class="mdui-shadow-5"
-                id="loading"
+                >初始化动作捕捉引擎…</span
             >
-                <div
-                    class="mdui-spinner mdui-spinner-colorful"
-                    style="margin: 10px 15px; width: 20px; height: 20px"
-                ></div>
-                <span style="line-height: 40px; position: fixed; color: #555;font-size: 14px;margin-left: -3px;"
-                    >初始化动作捕捉引擎…</span
-                >
-            </div>
+        </div>
 
+        <div
+            id="recording"
+            style="
+                position: fixed;
+                bottom: 20px;
+                height: 40px;
+                width: 200px;
+                background-color: #a40601;
+                left: calc(50% - 100px);
+                border-radius: 20px;
+                text-align: center;
+                line-height: 40px;
+                display: none;
+                color: #fff;
+            "
+        >
+            正在录制，按R键停止
+        </div>
+
+        <canvas
+            id="background-canvas"
+            style="position: absolute; top: -99999999px; left: -9999999999px"
+        ></canvas>
+
+        <script src="../utils/html2canvas.js"></script>
+        <script src="../utils/RecordRTC.js"></script>
         <script src="../node_modules/kalidokit/dist/kalidokit.umd.js"></script>
         <script src="./render.js" defer></script>
     </body>

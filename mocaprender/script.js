@@ -99,6 +99,8 @@ statsContainer.appendChild(stats2.dom);
 // Main Render Loop
 const clock = new THREE.Clock();
 
+var isRecordingStarted = false;
+
 function animate() {
     requestAnimationFrame(animate);
 
@@ -109,6 +111,11 @@ function animate() {
         currentVrm.update(clock.getDelta());
     }
     renderer.render(scene, orbitCamera);
+
+    if(isRecordingStarted)html2canvas(elementToRecord).then(function (canvas) {
+        context.clearRect(0, 0, canvas2d.width, canvas2d.height);
+        context.drawImage(canvas, 0, 0, canvas2d.width, canvas2d.height);
+    });
 }
 animate();
 
@@ -774,6 +781,14 @@ document.addEventListener("keydown", (event) => {
         case "ArrowDown":
             positionOffset.y -= step;
             break;
+        case "r":
+            if (isRecordingStarted) {
+                stopRecording();
+                document.getElementById("recording").style.display = "none";
+            } else {
+                startRecording();
+                document.getElementById("recording").style.display = "";
+            }
     }
 });
 
@@ -797,3 +812,49 @@ contentDom.ondrop = (e) => {
     contentDom.style.backgroundPosition = "center";
     contentDom.style.backgroundRepeat = "no-repeat";
 };
+
+var elementToRecord = contentDom;
+var canvas2d = document.getElementById("background-canvas");
+var context = canvas2d.getContext("2d");
+
+canvas2d.width = elementToRecord.clientWidth;
+canvas2d.height = elementToRecord.clientHeight;
+
+var recorder = new RecordRTC(canvas2d, {
+    type: "canvas",
+});
+
+function startRecording() {
+    this.disabled = true;
+
+    isRecordingStarted = true;
+
+    recorder.startRecording();
+}
+
+function stopRecording() {
+    this.disabled = true;
+
+    recorder.stopRecording(function () {
+        isRecordingStarted = false;
+
+        var blob = recorder.getBlob();
+
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "video.webm";
+
+        link.dispatchEvent(
+            new MouseEvent("click", {
+                bubbles: true,
+                cancelable: true,
+                view: window,
+            })
+        );
+
+        setTimeout(() => {
+            window.URL.revokeObjectURL(blob);
+            link.remove();
+        }, 100);
+    });
+}

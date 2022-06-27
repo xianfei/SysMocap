@@ -20,7 +20,6 @@ document.body.setAttribute(
         globalSettings.ui.themeColor
 );
 
-
 // import Helper Functions from Kalidokit
 const remap = Kalidokit.Utils.remap;
 const clamp = Kalidokit.Utils.clamp;
@@ -30,7 +29,6 @@ const lerp = Kalidokit.Vector.lerp;
 let currentVrm;
 
 var mocapData = null;
-
 
 // renderer
 const renderer = new THREE.WebGLRenderer({
@@ -96,7 +94,6 @@ var modelPath = modelObj.path;
 
 // Main Render Loop
 const clock = new THREE.Clock();
-
 
 var fileType = modelPath
     .substring(modelPath.lastIndexOf(".") + 1)
@@ -202,7 +199,6 @@ loader.load(
 
     (error) => console.error(error)
 );
-
 
 // Animate Rotation Helper function
 const rigRotation = (
@@ -404,7 +400,7 @@ const animateVRM = (vrm, results) => {
     if (!vrm && !skeletonHelper) {
         return;
     }
-    if(!results) return;
+    if (!results) return;
     // Take the results from `Holistic` and animate character based on its Face, Pose, and Hand Keypoints.
     let riggedPose = results.riggedPose,
         riggedLeftHand = results.riggedLeftHand,
@@ -412,7 +408,7 @@ const animateVRM = (vrm, results) => {
         riggedFace = results.riggedFace;
 
     // Animate Face
-    if (riggedFace ) {
+    if (riggedFace) {
         rigRotation("Neck", riggedFace.head, 0.7);
         if (fileType == "vrm") rigFace(structuredClone(riggedFace));
     }
@@ -446,7 +442,7 @@ const animateVRM = (vrm, results) => {
     }
 
     // Animate Hands
-    if (riggedLeftHand  && fileType == "vrm") {
+    if (riggedLeftHand && fileType == "vrm") {
         rigRotation("LeftHand", {
             // Combine pose rotation Z and hand rotation X Y
             z: riggedPose.LeftHand.z,
@@ -523,8 +519,9 @@ const animateVRM = (vrm, results) => {
         );
         rigRotation("RightLittleDistal", riggedRightHand.RightLittleDistal);
     }
-
 };
+
+var isRecordingStarted = false;
 
 function animate() {
     requestAnimationFrame(animate);
@@ -538,21 +535,25 @@ function animate() {
         currentVrm.update(clock.getDelta());
     }
     renderer.render(scene, orbitCamera);
+
+    if(isRecordingStarted)html2canvas(elementToRecord).then(function (canvas) {
+        context.clearRect(0, 0, canvas2d.width, canvas2d.height);
+        context.drawImage(canvas, 0, 0, canvas2d.width, canvas2d.height);
+    });
 }
 animate();
 
 var isStart = false;
 
-window.onMocapData = (data)=>{
-    if(!isStart){
-        document.getElementById('loading').remove()
-        isStart = true
+window.onMocapData = (data) => {
+    if (!isStart) {
+        document.getElementById("loading").remove();
+        isStart = true;
     }
-    console.log("sendRenderDataForward")
     stats2.update();
     // Animate model
     mocapData = data;
-}
+};
 
 var app = new Vue({
     el: "#controller",
@@ -600,9 +601,16 @@ document.addEventListener("keydown", (event) => {
         case "ArrowDown":
             positionOffset.y -= step;
             break;
+        case "r":
+            if(isRecordingStarted){
+                stopRecording()
+                document.getElementById("recording").style.display = "none";
+            }else{
+                startRecording()
+                document.getElementById("recording").style.display = ""
+            }
     }
 });
-
 
 if (localStorage.getItem("useCamera") !== "camera") {
     document.querySelector("#model").style.transform = "scale(-1, 1)";
@@ -627,4 +635,50 @@ contentDom.ondrop = (e) => {
     contentDom.style.backgroundSize = "cover";
     contentDom.style.backgroundPosition = "center";
     contentDom.style.backgroundRepeat = "no-repeat";
+};
+
+var elementToRecord = contentDom;
+var canvas2d = document.getElementById("background-canvas");
+var context = canvas2d.getContext("2d");
+
+canvas2d.width = elementToRecord.clientWidth;
+canvas2d.height = elementToRecord.clientHeight;
+
+var recorder = new RecordRTC(canvas2d, {
+    type: "canvas"
+});
+
+function startRecording() {
+    this.disabled = true;
+
+    isRecordingStarted = true;
+
+    recorder.startRecording();
+};
+
+function stopRecording() {
+    this.disabled = true;
+
+    recorder.stopRecording(function () {
+        isRecordingStarted = false;
+
+        var blob = recorder.getBlob();
+
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "video.webm";
+
+        link.dispatchEvent(
+            new MouseEvent("click", {
+                bubbles: true,
+                cancelable: true,
+                view: window,
+            })
+        );
+
+        setTimeout(() => {
+            window.URL.revokeObjectURL(blob);
+            link.remove();
+        }, 100);
+    });
 };
