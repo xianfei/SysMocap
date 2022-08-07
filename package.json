@@ -1,14 +1,14 @@
 {
   "name": "sysmocap",
-  "version": "0.5.2",
+  "version": "0.5.4",
   "description": "Video-based motion capture system.",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
     "start-nogpu": "electron . --disable-gpu",
-    "package:mac64": "electron-packager ./ SysMocap --platform=darwin --arch=x64 --out ./OutApp --download.mirrorOptions.mirror=https://npm.taobao.org/mirrors/electron/ --overwrite --usage-description.Camera='该程序需要摄像头权限' --electronVersion 19.0.1 --asar",
-    "package:macarm": "electron-packager ./ SysMocap --platform=darwin --arch=arm64 --out ./OutApp --download.mirrorOptions.mirror=https://npm.taobao.org/mirrors/electron/ --overwrite --usage-description.Camera='该程序需要摄像头权限' --electronVersion 19.0.1 --asar",
-    "package:win64": "electron-packager ./ SysMocap --icon=sysmocap.ico --platform=win32 --arch=x64 --out ./OutApp --download.mirrorOptions.mirror=https://npm.taobao.org/mirrors/electron/ --overwrite --electronVersion 19.0.1 --asar",
+    "package:mac64": "electron-packager ./ SysMocap --platform=darwin --arch=x64 --out ./OutApp --download.mirrorOptions.mirror=https://npm.taobao.org/mirrors/electron/ --overwrite --usage-description.Camera='该程序需要摄像头权限' --electronVersion 20.0.1 --asar",
+    "package:macarm": "electron-packager ./ SysMocap --platform=darwin --arch=arm64 --out ./OutApp --download.mirrorOptions.mirror=https://npm.taobao.org/mirrors/electron/ --overwrite --usage-description.Camera='该程序需要摄像头权限' --electronVersion 20.0.1 --asar",
+    "package:win64": "electron-packager ./ SysMocap --icon=sysmocap.ico --platform=win32 --arch=x64 --out ./OutApp --download.mirrorOptions.mirror=https://npm.taobao.org/mirrors/electron/ --overwrite --electronVersion 20.0.1 --asar",
     "zip:win64": "electron-installer-zip ./OutApp/SysMocap-win32-x64/ ./OutApp/packages/SysMocap-Windows-x64.zip --overwrite",
     "zip:mac64": "electron-installer-zip ./OutApp/SysMocap-darwin-x64/ ./OutApp/packages/SysMocap-macOS-x64.zip --overwrite",
     "dmg": "electron-installer-dmg ./OutApp/SysMocap-darwin-x64/SysMocap.app SysMocap-macOS-x64 --out ./OutApp/packages/ --overwrite",
@@ -43,7 +43,7 @@
     "vue": "^2.6.14"
   },
   "devDependencies": {
-    "electron": "^19.0.1",
+    "electron": "^20.0.1",
     "electron-installer-dmg": "^4.0.0",
     "electron-installer-zip": "^0.1.2",
     "electron-packager": "^15.4.0"

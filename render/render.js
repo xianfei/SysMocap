@@ -11,6 +11,8 @@
 // import setting utils
 const globalSettings = window.parent.window.sysmocapApp.settings;
 
+var hipRotationOffset = 0.2
+
 // set theme
 document.body.setAttribute(
     "class",
@@ -415,7 +417,12 @@ const animateVRM = (vrm, results) => {
 
     // Animate Pose
     if (riggedPose) {
-        rigRotation("Hips", riggedPose.Hips.rotation, 0.7);
+        // rigRotation("Hips", riggedPose.Hips.rotation, 0.7);
+        rigRotation("Hips", {
+            x: riggedPose.Hips.rotation.x ,
+            y: riggedPose.Hips.rotation.y ,
+            z: riggedPose.Hips.rotation.z + hipRotationOffset,
+        }, 0.7);
         rigPosition(
             "Hips",
             {
