@@ -107,11 +107,7 @@ npm start
 
 ### Bugs
 
-1. ~~On Windows platform, "Use Discrete Graphics on Dual GPU Laptop" and "Mocap Data Forward" can not use at same time.~~
-
-2. ~~Camera controller only support VRM~~
-
-3. ~~Forwarding only support VRM~~
+- You tell me
 
 ### Notice
 
