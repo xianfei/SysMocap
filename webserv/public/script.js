@@ -381,7 +381,7 @@ const animateVRM = (vrm, results) => {
     // Animate Face
     if (riggedFace ) {
         rigRotation("Neck", riggedFace.head, 0.7);
-        if (fileType == "vrm") rigFace(structuredClone(riggedFace));
+        if (fileType == "vrm") rigFace(JSON.parse(JSON.stringify(riggedFace)));
     }
 
     // Animate Pose
