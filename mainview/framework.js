@@ -287,10 +287,15 @@ if (typeof require != "undefined") {
                 },
                 deep: true,
             },
+            camera:(newVal, oldVal)=>{
+                console.log({a:'last-choosed-camera',b:newVal,c:oldVal,d:localStorage.getItem('last-choosed-camera')})
+                if(oldVal!='')localStorage.setItem('last-choosed-camera',newVal)
+            }
         },
     });
 
     navigator.mediaDevices.enumerateDevices().then((mediaDevices) => {
+        var lastChoosed = localStorage.getItem('last-choosed-camera')
         for (var mediaDevice of mediaDevices)
             if (mediaDevice.kind === "videoinput") {
                 app.cameras.push({
@@ -299,6 +304,11 @@ if (typeof require != "undefined") {
                 });
             }
         if (app.cameras?.length > 0) app.camera = app.cameras[0].id;
+        if(lastChoosed){
+            if(app.cameras?.find((e)=>e.id==lastChoosed)){
+                app.camera = lastChoosed
+            }
+        }
         app.$nextTick(()=>{
             new mdui.Select("#demo-js-3");
         })
