@@ -603,7 +603,7 @@
                     >
                         <span
                             class="material-icons-outlined"
-                            style="font-size: 16px"
+                            style="font-size: 16px;margin-left: 10px;"
                             mdui-tooltip="{content: 'SysMocap Version'}"
                         >
                             widgets
@@ -627,7 +627,7 @@
                                     --md-sys-color-on-primary-container
                                 );
                                 stroke-width: 0.3px;
-                                margin-left: 40px;
+                                margin-left: 36px;
                             "
                             mdui-tooltip="{content: 'Electron Version'}"
                             enable-background="new 0 0 24 24"
@@ -655,6 +655,23 @@
                                 margin-left: 3px;
                             "
                             >v{{process.versions.electron}}</span
+                        >
+                        <span
+                            class="material-icons-outlined"
+                            style="font-size: 16px;transform: rotate(30deg);margin-left: 36px;"
+                            mdui-tooltip="{content: 'Node Version'}"
+                        >
+                        hexagon
+                        </span>
+                        <span
+                            style="
+                                line-height: 8px;
+                                top: -3px;
+                                font-size: 14px;
+                                position: inherit;
+                                margin-left: 3px;
+                            "
+                            >v{{process.versions.node}}</span
                         >
                         <button
                         v-show="!hasUpdate"
