@@ -29,6 +29,7 @@
     "express": "^4.17.3",
     "express-ws": "^5.0.2",
     "figlet": "^1.5.2",
+    "github-version-checker": "^2.3.0",
     "jquery": "^3.6.0",
     "kalidokit": "^1.1.5",
     "lato-font": "^3.0.0",

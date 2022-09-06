@@ -222,6 +222,13 @@ if (typeof require != "undefined") {
             document: document,
             camera: "",
             cameras: [],
+            process: process,
+            checkingUpdate: false,
+            hasUpdate: null,
+            updateError:null,
+            isLatest:false,
+            disableAutoUpdate:localStorage.getItem('disableUpdate')
+
         },
         computed: {
             bg: function () {
@@ -287,15 +294,25 @@ if (typeof require != "undefined") {
                 },
                 deep: true,
             },
-            camera:(newVal, oldVal)=>{
-                console.log({a:'last-choosed-camera',b:newVal,c:oldVal,d:localStorage.getItem('last-choosed-camera')})
-                if(oldVal!='')localStorage.setItem('last-choosed-camera',newVal)
+            camera: (newVal, oldVal) => {
+                console.log({
+                    a: "last-choosed-camera",
+                    b: newVal,
+                    c: oldVal,
+                    d: localStorage.getItem("last-choosed-camera"),
+                });
+                if (oldVal != "")
+                    localStorage.setItem("last-choosed-camera", newVal);
+            },
+            disableAutoUpdate: (newVal, oldVal) => {
+                if(newVal)localStorage.setItem('disableUpdate',true)
+
             }
         },
     });
 
     navigator.mediaDevices.enumerateDevices().then((mediaDevices) => {
-        var lastChoosed = localStorage.getItem('last-choosed-camera')
+        var lastChoosed = localStorage.getItem("last-choosed-camera");
         for (var mediaDevice of mediaDevices)
             if (mediaDevice.kind === "videoinput") {
                 app.cameras.push({
@@ -304,14 +321,14 @@ if (typeof require != "undefined") {
                 });
             }
         if (app.cameras?.length > 0) app.camera = app.cameras[0].id;
-        if(lastChoosed){
-            if(app.cameras?.find((e)=>e.id==lastChoosed)){
-                app.camera = lastChoosed
+        if (lastChoosed) {
+            if (app.cameras?.find((e) => e.id == lastChoosed)) {
+                app.camera = lastChoosed;
             }
         }
-        app.$nextTick(()=>{
+        app.$nextTick(() => {
             new mdui.Select("#demo-js-3");
-        })
+        });
     });
 
     window.sysmocapApp = app;
@@ -336,8 +353,6 @@ if (typeof require != "undefined") {
     // var inst = new mdui.Select("#demo-js");
 
     var inst2 = new mdui.Select("#demo-js-2");
-    
-
 
     var lightInput = new mdui.Dialog("#light-js");
 
@@ -640,3 +655,39 @@ if (window.sysmocapApp.settings.performance.useDescrertionProcess)
         },
         false
     );
+
+// require modules
+const versionCheck = require("github-version-checker");
+
+window.checkUpdate = () => {
+    if (window.sysmocapApp.checkingUpdate || window.sysmocapApp.isLatest) return;
+    window.sysmocapApp.checkingUpdate = true;
+
+    // version check options (for details see below)
+const options = {
+    repo: 'SysMocap',                    // repository name
+    owner: 'xianfei',                               // repository owner
+    currentVersion: 'v' + window.sysmocapApp.appVersion,                       // your app's current version
+  };
+  
+  versionCheck(options, function (error, update) { // callback function
+    if (error) throw error;
+    if (update) { // print some update info if an update is available
+      console.log('An update is available! ' + update.name);
+      window.sysmocapApp.hasUpdate = update
+    } else {
+        window.sysmocapApp.isLatest = true
+    }
+
+
+  window.sysmocapApp.checkingUpdate = false
+    // start your app
+    console.log('Check update finish');
+    //...
+  });
+};
+
+window.openInGithub = () =>
+    remote.shell.openExternal("https://github.com/xianfei/SysMocap/releases");
+
+if(!window.sysmocapApp.disableAutoUpdate) window.checkUpdate()

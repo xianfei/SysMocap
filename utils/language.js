@@ -37,6 +37,7 @@ module.exports = {
             },
             tabSettings: {
                 desc: "计算机学院 2018级 王衔飞 毕业设计作品",
+                disableUpdate:'禁用自动检查更新',
                 document: {
                     name: "文档",
                     openDoc: "打开使用文档",
@@ -141,6 +142,7 @@ module.exports = {
                 chooseCamera: "Choose Camera",
             },
             tabSettings: {
+                disableUpdate:'Disable Checking Update Automatically',
                 desc: "By Xianfei, as Undergraduate Graduation Design Works",
                 document: {
                     name: "User Manual",
