@@ -309,6 +309,23 @@ button {
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
 }
+.model-importer-error {
+    margin-left: 7px !important;
+    width: 450px;
+    height: 200px;
+    background-color: var(--md-sys-color-error-container);
+    --md-sys-color-primary-container:var(--md-sys-color-error-container);
+    --md-sys-color-on-primary-container:var(--md-sys-color-on-error-container);
+    --md-sys-color-primary: var(--md-sys-color-error);
+    --md-sys-color-on-primary: var(--md-sys-color-on-error);
+    color: var(--md-sys-color-on-error-container);
+    box-shadow: var(--md-sys-color-error-container) 0px 3px 10px;
+    border-radius: 20px;
+    /* padding: 20px; */
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
 .model-importer a{
     color: var(--md-sys-color-on-primary-container);
 }

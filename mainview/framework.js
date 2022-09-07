@@ -227,7 +227,7 @@ if (typeof require != "undefined") {
             hasUpdate: null,
             updateError:null,
             isLatest:false,
-            disableAutoUpdate:localStorage.getItem('disableUpdate')
+            disableAutoUpdate:localStorage.getItem('disableUpdate'),
 
         },
         computed: {
@@ -253,6 +253,10 @@ if (typeof require != "undefined") {
                 }
             };
             if (this.settings.ui.useNewModelUI) modelOnload();
+            for(var e of document.querySelectorAll("div.color-dot")){
+                e.style.boxShadow = e.computedStyleMap().get('background-color').toString().replace('rgb','rgba').replace(')',', 0.6) 0px 2px 6px')
+            }
+
         },
         watch: {
             settings: {
@@ -671,7 +675,12 @@ const options = {
   };
   
   versionCheck(options, function (error, update) { // callback function
-    if (error) throw error;
+    window.sysmocapApp.updateError = null
+    if (error) {
+        window.sysmocapApp.updateError = error
+        window.sysmocapApp.checkingUpdate = false
+        return
+    }
     if (update) { // print some update info if an update is available
       console.log('An update is available! ' + update.name);
       window.sysmocapApp.hasUpdate = update

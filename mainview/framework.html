@@ -579,22 +579,22 @@
                 >
                     <div
                         class="dotfont"
-                        style="font-size: 32px; color: #555; margin-top: 10px"
+                        style="font-size: 32px;-webkit-user-select: text; color: #555; margin-top: 10px"
                     >
                         Xianfei's<span
                             style="margin-left: 5px; margin-right: 5px"
                             >Mocap</span
                         >System
                     </div>
-                    <div class="mdui-text-color-theme">
+                    <div class="mdui-text-color-theme" style="-webkit-user-select: text;">
                         {{language.app.name}}
                     </div>
                     <div
                         style="color: #555; margin-top: 20px; font-size: 14px"
                     ></div>
                     <div
-                        class="model-importer"
-                        v-bind:style="{height:hasUpdate?'58px':checkingUpdate?'30px':'16px'}"
+                        v-bind:class="updateError?'model-importer-error':'model-importer'"
+                        v-bind:style="{height:hasUpdate||updateError?'58px':checkingUpdate?'30px':'16px'}"
                         style="
                             width: 490px;
                             padding: 15px;
@@ -698,6 +698,43 @@
                             <div class="mdui-progress">
                                 <div class="mdui-progress-indeterminate"></div>
                             </div>
+                        </div>
+                        <div style="margin-top: 10px; position: relative" v-show="updateError" >
+                            <span
+                                class="material-icons-outlined"
+                                style="font-size: 28px"
+                            >
+                                error </span
+                            ><span
+                                style="
+                                    line-height: 8px;
+                                    top: -8px;
+                                    font-size: 15px;
+                                    position: inherit;
+                                    margin-left: 10px;
+                                "
+                                >{{updateError}}</span
+                            >
+                            <button
+                                onclick="window.openInGithub()"
+                                class="mdui-btn xf-button-2"
+                                style="
+                                    height: 25px !important;
+                                    line-height: 24px !important;
+                                    width: 150px;
+                                    font-size: 12px;
+                                    bottom: 2px;
+                                    right: 5px;
+                                    position: absolute;
+                                "
+                            >
+                                <i
+                                    class="mdui-icon material-icons"
+                                    style="font-size: 18px; margin-left: -8px"
+                                    >open_in_browser</i
+                                >
+                                open in github
+                            </button>
                         </div>
                         <div style="margin-top: 10px; position: relative" v-show="hasUpdate" >
                             <span
