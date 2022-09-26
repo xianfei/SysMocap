@@ -80,7 +80,8 @@ global.appInfo = { appVersion: app.getVersion(), appName: app.getName() };
 // Improve performance when Mocap is running and forward motion data in background
 app.commandLine.appendSwitch("disable-renderer-backgrounding", true);
 app.commandLine.appendSwitch("enable-unsafe-webgpu");
-
+// Support H265/hevc hardware decode
+app.commandLine.appendSwitch('enable-features', 'PlatformHEVCDecoderSupport');
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
