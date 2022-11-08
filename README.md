@@ -141,6 +141,10 @@ npm start
 
 - RightLowerLeg
 
+### Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=xianfei/SysMocap&type=Date)](https://star-history.com/#xianfei/SysMocap&Date)
+
 ### Development progress
 
 #### To-Do
