@@ -188,6 +188,8 @@ if (typeof require != "undefined") {
         var hex = rgba2hex(color);
         var theme = await themeFromSourceColor(argbFromHex(hex));
         applyTheme(theme, { target: document.body, dark: darkMode });
+        console.log(theme)
+        ipcRenderer.send('tabChanged',window.sysmocapApp.tab,document.body.style.getPropertyValue('--md-sys-color-primary'),document.body.style.getPropertyValue('--md-sys-color-primary-container'));
     };
     f();
 
@@ -284,6 +286,7 @@ if (typeof require != "undefined") {
                             target: document.body,
                             dark: darkMode,
                         });
+                        ipcRenderer.send('tabChanged',window.sysmocapApp.tab,document.body.style.getPropertyValue('--md-sys-color-primary'),document.body.style.getPropertyValue('--md-sys-color-primary-container'));
                     };
                     f();
 
@@ -310,7 +313,9 @@ if (typeof require != "undefined") {
             },
             disableAutoUpdate: (newVal, oldVal) => {
                 if(newVal)localStorage.setItem('disableUpdate',true)
-
+            },
+            tab:(a,b)=>{
+                ipcRenderer.send('tabChanged',window.sysmocapApp.tab,document.body.style.getPropertyValue('--md-sys-color-primary'),document.body.style.getPropertyValue('--md-sys-color-primary-container'));
             }
         },
     });
@@ -578,6 +583,10 @@ const iframeWindow = document.getElementById("foo").contentWindow;
 
 ipcRenderer.on("sendRenderDataForward", (ev, data) => {
     if (iframeWindow.onMocapData) iframeWindow.onMocapData(data);
+});
+
+ipcRenderer.on("switch-tab", (ev, data) => {
+    window.sysmocapApp.tab = data;
 });
 
 window.startMocap = async function (e) {

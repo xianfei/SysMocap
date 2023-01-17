@@ -13,11 +13,15 @@ const {
     BrowserWindow,
     BrowserView,
     ipcMain,
+    TouchBar,
     nativeTheme,
 } = require("electron");
+const { TouchBarLabel, TouchBarButton, TouchBarSpacer } = TouchBar
 const os = require("os");
 const platform = os.platform();
 const { Worker } = require("worker_threads");
+const Color = require('color');
+
 
 // Make profile file on user home dir
 const path = require("path");
@@ -32,7 +36,7 @@ const _path_dir = path.dirname(_path);
 if (!fs.existsSync(_path_dir)) {
     try {
         fs.mkdirSync(_path_dir);
-    } catch (e) {}
+    } catch (e) { }
 }
 storage.setStoragePath(_path);
 
@@ -153,6 +157,124 @@ function createWindow() {
         renderView = null;
         mainWindow = null;
     });
+
+
+    if (process.platform !== 'darwin') return;
+
+    // 附赠彩蛋：老虎机
+
+    let spinning = false
+
+    // Reel labels
+    const reel1 = new TouchBarLabel({ label: '<- Easter egg!🌟' })
+    const reel2 = new TouchBarLabel({ label: "Sysmocap v" + app.getVersion() })
+    const reel3 = new TouchBarLabel()
+
+    // Spin result label
+    const result = new TouchBarLabel()
+
+    // Spin button
+    const spin = new TouchBarButton({
+        label: '🎰 Spin',
+        // backgroundColor: '#4d386e',
+        click: () => {
+            if (spinning) return // Ignore clicks if already spinning
+            spinning = true
+            result.label = ''
+            let timeout = 10
+            const spinLength = 4 * 1000 // 4 seconds
+            const startTime = Date.now()
+            const spinReels = () => {
+                updateReels()
+                if ((Date.now() - startTime) >= spinLength) {
+                    finishSpin()
+                } else {
+                    timeout *= 1.1  // Slow down a bit on each spin
+                    setTimeout(spinReels, timeout)
+                }
+            }
+            spinReels()
+        }
+    })
+
+    const getRandomValue = () => {
+        const values = ['🍒', '💎', '🍭', '🍊', '🔔', '⭐', '🍇', '🍀']
+        return values[Math.floor(Math.random() * values.length)]
+    }
+
+    const updateReels = () => {
+        reel1.label = getRandomValue()
+        reel2.label = getRandomValue()
+        reel3.label = getRandomValue()
+    }
+
+    const finishSpin = () => {
+        const uniqueValues = new Set([reel1.label, reel2.label, reel3.label]).size
+        if (uniqueValues === 1) {
+            // All 3 values are the same
+            result.label = '💰 Jackpot!'
+            result.textColor = '#FDFF00'
+        } else if (uniqueValues === 2) {
+            // 2 values are the same
+            result.label = '😍 Winner!'
+            result.textColor = '#FDFF00'
+        } else {
+            // No values are the same
+            result.label = '🙁 Spin Again'
+            result.textColor = null
+        }
+        spinning = false
+    }
+
+    var a = new TouchBarButton({
+        label: '🏛 Library',
+        backgroundColor: null,
+        click: () => {
+            mainWindow.webContents.send('switch-tab', 'model')
+        }
+    }), b =
+            new TouchBarButton({
+                label: '📹 Mocap',
+                backgroundColor: null,
+                click: () => {
+                    mainWindow.webContents.send('switch-tab', 'render')
+                }
+            }), c =
+            new TouchBarButton({
+                label: '⚙️ Setting',
+                backgroundColor: null,
+                click: () => {
+                    mainWindow.webContents.send('switch-tab', 'settings')
+                }
+            })
+
+    ipcMain.on('tabChanged', (n,tab,color1,color2)=>{
+        a.backgroundColor = b.backgroundColor = c.backgroundColor = null
+        var color = Color(color1)
+        color = color.darken(0.4)
+        if(tab=='model') {a.backgroundColor = color.hex()}
+        if(tab=='render') {b.backgroundColor = color.hex()}
+        if(tab=='settings') {c.backgroundColor = color.hex()}
+    })
+
+    var tbItems = [
+        a, b, c,
+        spin,
+        new TouchBarSpacer({ size: 'small' }),
+        reel1,
+        new TouchBarSpacer({ size: 'small' }),
+        reel2,
+        new TouchBarSpacer({ size: 'small' }),
+        reel3,
+        new TouchBarSpacer({ size: 'large' }),
+        result
+    ]
+
+    const touchBar = new TouchBar({
+        items: tbItems
+    })
+
+    mainWindow.setTouchBar(touchBar)
 }
 
 function createModelViewerWindow(args) {
