@@ -67,11 +67,16 @@ var blurBrowserWindow;
 const electronRemoteMain = require("@electron/remote/main");
 electronRemoteMain.initialize();
 
+var isWin11;
+
 // Enable Acrylic Effect on Windows by default
 if (platform === "win32")
     try {
-        blurBrowserWindow = require("electron-acrylic-window").BrowserWindow;
+        const mica_electron =  require('mica-electron')
+        blurBrowserWindow = mica_electron.MicaBrowserWindow;
+        isWin11 = mica_electron.IS_WINDOWS_11
     } catch (e) {
+        console.log(e)
         blurBrowserWindow = BrowserWindow;
     }
 // if not on Windows, use electron window
@@ -293,6 +298,7 @@ function createModelViewerWindow(args) {
         height: 540,
         titleBarStyle: platform === "darwin" ? "hiddenInset" : "hidden",
         autoHideMenuBar: true,
+        show: false,
         ...addtionalArgs,
         titleBarOverlay: {
             color: args.backgroundColor,
@@ -308,8 +314,19 @@ function createModelViewerWindow(args) {
     });
 
     // and load the index.html of the app.
-    viewer.loadFile("modelview/modelview.html");
+    viewer.loadURL('about:blank')
     electronRemoteMain.enable(viewer.webContents);
+
+    if (args.useGlass && platform === "win32" && isWin11!==null) {
+        if(isWin11) viewer.setMicaAcrylicEffect(); // Acrylic for windows 11
+        else viewer.setAcrylic(); 
+    }
+
+    viewer.webContents.once('dom-ready', () => {
+        viewer.show();
+        viewer.loadFile("modelview/modelview.html");
+        viewer.setSize(820,540)
+    });
 
     // Open the DevTools.
     // viewer.webContents.openDevTools()
