@@ -36,7 +36,7 @@ Available for Windows, macOS (packaged) & Linux (source code only)
 
 🌟 Beautiful GUI with Material Design 3 Color System
 
-![GUI](https://user-images.githubusercontent.com/8101613/213858480-2210f69d-7c1e-477b-a66c-626245e6b021.jpg)
+![UI](https://user-images.githubusercontent.com/8101613/213859221-0297a443-7df3-493e-b8e0-c1b439791fcf.jpg)
 
 🌟 Easy to used. You can import 3D models just with drags.
 
