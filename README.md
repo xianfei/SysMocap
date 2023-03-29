@@ -186,3 +186,17 @@ You can see all `dependencies` in [package.json](https://github.com/xianfei/SysM
 - [electron](https://github.com/electron/electron) and Vue.js for GUI Framework
 
 - [Material color utilities](https://github.com/material-foundation/material-color-utilities) for Color Picking
+
+### Cite
+
+```
+@INPROCEEDINGS{9974484,
+  author={Song, Wenfeng and Wang, Xianfei and Gao, Yang and Hao, Aimin and Hou, Xia},
+  booktitle={2022 IEEE International Symposium on Mixed and Augmented Reality Adjunct (ISMAR-Adjunct)}, 
+  title={Real-time Expressive Avatar Animation Generation based on Monocular Videos}, 
+  year={2022},
+  volume={},
+  number={},
+  pages={429-434},
+  doi={10.1109/ISMAR-Adjunct57072.2022.00092}}
+```
