@@ -38,8 +38,7 @@ SysMocap
 
 🌟 好看的用户图形界面（得益于Material Design 3自动取色系统）
 
-![GUI](https://user-images.githubusercontent.com/8101613/172905805-16c7d081-66ff-4324-b92a-4cdfa1eb2ac9.png)
-
+![UI](https://user-images.githubusercontent.com/8101613/213859221-0297a443-7df3-493e-b8e0-c1b439791fcf.jpg)
 
 🌟 简单易用，只需拖拽即可导入虚拟形象模型
 
@@ -179,3 +178,17 @@ npm start
 - [x] Mocap data forwarding via network
 
 - [x] Adapt for Linux and macOS 
+
+### 引用
+
+```
+@INPROCEEDINGS{9974484,
+  author={Song, Wenfeng and Wang, Xianfei and Gao, Yang and Hao, Aimin and Hou, Xia},
+  booktitle={2022 IEEE International Symposium on Mixed and Augmented Reality Adjunct (ISMAR-Adjunct)}, 
+  title={Real-time Expressive Avatar Animation Generation based on Monocular Videos}, 
+  year={2022},
+  volume={},
+  number={},
+  pages={429-434},
+  doi={10.1109/ISMAR-Adjunct57072.2022.00092}}
+```
