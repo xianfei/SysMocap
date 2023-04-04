@@ -181,6 +181,8 @@ npm start
 
 ### 引用
 
+BibTeX:
+
 ```
 @INPROCEEDINGS{9974484,
   author={Song, Wenfeng and Wang, Xianfei and Gao, Yang and Hao, Aimin and Hou, Xia},
@@ -191,4 +193,10 @@ npm start
   number={},
   pages={429-434},
   doi={10.1109/ISMAR-Adjunct57072.2022.00092}}
+```
+
+GB/T 7714 （国内高校毕业论文写这个就行）
+
+```
+Song W, Wang X, Gao Y, et al. Real-time Expressive Avatar Animation Generation based on Monocular Videos[C]//2022 IEEE International Symposium on Mixed and Augmented Reality Adjunct (ISMAR-Adjunct). IEEE Computer Society, 2022: 429-434.
 ```
