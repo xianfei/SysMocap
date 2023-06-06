@@ -6,9 +6,9 @@
   "scripts": {
     "start": "electron .",
     "start-nogpu": "electron . --disable-gpu",
-    "package:mac64": "electron-packager ./ SysMocap --platform=darwin --arch=x64 --out ./OutApp --overwrite --usage-description.Camera='该程序需要摄像头权限' --electronVersion 22.0.2 --asar",
-    "package:macarm": "electron-packager ./ SysMocap --platform=darwin --arch=arm64 --out ./OutApp --overwrite --usage-description.Camera='该程序需要摄像头权限' --electronVersion 22.0.2 --asar",
-    "package:win64": "electron-packager ./ SysMocap --icon=sysmocap.ico --platform=win32 --arch=x64 --out ./OutApp --overwrite --electronVersion 22.0.2 --asar",
+    "package:mac64": "electron-packager ./ SysMocap --platform=darwin --arch=x64 --out ./OutApp --overwrite --usage-description.Camera='该程序需要摄像头权限' --electronVersion 25.0.1 --asar",
+    "package:macarm": "electron-packager ./ SysMocap --platform=darwin --arch=arm64 --out ./OutApp --overwrite --usage-description.Camera='该程序需要摄像头权限' --electronVersion 25.0.1 --asar",
+    "package:win64": "electron-packager ./ SysMocap --icon=sysmocap.ico --platform=win32 --arch=x64 --out ./OutApp --overwrite --electronVersion 25.0.1 --asar",
     "zip:win64": "electron-installer-zip ./OutApp/SysMocap-win32-x64/ ./OutApp/packages/SysMocap-Windows-x64.zip --overwrite",
     "zip:mac64": "electron-installer-zip ./OutApp/SysMocap-darwin-x64/ ./OutApp/packages/SysMocap-macOS-x64.zip --overwrite",
     "dmg": "electron-installer-dmg ./OutApp/SysMocap-darwin-x64/SysMocap.app SysMocap-macOS-x64 --out ./OutApp/packages/ --overwrite",
@@ -36,7 +36,7 @@
     "lil-gui": "^0.16.1",
     "marked": "^4.1.0",
     "mdui": "^1.0.2",
-    "mica-electron": "^1.2.1",
+    "mica-electron": "^1.4.3",
     "pdfjs-dist": "^2.13.216",
     "simple-argv": "^2.0.4",
     "socket.io": "^4.5.3",
@@ -45,7 +45,7 @@
     "vue": "^2.6.14"
   },
   "devDependencies": {
-    "electron": "^22.0.2",
+    "electron": "^25.0.1",
     "electron-installer-dmg": "^4.0.0",
     "electron-installer-zip": "^0.1.2",
     "electron-packager": "^17.1.1"
