@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Welcome</title>
+        <link rel="stylesheet" href="../node_modules/mdui/dist/css/mdui.css" />
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="../node_modules/lato-font/css/lato-font.css"
+        />
+
+        <script src="../node_modules/mdui/dist/js/mdui.js"></script>
+        <script src="../node_modules/vue/dist/vue.js"></script>
+        <style>
+            @font-face {
+                font-family: "DOTMATRI";
+                src: url("../mainview/DOTMATRI.TTF");
+            }
+
+            .dotfont {
+                font-family: "DOTMATRI";
+            }
+        </style>
+        <!-- import built-in model -->
+    </head>
+
+    <body style="background-color: #fff9; -webkit-app-region: drag">
+        <img
+            src="bg.png"
+            style="
+                top: 0;
+                right: 0;
+                position: fixed;
+                height: 100vh;
+                z-index: -1;
+                -webkit-app-region: drag;
+            "
+        />
+        <div
+            style="
+                margin-left: 50px;
+                margin-top: 45px;
+                text-shadow: 3px 3px 10px #fff;
+            "
+            class="mdui-theme-primary-deep-purple mdui-theme-accent-deep-purple"
+        >
+            <span class="mdui-text-color-theme-200" style="font-size: 32px"
+                >欢迎使用</span
+            >
+            <div
+                class="dotfont"
+                style="
+                    font-size: 48px;
+                    color: #333;
+                    margin-top: 10px;
+                    line-height: 50px;
+                "
+            >
+                Xianfei's<span style="margin-left: 5px; margin-right: 5px"
+                    >Mocap</span
+                >System
+            </div>
+            <div
+                class="mdui-text-color-theme"
+                style="margin-top: 10px; font-size: 20px"
+            >
+                视频驱动虚拟角色动作的自动生成系统
+            </div>
+            <div style="color: #555; margin-top: 20px; font-size: 14px">
+                计算机学院 2018级 王衔飞 毕业设计作品
+            </div>
+            <ul
+                class="mdui-list mdui-text-color-theme"
+                style="
+                    margin-top: 20px;
+                    margin-left: -10px;
+                    width: 300px;
+                    -webkit-app-region: no-drag;
+                "
+            >
+                <li class="mdui-list-item mdui-ripple">
+                    <i class="mdui-icon material-icons">arrow_forward</i>
+                    <div
+                        class="mdui-list-item-content"
+                        style="
+                            margin-left: 20px;
+                            font-weight: 600;
+                            font-size: 18px;
+                        "
+                    >
+                        阅读使用文档
+                    </div>
+                </li>
+                <li
+                    class="mdui-list-item mdui-ripple"
+                    onclick="require('electron').remote.getCurrentWindow().close()"
+                >
+                    <i class="mdui-icon material-icons">arrow_forward</i>
+                    <div
+                        class="mdui-list-item-content"
+                        style="
+                            margin-left: 20px;
+                            font-weight: 600;
+                            font-size: 18px;
+                        "
+                    >
+                        关闭欢迎页面
+                    </div>
+                </li>
+            </ul>
+            <label class="mdui-checkbox" style="margin-top: 50px">
+                <input type="checkbox" checked />
+                <i class="mdui-checkbox-icon"></i>
+                下次启动不显示该页面
+            </label>
+        </div>
+    </body>
+</html>

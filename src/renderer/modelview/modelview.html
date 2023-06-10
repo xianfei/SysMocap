@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
+        />
+        <title>ModelVierer</title>
+        <link rel="stylesheet" href="../node_modules/mdui/dist/css/mdui.css" />
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="../node_modules/lato-font/css/lato-font.css"
+        />
+        <script src="../node_modules/mdui/dist/js/mdui.js"></script>
+        <script src="../node_modules/vue/dist/vue.js"></script>
+        <script src="../node_modules/three/build/three.js"></script>
+        <script src="../node_modules/three/examples/js/loaders/GLTFLoader.js"></script>
+        <script src="../node_modules/three/examples/js/loaders/FBXLoader.js"></script>
+        <script src="../node_modules/three/examples/js/libs/fflate.min.js"></script>
+        <script src="../node_modules/three/examples/js/controls/OrbitControls.js"></script>
+        <script src="../node_modules/lil-gui/dist/lil-gui.umd.min.js"></script>
+        <script src="../node_modules/@pixiv/three-vrm/lib/three-vrm.js"></script>
+        <link rel="stylesheet" href="../fonts/fonts.css" />
+
+        <style>
+            .titlebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 30px;
+                z-index: 1000;
+                -webkit-app-region: drag;
+            }
+
+            canvas {
+                display: block;
+            }
+
+            ::-webkit-scrollbar {
+                display: none;
+            }
+
+            .jsoneditor {
+                border: none !important;
+            }
+
+            .jse-absolute-popup{
+                transform: scale(0.75);
+                transform-origin: 100% 100%;
+            }
+
+            .jse-sort{display: none;}
+            .jse-transform{display: none;}
+            .jse-powered-by{display: none;}
+            /* .jse-search{display: none;} */
+        </style>
+    </head>
+
+    <body style="font-family: 'Quicksand', 'MiSans'; background-color: #fff3">
+        <div class="titlebar"></div>
+
+        <!-- <button id='reset' >open dev
+        tools</button> -->
+        <div id="vue-target">
+            <i
+                class="mdui-icon material-icons"
+                style="
+                    z-index: 1001;
+                    position: fixed;
+                    top: 3px;
+                    right: 140px;
+                    transform: scale(0.6);
+                    cursor: pointer;
+                    -webkit-app-region: no-drag;
+                "
+                mdui-tooltip="{content: 'Open DevTools'}"
+                v-bind:style="{ color: color}"
+                v-show="settings.dev.allowDevTools"
+                onclick="require('@electron/remote').getCurrentWebContents().openDevTools({ mode: 'detach' })"
+                >code</i
+            >
+            <div
+                id="model"
+                style="
+                    top: 0;
+                    left: 0;
+                    width: 61.8vw;
+                    height: 100vh;
+                    background-color: #fff0;
+                "
+            ></div>
+            <div
+                style="
+                    position: fixed;
+                    left: calc(30.9vw - 60px);
+                    bottom: 10px;
+                    width: 120px;
+                    height: 40px;
+                    border-radius: 20px;
+                    background-color: #fffe;
+                "
+                class="mdui-shadow-5"
+                v-show="!loaded"
+            >
+                <div
+                    class="mdui-spinner mdui-spinner-colorful"
+                    style="margin: 10px 15px; width: 20px; height: 20px"
+                ></div>
+                <span style="line-height: 40px; position: fixed; color: #555"
+                    >loading</span
+                >
+            </div>
+            <div
+                style="
+                    position: fixed;
+                    left: calc(30.9vw - 100px);
+                    bottom: 10px;
+                    width: 200px;
+                    height: 40px;
+                    border-radius: 20px;
+                    background-color: #fffe;
+                "
+                class="mdui-shadow-5"
+                v-show="failed"
+            >
+                <div
+                    style="
+                        margin: 8px 15px;
+                        width: 20px;
+                        height: 20px;
+                        color: rgb(172, 39, 39);
+                        display: inline-block;
+                    "
+                >
+                    <i class="mdui-icon material-icons">error_outline</i>
+                </div>
+                <span
+                    style="
+                        line-height: 40px;
+                        position: fixed;
+                        color: rgb(172, 39, 39);
+                    "
+                    >{{failedText}}</span
+                >
+            </div>
+            <div
+                style="
+                    position: fixed;
+                    left: 61.8vw;
+                    top: 0px;
+                    height: 100vh;
+                    width: 38.2vw;
+                    overflow: scroll;
+                "
+                v-bind:style="{ backgroundColor: bgcolor}"
+            >
+                <div
+                    style="width: calc(100% - 50px); margin: 25px"
+                    v-bind:style="{ color: textColor}"
+                >
+                    <div v-show="!(showOpts||showOpts2)">
+                        <h1
+                            style="
+                                display: inline-block;
+                                vertical-align: middle;
+                            "
+                            v-bind:style="{ color: textColor, margin:'20px 0 0 0',fontSize:'32px',fontWeight:'600'}"
+                        >
+                            {{model.name}}
+                        </h1>
+                        <div
+                            v-bind:style="{ backgroundColor: color,color:bgcolor}"
+                            style="
+                                width: 42px;
+                                height: 22px;
+                                border-radius: 5px;
+                                margin-top: 26px;
+                                font-size: 14px;
+                                line-height: 22px;
+                                text-align: center;
+                                font-weight: 600;
+                                display: inline-block;
+                                bottom: 5px;
+                                vertical-align: middle;
+                                margin-left: 5px;
+                            "
+                        >
+                            {{model.type.toUpperCase()}}
+                        </div>
+                        <!-- <div
+                            style="display: inline; margin-left: 10px"
+                            v-bind:style="{ color: color}"
+                        >
+                            <i class="mdui-icon material-icons"
+                                >{{model.type=='vrm'?'done_all':'done'}}</i
+                            ><span style="margin-left: 4px; font-size: 13px"
+                                >{{model.type=='vrm'?languages.modelVierer.fullSupport:languages.modelVierer.partialSupport}}</span
+                            >
+                        </div> -->
+                        <div
+                            style="width: 100%; margin-top: 20px; display: none"
+                        >
+                            <div
+                                style="
+                                    width: 30vw;
+                                    height: 15vw;
+                                    margin: auto;
+                                    border-radius: 20px;
+                                    overflow: hidden;
+                                    outline-width: 3px;
+                                    outline-style: solid;
+                                    outline-offset: 2px;
+                                "
+                                v-bind:style="{ outlineColor: color}"
+                            >
+                                <img
+                                    v-bind:src="model.picBg"
+                                    style="
+                                        object-fit: cover;
+                                        height: 100%;
+                                        width: 100%;
+                                    "
+                                />
+                            </div>
+                        </div>
+                        <ul class="mdui-list" style="margin-top: 20px">
+                            <li
+                                class="mdui-list-item mdui-ripple"
+                                onclick="app.showSketelon?gui.hide():gui.show();app.showSketelon=!app.showSketelon"
+                            >
+                                <i class="mdui-icon material-icons"
+                                    >device_hub</i
+                                >
+                                <div
+                                    class="mdui-list-item-content"
+                                    style="margin-left: 30px"
+                                >
+                                    {{showSketelon?languages.modelVierer.hideSketelon:languages.modelVierer.showSketelon}}
+                                </div>
+                            </li>
+                            <li
+                                class="mdui-list-item mdui-ripple"
+                                v-on:click="showOpts = true"
+                            >
+                                <i class="mdui-icon material-icons"
+                                    >color_lens</i
+                                >
+                                <div
+                                    class="mdui-list-item-content"
+                                    style="margin-left: 30px"
+                                >
+                                    <span v-show="model.type == 'vrm'"
+                                        >{{languages.modelVierer.modifyDecoration}}</span
+                                    >
+                                    <span v-show="model.type != 'vrm'"
+                                        >{{languages.modelVierer.changeBonesBinding}}</span
+                                    >
+                                </div>
+                            </li>
+                            <li
+                                class="mdui-list-item mdui-ripple"
+                                v-on:click="showOpts2 = true"
+                            >
+                                <i class="mdui-icon material-icons"
+                                    >mode_edit</i
+                                >
+                                <div
+                                    class="mdui-list-item-content"
+                                    style="margin-left: 30px"
+                                >
+                                    {{languages.modelVierer.edit}}
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div
+                        style="
+                            margin-left: -25px;
+                            position: fixed;
+                            padding-top: 20px;
+                            top: 0px;
+                            width: 100%;
+                            z-index: 1000;
+                        "
+                        v-bind:style="{ backgroundColor: bgcolor}"
+                    >
+                        <li
+                            class="mdui-list-item mdui-ripple"
+                            v-show="showOpts||showOpts2"
+                            v-on:click="showOpts = showOpts2 = false"
+                            onclick="window.saveJson()"
+                            style="width: 175px"
+                        >
+                            <i class="mdui-icon material-icons">arrow_back</i>
+                            <div
+                                class="mdui-list-item-content"
+                                style="margin-left: 20px"
+                            >
+                                {{languages.modelVierer.back}}
+                            </div>
+                        </li>
+                    </div>
+
+                    <div
+                        v-if="model.type == 'vrm'"
+                        v-show="showOpts"
+                        style="margin-top: 80px"
+                    >
+                        <ul class="mdui-list" style="margin-top: 20px">
+                            <li
+                                v-for="(k,i) in Object.keys(model.accessories)"
+                                class="mdui-list-item mdui-ripple"
+                                xf-show="true"
+                                v-bind:onclick="'toggleShow(`'+model.accessories[k]+'`,this)'"
+                            >
+                                <i class="mdui-icon material-icons">
+                                    format_paint</i
+                                >
+                                <div
+                                    class="mdui-list-item-content"
+                                    style="margin-left: 30px"
+                                >
+                                    {{languages.modelVierer.hide + ' ' + k}}
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div
+                        v-if="model.type != 'vrm'"
+                        v-show="showOpts"
+                        style="margin-top: 80px"
+                    >
+                        <div
+                            v-for="b in ['Hips','Chest','Neck', 'Spine','RightUpperArm','RightLowerArm','LeftUpperArm','LeftLowerArm','LeftUpperLeg','LeftLowerLeg','RightUpperLeg','RightLowerLeg']"
+                            style="margin-top: 10px; font-size: 16px"
+                        >
+                            <span style="line-height: 36px">{{b}}: </span>
+                            <select
+                                class="mdui-select"
+                                style="
+                                    float: right;
+                                    margin-right: 10px;
+                                    max-width: calc(100% - 20px);
+                                "
+                                v-bind:style="{ color: color}"
+                            >
+                                <option value="-1">None</option>
+                                <option
+                                    v-for="bb in bones"
+                                    v-bind:value="bb.index"
+                                >
+                                    {{bb.name}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    v-show="showOpts2"
+                    id="jsoneditor"
+                    style="
+                        position: fixed;
+                        top: 70px;
+                        background: #000;
+                        height: calc(100vh - 71px);
+                        z-index: 1000;
+                        width: calc(38.2vw - 1px);
+                    "
+                ></div>
+            </div>
+        </div>
+        <script>
+            // import languages
+            const { languages } = require("../utils/language.js");
+            const {
+                globalSettings,
+                removeUserModels,
+                addUserModels,
+            } = require("../utils/setting.js");
+            var args;
+            for (var i = 0; i < process.argv.length; i++) {
+                if (process.argv[i] == "argsData") {
+                    console.log(process.argv[i + 1]);
+                    args = JSON.parse(process.argv[i + 1]);
+                }
+            }
+
+            window.document.title = args.model.name
+
+            var app = new Vue({
+                el: "#vue-target",
+                data: {
+                    model: args.model,
+                    color: args.color,
+                    bgcolor: args.backgroundColor,
+                    textColor: args.textColor ? args.textColor : args.color,
+                    showSketelon: false,
+                    bones: [],
+                    showOpts: false,
+                    showOpts2: false,
+                    languages: languages[globalSettings.ui.language],
+                    settings: globalSettings,
+                    loaded: false,
+                    failed: false,
+                    failedText: "加载失败",
+                },
+            });
+
+            //     const container = document.getElementById("jsoneditor")
+            // const options = {}
+            // const editor = new JSONEditor(container, options)
+
+            // // set json
+
+            // editor.set(args.model)
+            // editor.expandAll()
+
+            
+
+            function toggleShow(k, obj) {
+                console.log(k);
+                if (
+                    obj
+                        .querySelector(".mdui-list-item-content")
+                        .innerText.includes(app.languages.modelVierer.hide)
+                ) {
+                    scene.getObjectByName(k).visible = false;
+                    obj.querySelector(".mdui-list-item-content").innerText =
+                        app.languages.modelVierer.show +
+                        obj
+                            .querySelector(".mdui-list-item-content")
+                            .innerText.substr(
+                                app.languages.modelVierer.hide.length
+                            );
+                } else {
+                    scene.getObjectByName(k).visible = true;
+                    obj.querySelector(".mdui-list-item-content").innerText =
+                        app.languages.modelVierer.hide +
+                        obj
+                            .querySelector(".mdui-list-item-content")
+                            .innerText.substr(
+                                app.languages.modelVierer.show.length
+                            );
+                }
+            }
+
+            const renderer = new THREE.WebGLRenderer({
+                alpha: true,
+                antialias: true,
+            });
+            renderer.shadowMapEnabled = true;
+
+            renderer.setSize(
+                document.querySelector("#model").clientWidth,
+                document.querySelector("#model").clientHeight
+            );
+            renderer.setPixelRatio(window.devicePixelRatio);
+            // renderer.setClearColor(0x000000,1); //设置背景颜色
+            document.querySelector("#model").appendChild(renderer.domElement);
+
+            // camera
+            const camera = new THREE.PerspectiveCamera(
+                30.0,
+                document.querySelector("#model").clientWidth /
+                    document.querySelector("#model").clientHeight,
+                0.1,
+                20.0
+            );
+            camera.position.set(0.0, 1.0, 5.0);
+
+            window.addEventListener(
+                "resize",
+                function () {
+                    camera.aspect =
+                        document.querySelector("#model").clientWidth /
+                        document.querySelector("#model").clientHeight;
+                    camera.updateProjectionMatrix();
+                    renderer.setSize(
+                        document.querySelector("#model").clientWidth,
+                        document.querySelector("#model").clientHeight
+                    );
+                },
+                false
+            );
+
+            // camera controls
+            const controls = new THREE.OrbitControls(
+                camera,
+                renderer.domElement
+            );
+            controls.screenSpacePanning = true;
+            controls.target.set(0.0, 1.0, 0.0);
+            controls.update();
+
+            // scene
+            const scene = new THREE.Scene();
+
+            var skeletonHelper;
+
+            var lightBoosterAmbient = app.model.lightAmbient
+                ? app.model.lightAmbient
+                : 1.0;
+            var lightBoosterDirectionalHigh = app.model.lightDirectionalHigh
+                ? app.model.lightDirectionalHigh
+                : 1.0;
+            var lightBoosterDirectional = app.model.lightDirectional
+                ? app.model.lightDirectional
+                : 0.0;
+
+            const light = new THREE.AmbientLight(
+                0xffffff,
+                0.8 * lightBoosterAmbient
+            );
+            light.position.set(10.0, 10.0, 10.0).normalize();
+            scene.add(light);
+            var light2 = new THREE.DirectionalLight(
+                0xffffff,
+                1 * lightBoosterDirectionalHigh
+            );
+            light2.position.set(0, 3, 2);
+            light2.castShadow = true;
+            scene.add(light2);
+            var light3 = new THREE.DirectionalLight(
+                0xffffff,
+                1 * lightBoosterDirectional
+            );
+            light3.position.set(0, 0, 2);
+            light3.castShadow = true;
+            scene.add(light3);
+
+            var avatar = null;
+
+            // gltf and vrm
+            var loader = null;
+            if (args.model.type == "fbx") {
+                loader = new THREE.FBXLoader();
+            } else {
+                loader = new THREE.GLTFLoader();
+            }
+            loader.crossOrigin = "anonymous";
+            loader.load(
+                // URL of the VRM you want to load
+                args.model.path,
+
+                // called when the resource is loaded
+                (gltf) => {
+                    var model = null;
+                    if (args.model.type == "fbx") {
+                        model = gltf;
+                        gltf.scale.set(0.01, 0.01, 0.01);
+                    } else {
+                        model = gltf.scene;
+                    }
+                    skeletonHelper = new THREE.SkeletonHelper(model);
+                    skeletonHelper.visible = false;
+                    skeletonHelper.material.linewidth = 30;
+
+                    scene.add(skeletonHelper);
+
+                    if (args.model.type == "vrm") {
+                        // const light = new THREE.PointLight(0xffffff);
+                        // light.position.set(1, 1, 1).normalize();
+                        // scene.add(light);
+                        // calling these functions greatly improves the performance
+                        THREE.VRMUtils.removeUnnecessaryVertices(model);
+                        THREE.VRMUtils.removeUnnecessaryJoints(model);
+
+                        // generate VRM instance from gltf
+                        THREE.VRM.from(gltf).then((vrm) => {
+                            console.log(vrm);
+                            scene.add(vrm.scene);
+                            avatar = vrm.scene;
+                            app.loaded = true;
+
+                            vrm.humanoid.getBoneNode(
+                                THREE.VRMSchema.HumanoidBoneName.Hips
+                            ).rotation.y = Math.PI;
+                        });
+                    } else {
+                        console.log(model);
+                        model.castShadow = true;
+                        scene.add(model);
+                        avatar = model;
+                        // for (var i of [-2.0, 680.0])
+                        //     for (var j of [-2.0, 680.0])
+                        //         for (var k of [-2.0, 680.0]) {
+                        //             const light = new THREE.PointLight(
+                        //                 0xffffff
+                        //             );
+                        //             light.position.set(i, j, k).normalize();
+                        //             scene.add(light);
+                        //         }
+
+                        app.loaded = true;
+                        // var light3 = new THREE.SpotLight(0xffffff,1);
+                        // light3.position.set(0,2,2);
+                        // scene.add(light3);
+                        // skeletonHelper.bones[0].rotation.y = Math.PI;
+                    }
+
+                    setupDatGui();
+                    var bones = [];
+                    for (var i in skeletonHelper.bones)
+                        bones.push({
+                            index: i,
+                            name: skeletonHelper.bones[i].name,
+                        });
+                    app.bones = bones;
+                    mdui.mutation();
+                },
+
+                // called while loading is progressing
+                (progress) =>
+                    console.log(
+                        "Loading model...",
+                        100.0 * (progress.loaded / progress.total),
+                        "%"
+                    ),
+
+                // called when loading has errors
+                (error) => {
+                    app.failed = app.loaded = true;
+                    console.log(error);
+                }
+            );
+
+            // helpers
+            const gridHelper = new THREE.GridHelper(10, 10);
+            gridHelper.receiveShadow = true;
+            scene.add(gridHelper);
+
+            const axesHelper = new THREE.AxesHelper(5);
+            scene.add(axesHelper);
+
+            function animate() {
+                requestAnimationFrame(animate);
+
+                renderer.render(scene, camera);
+            }
+
+            animate();
+
+            var GUI = lil.GUI;
+            var gui = new GUI();
+            gui.hide();
+
+            function setupDatGui() {
+                let folder = gui.addFolder("Skeletons");
+
+                folder.add(skeletonHelper, "visible");
+                setTimeout(() => {
+                    folder.add(avatar, "visible");
+                    folder.controllers[1].name("Show Avatar");
+                }, 5000);
+                folder.controllers[0].name("Show Skeleton");
+
+                const bones = skeletonHelper.bones;
+
+                for (let i = 0; i < bones.length; i++) {
+                    const bone = bones[i];
+
+                    folder = gui.addFolder("Bone: " + bone.name);
+
+                    if (i == 0) {
+                        folder.add(
+                            bone.position,
+                            "x",
+                            -10 + bone.position.x,
+                            10 + bone.position.x
+                        );
+                        folder.add(
+                            bone.position,
+                            "y",
+                            -10 + bone.position.y,
+                            10 + bone.position.y
+                        );
+                        folder.add(
+                            bone.position,
+                            "z",
+                            -10 + bone.position.z,
+                            10 + bone.position.z
+                        );
+                    }
+
+                    folder.add(bone.rotation, "x", -Math.PI, Math.PI);
+                    folder.add(bone.rotation, "y", -Math.PI, Math.PI);
+                    folder.add(bone.rotation, "z", -Math.PI, Math.PI);
+
+                    // folder.add(bone.scale, 'x', 0, 2);
+                    // folder.add(bone.scale, 'y', 0, 2);
+                    // folder.add(bone.scale, 'z', 0, 2);
+
+                    // folder.add(bone.quaternion, 'x', -1, 1);
+                    // folder.add(bone.quaternion, 'y', -1, 1);
+                    // folder.add(bone.quaternion, 'z', -1, 1);
+                    // folder.add(bone.quaternion, 'w', -1, 1);
+
+                    if (i == 0) {
+                        folder.controllers[0].name("position.x");
+                        folder.controllers[1].name("position.y");
+                        folder.controllers[2].name("position.z");
+                        folder.controllers[3].name("rotation.x");
+                        folder.controllers[4].name("rotation.y");
+                        folder.controllers[5].name("rotation.z");
+                    } else {
+                        folder.controllers[0].name("rotation.x");
+                        folder.controllers[1].name("rotation.y");
+                        folder.controllers[2].name("rotation.z");
+                    }
+
+                    // folder.controllers[6].name('scale.x');
+                    // folder.controllers[7].name('scale.y');
+                    // folder.controllers[8].name('scale.z');
+
+                    // folder.controllers[9].name('quaternion.x');
+                    // folder.controllers[10].name('quaternion.y');
+                    // folder.controllers[11].name('quaternion.z');
+                    // folder.controllers[12].name('quaternion.w');
+                }
+                var guiroot = document.querySelector(".lil-gui.root");
+                guiroot.style.left = "calc(61.8vw + 19.1vw - 122px)";
+                guiroot.style.webkitAppRegion = "no-drag";
+                guiroot.style.zIndex = "10000";
+            }
+
+            // keyborad control camera position
+            document.addEventListener("keydown", (event) => {
+                console.log(event);
+                var x = camera.position.x;
+                var y = camera.position.y;
+                var z = camera.position.z;
+                var step = 0.03;
+                switch (event.key) {
+                    case "d":
+                    case "ArrowRight":
+                        camera.position.set(x + step, y, z);
+                        break;
+                    case "a":
+                    case "ArrowLeft":
+                        camera.position.set(x - step, y, z);
+                        break;
+                    case "w":
+                    case "ArrowUp":
+                        camera.position.set(x, y + step, z);
+                        break;
+                    case "s":
+                    case "ArrowDown":
+                        camera.position.set(x, y - step, z);
+                        break;
+                }
+            });
+        </script>
+
+        <script type="module">
+                        import { JSONEditor } from '../node_modules/svelte-jsoneditor/dist/jsoneditor.js'
+
+            let content = {
+              text: undefined,
+              json: args.model
+            }
+
+            const target = document.getElementById('jsoneditor')
+
+            target.style.setProperty('--jse-theme-color', app.bgcolor);
+            target.style.setProperty('--jse-theme-color-highlight', '#00000015');
+            target.style.setProperty('--jse-menu-color', app.color);
+
+            const editor = new JSONEditor({
+              target: target,
+              props: {
+                content,
+                onChange: (updatedContent, previousContent, patchResult) => {
+                  // content is an object { json: JSONData } | { text: string }
+                  console.log('onChange', updatedContent, previousContent, patchResult)
+                  content = updatedContent
+                }
+              }
+            })
+
+            window.saveJson = function () {
+                // return;
+                const jsonChanged = editor.get().json?editor.get().json:JSON.parse(editor.get().text);
+                if (JSON.stringify(args.model) == JSON.stringify(jsonChanged))
+                    return;
+                if (args.model.isBuildIn) {
+                    app.failedText = "内建模型不能修改！";
+                    app.failed = true;
+                    return;
+                }
+                removeUserModels(app.model.name);
+                addUserModels(jsonChanged);
+                app.model = jsonChanged;
+                // if(args.model.name == jsonChanged.name){
+
+                // }
+            }
+        </script>
+    </body>
+</html>

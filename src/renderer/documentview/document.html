@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <script
+            type="text/javascript"
+            src="../node_modules/jquery/dist/jquery.js"
+        ></script>
+        <link rel="stylesheet" type="text/css" href="style.css" />
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="../node_modules/mdui/dist/css/mdui.css"
+        />
+        <style>
+            .icon {
+                display: inline-block;
+                height: 100px;
+                width: 100px;
+                border-radius: 50%;
+                background: linear-gradient(45deg, #fc466b 0%, #3f5efb 100%);
+            }
+
+            .icon .bg {
+                background: linear-gradient(90deg, #fdfbfb 0%, #ebedee 100%);
+                width: 84px;
+                height: 84px;
+                margin: 8px;
+                border-radius: 50%;
+                position: absolute;
+            }
+
+            .icon i {
+                background: linear-gradient(45deg, #fc466b 0%, #3f5efb 100%);
+                -webkit-background-clip: text;
+                color: transparent;
+                font-size: 70px;
+                margin: 6px 8px;
+                position: absolute;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="write" style="background-color: #fff; z-index: 9">
+            
+            <!-- <div class="icon">
+                <div class="bg">
+                    <i class="mdui-icon material-icons">directions_run</i>
+                </div>
+            </div> -->
+            <div
+                style="
+                    font-size: 48px;
+                    color: #555;
+                    margin-top: 10px;
+                    line-height: 50px;
+                    font-family: 'DOTMATRI';
+                    display: inline-block;
+                    /* margin-left: 20px; */
+                "
+            >
+                Xianfei's<span style="margin-left: 5px; margin-right: 5px"
+                    >Mocap</span
+                >System
+            </div>
+            <div id="content"></div>
+        </div>
+        <script src="../node_modules/marked/marked.min.js"></script>
+        <script src="./readme.js"></script>
+    </body>
+</html>

@@ -1,0 +1,284 @@
+/*markdown_box*/
+html {
+    background: #f4f6f900;
+    font-family: "Microsoft YaHei", "微软雅黑", Arial;
+    font-weight: 400;
+}
+
+body {
+    background: #7aaefc00;
+    font-size: 16px;
+    color: #515254;
+    line-height: 188%;
+    margin: 0 !important;
+    padding: 0 !important;
+    --var-bg-50: "";
+}
+
+.html_header {
+    display: block;
+    height: 60px;
+    line-height: 46px;
+    border-bottom: 1px solid #e6ecf1;
+    text-align: left !important;
+}
+
+.html_header span::after {
+    content: "使用文档";
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.html_header span::before {
+    content: "❖";
+    font-size: 19px;
+    font-weight: bold;
+    margin: 0 8px 0 5px;
+    color: var(--var-color);
+}
+
+blockquote {
+    border-radius: 0 4px 4px 0;
+    /* filter: opacity(0.85); */
+    color: #777;
+    border-left: 3px solid var(--var-color);
+    background: var(--var-bg-30);
+    padding: 8px 16px;
+    font-size: 15px;
+}
+
+code {
+    padding: 2px 4px 1px;
+    font-weight: bold;
+    margin: 0 3px;
+    border: 1px solid rgba(255, 130, 130, 0.3);
+    background: rgba(255, 130, 120, 0.05);
+    color: #f66;
+    font-family: "consola";
+}
+
+a {
+    color: var(--var-color);
+}
+
+a:visited {
+    color: var(--var-color);
+}
+
+a:hover {
+    text-decoration: none;
+    color: var(--var-color);
+}
+
+h2 {
+    margin: 40px 0 20px;
+    font-size: 36px;
+    font-weight: 400;
+}
+
+h3 {
+    margin-top: 40px;
+    font-size: 30px;
+    font-weight: 400;
+}
+
+img {
+    border-radius: 5px;
+    margin: 30px 0 46px !important;
+    width: 100%;
+    max-width: 1100px;
+    opacity: 1;
+    transition: opacity 0.3s;
+}
+
+#img:hover {
+    opacity: 1;
+    box-shadow: 0px 2px 8px rgba(87, 87, 87, 0.8);
+    transition: box-shadow 0.3s;
+}
+
+#write {
+    margin: 50px 50px 50px 260px;
+    padding: 20px 60px;
+    max-width: unset;
+    background: #fff;
+    border: 1px solid #e6ecf1;
+    box-shadow: 0 2px 8px rgba(116, 129, 141, 0.08);
+    border-radius: 4px;
+}
+
+.BlogAnchor {
+    width: 210px !important;
+}
+
+@media screen and (max-width: 1620px) {
+    #write {
+        margin: 40px 40px 40px 250px;
+        padding: 20px 40px;
+    }
+
+    .BlogAnchor {
+        width: 210px !important;
+    }
+}
+
+@media screen and (max-width: 1370px) {
+    #write {
+        margin: 30px 30px 30px 230px;
+        padding: 20px 40px;
+    }
+
+    .BlogAnchor {
+        width: 200px !important;
+    }
+}
+
+@media screen and (max-width: 1220px) {
+    #write {
+        margin: 20px 20px 20px 220px;
+        padding: 20px 40px;
+    }
+}
+
+@media screen and (max-width: 820px) {
+    #write {
+        margin: 20px 20px 20px 200px;
+        padding: 20px 20px;
+        font-size: 15px;
+        line-height: 170%;
+    }
+
+    .BlogAnchor {
+        width: 180px !important;
+    }
+
+    .html_header span::before {
+        margin-left: 0;
+    }
+
+    .html_header span::after {
+        font-size: 15px;
+    }
+
+    h2 {
+        font-size: 30px;
+    }
+
+    h3 {
+        font-size: 24px;
+    }
+}
+
+@media screen and (max-width: 640px) {
+    #write {
+        margin: 10px;
+        padding: 16px;
+        font-size: 14px;
+        line-height: 160%;
+    }
+
+    .BlogAnchor {
+        display: none;
+    }
+
+    h2 {
+        font-size: 28px;
+    }
+
+    h3 {
+        font-size: 22px;
+    }
+}
+
+.AnchorContent::-webkit-scrollbar {
+    display: none;
+}
+
+/*导航*/
+.BlogAnchor {
+    background: #ffffffaa;
+    padding: 10px 0;
+    line-height: 180%;
+    position: fixed;
+    height: 100%;
+    width: 200px;
+    left: 0;
+    top: 0;
+    border-right: 1px solid #e6ecf1;
+}
+
+.BlogAnchor p {
+    font-size: 20px;
+    color: #444;
+    margin: 0 16px;
+    text-align: center;
+}
+
+.BlogAnchor .AnchorContent {
+    padding: 5px 0px;
+    overflow: auto;
+}
+
+.BlogAnchor li {
+    text-indent: 1.5rem;
+    font-size: 14px;
+    list-style: none;
+    padding: 0 0px;
+}
+
+.BlogAnchor li .nav_item {
+    padding: 3px 16px;
+}
+
+.BlogAnchor li .item_h1 {
+    margin-left: 0rem;
+    padding-left: 3px;
+    font-weight: bold;
+}
+
+.BlogAnchor li .item_h2 {
+    margin-left: 0;
+    font-size: 0.8rem;
+    padding-left: 18px;
+    color: #708090;
+}
+
+.BlogAnchor li .nav_item.current {
+    color: var(--var-color);
+    background-color: var(--var-bg-50);
+    border-left: 4px solid var(--var-color);
+    text-indent: 20px;
+    font-weight: bold;
+}
+
+#AnchorContentToggle {
+    font-size: 13px;
+    font-weight: normal;
+    color: #fff;
+    display: inline-block;
+    line-height: 20px;
+    background: rgb(7, 196, 189);
+    font-style: normal;
+    padding: 1px 8px;
+}
+
+.BlogAnchor a:hover {
+    color: var(--var-color);
+    background: var(--var-bg-30);
+}
+
+.BlogAnchor a {
+    text-decoration: none;
+    color: #333;
+    display: block;
+    border-radius: 0px;
+}
+
+@font-face {
+    font-family: "DOTMATRI";
+    src: url("../mainview/DOTMATRI.TTF");
+}
+
+::selection {
+    background: var(--var-bg-70);
+}
