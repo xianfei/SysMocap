@@ -631,7 +631,7 @@ window.startMocap = async function (e) {
             bw.webContents.loadFile(require("path").join(__dirname, "./mocap/mocap.html"));
             if (window.sysmocapApp.settings.dev.openDevToolsWhenMocap)
                 bw.webContents.openDevTools({ mode: "detach" });
-            document.getElementById("foo").src = "./render/render.html";
+            document.getElementById("foo").src = "./render.html";
         } else {
             document.getElementById("foo").src = "./mocaprender/render.html";
         }
