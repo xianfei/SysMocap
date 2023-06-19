@@ -1,10 +1,10 @@
-# sysmocap
+# SysMocap
 
-A minimal Electron application with TypeScript
+Refactoring with electron-vite and typescript
 
-## Recommended IDE Setup
+## Project Struct
 
-- [VSCode](https://code.visualstudio.com/) + [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) + [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+
 
 ## Project Setup
 
