@@ -130,33 +130,19 @@
                         >code</i
                     >
                 </button>
-                <div
-                    class="mdui-color-theme clickable"
-                    style="
-                        height: 26px;
-                        width: 4px;
-                        border-radius: 2px;
-                        position: fixed;
-                        top: 10px;
-                    "
-                    v-bind:style="{ left: platform=='darwin'?'80px':'10px'}"
-                ></div>
                 <!-- Show App Name -->
                 <div
                     style="display: inline-block; padding-top: 8px"
-                    v-bind:style="{ marginLeft: platform=='darwin'?'92px':'22px'}"
+                    v-bind:style="{ marginLeft: platform=='darwin'?'82px':'12px'}"
                 >
-                    <span class="dotfont">
-                        Xianfei's<span
-                            style="margin-left: 2px; margin-right: 2px"
-                            >Mocap</span
-                        >System</span
-                    >
+                <span class="dotfont text-titlebar-sysmocap">
+                    SysMocap
+                 </span>
                     <div
-                        class="mdui-text-color-theme"
-                        style="font-size: 10px; margin-left: -1px"
+                        class="mdui-text-color-theme text-titlebar-sysmocap"
+                        style="font-size: 10px; margin-left: 60px; margin-top: -3px;opacity: 0.6;"
                     >
-                        {{language.app.name}}
+                        v{{appVersion}}
                     </div>
                 </div>
 
@@ -434,7 +420,7 @@
                             </div>
                         </div>
                         <div
-                            v-if="!settings.ui.useNewModelUI"
+                            v-if="false"
                             v-for="model in builtIn"
                             class="mdui-ripple model-item"
                             v-on:click="require('electron').ipcRenderer.send('openModelViewer', {model:model,backgroundColor:bg,color:'#fff',useGlass:settings.ui.useGlass});"
@@ -578,8 +564,8 @@
                     style="max-width: 550px; margin: auto"
                 >
                     <div
-                        class="dotfont"
-                        style="font-size: 32px;-webkit-user-select: text; color: #555; margin-top: 10px"
+                        class="dotfont text-titlebar-sysmocap"
+                        style="font-size: 32px;-webkit-user-select: text; margin-top: 10px"
                     >
                         Xianfei's<span
                             style="margin-left: 5px; margin-right: 5px"
@@ -811,7 +797,6 @@
                     <div
                         class="settings-item"
                         onclick="ipcRenderer.send('openPDF','../pdfs/bylw.pdf')"
-                        v-show="false"
                     >
                         <i
                             class="mdui-icon material-icons"
@@ -871,6 +856,21 @@
                             <input
                                 type="checkbox"
                                 v-model="settings.ui.useGlass"
+                            />
+                            <i class="mdui-switch-icon"></i>
+                        </label>
+                    </div>
+                    <div class="settings-item">
+                        <label class="mdui-switch">
+                            <span
+                                ><span class="material-icons-outlined">
+                                    dark_mode </span
+                                >{{language.tabSettings.ui.isDark}}</span
+                            >
+                            <input
+                                type="checkbox"
+                                v-model="settings.ui.isDark"
+                                
                             />
                             <i class="mdui-switch-icon"></i>
                         </label>

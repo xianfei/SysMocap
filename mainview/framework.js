@@ -129,7 +129,7 @@ function domBoom(target, onfinish) {
     );
 }
 
-var darkMode = false;
+var darkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
 
 import {
     argbFromHex,
@@ -137,7 +137,7 @@ import {
     themeFromImage,
     sourceColorFromImage,
     applyTheme,
-} from "../utils/material-color-utilities/index.js";
+} from "../node_modules/@material/material-color-utilities/index.js";
 
 function rgba2hex(rgba) {
     rgba = rgba.match(
@@ -174,7 +174,7 @@ if (typeof require != "undefined") {
     // set theme
     document.body.setAttribute(
         "class",
-        "mdui-theme-primary-" +
+        "mdui-theme-layout-auto mdui-theme-primary-" +
             globalSettings.ui.themeColor +
             " mdui-theme-accent-" +
             globalSettings.ui.themeColor
@@ -267,24 +267,47 @@ if (typeof require != "undefined") {
                     // console.log('settings changed')
                     document.body.setAttribute(
                         "class",
-                        "mdui-theme-primary-" +
+                        "mdui-theme-layout-auto mdui-theme-primary-" +
                             app.settings.ui.themeColor +
                             " mdui-theme-accent-" +
                             app.settings.ui.themeColor
                     );
 
+                    if((remote.nativeTheme.themeSource=='dark')!==app.settings.ui.isDark){
+                        remote.nativeTheme.themeSource = (!app.settings.ui.isDark)?'light':'dark';
+
+                        var modelOnload = async function () {
+                            for (var e of document.querySelectorAll(".my-img")) {
+                                if (e.src.includes("framework.html")) continue;
+                                var theme = await themeFromImage(e);
+                                applyTheme(theme, {
+                                    target: e.parentElement,
+                                    dark: app.settings.ui.isDark,
+                                });
+                            }
+                            for(var e of document.querySelectorAll("div.color-dot")){
+                                e.style.boxShadow = e.computedStyleMap().get('background-color').toString().replace('rgb','rgba').replace(')',', 0.6) 0px 2px 6px')
+                            }
+                        };
+                        setTimeout(()=>modelOnload(),500)
+                        
+                        
+                    }
+
+                    
+
                     var f = async () => {
                         var color = window.getComputedStyle(
-                            document.querySelector(".mdui-color-theme"),
+                            document.querySelector(".mdui-text-color-theme"),
                             null
-                        ).backgroundColor;
+                        ).color;
                         var hex = rgba2hex(color);
                         var theme = await themeFromSourceColor(
                             argbFromHex(hex)
                         );
                         applyTheme(theme, {
                             target: document.body,
-                            dark: darkMode,
+                            dark: app.settings.ui.isDark,
                         });
                         ipcRenderer.send('tabChanged',window.sysmocapApp.tab,document.body.style.getPropertyValue('--md-sys-color-primary'),document.body.style.getPropertyValue('--md-sys-color-primary-container'));
                     };
@@ -292,6 +315,8 @@ if (typeof require != "undefined") {
 
                     saveSettings(app.settings);
                     app.language = languages[app.settings.ui.language];
+
+                    
                 },
                 deep: true,
             },

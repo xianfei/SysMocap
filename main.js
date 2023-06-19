@@ -118,7 +118,11 @@ function createWindow() {
 
     // and load the index.html of the app.
     mainWindow.loadFile("mainview/framework.html");
-    nativeTheme.themeSource = "light";
+    if(storage.getItem("useDark")){
+        nativeTheme.themeSource = "dark";
+    }else{
+        nativeTheme.themeSource = "light";
+    }
 
     if (
         storage.getItem("useDMoc") ||
@@ -289,7 +293,7 @@ function createModelViewerWindow(args) {
     if (args.useGlass) {
         myBrowserWindow = blurBrowserWindow;
         addtionalArgs = {
-            vibrancy: "light",
+            vibrancy: nativeTheme.themeSource,
             backgroundColor: "#00000000",
         };
     }

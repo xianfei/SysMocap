@@ -1,14 +1,15 @@
 {
   "name": "sysmocap",
-  "version": "0.5.8",
+  "version": "0.6.0",
   "description": "Video-based motion capture system.",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
+    "build-mdc": "rollup -p @rollup/plugin-node-resolve ./utils/mdc.js > ./utils/mdc-bundle.js",
     "start-nogpu": "electron . --disable-gpu",
-    "package:mac64": "electron-packager ./ SysMocap --platform=darwin --arch=x64 --out ./OutApp --overwrite --usage-description.Camera='该程序需要摄像头权限' --electronVersion 25.0.1 --asar",
-    "package:macarm": "electron-packager ./ SysMocap --platform=darwin --arch=arm64 --out ./OutApp --overwrite --usage-description.Camera='该程序需要摄像头权限' --electronVersion 25.0.1 --asar",
-    "package:win64": "electron-packager ./ SysMocap --icon=sysmocap.ico --platform=win32 --arch=x64 --out ./OutApp --overwrite --electronVersion 25.0.1 --asar",
+    "package:mac64": "electron-packager ./ SysMocap --platform=darwin --arch=x64 --out ./OutApp --overwrite --usage-description.Camera='该程序需要摄像头权限' --electronVersion 25.1.1 --asar",
+    "package:macarm": "electron-packager ./ SysMocap --platform=darwin --arch=arm64 --out ./OutApp --overwrite --usage-description.Camera='该程序需要摄像头权限' --electronVersion 25.1.1 --asar",
+    "package:win64": "electron-packager ./ SysMocap --icon=sysmocap.ico --platform=win32 --arch=x64 --out ./OutApp --overwrite --electronVersion 25.1.1 --asar",
     "zip:win64": "electron-installer-zip ./OutApp/SysMocap-win32-x64/ ./OutApp/packages/SysMocap-Windows-x64.zip --overwrite",
     "zip:mac64": "electron-installer-zip ./OutApp/SysMocap-darwin-x64/ ./OutApp/packages/SysMocap-macOS-x64.zip --overwrite",
     "dmg": "electron-installer-dmg ./OutApp/SysMocap-darwin-x64/SysMocap.app SysMocap-macOS-x64 --out ./OutApp/packages/ --overwrite",
@@ -18,6 +19,8 @@
   "license": "ISC",
   "dependencies": {
     "@electron/remote": "^2.0.8",
+    "@material/material-color-utilities": "^0.2.6",
+    "@material/web": "^1.0.0-pre.10",
     "@mediapipe/camera_utils": "^0.3.1640029074",
     "@mediapipe/drawing_utils": "^0.3.1620248257",
     "@mediapipe/holistic": "^0.5.1635989137",
@@ -45,9 +48,11 @@
     "vue": "^2.6.14"
   },
   "devDependencies": {
-    "electron": "^25.0.1",
+    "@rollup/plugin-node-resolve": "^15.1.0",
+    "electron": "^25.1.1",
     "electron-installer-dmg": "^4.0.0",
     "electron-installer-zip": "^0.1.2",
-    "electron-packager": "^17.1.1"
+    "electron-packager": "^17.1.1",
+    "rollup": "^3.25.1"
   }
 }

@@ -34,6 +34,30 @@ blockquote {
     backdrop-filter: blur(20px) saturate(1.8);
 }
 
+.text-titlebar-sysmocap {
+    font-size: 20px;
+    color: #555;
+}
+
+@media (prefers-color-scheme: dark) {
+    .titlebar {
+        background-color: #2228 !important;
+    }
+
+    .line {
+        background-color: #222 !important;
+    }
+
+    .model-item-new img {
+        filter: brightness(0.8) !important;
+    }
+
+    .text-titlebar-sysmocap {
+        color: #ccc !important;
+    }
+
+}
+
 .titlebar .clickable {
     z-index: 1001;
     -webkit-app-region: no-drag;
@@ -63,7 +87,7 @@ blockquote {
     text-align: center;
     padding: 0;
     border-radius: 20px !important;
-    background-color:#fff0;
+    background-color: #fff0;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
 }
@@ -171,7 +195,7 @@ h1 {
     cursor: pointer;
 }
 
-.settings-item .material-icons-outlined{
+.settings-item .material-icons-outlined {
     margin-right: 10px;
     margin-top: -4px;
     margin-left: 2px;
@@ -225,17 +249,37 @@ button {
     margin: 8px;
     background-color: var(--md-sys-color-primary-container);
 }
+
 .model-item-new:hover {
     outline: solid var(--md-sys-color-primary) 2px;
     outline-offset: 3px;
 }
 
-@keyframes shake { 
-    10%, 90% { transform: translate3d(-1px, 0, 0); }
-    20%, 80% { transform: translate3d(+2px, 0, 0); }
-    30%, 70% { transform: translate3d(-4px, 0, 0); }
-    40%, 60% { transform: translate3d(+4px, 0, 0); }
-    50% { transform: translate3d(-4px, 0, 0); }
+@keyframes shake {
+
+    10%,
+    90% {
+        transform: translate3d(-1px, 0, 0);
+    }
+
+    20%,
+    80% {
+        transform: translate3d(+2px, 0, 0);
+    }
+
+    30%,
+    70% {
+        transform: translate3d(-4px, 0, 0);
+    }
+
+    40%,
+    60% {
+        transform: translate3d(+4px, 0, 0);
+    }
+
+    50% {
+        transform: translate3d(-4px, 0, 0);
+    }
 }
 
 .model-item-new img {
@@ -244,7 +288,7 @@ button {
     margin-left: -20px;
 }
 
-.model-item-new i{
+.model-item-new i {
     position: absolute;
     height: 100%;
     font-size: 40px;
@@ -255,14 +299,12 @@ button {
 .model-item-new .desc {
     position: absolute;
     z-index: 10;
-    background: linear-gradient(
-        to right,
-        rgba(255, 255, 255, 0),
-        var(--md-sys-color-primary-container),
-        var(--md-sys-color-primary-container),
-        var(--md-sys-color-primary-container),
-        var(--md-sys-color-primary-container)
-    );
+    background: linear-gradient(to right,
+            rgba(255, 255, 255, 0),
+            var(--md-sys-color-primary-container),
+            var(--md-sys-color-primary-container),
+            var(--md-sys-color-primary-container),
+            var(--md-sys-color-primary-container));
     color: var(--md-sys-color-on-primary-container);
     height: 100%;
     left: 60px;
@@ -309,13 +351,14 @@ button {
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
 }
+
 .model-importer-error {
     margin-left: 7px !important;
     width: 450px;
     height: 200px;
     background-color: var(--md-sys-color-error-container);
-    --md-sys-color-primary-container:var(--md-sys-color-error-container);
-    --md-sys-color-on-primary-container:var(--md-sys-color-on-error-container);
+    --md-sys-color-primary-container: var(--md-sys-color-error-container);
+    --md-sys-color-on-primary-container: var(--md-sys-color-on-error-container);
     --md-sys-color-primary: var(--md-sys-color-error);
     --md-sys-color-on-primary: var(--md-sys-color-on-error);
     color: var(--md-sys-color-on-error-container);
@@ -326,7 +369,8 @@ button {
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
 }
-.model-importer a{
+
+.model-importer a {
     color: var(--md-sys-color-on-primary-container);
 }
 
@@ -346,7 +390,7 @@ button {
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.modelInfo{
+.modelInfo {
     display: inline-block;
     width: 220px;
     position: absolute;
@@ -376,11 +420,11 @@ button {
 }
 
 
-.card{
+.card {
     position: fixed;
     left: 100px;
     top: 100px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
     border-radius: 5px;
     width: 200px;
     background: #fffa;
@@ -388,31 +432,31 @@ button {
     transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     transform-origin: left top;
     z-index: 1000;
-  }
-  
-  .carditem{
+}
+
+.carditem {
     color: #555;
     margin: 5px;
     height: 34px;
     border-radius: 5px;
     line-height: 34px;
-  }
+}
 
-  .carditem i{
-      transform: scale(0.75);
-      margin-top: -3px;
-  }
-  
-  .carditem:hover{
+.carditem i {
+    transform: scale(0.75);
+    margin-top: -3px;
+}
+
+.carditem:hover {
     background: #aaa3;
-  }
-  
-  .cardicon{
+}
+
+.cardicon {
     margin-left: 5px;
     margin-right: 10px;
-  }
+}
 
-  .line2 {
+.line2 {
     width: 90%;
     height: 0.5px;
     margin-left: 5%;

@@ -89,6 +89,8 @@ function saveSettings(settings) {
     if (settings.performance.useDescrertionProcess) storage.setItem("useDMoc", true);
     else storage.setItem("useDMoc", false);
     storage.setItem("used", true);
+    if (settings.ui.isDark) storage.setItem("useDark", true);
+    else storage.setItem("useDark", false);
 }
 
 function addUserModels(model) {

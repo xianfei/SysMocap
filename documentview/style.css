@@ -101,9 +101,9 @@ img {
     margin: 50px 50px 50px 260px;
     padding: 20px 60px;
     max-width: unset;
-    background: #fff;
-    border: 1px solid #e6ecf1;
-    box-shadow: 0 2px 8px rgba(116, 129, 141, 0.08);
+    /* background: #fff; */
+    /* border: 1px solid #e6ecf1;
+    box-shadow: 0 2px 8px rgba(116, 129, 141, 0.08); */
     border-radius: 4px;
 }
 
@@ -254,7 +254,7 @@ img {
 #AnchorContentToggle {
     font-size: 13px;
     font-weight: normal;
-    color: #fff;
+    /* color: #fff; */
     display: inline-block;
     line-height: 20px;
     background: rgb(7, 196, 189);

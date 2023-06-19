@@ -16,7 +16,7 @@ var hipRotationOffset = 0.2
 // set theme
 document.body.setAttribute(
     "class",
-    "mdui-theme-primary-" +
+    "mdui-theme-layout-auto mdui-theme-primary-" +
         globalSettings.ui.themeColor +
         " mdui-theme-accent-" +
         globalSettings.ui.themeColor

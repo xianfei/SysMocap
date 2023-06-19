@@ -18,7 +18,7 @@ const { globalSettings } = require("../utils/setting.js");
 // set theme
 document.body.setAttribute(
     "class",
-    "mdui-theme-primary-" +
+    "mdui-theme-layout-auto mdui-theme-primary-" +
         globalSettings.ui.themeColor +
         " mdui-theme-accent-" +
         globalSettings.ui.themeColor
@@ -167,8 +167,8 @@ let findInPage = new FindInPage(remote.getCurrentWebContents(), {
 var os = require("os");
 
 window.onload = () => {
-    $("body").css("background", "#ffffff00");
-    $("html").css("background", "#ffffff22");
+    // $("body").css("background", "#ffffff00");
+    // $("html").css("background", "#ffffff22");
     for (var ee of $("a")) {
         if (ee.href.includes("http")||ee.href.endsWith(".pdf"))
             ee.onclick = (event) => {
@@ -184,7 +184,7 @@ window.onload = () => {
     }
 
     $("body")
-        .prepend(`<div class="mdui-color-theme-50" style="position: fixed;top:-10%;left:200px;filter: opacity(0.3);width: 100%;height: 120%;z-index:-1;"></div>
+        .prepend(`<div class="mdui-color-theme-50" style="position: fixed;top:-10%;left:200px;display:none;width: 100%;height: 120%;z-index:-1;"></div>
     <div class="border" id="border"></div>
     <div style="position: fixed;right: 0px;top: 0px;width: 100%;-webkit-app-region: drag;z-index: 10;">&nbsp;</div>
 <div id='btns'></div>`);
