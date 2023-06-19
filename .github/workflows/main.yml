@@ -42,7 +42,6 @@ jobs:
       - name: build windows app
         if: matrix.os == 'windows-2019'
         run: |
-          npm i electron-acrylic-window
           npm run package:win64
           npm run zip:win64
         env:
