@@ -1,4 +1,4 @@
-![banner](https://user-images.githubusercontent.com/8101613/172903631-e9610e0b-ed46-4c8c-a3f9-3a098265f820.png)
+![banner](https://github.com/xianfei/SysMocap/assets/8101613/58ca8670-5242-4ee4-94fe-8b1be8679843)
 
 <h1 align="center">
 SysMocap
@@ -34,9 +34,10 @@ Available for Windows, macOS (packaged) & Linux (source code only)
 
 ### Highlights
 
-🌟 Beautiful GUI with Material Design 3 Color System
+🌟 Beautiful GUI with Material Design 3 Color System, with Dark Mode supported.
 
 ![UI](https://user-images.githubusercontent.com/8101613/213859221-0297a443-7df3-493e-b8e0-c1b439791fcf.jpg)
+![UI-dark](https://github.com/xianfei/SysMocap/assets/8101613/5a4ee656-9431-4518-b80e-d5956f8712c0)
 
 🌟 Easy to used. You can import 3D models just with drags.
 
