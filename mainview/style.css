@@ -10,7 +10,7 @@ body {
 }
 
 /* .mdui-select{
-    font-family: 'Quicksand', 'MiSans' !important;
+    font-family: 'Quicksand', 'NowarRounded' !important;
 } */
 
 ::selection {
@@ -39,9 +39,34 @@ blockquote {
     color: #555;
 }
 
+.titlebar-ver {
+    font-size: 10px;
+    opacity: 0.8;
+    position: absolute;
+    display: inline-block;
+    width: 34px;
+    height: 14px;
+    line-height: 14px;
+    text-align: center;
+    background-color: var(--md-sys-color-primary-container) !important;
+    box-shadow: var(--md-sys-color-primary-container) 0px 1px 5px;
+    color: var(--md-sys-color-primary) !important;
+    padding: 2px;
+    border-radius: 7px;
+    margin: 3px;
+}
+
 @media (prefers-color-scheme: dark) {
+    body {
+        background-color: #222 !important;
+    }
+
+    select.mdui-select {
+        background-color: transparent !important;
+    }
+
     .titlebar {
-        background-color: #2228 !important;
+        background-color: #17171780 !important;
     }
 
     .line {
@@ -133,10 +158,6 @@ blockquote {
 .xf-button-2:hover {
     outline: solid var(--md-sys-color-primary) 2px !important;
     outline-offset: 2px !important;
-}
-
-.dotfont {
-    font-family: "DOTMATRI";
 }
 
 .line {

@@ -14,6 +14,7 @@ const {
     BrowserView,
     ipcMain,
     TouchBar,
+    shell,
     nativeTheme,
 } = require("electron");
 const { TouchBarLabel, TouchBarButton, TouchBarSpacer } = TouchBar
@@ -363,6 +364,18 @@ function createPdfViewerWindow(args) {
         },
     });
 
+    viewer.webContents.on('will-navigate', (e, url) => {
+        e.preventDefault()
+        shell.openExternal(url)
+    })
+    // 处理 window.open 跳转
+    viewer.webContents.setWindowOpenHandler((data) => {
+        shell.openExternal(data.url)
+        return {
+            action: 'deny'
+        }
+    })
+
     // and load the index.html of the app.
     viewer.loadFile("pdfviewer/viewer.html");
     electronRemoteMain.enable(viewer.webContents);
@@ -394,43 +407,14 @@ function createGpuInfoWindow() {
     // and load the index.html of the app.
     viewer.loadURL("chrome://gpu");
 
-    // Open the DevTools.
-    // viewer.webContents.openDevTools()
-
     // Emitted when the window is closed.
     viewer.on("closed", function () {
         viewer = null;
     });
 }
 
-function showDoc() {
-    var docWindow = new BrowserWindow({
-        width: 1200,
-        height: 700,
-        frame: false,
-        autoHideMenuBar: true,
-        titleBarStyle: "hidden",
-        webPreferences: {
-            nodeIntegration: true,
-            webviewTag: true,
-            contextIsolation: false,
-            enableRemoteModule: true,
-        },
-    });
-
-    // and load the html of the app.
-    docWindow.loadFile("documentview/document.html");
-    electronRemoteMain.enable(docWindow.webContents);
-
-    docWindow.on("closed", function () {
-        docWindow = null;
-    });
-
-    // docWindow.toggleDevTools();
-}
-
 ipcMain.on("openDocument", function (event, arg) {
-    showDoc();
+    createPdfViewerWindow(__dirname + "/pdfs/document.pdf");
 });
 
 ipcMain.on("openModelViewer", function (event, arg) {

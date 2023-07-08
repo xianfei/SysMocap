@@ -21,11 +21,6 @@
         <link rel="stylesheet" href="style.css" />
         <!-- import thirdpart library -->
         <link rel="stylesheet" href="../node_modules/mdui/dist/css/mdui.css" />
-        <link
-            rel="stylesheet"
-            type="text/css"
-            href="../node_modules/lato-font/css/lato-font.css"
-        />
         <script src="../node_modules/mdui/dist/js/mdui.js"></script>
         <script src="../node_modules/vue/dist/vue.js"></script>
         <script src="../utils/html2canvas.js"></script>
@@ -33,7 +28,7 @@
         <link rel="stylesheet" href="../utils/codemirror/codemirror.css" />
     </head>
 
-    <body style="font-family: 'Quicksand', 'MiSans'">
+    <body style="font-family: 'Quicksand', 'NowarRounded'">
         <div id="vue-mount" style="display: none" v-show="true">
             <!--
                 --------------------------------- Title Bar ------------------------------------
@@ -132,15 +127,14 @@
                 </button>
                 <!-- Show App Name -->
                 <div
-                    style="display: inline-block; padding-top: 8px"
+                    style="display: inline-block; padding-top: 10px; position: relative;width: 200px;"
                     v-bind:style="{ marginLeft: platform=='darwin'?'82px':'12px'}"
                 >
-                <span class="dotfont text-titlebar-sysmocap">
+                <span class="text-titlebar-sysmocap">
                     SysMocap
                  </span>
                     <div
-                        class="mdui-text-color-theme text-titlebar-sysmocap"
-                        style="font-size: 10px; margin-left: 60px; margin-top: -3px;opacity: 0.6;"
+                        class="titlebar-ver"
                     >
                         v{{appVersion}}
                     </div>
@@ -295,7 +289,7 @@
                                 </p>
                                 <p v-show="showModelImporter==1">
                                     {{language.tabModelLib.suppotFormat}}
-                                    <a href="#"
+                                    <a href="#" onclick="ipcRenderer.send('openDocument')"
                                         >{{language.tabModelLib.here}}</a
                                     >
                                 </p>
@@ -564,13 +558,13 @@
                     style="max-width: 550px; margin: auto"
                 >
                     <div
-                        class="dotfont text-titlebar-sysmocap"
-                        style="font-size: 32px;-webkit-user-select: text; margin-top: 10px"
+                        class="text-titlebar-sysmocap"
+                        style="font-size: 32px;-webkit-user-select: text; margin-top: 15px"
                     >
-                        Xianfei's<span
-                            style="margin-left: 5px; margin-right: 5px"
-                            >Mocap</span
-                        >System
+                    SysMocap<span
+                            style="margin-left: 5px; font-size: 18px;"
+                            >by xianfei</span
+                        >
                     </div>
                     <div class="mdui-text-color-theme" style="-webkit-user-select: text;">
                         {{language.app.name}}
