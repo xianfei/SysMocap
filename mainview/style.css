@@ -44,7 +44,7 @@ blockquote {
     opacity: 0.8;
     position: absolute;
     display: inline-block;
-    width: 34px;
+    width: 62px;
     height: 14px;
     line-height: 14px;
     text-align: center;
@@ -54,6 +54,7 @@ blockquote {
     padding: 2px;
     border-radius: 7px;
     margin: 3px;
+    margin-left: 6px;
 }
 
 @media (prefers-color-scheme: dark) {
