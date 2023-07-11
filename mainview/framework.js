@@ -388,28 +388,7 @@ if (typeof require != "undefined") {
 
     var inst2 = new mdui.Select("#demo-js-2");
 
-    var lightInput = new mdui.Dialog("#light-js");
-
     var hasInitdLight = false;
-
-    function openLightInput() {
-        lightInput.open();
-        // light effect javascript input
-        if (hasInitdLight) return;
-        var editor = CodeMirror.fromTextArea(
-            document.getElementById("light-input"),
-            {
-                mode: "text/javascript",
-                lineNumbers: true, // 显示行号
-                matchBrackets: true,
-            }
-        );
-
-        editor.on("blur", function () {
-            editor.save();
-        });
-        hasInitdLight = true;
-    }
 
     var isRemoteInit = false;
 
