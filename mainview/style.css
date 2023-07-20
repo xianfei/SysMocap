@@ -54,7 +54,7 @@ blockquote {
     padding: 2px;
     border-radius: 7px;
     margin: 3px;
-    margin-left: 6px;
+    margin-left: 10px;
 }
 
 @media (prefers-color-scheme: dark) {

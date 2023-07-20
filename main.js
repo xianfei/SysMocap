@@ -102,7 +102,7 @@ function createWindow() {
         width: 1180,
         height: 750,
         titleBarStyle: "hidden",
-        trafficLightPosition: { x: 15, y: 15 },
+        trafficLightPosition: { x: 18, y: 15 },
         // titleBarOverlay: {
         //   color: '#fff',
         //   symbolColor: '#111'
@@ -351,8 +351,8 @@ function createPdfViewerWindow(args) {
         titleBarStyle: "hidden",
         trafficLightPosition: { x: 10, y: 8 },
         titleBarOverlay: {
-            color: "#f9f9fa",
-            symbolColor: "#111111",
+            color: "#0000",
+            symbolColor: nativeTheme.themeSource=='dark'?'#eee':'#111',
         },
         // vibrancy: "dark",
         webPreferences: {
