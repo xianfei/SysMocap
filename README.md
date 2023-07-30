@@ -1,6 +1,8 @@
 ![banner](https://github.com/xianfei/SysMocap/assets/8101613/58ca8670-5242-4ee4-94fe-8b1be8679843)
 
 <h1 align="center">
+  <img src="https://github.com/xianfei/SysMocap/assets/8101613/adca7a3c-bdb2-4bda-af26-7ef9ba218c4c" align="center" height="128px" width="128px">
+  
 SysMocap
 </h1>
 
