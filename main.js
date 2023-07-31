@@ -288,6 +288,9 @@ function createWindow() {
 }
 
 function createModelViewerWindow(args) {
+    if (args.useGlass && platform === "win32" && isWin11!==null) {
+        if(!isWin11) args.useGlass = false;
+    }
     // Create the browser window.
     var myBrowserWindow = BrowserWindow;
     var addtionalArgs = { backgroundColor: "#eee" };
@@ -324,7 +327,6 @@ function createModelViewerWindow(args) {
 
     if (args.useGlass && platform === "win32" && isWin11!==null) {
         if(isWin11) viewer.setMicaAcrylicEffect(); // Acrylic for windows 11
-        else viewer.setAcrylic(); 
     }
 
     viewer.webContents.once('dom-ready', () => {
