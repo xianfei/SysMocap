@@ -711,5 +711,7 @@ const options = {
 
 window.openInGithub = () =>
     remote.shell.openExternal("https://github.com/xianfei/SysMocap/releases");
+window.openInIEEE = () =>
+    remote.shell.openExternal("https://ieeexplore.ieee.org/document/9974484");
 
 if(!window.sysmocapApp.disableAutoUpdate) window.checkUpdate()

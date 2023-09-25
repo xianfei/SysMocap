@@ -90,6 +90,10 @@ module.exports = {
                 },
                 input:{
                     name: "输入",
+                },
+                about:{
+                    name: "关于",
+                    paper:"相关论文:",
                 }
             },
             modelVierer: {
@@ -198,6 +202,10 @@ module.exports = {
                     openDevToolsWhenMocap: "Open DevTools when Mocap Started",
                     showGpuInfo: "Open GPU Info Page",
                 },
+                about:{
+                    name: "About",
+                    paper:"Relation Papers:",
+                }
             },
             modelVierer: {
                 fullSupport: "Full Mocap Support",
