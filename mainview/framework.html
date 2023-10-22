@@ -99,13 +99,7 @@
                 </div>
             </div>
 
-            <div class="clickable tab-bar" style="
-                        width: 355px;
-                        top: 4.5px;
-                        position: fixed;
-                        left: calc(50vw - 180px);
-                        margin-top: 1px;
-                    ">
+            <div class="clickable tab-bar">
                 <!-- <div
                     class="mdui-color-theme"
                         style="
@@ -119,31 +113,36 @@
                             margin-top: 1px;
                         "
                     ></div> -->
-                <button v-bind:class="tab=='model'?'mdui-btn select':'mdui-btn'" onclick="sysmocapApp.tab='model'">
-                    <span class="material-icons-outlined">
-                        account_balance </span>{{language.titlebar.modelLib}}
-                </button>
-                <button v-bind:class="tab=='render'?'mdui-btn select':'mdui-btn'" onclick="sysmocapApp.tab='render'">
-                    <i class="mdui-icon material-icons">filter_center_focus</i>{{language.titlebar.mocap}}
-                </button>
-                <button v-bind:class="tab=='settings'?'mdui-btn select':'mdui-btn'"
-                    onclick="sysmocapApp.tab='settings'">
-                    <span class="material-icons-outlined"> settings </span>
-                    <div style="
-                                display: inline-block;
-                                width: 8px;
-                                border-radius: 50%;
-                                height: 8px;
-                                margin-left: -13px;
-                                margin-top: 5px;
-                                background: rgb(219, 46, 46);
-                                position: absolute;
-                            " v-show="hasUpdate"></div>
-                    {{language.titlebar.settings}}
-                </button>
+                <input id="tabmodel" type="radio" name="tab-bar-sel" value="model" v-model="tab">
+                <input id="tabrender" type="radio" name="tab-bar-sel" value="render" v-model="tab">
+                <input id="tabsettings" type="radio" name="tab-bar-sel" value="settings" v-model="tab">
+                <div class="tab-bar-buttons">
+                    <label for="tabmodel" v-bind:class="tab=='model'?'mdui-btn select':'mdui-btn'">
+                        <span class="material-icons-outlined">
+                            account_balance </span>{{language.titlebar.modelLib}}
+                    </label>
+                    <label for="tabrender" v-bind:class="tab=='render'?'mdui-btn select':'mdui-btn'">
+                        <i class="mdui-icon material-icons">filter_center_focus</i>{{language.titlebar.mocap}}
+                    </label>
+                    <label for="tabsettings" v-bind:class="tab=='settings'?'mdui-btn select':'mdui-btn'">
+                        <span class="material-icons-outlined"> settings </span>
+                        <div style="
+                                    display: inline-block;
+                                    width: 8px;
+                                    border-radius: 50%;
+                                    height: 8px;
+                                    margin-left: -13px;
+                                    margin-top: 5px;
+                                    background: rgb(219, 46, 46);
+                                    position: absolute;
+                                " v-show="hasUpdate"></div>
+                        {{language.titlebar.settings}}
+                    </label>
+                    <div class="tab-bar-indicator"></div>
+                </div>
             </div>
         </div>
-        <div class="line" style="position: fixed; top: 44px"></div>
+        <div class="line" style="position: fixed; top: 44px;transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1)" v-bind:style="{opacity:showLine?'1':'0'}"></div>
         <div style="padding: 10px 20px; margin-top: 44px">
             <!--
                 ------------------------ Model library ------------------------
@@ -179,7 +178,7 @@
                     </div>
                 </div>
                 <!------- User Model ------->
-                <h1 class="mdui-text-color-theme" style="display: inline-block; vertical-align: middle">
+                <h1 style="display: inline-block; vertical-align: middle;color: var(--md-sys-color-primary)">
                     {{language.tabModelLib.userModel}}
                 </h1>
                 <button class="mdui-btn xf-button" style="
@@ -260,7 +259,7 @@
                             "></div>
                 </div>
                 <!------- Build-in Model ------->
-                <h1 class="mdui-text-color-theme">
+                <h1 style="color: var(--md-sys-color-primary)">
                     {{language.tabModelLib.buildinModel}}
                 </h1>
                 <div class="flex-container" id="userModels">

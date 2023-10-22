@@ -230,7 +230,7 @@ if (typeof require != "undefined") {
             updateError:null,
             isLatest:false,
             disableAutoUpdate:localStorage.getItem('disableUpdate'),
-
+            showLine: false
         },
         computed: {
             bg: function () {
@@ -715,3 +715,11 @@ window.openInIEEE = () =>
     remote.shell.openExternal("https://ieeexplore.ieee.org/document/9974484");
 
 if(!window.sysmocapApp.disableAutoUpdate) window.checkUpdate()
+
+window.addEventListener('scroll',function(e){
+    if(window.pageYOffset > 10){
+        window.sysmocapApp.showLine = true
+    }else{
+        window.sysmocapApp.showLine = false
+    }
+  })

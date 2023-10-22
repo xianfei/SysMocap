@@ -1,3 +1,6 @@
+:root{
+    --xf-bg: #fff;
+}
 body {
     -webkit-user-select: none;
     transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
@@ -7,6 +10,7 @@ body {
         outline 0.2s cubic-bezier(0.4, 0, 0.2, 1),
         box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1),
         -webkit-box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1);
+    background-color: color-mix(in srgb,var(--xf-bg) 85%,var(--md-sys-color-primary-container)) !important;
 }
 
 /* .mdui-select{
@@ -30,8 +34,7 @@ blockquote {
     height: 30px;
     z-index: 1000;
     -webkit-app-region: drag;
-    background-color: #fffa;
-    backdrop-filter: blur(20px) saturate(1.8);
+    background-color: color-mix(in srgb,var(--xf-bg) 85%,var(--md-sys-color-primary-container)) !important;
 }
 
 .text-titlebar-sysmocap {
@@ -58,20 +61,16 @@ blockquote {
 }
 
 @media (prefers-color-scheme: dark) {
-    body {
-        background-color: #222 !important;
-    }
-
     select.mdui-select {
         background-color: transparent !important;
     }
 
-    .titlebar {
-        background-color: #17171780 !important;
-    }
-
     .line {
         background-color: #222 !important;
+    }
+
+    :root{
+        --xf-bg: #222;
     }
 
     .model-item-new img {
@@ -102,33 +101,75 @@ blockquote {
     margin-right: 5px;
 }
 
-.tab-bar button {
+.tab-bar{
+    width: 355px;
+    top: 4.5px;
+    position: fixed;
+    left: calc(50vw - 180px);
+    margin-top: 1px;
+    background-color: var(--md-sys-color-primary-container) !important;
+    border-radius: 16px;
+}
+
+.tab-bar input{
+    display: none;
+}
+
+.tab-bar label {
     width: 110px;
     height: 32px;
     line-height: 32px;
     margin-top: 1px;
     margin-left: 2px;
     margin-right: 2px;
-    color: #777;
+    color: var(--md-sys-color-primary) !important;
     text-align: center;
     padding: 0;
     border-radius: 20px !important;
     background-color: #fff0;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-
+}
+.tab-bar label:hover{
+    background: #fff0 !important;
+    color: color-mix(in srgb,var(--md-sys-color-on-primary) 40%,var(--md-sys-color-primary)) !important;
 }
 
-.tab-bar .select {
-    background-color: var(--md-sys-color-primary-container) !important;
-    box-shadow: var(--md-sys-color-primary-container) 0px 1px 5px;
-    color: var(--md-sys-color-primary) !important;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    font-weight: 600;
+.tab-bar input:nth-child(1):checked ~ .tab-bar-buttons label:nth-child(1),
+.tab-bar input:nth-child(2):checked ~ .tab-bar-buttons label:nth-child(2),
+.tab-bar input:nth-child(3):checked ~ .tab-bar-buttons label:nth-child(3) {
+    color: var(--md-sys-color-on-primary) !important;
+    background-color: #fff0 !important;
 }
+
+.tab-bar .tab-bar-indicator {
+    background-color: var(--md-sys-color-primary) !important;
+    width: 109px;
+    height: 27px;
+    position: absolute;
+    top: 3px;
+    z-index: -1;
+    border-radius: 16px;
+    transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tab-bar input:nth-child(1):checked ~ .tab-bar-buttons .tab-bar-indicator{
+    left: 3px;
+}
+
+.tab-bar input:nth-child(2):checked ~ .tab-bar-buttons .tab-bar-indicator{
+    left: 123px;
+}
+
+.tab-bar input:nth-child(3):checked ~ .tab-bar-buttons .tab-bar-indicator{
+    left: 243px;
+}
+
+
 
 .xf-button {
     background-color: var(--md-sys-color-primary-container) !important;
     box-shadow: var(--md-sys-color-primary-container) 0px 1px 5px;
+    filter: drop-shadow(0px 3px 5px color-mix(in srgb,var(--md-sys-color-primary-container) 30%,var(--md-sys-color-background)));
     color: var(--md-sys-color-primary) !important;
     font-weight: 600;
     border-radius: 20px !important;
@@ -263,6 +304,7 @@ button {
     height: 100px;
     border-radius: 20px;
     overflow: hidden;
+    filter: drop-shadow(1px 2px 8px color-mix(in srgb,var(--md-sys-color-primary-container) 50%,var(--md-sys-color-background)));
     box-shadow: var(--md-sys-color-primary-container) 0px 3px 10px;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     outline: solid #fff0 2px;
