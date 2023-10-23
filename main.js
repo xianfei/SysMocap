@@ -307,6 +307,8 @@ function createModelViewerWindow(args) {
         titleBarStyle: platform === "darwin" ? "hiddenInset" : "hidden",
         autoHideMenuBar: true,
         show: false,
+        width: 820,
+        height: 540,
         ...addtionalArgs,
         titleBarOverlay: {
             color: args.backgroundColor,
@@ -332,7 +334,7 @@ function createModelViewerWindow(args) {
     viewer.webContents.once('dom-ready', () => {
         viewer.show();
         viewer.loadFile("modelview/modelview.html");
-        viewer.setSize(820*screen.getPrimaryDisplay().scaleFactor,540*screen.getPrimaryDisplay().scaleFactor)
+        if (args.useGlass) viewer.setSize(820*screen.getPrimaryDisplay().scaleFactor,540*screen.getPrimaryDisplay().scaleFactor)
     });
 
     // Open the DevTools.
