@@ -16,6 +16,7 @@ const {
     TouchBar,
     shell,
     nativeTheme,
+    screen
 } = require("electron");
 const { TouchBarLabel, TouchBarButton, TouchBarSpacer } = TouchBar
 const os = require("os");
@@ -288,6 +289,7 @@ function createWindow() {
 }
 
 function createModelViewerWindow(args) {
+    // console.log(screen.getPrimaryDisplay().scaleFactor)
     if (args.useGlass && platform === "win32" && isWin11!==null) {
         if(!isWin11) args.useGlass = false;
     }
@@ -302,8 +304,6 @@ function createModelViewerWindow(args) {
         };
     }
     var viewer = new myBrowserWindow({
-        width: 820,
-        height: 540,
         titleBarStyle: platform === "darwin" ? "hiddenInset" : "hidden",
         autoHideMenuBar: true,
         show: false,
@@ -332,7 +332,7 @@ function createModelViewerWindow(args) {
     viewer.webContents.once('dom-ready', () => {
         viewer.show();
         viewer.loadFile("modelview/modelview.html");
-        viewer.setSize(820,540)
+        viewer.setSize(820*screen.getPrimaryDisplay().scaleFactor,540*screen.getPrimaryDisplay().scaleFactor)
     });
 
     // Open the DevTools.

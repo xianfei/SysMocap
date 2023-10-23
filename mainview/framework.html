@@ -118,11 +118,11 @@
                 <input id="tabsettings" type="radio" name="tab-bar-sel" value="settings" v-model="tab">
                 <div class="tab-bar-buttons">
                     <label for="tabmodel" v-bind:class="tab=='model'?'mdui-btn select':'mdui-btn'">
-                        <span class="material-icons-outlined">
+                        <span class="material-icons-outlined" style="margin-top: -2px;">
                             account_balance </span>{{language.titlebar.modelLib}}
                     </label>
                     <label for="tabrender" v-bind:class="tab=='render'?'mdui-btn select':'mdui-btn'">
-                        <i class="mdui-icon material-icons">filter_center_focus</i>{{language.titlebar.mocap}}
+                        <i class="mdui-icon material-icons" style="margin-top: -5px;">filter_center_focus</i>{{language.titlebar.mocap}}
                     </label>
                     <label for="tabsettings" v-bind:class="tab=='settings'?'mdui-btn select':'mdui-btn'">
                         <span class="material-icons-outlined"> settings </span>
@@ -846,7 +846,7 @@
                                 font-size: 8px;
                             ">
                                     <i class="mdui-icon material-icons"
-                                        style="font-size: 14px; margin-left: -8px;margin-bottom: -1px;">open_in_new</i>
+                                        style="font-size: 14px; margin-left: -8px;margin-bottom: -1px;">open_in_browser</i>
                                     PDF
                                 </button>
                                 <button onclick="window.openInIEEE()" class="mdui-btn xf-button-2" style="
@@ -857,7 +857,7 @@
                                 margin-left: 10px;
                             ">
                                     <i class="mdui-icon material-icons"
-                                        style="font-size: 14px; margin-left: -8px;margin-bottom: -1px;">open_in_browser</i>
+                                        style="font-size: 14px; margin-left: -8px;margin-bottom: -1px;">public</i>
                                     IEEE
                                 </button>
 
@@ -886,7 +886,7 @@
                                 font-size: 8px;
                             ">
                                     <i class="mdui-icon material-icons"
-                                        style="font-size: 14px; margin-left: -8px;margin-bottom: -1px;">open_in_new</i>
+                                        style="font-size: 14px; margin-left: -8px;margin-bottom: -1px;">open_in_browser</i>
                                     PDF
                                 </button>
 
