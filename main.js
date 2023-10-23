@@ -299,7 +299,7 @@ function createModelViewerWindow(args) {
     if (args.useGlass) {
         myBrowserWindow = blurBrowserWindow;
         addtionalArgs = {
-            vibrancy: nativeTheme.themeSource,
+            vibrancy: 'popover',
             backgroundColor: "#00000000",
         };
     }
@@ -334,7 +334,7 @@ function createModelViewerWindow(args) {
     viewer.webContents.once('dom-ready', () => {
         viewer.show();
         viewer.loadFile("modelview/modelview.html");
-        if (args.useGlass) viewer.setSize(820*screen.getPrimaryDisplay().scaleFactor,540*screen.getPrimaryDisplay().scaleFactor)
+        if (args.useGlass&&isWin11) viewer.setSize(820*screen.getPrimaryDisplay().scaleFactor,540*screen.getPrimaryDisplay().scaleFactor)
     });
 
     // Open the DevTools.
