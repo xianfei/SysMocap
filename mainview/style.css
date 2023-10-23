@@ -34,7 +34,7 @@ blockquote {
     height: 30px;
     z-index: 1000;
     -webkit-app-region: drag;
-    backdrop-filter: blur(20px) saturate(1.8);
+    backdrop-filter: blur(20px);
     background-color: color-mix(in srgb,color-mix(in srgb,var(--xf-bg) 85%,var(--md-sys-color-primary-container)), transparent 40%) !important;
 }
 
