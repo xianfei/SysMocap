@@ -398,7 +398,7 @@ const animateVRM = (vrm, results) => {
             0.07
         );
 
-        rigRotation("Chest", riggedPose.Spine, 0.25, 0.3);
+        rigRotation("Chest", riggedPose.Chest, 0.25, 0.3);
         rigRotation("Spine", riggedPose.Spine, 0.45, 0.3);
 
         rigRotation("RightUpperArm", riggedPose.RightUpperArm);
