@@ -119,10 +119,10 @@
                 <div class="tab-bar-buttons">
                     <label for="tabmodel" v-bind:class="tab=='model'?'mdui-btn select':'mdui-btn'">
                         <span class="material-icons-outlined" style="margin-top: -2px;">
-                            account_balance </span>{{language.titlebar.modelLib}}
+                            account_balance </span><span class="tab-text" style="top: -1.5px;">{{language.titlebar.modelLib}}</span>
                     </label>
                     <label for="tabrender" v-bind:class="tab=='render'?'mdui-btn select':'mdui-btn'">
-                        <i class="mdui-icon material-icons" style="margin-top: -5px;">filter_center_focus</i>{{language.titlebar.mocap}}
+                        <i class="mdui-icon material-icons" style="margin-top: -5px;">filter_center_focus</i><span class="tab-text">{{language.titlebar.mocap}}</span>
                     </label>
                     <label for="tabsettings" v-bind:class="tab=='settings'?'mdui-btn select':'mdui-btn'">
                         <span class="material-icons-outlined"> settings </span>
@@ -136,7 +136,7 @@
                                     background: rgb(219, 46, 46);
                                     position: absolute;
                                 " v-show="hasUpdate"></div>
-                        {{language.titlebar.settings}}
+                        <span class="tab-text">{{language.titlebar.settings}}</span>
                     </label>
                     <div class="tab-bar-indicator"></div>
                 </div>
@@ -186,6 +186,7 @@
                             margin: 10px;
                             height: 30px;
                             line-height: 30px;
+                            padding-right: 20px;
                         "
                     v-on:click="showModelImporter = !showModelImporter;modelImporterName=modelImporterType=modelImporterImg=''">
                     <i
@@ -319,7 +320,7 @@
 
             <div v-show="tab=='render'">
                 <div style="width: 750px; margin: auto">
-                    {{language.tabMocap.chooseModel}}<select class="mdui-select" id="demo-js" v-model="selectModel">
+                    {{language.tabMocap.chooseModel}}<select class="mdui-select" id="demo-js" v-model="selectModel" style="padding-left: 8px;width: 220px;font-size: 14px;">
                         <optgroup v-bind:label="language.tabModelLib.userModel">
                             <option v-for="model in userModels" v-bind:value="JSON.stringify(model)">
                                 {{model.name}}
@@ -331,24 +332,20 @@
                             </option>
                         </optgroup>
                     </select>
-                    <span style="margin-left: 60px"></span>
-                    {{language.tabMocap.dataSource}}
-                    <label class="mdui-radio">
-                        <input type="radio" name="group1" value="camera" v-model="videoSource" />
-                        <i class="mdui-radio-icon"></i>
-                        {{language.tabMocap.camera}}
-                    </label>
-                    <span style="margin-left: 30px"></span>
-                    <label class="mdui-radio">
-                        <input type="radio" name="group1" value="file" v-model="videoSource" />
-                        <i class="mdui-radio-icon"></i>
-                        {{language.tabMocap.videoFile}}
-                    </label>
+                    <span style="margin-left: 60px">{{language.tabMocap.dataSource}}</span>
 
-                    <span style="margin-left: 60px"></span>
-                    <button class="mdui-btn xf-button" onclick="window.startMocap(this)">
+                    <select class="mdui-select" id="demo-js-4" v-model="videoSource" style="width: 120px;font-size: 14px;padding-left: 8px;">
+                        <option value="camera">{{language.tabMocap.camera}}</option>
+                        <option value="file">{{language.tabMocap.videoFile}}</option>
+                    </select>
+                    
+                    <span style="margin-left: 70px"></span>
+                    <button class="mdui-btn xf-button" onclick="window.startMocap(this)" style="width: 120px;padding-right: 20px;">
                         <i class="mdui-icon material-icons">play_arrow</i>{{language.tabMocap.start}}
                     </button>
+                    
+
+                    
                     <div style="margin-top: 10px" v-show="videoSource == 'file'">
                         <button class="mdui-btn xf-button" id="chooseFile">
                             {{language.tabMocap.chooseVideo}}

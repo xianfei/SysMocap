@@ -102,6 +102,15 @@ blockquote {
     margin-right: 5px;
 }
 
+.source-sel{
+    width: 234px;
+    background-color: var(--md-sys-color-primary-container) !important;
+    border-radius: 16px;
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+}
+
 .tab-bar{
     width: 355px;
     top: 4.5px;
@@ -165,7 +174,10 @@ blockquote {
     left: 243px;
 }
 
-
+.tab-text{
+    position: relative;
+    top: -1px;
+}
 
 .xf-button {
     background-color: var(--md-sys-color-primary-container) !important;
