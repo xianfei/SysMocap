@@ -104,6 +104,7 @@ function createWindow() {
         height: 750,
         titleBarStyle: "hidden",
         trafficLightPosition: { x: 18, y: 15 },
+        fullscreenable: false,
         // titleBarOverlay: {
         //   color: '#fff',
         //   symbolColor: '#111'
@@ -299,13 +300,14 @@ function createModelViewerWindow(args) {
     if (args.useGlass) {
         myBrowserWindow = blurBrowserWindow;
         addtionalArgs = {
-            vibrancy: 'popover',
+            vibrancy: 'hud',
             backgroundColor: "#00000000",
         };
     }
     var viewer = new myBrowserWindow({
         titleBarStyle: platform === "darwin" ? "hiddenInset" : "hidden",
         autoHideMenuBar: true,
+        fullscreenable: false,
         show: false,
         width: 820,
         height: 540,
@@ -353,6 +355,7 @@ function createPdfViewerWindow(args) {
         height: 750,
         autoHideMenuBar: true,
         titleBarStyle: "hidden",
+        fullscreenable: false,
         trafficLightPosition: { x: 10, y: 8 },
         titleBarOverlay: {
             color: "#0000",
@@ -400,6 +403,7 @@ function createGpuInfoWindow() {
         height: 600,
         title: "GPU Info",
         autoHideMenuBar: true,
+        fullscreenable: false,
         webPreferences: {
             nodeIntegration: true,
             webviewTag: true,

@@ -420,6 +420,7 @@ if (typeof require != "undefined") {
 
     //对拖动释放事件进行处理
     contentDom.ondrop = (e) => {
+        e.preventDefault();
         //console.log(e);
         var filePath = e.dataTransfer.files[0].path.replaceAll("\\", "/");
         console.log(filePath);
@@ -485,8 +486,9 @@ if (typeof require != "undefined") {
                     );
                     rightclick.onclick();
                 };
-                document.getElementById("btnshow").style.display = "";
-                document.getElementById("btnremove").style.display = "";
+
+                for(var obj of ["btnshow","btnremove","removeline1","removeline0"])
+                    document.getElementById(obj).style.display = "";
 
                 document.getElementById("btnremove").onclick = function () {
                     var modelName = target.querySelector("h2").innerText;
@@ -536,8 +538,8 @@ if (typeof require != "undefined") {
                     e.target.click();
                     rightclick.onclick();
                 };
-                document.getElementById("btnshow").style.display = "none";
-                document.getElementById("btnremove").style.display = "none";
+                for(var obj of ["btnshow","btnremove","removeline1","removeline0"])
+                    document.getElementById(obj).style.display = "none";
 
                 document.getElementById("btndefault").onclick = function () {
                     app.selectModel = JSON.stringify(

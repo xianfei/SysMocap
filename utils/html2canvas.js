@@ -1723,7 +1723,7 @@
             if (value.type === 18 /* FUNCTION */) {
                 var colorFunction = SUPPORTED_COLOR_FUNCTIONS[value.name];
                 if (typeof colorFunction === 'undefined') {
-                    throw new Error("Attempting to parse an unsupported color function \"" + value.name + "\"");
+                    return null;
                 }
                 return colorFunction(context, value.values);
             }

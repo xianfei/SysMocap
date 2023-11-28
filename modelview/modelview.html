@@ -71,6 +71,18 @@
             display: none;
         }
 
+        @media screen and (min-width: 800px) {
+            body{
+                --side-bar-width:313px;
+            }
+        }
+
+        @media screen and (max-width: 799px) {
+            body{
+                --side-bar-width:39.125vw;
+            }
+        }
+
         /* .jse-search{display: none;} */
     </style>
 </head>
@@ -84,8 +96,8 @@
         <i class="mdui-icon material-icons" style="
                     z-index: 1001;
                     position: fixed;
-                    top: 3px;
-                    right: 140px;
+                    right: 6px;
+                    bottom: 6px;
                     transform: scale(0.6);
                     cursor: pointer;
                     -webkit-app-region: no-drag;
@@ -95,13 +107,13 @@
         <div id="model" style="
                     top: 0;
                     left: 0;
-                    width: 61.8vw;
+                    width: calc(100vw - var(--side-bar-width));
                     height: 100vh;
                     background-color: #fff0;
                 "></div>
         <div style="
                     position: fixed;
-                    left: calc(30.9vw - 60px);
+                    left: calc(calc(50vw - var(--side-bar-width) / 2) - 60px);
                     bottom: 10px;
                     width: 120px;
                     height: 40px;
@@ -113,7 +125,7 @@
         </div>
         <div style="
                     position: fixed;
-                    left: calc(30.9vw - 100px);
+                    left: calc(calc(50vw - var(--side-bar-width) / 2) - 100px);
                     bottom: 10px;
                     width: 200px;
                     height: 40px;
@@ -137,10 +149,10 @@
         </div>
         <div style="
                     position: fixed;
-                    left: 61.8vw;
+                    left: calc(100vw - var(--side-bar-width));
                     top: 0px;
                     height: 100vh;
-                    width: 38.2vw;
+                    width: var(--side-bar-width);
                     overflow: scroll;
                 " v-bind:style="{ backgroundColor: bgcolor}">
             <div style="width: calc(100% - 50px); margin: 25px" v-bind:style="{ color: textColor}">
@@ -272,7 +284,7 @@
                         background: #000;
                         height: calc(100vh - 71px);
                         z-index: 1000;
-                        width: calc(38.2vw - 1px);
+                        width: calc(var(--side-bar-width) - 1px);
                     "></div>
         </div>
     </div>
@@ -625,7 +637,7 @@
                 // folder.controllers[12].name('quaternion.w');
             }
             var guiroot = document.querySelector(".lil-gui.root");
-            guiroot.style.left = "calc(61.8vw + 19.1vw - 122px)";
+            guiroot.style.left = "calc(calc(100vw - var(--side-bar-width)) + 19.1vw - 122px)";
             guiroot.style.webkitAppRegion = "no-drag";
             guiroot.style.zIndex = "10000";
         }
