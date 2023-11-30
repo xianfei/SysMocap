@@ -52,8 +52,41 @@ jobs:
         run: |
           npm run package:mac64
           npm run dmg
+          npm run package:macarm
+          npm run dmgarm
         env:
           GH_TOKEN: ${{ secrets.SECRET_TOKEN }}
+
+      - name: Get the version tag
+        if: matrix.os == 'macos-latest'
+        run: echo "VERSION_TAG=$(git describe --tags)" >> $GITHUB_ENV
+
+      - name: Get the version tag win
+        if: matrix.os == 'windows-2019'
+        run: echo "VERSION_TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+
+      - name: Rename files in OutApp/packages
+        if: matrix.os == 'macos-latest'
+        run: |
+          for file in OutApp/packages/*; do
+            # 获取文件扩展名
+            ext="${file##*.}"
+            # 获取不带扩展名的文件名
+            base="${file%.*}"
+            # 重命名文件，添加版本号
+            mv "$file" "${base}-${{ env.VERSION_TAG }}.$ext"
+          done
+
+      - name: Rename files in OutApp/packages win
+        if: matrix.os == 'macos-latest'
+        run: |
+          $versionTag = "${{ env.VERSION_TAG }}"
+          Get-ChildItem OutApp/packages -File | ForEach-Object {
+            $baseName = $_.BaseName
+            $extension = $_.Extension
+            $newName = "${baseName}-${versionTag}${extension}"
+            Rename-Item $_.FullName $newName
+          }
 
       # step6: upload artifacts
       - name: upload artifacts
