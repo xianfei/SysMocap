@@ -11,7 +11,7 @@
     "zip:win64": "electron-installer-zip ./OutApp/SysMocap-win32-x64/ ./OutApp/packages/SysMocap-Windows-x64.zip --overwrite",
     "zip:mac64": "electron-installer-zip ./OutApp/SysMocap-darwin-x64/ ./OutApp/packages/SysMocap-macOS-x64.zip --overwrite",
     "dmg": "electron-installer-dmg ./OutApp/SysMocap-darwin-x64/SysMocap.app SysMocap-macOS-x64 --out ./OutApp/packages/ --overwrite",
-    "dmgarm": "electron-installer-dmg ./OutApp/SysMocap-darwin-arm64/SysMocap.app SysMocap-macOS-aarch64 --out ./OutApp/packages/ --overwrite"
+    "dmgarm": "electron-installer-dmg ./OutApp/SysMocap-darwin-arm64/SysMocap.app SysMocap-macOS-arm64 --out ./OutApp/packages/ --overwrite"
   },
   "author": "xianfei",
   "license": "ISC",

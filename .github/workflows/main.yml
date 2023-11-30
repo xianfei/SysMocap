@@ -63,7 +63,9 @@ jobs:
 
       - name: Get the version tag win
         if: matrix.os == 'windows-2019'
-        run: echo "VERSION_TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+        run: |
+          $versionTag = git describe --tags
+          echo "VERSION_TAG=$versionTag" >> $GITHUB_ENV
 
       - name: Rename files in OutApp/packages
         if: matrix.os == 'macos-latest'
