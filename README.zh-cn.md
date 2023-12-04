@@ -1,4 +1,4 @@
-![banner](https://user-images.githubusercontent.com/8101613/172903631-e9610e0b-ed46-4c8c-a3f9-3a098265f820.png)
+![banner](https://github.com/xianfei/SysMocap/assets/8101613/58ca8670-5242-4ee4-94fe-8b1be8679843)
 
 <h1 align="center">
 SysMocap
@@ -26,7 +26,7 @@ SysMocap
 
 跨平台的实时视频驱动动作捕捉及3D虚拟形象生成系统 for VTuber/Live/AR/VR.
 
-提供用于Windows，macOS的可执行文件包，可在Linux上通过源代码运行
+提供用于Windows，macOS的可执行文件包(包括M系列芯片)，可在Linux上通过源代码运行
 
 [立刻下载](https://github.com/xianfei/SysMocap/releases) (压缩包，无需安装)
 
@@ -75,7 +75,7 @@ https://user-images.githubusercontent.com/8101613/167257906-596919a5-4c0e-4795-8
 
 🌟 感谢 Mediapipe and Kalidokit 提供技术支持，基于Web 技术开发
 
-## 更多效果展示
+### 更多效果展示
 
 🌟 面部
 
@@ -99,7 +99,19 @@ https://user-images.githubusercontent.com/8101613/167257906-596919a5-4c0e-4795-8
 
 ### 如何使用
 
-使用源代码运行 (需要最新版 Node.js):
+#### 下载预编译的可执行文件 (Windows & macOS):
+
+[立刻下载](https://github.com/xianfei/SysMocap/releases)
+
+**针对macOS用户的额外说明:**
+
+- You need set Gatekeeper to Anywhere in System Settings (在终端中执行 `sudo spctl --master-disable`)
+    <img width="478" alt="image" src="https://github.com/xianfei/SysMocap/assets/8101613/7b747e44-789c-4a61-83d7-c8e784a14856">
+
+- 如果你遇到 `“SysMocap” is damaged and can’t be opened. You should move it to the Trash.`（大概中文是 被损坏 您应该移动到废纸篓），
+  请在终端中执行 `sudo xattr -r -d com.apple.quarantine /Applications/SysMocap.app` 
+
+#### 使用源代码运行 (需要最新版 Node.js):
 
 ```shell
 git clone https://github.com/xianfei/SysMocap.git
@@ -107,8 +119,6 @@ cd SysMocap
 npm i
 npm start
 ```
-
-或从Release页面下载可执行程序（仅限Windows和macOS）
 
 ### Bugs
 

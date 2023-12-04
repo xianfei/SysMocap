@@ -28,7 +28,7 @@ English Version | <a href="./README.zh-cn.md">中文版本</a>
 
 A cross-platform real-time video-driven motion capture and 3D virtual character rendering system for VTuber/Live/AR/VR.
 
-Available for Windows, macOS (packaged) & Linux (source code only)
+Available for Windows, macOS (including Apple Silicon & Intel) & Linux (source code only)
 
 [Download Now](https://github.com/xianfei/SysMocap/releases) (zipped, without installation)
 
@@ -99,7 +99,20 @@ https://user-images.githubusercontent.com/8101613/167257906-596919a5-4c0e-4795-8
 
 ### How to use
 
-Run on your computer from source code (need lastest Node.js):
+#### Download prebuilt package (Windows & macOS):
+
+[Download Now](https://github.com/xianfei/SysMocap/releases)
+
+**Note for user on macOS:**
+
+- You need set Gatekeeper to Anywhere in System Settings (using `sudo spctl --master-disable`)
+    <img width="478" alt="image" src="https://github.com/xianfei/SysMocap/assets/8101613/7b747e44-789c-4a61-83d7-c8e784a14856">
+
+- If you got `“SysMocap” is damaged and can’t be opened. You should move it to the Trash.`
+  Please run `sudo xattr -r -d com.apple.quarantine /Applications/SysMocap.app` in your terminal
+
+
+#### Run on your computer from source code (need lastest Node.js):
 
 ```shell
 git clone https://github.com/xianfei/SysMocap.git
