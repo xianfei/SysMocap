@@ -65,24 +65,8 @@ if (
 
 // Modules to control application life and create native browser window
 
-var blurBrowserWindow;
 const electronRemoteMain = require("@electron/remote/main");
 electronRemoteMain.initialize();
-
-var isWin11;
-
-// Enable Acrylic Effect on Windows by default
-if (platform === "win32")
-    try {
-        const mica_electron =  require('mica-electron')
-        blurBrowserWindow = mica_electron.MicaBrowserWindow;
-        isWin11 = mica_electron.IS_WINDOWS_11
-    } catch (e) {
-        console.log(e)
-        blurBrowserWindow = BrowserWindow;
-    }
-// if not on Windows, use electron window
-else blurBrowserWindow = BrowserWindow;
 
 global.storagePath = { jsonPath: storage.getStoragePath() };
 global.appInfo = { appVersion: app.getVersion(), appName: app.getName() };
@@ -291,20 +275,16 @@ function createWindow() {
 
 function createModelViewerWindow(args) {
     // console.log(screen.getPrimaryDisplay().scaleFactor)
-    if (args.useGlass && platform === "win32" && isWin11!==null) {
-        if(!isWin11) args.useGlass = false;
-    }
     // Create the browser window.
-    var myBrowserWindow = BrowserWindow;
     var addtionalArgs = { backgroundColor: "#eee" };
     if (args.useGlass) {
-        myBrowserWindow = blurBrowserWindow;
         addtionalArgs = {
             vibrancy: 'hud',
+            backgroundMaterial: 'acrylic',
             backgroundColor: "#00000000",
         };
     }
-    var viewer = new myBrowserWindow({
+    var viewer = new BrowserWindow({
         titleBarStyle: platform === "darwin" ? "hiddenInset" : "hidden",
         autoHideMenuBar: true,
         fullscreenable: false,
@@ -329,14 +309,9 @@ function createModelViewerWindow(args) {
     viewer.loadURL('about:blank')
     electronRemoteMain.enable(viewer.webContents);
 
-    if (args.useGlass && platform === "win32" && isWin11!==null) {
-        if(isWin11) viewer.setMicaAcrylicEffect(); // Acrylic for windows 11
-    }
-
     viewer.webContents.once('dom-ready', () => {
         viewer.show();
         viewer.loadFile("modelview/modelview.html");
-        if (args.useGlass&&isWin11) viewer.setSize(820*screen.getPrimaryDisplay().scaleFactor,540*screen.getPrimaryDisplay().scaleFactor)
     });
 
     // Open the DevTools.
@@ -398,7 +373,7 @@ function createPdfViewerWindow(args) {
 
 function createGpuInfoWindow() {
     // Create the browser window.
-    var viewer = new blurBrowserWindow({
+    var viewer = new BrowserWindow({
         width: 1000,
         height: 600,
         title: "GPU Info",
