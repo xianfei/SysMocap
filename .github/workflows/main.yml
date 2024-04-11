@@ -49,12 +49,12 @@ jobs:
 
       - name: Setup Python 3.11 (macOS)
         uses: actions/setup-python@v4
-        if: matrix.platform == 'darwin'
+        if: matrix.os == 'macos-11'
         with:
           python-version: '3.11'
       
       - name: build mac app
-        if: matrix.os == 'macos-latest'
+        if: matrix.os == 'macos-11'
         run: |
           npm run package:mac64
           npm run dmg
@@ -64,7 +64,7 @@ jobs:
           GH_TOKEN: ${{ secrets.SECRET_TOKEN }}
 
       - name: Get the version tag
-        if: matrix.os == 'macos-latest'
+        if: matrix.os == 'macos-11'
         run: echo "VERSION_TAG=$(git describe --tags)" >> $GITHUB_ENV
 
       - name: Get the version tag win
@@ -74,7 +74,7 @@ jobs:
           echo "VERSION_TAG=$versionTag" >> $GITHUB_ENV
 
       - name: Rename files in OutApp/packages
-        if: matrix.os == 'macos-latest'
+        if: matrix.os == 'macos-11'
         run: |
           for file in OutApp/packages/*; do
             # 获取文件扩展名
