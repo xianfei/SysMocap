@@ -22,7 +22,7 @@ jobs:
     # create a build matrix for jobs
     strategy:
       matrix:
-        os: [windows-2019, macos-latest]
+        os: [windows-2019, macos-11]
 
     steps:
       # step1: check out repository
@@ -46,6 +46,12 @@ jobs:
           npm run zip:win64
         env:
           GH_TOKEN: ${{ secrets.SECRET_TOKEN }}
+
+      - name: Setup Python 3.11 (macOS)
+        uses: actions/setup-python@v4
+        if: matrix.platform == 'darwin'
+        with:
+          python-version: '3.11'
       
       - name: build mac app
         if: matrix.os == 'macos-latest'
