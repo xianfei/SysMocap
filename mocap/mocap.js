@@ -35,6 +35,18 @@ if (globalSettings.forward.enableForwarding)
         globalSettings.forward.supportForWebXR
     );
 
+    //Handle response for main response
+    ipcRenderer.on("webServerStarted", (event, success) => {
+        if (!success) {
+            console.error("Failed to start the web server.");
+            // Add any necessary error handling logic here
+        } else {
+            console.log("Web server started successfully.");
+            // Add any additional logic after successful server start
+        }
+    });
+
+
 
 /* VRM Character Animator */
 const animateVRM = (vrm, results) => {
@@ -97,15 +109,19 @@ const animateVRM = (vrm, results) => {
 };
 
 let videoElement = document.querySelector(".input_video"),
-    guideCanvas = document.querySelector("canvas.guides");
+ guideCanvas = document.querySelector("canvas.guides");
 
 const onResults = (results) => {
     // Draw landmark guides
-    if (globalSettings.preview.showSketelonOnInput) drawResults(results);
+    if (globalSettings.preview.showSkeletonOnInput) {
+        drawResults(results);
+        }
     // Animate model
     animateVRM(null, results);
     if (!started) {
-        if (localStorage.getItem("useCamera") == "file") videoElement.play();
+        if (localStorage.getItem("useCamera") == "file") {
+            videoElement.play();
+        }
         started = true;
     }
 };
