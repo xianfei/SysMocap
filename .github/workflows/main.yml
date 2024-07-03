@@ -43,7 +43,6 @@ jobs:
         if: matrix.os == 'macos-13'
         run: |
           python3 -m pip install setuptools
-          pyenv global 3.11.4
           npm install appdmg --python=python3.11
 
       # step3: npm install
