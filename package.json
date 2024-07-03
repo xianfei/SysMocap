@@ -38,7 +38,7 @@
   },
   "devDependencies": {
     "electron": "^31.1.0",
-    "electron-installer-dmg": "^4.0.0",
+    "electron-installer-dmg": "^5.0.1",
     "electron-installer-zip": "^0.1.2",
     "@electron/packager": "^18.3.3"
   }

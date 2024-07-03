@@ -31,7 +31,20 @@ jobs:
 
       # step2: install node env
       - name: Install Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
+
+      - name: setup python
+        uses: actions/setup-python@v5
+        if: matrix.os == 'macos-13'
+        with:
+          python-version: 3.11.4
+
+      - name: setup appdmg
+        if: matrix.os == 'macos-13'
+        run: |
+          python3 -m pip install setuptools
+          pyenv global 3.11.4
+          npm install appdmg --python=python3.11
 
       # step3: npm install
       - name: npm install
@@ -47,18 +60,6 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.SECRET_TOKEN }}
 
-      - name: setup python
-        uses: actions/setup-python@v5
-        if: matrix.os == 'macos-13'
-        with:
-          python-version: 3.12
-
-      - name: setup appdmg
-        if: matrix.os == 'macos-13'
-        run: |
-          python3 -m pip install setuptools
-          npm install -g appdmg@0.6.6
-      
       - name: build mac app
         if: matrix.os == 'macos-13'
         run: |
