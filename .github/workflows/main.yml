@@ -22,7 +22,7 @@ jobs:
     # create a build matrix for jobs
     strategy:
       matrix:
-        os: [windows-2019, macos-11]
+        os: [windows-2019, macos-14]
 
     steps:
       # step1: check out repository
