@@ -212,7 +212,7 @@
                                 margin-left: 5px;
                             "
                         >
-                            {{model.type.toUpperCase()}}
+                            {{modeltype.toUpperCase()}}
                         </div>
                         <!-- <div
                             style="display: inline; margin-left: 10px"
@@ -447,6 +447,7 @@
                     settings: globalSettings,
                     loaded: false,
                     failed: false,
+                    modeltype: args.model.type,
                     failedText: "加载失败",
                 },
             });
@@ -632,6 +633,8 @@
 
                         if (vrm.meta.metaVersion === "0") {
                             vrm.scene.rotation.y = Math.PI; // Rotate model 180deg to face camera
+                        } else{
+                            app.modeltype += vrm.meta.metaVersion
                         }
 
                         // vrm.humanoid.getNormalizedBoneNode( 'hips' ).rotation.y = Math.PI;
