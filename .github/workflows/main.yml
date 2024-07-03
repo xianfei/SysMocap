@@ -22,7 +22,7 @@ jobs:
     # create a build matrix for jobs
     strategy:
       matrix:
-        os: [windows-2019, macos-13]
+        os: [windows-2019, macos-12]
 
     steps:
       # step1: check out repository
@@ -32,18 +32,19 @@ jobs:
       # step2: install node env
       - name: Install Node.js
         uses: actions/setup-node@v4
+        with:
+          node-version: 20
 
       - name: setup python
         uses: actions/setup-python@v5
-        if: matrix.os == 'macos-13'
+        if: matrix.os == 'macos-12'
         with:
           python-version: 3.11.4
 
       - name: setup appdmg
-        if: matrix.os == 'macos-13'
+        if: matrix.os == 'macos-12'
         run: |
           python3 -m pip install setuptools
-          npm install appdmg --python=python3.11
 
       # step3: npm install
       - name: npm install
@@ -60,7 +61,7 @@ jobs:
           GH_TOKEN: ${{ secrets.SECRET_TOKEN }}
 
       - name: build mac app
-        if: matrix.os == 'macos-13'
+        if: matrix.os == 'macos-12'
         run: |
           npm run package:mac64
           npm run dmg
@@ -70,7 +71,7 @@ jobs:
           GH_TOKEN: ${{ secrets.SECRET_TOKEN }}
 
       - name: Get the version tag
-        if: matrix.os == 'macos-13'
+        if: matrix.os == 'macos-12'
         run: echo "VERSION_TAG=$(git describe --tags)" >> $GITHUB_ENV
 
       - name: Get the version tag win
@@ -80,7 +81,7 @@ jobs:
           echo "VERSION_TAG=$versionTag" >> $GITHUB_ENV
 
       - name: Rename files in OutApp/packages
-        if: matrix.os == 'macos-13'
+        if: matrix.os == 'macos-12'
         run: |
           for file in OutApp/packages/*; do
             # 获取文件扩展名
