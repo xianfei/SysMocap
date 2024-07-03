@@ -37,10 +37,12 @@ jobs:
 
       - name: setup python
         uses: actions/setup-python@v5
+        if: matrix.os == 'macos-14'
         with:
           python-version: 3.12
 
       - name: setup appdmg
+        if: matrix.os == 'macos-14'
         run: |
           python3 -m pip install setuptools
           npm install -g appdmg@0.6.6
