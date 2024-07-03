@@ -10,8 +10,8 @@
     "package:win64": "npx @electron/packager ./ SysMocap --icon=icons/sysmocap.ico --platform=win32 --arch=x64 --out ./OutApp --overwrite --electronVersion 31.1.0 --asar",
     "zip:win64": "electron-installer-zip ./OutApp/SysMocap-win32-x64/ ./OutApp/packages/SysMocap-Windows-x64.zip --overwrite",
     "zip:mac64": "electron-installer-zip ./OutApp/SysMocap-darwin-x64/ ./OutApp/packages/SysMocap-macOS-x64.zip --overwrite",
-    "dmg": "electron-installer-dmg ./OutApp/SysMocap-darwin-x64/SysMocap.app SysMocap-macOS-x64 --out ./OutApp/packages/ --overwrite",
-    "dmgarm": "electron-installer-dmg ./OutApp/SysMocap-darwin-arm64/SysMocap.app SysMocap-macOS-arm64 --out ./OutApp/packages/ --overwrite"
+    "dmg": "node builddmgjsonx86.js && appdmg ./dmgcfg.json ./OutApp/packages/SysMocap-macOS-x64.dmg && rm ./dmgcfg.json",
+    "dmgarm": "node builddmgjsonarm.js && appdmg ./dmgcfg.json ./OutApp/packages/SysMocap-macOS-arm.dmg && rm ./dmgcfg.json"
   },
   "author": "xianfei",
   "license": "ISC",
@@ -35,6 +35,9 @@
     "svelte-jsoneditor": "^0.3.60",
     "three": "^0.164.1",
     "vue": "^2.7.14"
+  },
+  "overrides": {
+    "nan": "github:jkleinsc/nan#remove_accessor_signature"
   },
   "devDependencies": {
     "electron": "^31.1.0",
