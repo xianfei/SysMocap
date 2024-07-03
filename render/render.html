@@ -19,19 +19,7 @@
             name="viewport"
             content="viewport-fit=cover, user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1"
         />
-        <!-- Three.js -->
-        <script src="../node_modules/three/build/three.js"></script>
-        <!-- GLTF Loader for Three.js -->
-        <script src="../node_modules/three/examples/js/loaders/GLTFLoader.js"></script>
-        <script src="../node_modules/three/examples/js/loaders/FBXLoader.js"></script>
-        <script src="../node_modules/three/examples/js/libs/fflate.min.js"></script>
-        <!-- Orbit Controls for Three.js -->
-        <script src="../node_modules/three/examples/js/controls/OrbitControls.js"></script>
 
-        <script src="../node_modules/three/examples/js/libs/stats.min.js"></script>
-
-        <!-- VRM Loader for Three.js -->
-        <script src="../node_modules/@pixiv/three-vrm/lib/three-vrm.js"></script>
         <!-- Mediapipe -->
         <script src="../node_modules/@mediapipe/holistic/holistic.js"></script>
         <!-- Mediapipe Drawing Tools -->
@@ -76,7 +64,7 @@
             <div
                 style="
                     display: inline-block;
-                    margin-left: -85px;
+                    margin-left: -280px;
                     color: #777;
                     position: absolute;
                 "
@@ -85,7 +73,8 @@
                     class="mdui-icon material-icons"
                     style="transform: scale(0.8)"
                     >videocam</i
-                ><span style="font-size: 12px; margin-left: 5px">相机视角</span>
+                ><span style="font-size: 12px; margin-left: 5px">相机视角（可鼠标拖动人物及按下AWSD微调）
+                <br>Tips: 将图片拖至背景处可更换背景，按下R键可进行录制</span>
             </div>
             <div
                 class="targetButton mdui-ripple"
@@ -187,6 +176,15 @@
         <script src="../utils/html2canvas.js"></script>
         <script src="../utils/RecordRTC.js"></script>
         <script src="../node_modules/kalidokit/dist/kalidokit.umd.js"></script>
-        <script src="./render.js" defer></script>
+        <script type="importmap">
+            {
+                "imports": {
+                    "three": "../node_modules/three/build/three.module.js",
+                    "three/addons/": "../node_modules/three/examples/jsm/",
+                    "@pixiv/three-vrm": "../node_modules/@pixiv/three-vrm/lib/three-vrm.module.js"
+                }
+            }
+        </script>
+        <script src="./render.js" defer type="module"></script>
     </body>
 </html>

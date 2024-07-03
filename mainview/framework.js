@@ -188,7 +188,7 @@ if (typeof require != "undefined") {
         var hex = rgba2hex(color);
         var theme = await themeFromSourceColor(argbFromHex(hex));
         applyTheme(theme, { target: document.body, dark: darkMode });
-        console.log(theme)
+        // console.log(theme)
         ipcRenderer.send('tabChanged',window.sysmocapApp.tab,document.body.style.getPropertyValue('--md-sys-color-primary'),document.body.style.getPropertyValue('--md-sys-color-primary-container'));
     };
     f();
@@ -239,7 +239,7 @@ if (typeof require != "undefined") {
                     document.querySelector(".mdui-color-theme"),
                     null
                 ).backgroundColor;
-                console.log(color);
+                // console.log(color);
                 return color;
             },
         },
@@ -327,12 +327,12 @@ if (typeof require != "undefined") {
                 deep: true,
             },
             camera: (newVal, oldVal) => {
-                console.log({
-                    a: "last-choosed-camera",
-                    b: newVal,
-                    c: oldVal,
-                    d: localStorage.getItem("last-choosed-camera"),
-                });
+                // console.log({
+                //     a: "last-choosed-camera",
+                //     b: newVal,
+                //     c: oldVal,
+                //     d: localStorage.getItem("last-choosed-camera"),
+                // });
                 if (oldVal != "")
                     localStorage.setItem("last-choosed-camera", newVal);
             },
@@ -368,6 +368,7 @@ if (typeof require != "undefined") {
     window.sysmocapApp = app;
 
     remote.app.getGPUInfo("complete").then((info) => {
+        // console.log(info)
         app.glRenderer = info.auxAttributes.glRenderer;
     });
 
@@ -423,7 +424,7 @@ if (typeof require != "undefined") {
         e.preventDefault();
         //console.log(e);
         var filePath = e.dataTransfer.files[0].path.replaceAll("\\", "/");
-        console.log(filePath);
+        // console.log(filePath);
         var strs1 = filePath.split("/");
         var name_ = strs1[strs1.length - 1];
         var name = name_.substr(0, name_.lastIndexOf("."));
@@ -458,7 +459,7 @@ if (typeof require != "undefined") {
     function addRightClick() {
         for (var i of document.querySelectorAll(".model-item-new.user-model")) {
             i.oncontextmenu = function (e) {
-                console.log(e.target);
+                // console.log(e.target);
                 e.preventDefault();
 
                 var target = e.target;
@@ -706,7 +707,7 @@ const options = {
 
   window.sysmocapApp.checkingUpdate = false
     // start your app
-    console.log('Check update finish');
+    // console.log('Check update finish');
     //...
   });
 };
