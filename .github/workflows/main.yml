@@ -47,11 +47,17 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.SECRET_TOKEN }}
 
-      - name: Setup Python 3.11 (macOS)
-        uses: actions/setup-python@v4
+      - name: setup python
+        uses: actions/setup-python@v5
         if: matrix.os == 'macos-13'
         with:
-          python-version: '3.11'
+          python-version: 3.12
+
+      - name: setup appdmg
+        if: matrix.os == 'macos-13'
+        run: |
+          python3 -m pip install setuptools
+          npm install -g appdmg@0.6.6
       
       - name: build mac app
         if: matrix.os == 'macos-13'
