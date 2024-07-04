@@ -15,7 +15,7 @@ if (!fs.existsSync(path2)) {
 // 配置对象
 let config = {
   title: 'SysMocap-macOS-arm64',
-  format: 'ULFO',
+  format: "ULMO",
   contents: [
     { x: 448, y: 344, type: 'link', path: '/Applications' },
     {
