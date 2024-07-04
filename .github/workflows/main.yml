@@ -27,7 +27,7 @@ jobs:
     steps:
       # step1: check out repository
       - name: Check out git repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # step2: install node env
       - name: Install Node.js
@@ -57,7 +57,9 @@ jobs:
         if: matrix.os == 'windows-2019'
         run: |
           npm run package:win64
-          npm run zip:win64
+          npm run 7z:win64
+          npm run package:winarm
+          npm run 7z:winarm
         env:
           GH_TOKEN: ${{ secrets.SECRET_TOKEN }}
 
@@ -75,12 +77,6 @@ jobs:
         if: matrix.os == 'macos-14'
         run: echo "VERSION_TAG=$(git describe --tags)" >> $GITHUB_ENV
 
-      - name: Get the version tag win
-        if: matrix.os == 'windows-2019'
-        run: |
-          $versionTag = git describe --tags
-          echo "VERSION_TAG=$versionTag" >> $GITHUB_ENV
-
       - name: Rename files in OutApp/packages
         if: matrix.os == 'macos-14'
         run: |
@@ -96,7 +92,7 @@ jobs:
       - name: Rename files in OutApp/packages win
         if: matrix.os == 'windows-2019'
         run: |
-          $versionTag = "${{ env.VERSION_TAG }}"
+          $versionTag = git describe --tags
           Get-ChildItem OutApp/packages -File | ForEach-Object {
             $baseName = $_.BaseName
             $extension = $_.Extension
@@ -106,14 +102,14 @@ jobs:
 
       # step6: upload artifacts
       - name: upload artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.os }}
           path: OutApp/packages
 
       # step7: create release
       - name: release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: "OutApp/packages/**"

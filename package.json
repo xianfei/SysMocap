@@ -8,10 +8,12 @@
     "package:mac64": "npx @electron/packager ./ SysMocap --icon=icons/sysmocap.icns --platform=darwin --arch=x64 --out ./OutApp --overwrite --usage-description.Camera='该程序需要摄像头权限' --electronVersion 31.1.0 --asar",
     "package:macarm": "npx @electron/packager ./ SysMocap --icon=icons/sysmocap.icns --platform=darwin --arch=arm64 --out ./OutApp --overwrite --usage-description.Camera='该程序需要摄像头权限' --electronVersion 31.1.0 --asar",
     "package:win64": "npx @electron/packager ./ SysMocap --icon=icons/sysmocap.ico --platform=win32 --arch=x64 --out ./OutApp --overwrite --electronVersion 31.1.0 --asar",
-    "zip:win64": "electron-installer-zip ./OutApp/SysMocap-win32-x64/ ./OutApp/packages/SysMocap-Windows-x64.zip --overwrite",
-    "zip:mac64": "electron-installer-zip ./OutApp/SysMocap-darwin-x64/ ./OutApp/packages/SysMocap-macOS-x64.zip --overwrite",
+    "package:winarm": "npx @electron/packager ./ SysMocap --icon=icons/sysmocap.ico --platform=win32 --arch=arm64 --out ./OutApp --overwrite --electronVersion 31.1.0 --asar",
+    "7z:win64": "7z a -t7z -mx=9 -y ./OutApp/packages/SysMocap-Windows-x64.7z ./OutApp/SysMocap-win32-x64/",
+    "7z:winarm": "7z a -t7z -mx=9 -y ./OutApp/packages/SysMocap-Windows-arm64.7z ./OutApp/SysMocap-win32-arm64/",
+    "dmgtool": "npm install -g appdmg",
     "dmg": "node builddmgjsonx86.js && appdmg ./dmgcfg.json ./OutApp/packages/SysMocap-macOS-x64.dmg && rm ./dmgcfg.json",
-    "dmgarm": "node builddmgjsonarm.js && appdmg ./dmgcfg.json ./OutApp/packages/SysMocap-macOS-arm.dmg && rm ./dmgcfg.json"
+    "dmgarm": "node builddmgjsonarm.js && appdmg ./dmgcfg.json ./OutApp/packages/SysMocap-macOS-arm64.dmg && rm ./dmgcfg.json"
   },
   "author": "xianfei",
   "license": "ISC",
@@ -36,13 +38,9 @@
     "three": "^0.164.1",
     "vue": "^2.7.14"
   },
-  "overrides": {
-    "nan": "github:jkleinsc/nan#remove_accessor_signature"
-  },
   "devDependencies": {
     "electron": "^31.1.0",
     "electron-installer-dmg": "^5.0.1",
-    "electron-installer-zip": "^0.1.2",
     "@electron/packager": "^18.3.3"
   }
 }
