@@ -46,6 +46,7 @@ jobs:
         run: |
           python3 -m pip install setuptools
           npm install -g appdmg@0.6.6
+          sed -i '' '137,149d' `npm root -g`/appdmg/lib/appdmg.js
 
       # step3: npm install
       - name: npm install
@@ -66,8 +67,6 @@ jobs:
       - name: build mac app
         if: matrix.os == 'macos-14'
         run: |
-          appdmg --version
-          cat `npm root -g`/appdmg/schema.json
           npm run package:mac64
           npm run dmg
           npm run package:macarm
