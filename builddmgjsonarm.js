@@ -51,4 +51,4 @@ replacePath(config, '/Users/xianfei/Documents/GitHub/SysMocap', currentDir);
 
 // 输出新的配置对象
 const outputPath = path.join(currentDir, 'dmgcfg.json');
-fs.writeFileSync(outputPath, JSON.stringify(config, null, 2), 'utf-8');
+fs.writeFileSync(outputPath, JSON.stringify(config));
