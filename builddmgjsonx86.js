@@ -47,6 +47,8 @@ function replacePath(obj, oldPath, newPath) {
 // 替换路径
 replacePath(config, '/Users/xianfei/Documents/GitHub/SysMocap', currentDir);
 
+console.log(config);
+
 // 输出新的配置对象
 const outputPath = path.join(currentDir, 'dmgcfg.json');
 fs.writeFileSync(outputPath, JSON.stringify(config, null, 2), 'utf-8');

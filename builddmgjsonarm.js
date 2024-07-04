@@ -44,6 +44,8 @@ function replacePath(obj, oldPath, newPath) {
   }
 }
 
+console.log(config);
+
 // 替换路径
 replacePath(config, '/Users/xianfei/Documents/GitHub/SysMocap', currentDir);
 
