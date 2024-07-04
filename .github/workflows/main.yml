@@ -66,6 +66,7 @@ jobs:
       - name: build mac app
         if: matrix.os == 'macos-14'
         run: |
+          appdmg --version
           npm run package:mac64
           npm run dmg
           npm run package:macarm
