@@ -67,6 +67,7 @@ jobs:
         if: matrix.os == 'macos-14'
         run: |
           appdmg --version
+          cat `npm root -g`/appdmg/schema.json
           npm run package:mac64
           npm run dmg
           npm run package:macarm
