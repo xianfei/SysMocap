@@ -22,7 +22,7 @@ jobs:
     # create a build matrix for jobs
     strategy:
       matrix:
-        os: [windows-2019, macos-14]
+        os: [windows-2019, macos-13]
 
     steps:
       # step1: check out repository
@@ -37,12 +37,12 @@ jobs:
 
       - name: setup python
         uses: actions/setup-python@v5
-        if: matrix.os == 'macos-14'
+        if: matrix.os == 'macos-13'
         with:
           python-version: 3.12
 
       - name: setup appdmg
-        if: matrix.os == 'macos-14'
+        if: matrix.os == 'macos-13'
         run: |
           python3 -m pip install setuptools
           npm install -g appdmg@0.6.6
@@ -64,7 +64,7 @@ jobs:
           GH_TOKEN: ${{ secrets.SECRET_TOKEN }}
 
       - name: build mac app
-        if: matrix.os == 'macos-14'
+        if: matrix.os == 'macos-13'
         run: |
           sed -i '' '137,149d' `npm root -g`/appdmg/lib/appdmg.js
           npm run package:mac64
@@ -75,11 +75,11 @@ jobs:
           GH_TOKEN: ${{ secrets.SECRET_TOKEN }}
 
       - name: Get the version tag
-        if: matrix.os == 'macos-14'
+        if: matrix.os == 'macos-13'
         run: echo "VERSION_TAG=$(git describe --tags)" >> $GITHUB_ENV
 
       - name: Rename files in OutApp/packages
-        if: matrix.os == 'macos-14'
+        if: matrix.os == 'macos-13'
         run: |
           for file in OutApp/packages/*; do
             # 获取文件扩展名
