@@ -25,7 +25,7 @@ let config = {
       path: '/Users/xianfei/Documents/GitHub/SysMocap/OutApp/SysMocap-darwin-x64/SysMocap.app'
     }
   ],
-  background: '/Users/xianfei/Documents/GitHub/SysMocap/node_modules/electron-installer-dmg/resources/mac/background.png',
+  background: '/Users/xianfei/Documents/GitHub/SysMocap/icons/dmgbg.png',
   icon: '/Users/xianfei/Documents/GitHub/SysMocap/icons/sysmocap.icns',
   'icon-size': 80
 };
