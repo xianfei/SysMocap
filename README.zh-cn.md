@@ -71,9 +71,7 @@ https://user-images.githubusercontent.com/8101613/167257906-596919a5-4c0e-4795-8
 
 ![bdd-animotion](https://user-images.githubusercontent.com/8101613/173759924-cbc5cc6c-2b96-444d-a070-3d761d6e04bb.png)
 
-🌟 无需独立显卡，甚至在八年前的老电脑上都能流畅使用 (i7-4790k/GTX770/16G RAM)
-
-🌟 感谢 Mediapipe and Kalidokit 提供技术支持，基于Web 技术开发
+🌟 你可以使用 [VRoid Studio](https://vroid.com/en/studio) 来创作属于自己的虚拟形象并导入至该系统，同时支持VRM 0.x & 1.0！
 
 ### 更多效果展示
 
@@ -103,6 +101,26 @@ https://user-images.githubusercontent.com/8101613/167257906-596919a5-4c0e-4795-8
 
 [立刻下载](https://github.com/xianfei/SysMocap/releases)
 
+版本说明：
+
+**Windows 免安装版本**：解压后直接运行 `SysMocap.exe` 即可
+
+- `SysMocap-Windows-x64-<版本号>.7z`: Windows 64位版本，适用于使用x86_64处理器（AMD、Intel等）64位Windows 10 & 11操作系统
+
+- `SysMocap-Windows-arm64-<版本号>.7z`: Windows ARM 64位版本，适用于使用arm64处理器（高通骁龙等）64位Windows 10 & 11操作系统
+
+**Windows 安装包**：双击安装即可（安装包为英文，软件支持中文）
+
+- `SysMocap-Windows-x64-installer-<版本号>.msi`: Windows 64位版本，适用于使用x86_64处理器（AMD、Intel等）64位Windows 10 & 11操作系统
+
+- `SysMocap-Windows-arm64-installer-<版本号>.msi`: Windows ARM 64位版本，适用于使用arm64处理器（高通骁龙等）64位Windows 10 & 11操作系统
+
+**macOS DMG镜像**：拖动 `SysMocap.app` 到应用程序文件夹即可
+
+- `SysMocap-macOS-x64-<版本号>.dmg`: 适用于Intel芯片的苹果电脑及黑苹果设备，macOS 10.15+操作系统
+
+- `SysMocap-macOS-arm64-<版本号>.dmg`: 适用于使用M系列芯片（Apple Silicon）的苹果电脑
+
 **针对macOS用户的额外说明:**
 
 - You need set Gatekeeper to Anywhere in System Settings (在终端中执行 `sudo spctl --master-disable`)
@@ -119,10 +137,6 @@ cd SysMocap
 npm i
 npm start
 ```
-
-### Bugs
-
-- 如有请在issue中告知
 
 ### 注意
 
@@ -160,35 +174,6 @@ npm start
 
 [![Star History Chart](https://api.star-history.com/svg?repos=xianfei/SysMocap&type=Date)](https://star-history.com/#xianfei/SysMocap&Date)
 
-### 开发进度
-
-#### To-Do
-
-- [x] Settings page and global settings utils
-
-- [x] Add play/pause button and progress bar when mocap from video 
-
-- [x] Support bones binding for glTF/glb
-
-- [x] Support rendering glTF/glb model
-
-- [x] Support binding when bones' name is non-uniformed
-
-- [x] Model library add user's custom 3D model
-
-- [x] Live plug-in / interface for Open Broadcast Software
-
-- [ ] ~~Output video ( using such as libffmpeg )~~
-
-- [ ] ~~Support per-frame rendering without drop frame~~
-
-- [ ] ~~Support c-s architecture for online video mocap ( on cloud )~~
-
-- [x] Support Material Designed 3 Color System (color picking)
-
-- [x] Mocap data forwarding via network
-
-- [x] Adapt for Linux and macOS 
 
 ### 引用
 

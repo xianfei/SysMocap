@@ -17,10 +17,10 @@ let config = {
   title: 'SysMocap-macOS-x64',
   format: "ULMO",
   contents: [
-    { x: 448, y: 344, type: 'link', path: '/Applications' },
+    { x: 448, y: 196, type: 'link', path: '/Applications' },
     {
       x: 192,
-      y: 344,
+      y: 196,
       type: 'file',
       path: '/Users/xianfei/Documents/GitHub/SysMocap/OutApp/SysMocap-darwin-x64/SysMocap.app'
     }

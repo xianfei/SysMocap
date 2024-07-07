@@ -30,9 +30,9 @@ A cross-platform real-time video-driven motion capture and 3D virtual character 
 
 Available for Windows, macOS (including Apple Silicon & Intel) & Linux (source code only)
 
-[Download Now](https://github.com/xianfei/SysMocap/releases) (zipped, without installation)
+[Download Now](https://github.com/xianfei/SysMocap/releases) 
 
-(This is a multi-language software, including English. )
+(This is a multi-language software, including English and Chinese. )
 
 ### Highlights
 
@@ -63,7 +63,7 @@ https://user-images.githubusercontent.com/8101613/167257906-596919a5-4c0e-4795-8
 
 ![Full-body-animotion](https://user-images.githubusercontent.com/8101613/173759813-4f0d4540-abab-41dd-b343-5fc5b9be4840.png)
 
-🌟 Support Auto Skeleton Detection for All VRM files and Mixamo Format FBX files
+🌟 Support Auto Skeleton Detection for All VRM files (including VRM 0.x and VRM 1.0) and Mixamo Format FBX files
 
 ![fbx-mixamo-animotion](https://user-images.githubusercontent.com/8101613/173759682-f38c80f8-8c9a-407d-9cec-19a925cae1c0.png)
 
@@ -71,9 +71,7 @@ https://user-images.githubusercontent.com/8101613/167257906-596919a5-4c0e-4795-8
 
 ![bdd-animotion](https://user-images.githubusercontent.com/8101613/173759924-cbc5cc6c-2b96-444d-a070-3d761d6e04bb.png)
 
-🌟 Does not require a discrete graphics card and runs smoothly even on eight-year-old computers (i7-4790k/GTX770/16G RAM)
-
-🌟 Powered by Mediapipe and Kalidokit with Web Technologies
+🌟 You can use [VRoid Studio](https://vroid.com/en/studio) to create your avatar very easily. Supporting VRM 0.x & 1.0!
 
 ### More Effect Demonstration
 
@@ -103,6 +101,24 @@ https://user-images.githubusercontent.com/8101613/167257906-596919a5-4c0e-4795-8
 
 [Download Now](https://github.com/xianfei/SysMocap/releases)
 
+**Windows Portable Version**: Simply extract the archive and run `SysMocap.exe`.
+
+- `SysMocap-Windows-x64-<version>.7z`: Windows 64-bit version, suitable for x86_64 processors (AMD, Intel, etc.) running 64-bit Windows 10 & 11 operating systems.
+
+- `SysMocap-Windows-arm64-<version>.7z`: Windows ARM 64-bit version, suitable for ARM64 processors (such as Qualcomm Snapdragon) running 64-bit Windows 10 & 11 operating systems.
+
+**Windows Installer**: Double-click to install.
+
+- `SysMocap-Windows-x64-installer-<version>.msi`: Windows 64-bit version, suitable for x86_64 processors (AMD, Intel, etc.) running 64-bit Windows 10 & 11 operating systems.
+
+- `SysMocap-Windows-arm64-installer-<version>.msi`: Windows ARM 64-bit version, suitable for ARM64 processors (such as Qualcomm Snapdragon) running 64-bit Windows 10 & 11 operating systems.
+
+**macOS DMG Image**: Drag `SysMocap.app` to the Applications folder.
+
+- `SysMocap-macOS-x64-<version>.dmg`: Suitable for Apple computers with Intel chips and Hackintosh devices, running macOS 10.15 or later.
+
+- `SysMocap-macOS-arm64-<version>.dmg`: Suitable for Apple computers with M series chips (Apple Silicon).
+
 **Note for user on macOS:**
 
 - You need set Gatekeeper to Anywhere in System Settings (using `sudo spctl --master-disable`)
@@ -120,10 +136,6 @@ cd SysMocap
 npm i
 npm start
 ```
-
-### Bugs
-
-- You tell me
 
 ### Notice
 
@@ -160,36 +172,6 @@ npm start
 ### Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=xianfei/SysMocap&type=Date)](https://star-history.com/#xianfei/SysMocap&Date)
-
-### Development progress
-
-#### To-Do
-
-- [x] Settings page and global settings utils
-
-- [x] Add play/pause button and progress bar when mocap from video 
-
-- [x] Support bones binding for glTF/glb
-
-- [x] Support rendering glTF/glb model
-
-- [x] Support binding when bones' name is non-uniformed
-
-- [x] Model library add user's custom 3D model
-
-- [x] Live plug-in / interface for Open Broadcast Software
-
-- [ ] ~~Output video ( using such as libffmpeg )~~
-
-- [ ] ~~Support per-frame rendering without drop frame~~
-
-- [ ] ~~Support c-s architecture for online video mocap ( on cloud )~~
-
-- [x] Support Material Designed 3 Color System (color picking)
-
-- [x] Mocap data forwarding via network
-
-- [x] Adapt for Linux and macOS 
 
 ### Thanks
 

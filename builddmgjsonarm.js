@@ -26,7 +26,7 @@ let config = {
     }
   ],
   background: '/Users/xianfei/Documents/GitHub/SysMocap/icons/dmgbg.png',
-  icon: '/Users/xianfei/Documents/GitHub/SysMocap/icons/sysmocap.icns',
+  // icon: '/Users/xianfei/Documents/GitHub/SysMocap/icons/sysmocap.icns',
   'icon-size': 80
 };
 
