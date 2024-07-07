@@ -13,7 +13,9 @@
     "7z:winarm": "7z a -t7z -mx=9 -y ./OutApp/packages/SysMocap-Windows-arm64.7z ./OutApp/SysMocap-win32-arm64/",
     "dmgtool": "npm install -g appdmg",
     "dmg": "node builddmgjsonx86.js && cat dmgcfg.json && node `npm root -g`/appdmg/bin/appdmg.js ./dmgcfg.json ./OutApp/packages/SysMocap-macOS-x64.dmg && rm ./dmgcfg.json",
-    "dmgarm": "node builddmgjsonarm.js && cat dmgcfg.json && node `npm root -g`/appdmg/bin/appdmg.js ./dmgcfg.json ./OutApp/packages/SysMocap-macOS-arm64.dmg && rm ./dmgcfg.json"
+    "dmgarm": "node builddmgjsonarm.js && cat dmgcfg.json && node `npm root -g`/appdmg/bin/appdmg.js ./dmgcfg.json ./OutApp/packages/SysMocap-macOS-arm64.dmg && rm ./dmgcfg.json",
+    "msix64": "node buildmsi.js x64",
+    "msixarm": "node buildmsi.js arm64"
   },
   "author": "xianfei",
   "license": "ISC",
