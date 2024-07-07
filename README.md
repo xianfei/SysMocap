@@ -73,6 +73,8 @@ https://user-images.githubusercontent.com/8101613/167257906-596919a5-4c0e-4795-8
 
 🌟 You can use [VRoid Studio](https://vroid.com/en/studio) to create your avatar very easily. Supporting VRM 0.x & 1.0!
 
+<img width="1492" alt="vroid" src="https://github.com/xianfei/SysMocap/assets/8101613/8847e960-3145-4ee5-b512-53ae8ec74901">
+
 ### More Effect Demonstration
 
 🌟 Facial
@@ -95,25 +97,28 @@ https://user-images.githubusercontent.com/8101613/167257906-596919a5-4c0e-4795-8
 
 ![System architecture](https://user-images.githubusercontent.com/8101613/173760568-a409beac-c966-43d6-a11f-11baf091e078.png)
 
-### How to use
-
-#### Download prebuilt package (Windows & macOS):
+### How to Download prebuilt package (Windows & macOS):
 
 [Download Now](https://github.com/xianfei/SysMocap/releases)
 
-**Windows Portable Version**: Simply extract the archive and run `SysMocap.exe`.
+**1. Windows Portable Version**: Simply extract the archive and run `SysMocap.exe`.
 
 - `SysMocap-Windows-x64-<version>.7z`: Windows 64-bit version, suitable for x86_64 processors (AMD, Intel, etc.) running 64-bit Windows 10 & 11 operating systems.
 
 - `SysMocap-Windows-arm64-<version>.7z`: Windows ARM 64-bit version, suitable for ARM64 processors (such as Qualcomm Snapdragon) running 64-bit Windows 10 & 11 operating systems.
 
-**Windows Installer**: Double-click to install.
+**2. Windows Installer**: Double-click to install.
+
+<img width="1317" alt="Snipaste_2024-07-07_20-56-11" src="https://github.com/xianfei/SysMocap/assets/8101613/8aa6fda0-5963-41dc-bad9-e28b6a2d7619">
 
 - `SysMocap-Windows-x64-installer-<version>.msi`: Windows 64-bit version, suitable for x86_64 processors (AMD, Intel, etc.) running 64-bit Windows 10 & 11 operating systems.
 
 - `SysMocap-Windows-arm64-installer-<version>.msi`: Windows ARM 64-bit version, suitable for ARM64 processors (such as Qualcomm Snapdragon) running 64-bit Windows 10 & 11 operating systems.
 
-**macOS DMG Image**: Drag `SysMocap.app` to the Applications folder.
+**3. macOS DMG Image**: Drag `SysMocap.app` to the Applications folder.
+
+<img width="600" alt="Snipaste_2024-07-07_20-56-11" src="https://github.com/xianfei/SysMocap/assets/8101613/7a47820d-5d7c-421f-822e-d02bad2d6f29">
+
 
 - `SysMocap-macOS-x64-<version>.dmg`: Suitable for Apple computers with Intel chips and Hackintosh devices, running macOS 10.15 or later.
 
@@ -128,7 +133,7 @@ https://user-images.githubusercontent.com/8101613/167257906-596919a5-4c0e-4795-8
   Please run `sudo xattr -r -d com.apple.quarantine /Applications/SysMocap.app` in your terminal
 
 
-#### Run on your computer from source code (need lastest Node.js):
+### How to run from source code (need lastest Node.js):
 
 ```shell
 git clone https://github.com/xianfei/SysMocap.git
