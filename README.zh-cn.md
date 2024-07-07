@@ -1,6 +1,8 @@
 ![banner](https://github.com/xianfei/SysMocap/assets/8101613/58ca8670-5242-4ee4-94fe-8b1be8679843)
 
 <h1 align="center">
+  <img src="https://github.com/xianfei/SysMocap/assets/8101613/adca7a3c-bdb2-4bda-af26-7ef9ba218c4c" align="center" height="128px" width="128px">
+  
 SysMocap
 </h1>
 
@@ -28,7 +30,7 @@ SysMocap
 
 提供用于Windows，macOS的可执行文件包(包括M系列芯片)，可在Linux上通过源代码运行
 
-[立刻下载](https://github.com/xianfei/SysMocap/releases) (压缩包，无需安装)
+[立刻下载](https://github.com/xianfei/SysMocap/releases)
 
 (这是一个多语言软件，支持中文和英文)
 
@@ -73,6 +75,8 @@ https://user-images.githubusercontent.com/8101613/167257906-596919a5-4c0e-4795-8
 
 🌟 你可以使用 [VRoid Studio](https://vroid.com/en/studio) 来创作属于自己的虚拟形象并导入至该系统，同时支持VRM 0.x & 1.0！
 
+<img width="1492" alt="vroid" src="https://github.com/xianfei/SysMocap/assets/8101613/8847e960-3145-4ee5-b512-53ae8ec74901">
+
 ### 更多效果展示
 
 🌟 面部
@@ -95,9 +99,7 @@ https://user-images.githubusercontent.com/8101613/167257906-596919a5-4c0e-4795-8
 
 ![System architecture](https://user-images.githubusercontent.com/8101613/173760568-a409beac-c966-43d6-a11f-11baf091e078.png)
 
-### 如何使用
-
-#### 下载预编译的可执行文件 (Windows & macOS):
+### 如何下载该应用程序 (Windows & macOS):
 
 [立刻下载](https://github.com/xianfei/SysMocap/releases)
 
@@ -111,11 +113,15 @@ https://user-images.githubusercontent.com/8101613/167257906-596919a5-4c0e-4795-8
 
 **Windows 安装包**：双击安装即可（安装包为英文，软件支持中文）
 
+<img width="1317" alt="Snipaste_2024-07-07_20-56-11" src="https://github.com/xianfei/SysMocap/assets/8101613/8aa6fda0-5963-41dc-bad9-e28b6a2d7619">
+
 - `SysMocap-Windows-x64-installer-<版本号>.msi`: Windows 64位版本，适用于使用x86_64处理器（AMD、Intel等）64位Windows 10 & 11操作系统
 
 - `SysMocap-Windows-arm64-installer-<版本号>.msi`: Windows ARM 64位版本，适用于使用arm64处理器（高通骁龙等）64位Windows 10 & 11操作系统
 
 **macOS DMG镜像**：拖动 `SysMocap.app` 到应用程序文件夹即可
+
+<img width="600" alt="Snipaste_2024-07-07_20-56-11" src="https://github.com/xianfei/SysMocap/assets/8101613/7a47820d-5d7c-421f-822e-d02bad2d6f29">
 
 - `SysMocap-macOS-x64-<版本号>.dmg`: 适用于Intel芯片的苹果电脑及黑苹果设备，macOS 10.15+操作系统
 
@@ -129,7 +135,7 @@ https://user-images.githubusercontent.com/8101613/167257906-596919a5-4c0e-4795-8
 - 如果你遇到 `“SysMocap” is damaged and can’t be opened. You should move it to the Trash.`（大概中文是 被损坏 您应该移动到废纸篓），
   请在终端中执行 `sudo xattr -r -d com.apple.quarantine /Applications/SysMocap.app` 
 
-#### 使用源代码运行 (需要最新版 Node.js):
+### 如何使用源代码运行 (需要最新版 Node.js):
 
 ```shell
 git clone https://github.com/xianfei/SysMocap.git
