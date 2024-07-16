@@ -103,17 +103,17 @@ https://user-images.githubusercontent.com/8101613/167257906-596919a5-4c0e-4795-8
 
 **1. Windows Portable Version**: Simply extract the archive and run `SysMocap.exe`.
 
-- `SysMocap-Windows-x64-<version>.7z`: Windows 64-bit version, suitable for x86_64 processors (AMD, Intel, etc.) running 64-bit Windows 10 & 11 operating systems.
+- `SysMocap-Windows-x64-<version>.7z`: Windows 64-bit version, suitable for x86_64 processors (AMD, Intel, etc.) running 64-bit Windows 10 & 11.
 
-- `SysMocap-Windows-arm64-<version>.7z`: Windows ARM 64-bit version, suitable for ARM64 processors (such as Qualcomm Snapdragon) running 64-bit Windows 10 & 11 operating systems.
+- `SysMocap-Windows-arm64-<version>.7z`: Windows ARM 64-bit version, suitable for ARM64 processors (such as Qualcomm Snapdragon) running 64-bit Windows 10 & 11.
 
 **2. Windows Installer**: Double-click to install.
 
 <img width="1317" alt="Snipaste_2024-07-07_20-56-11" src="https://github.com/xianfei/SysMocap/assets/8101613/8aa6fda0-5963-41dc-bad9-e28b6a2d7619">
 
-- `SysMocap-Windows-x64-installer-<version>.msi`: Windows 64-bit version, suitable for x86_64 processors (AMD, Intel, etc.) running 64-bit Windows 10 & 11 operating systems.
+- `SysMocap-Windows-x64-installer-<version>.msi`: Windows 64-bit version, suitable for x86_64 processors (AMD, Intel, etc.) running 64-bit Windows 10 & 11.
 
-- `SysMocap-Windows-arm64-installer-<version>.msi`: Windows ARM 64-bit version, suitable for ARM64 processors (such as Qualcomm Snapdragon) running 64-bit Windows 10 & 11 operating systems.
+- `SysMocap-Windows-arm64-installer-<version>.msi`: Windows ARM 64-bit version, suitable for ARM64 processors (such as Qualcomm Snapdragon) running 64-bit Windows 10 & 11.
 
 **3. macOS DMG Image**: Drag `SysMocap.app` to the Applications folder.
 
