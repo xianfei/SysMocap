@@ -65,10 +65,8 @@ async function harness() {
             return;
         }
 
-        // 过滤出所有 .exe 文件
         const exeFiles = files.filter((file) => path.extname(file) === ".msi");
 
-        // 移动每个 .exe 文件到目标目录
         exeFiles.forEach((file) => {
             const sourceFile = path.join(sourceDir, file);
             const targetFile = path.join(

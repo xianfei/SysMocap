@@ -11,6 +11,8 @@
 // import setting utils
 const globalSettings = window.parent.window.sysmocapApp.settings;
 
+const { languages } = require("../utils/language.js");
+
 var hipRotationOffset = 0.0
 
 import * as THREE from "three";
@@ -789,9 +791,10 @@ if (localStorage.getItem("useCamera") == "camera") {
 }
 
 var app = new Vue({
-    el: "#controller",
+    el: "#vue0",
     data: {
         target: "face",
+        languages: languages[globalSettings.ui.language],
     },
 });
 

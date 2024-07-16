@@ -20,6 +20,9 @@ import Stats from "three/addons/libs/stats.module.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { VRMLoaderPlugin, VRMUtils } from "@pixiv/three-vrm";
 
+// import languages
+const { languages } = require("../utils/language.js");
+
 // set theme
 document.body.setAttribute(
     "class",
@@ -616,9 +619,10 @@ window.onMocapData = (data) => {
 };
 
 var app = new Vue({
-    el: "#controller",
+    el: "#vue0",
     data: {
         target: "face",
+        languages: languages[globalSettings.ui.language],
     },
 });
 

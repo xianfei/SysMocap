@@ -109,6 +109,15 @@ module.exports = {
                 hide: "隐藏",
                 show: "显示",
             },
+            render:{
+                resp:"相机视角（可鼠标拖动人物及按下AWSD微调）",
+                tips:"Tips:将图片拖至背景处可更换背景，按下R键可进行录制",
+                fullbody:"全身",
+                face:"特写",
+                halfbody:"半身",
+                init:"初始化动作捕捉引擎...",
+                rec:"正在录制，按R键停止"
+            }
         },
         en: {
             app: {
@@ -220,6 +229,15 @@ module.exports = {
                 hide: "Hide",
                 show: "Show",
             },
+            render: {
+                resp: "Camera view (drag the character and using AWSD)",
+                tips: "Tips: Drag the image to the background to change it, press R to start recording",
+                fullbody: "Full body",
+                face: "Close-up",
+                halfbody: "Half body",
+                init: "Initializing motion capture engine...",
+                rec: "Recording in progress, press R to stop"
+            }
         },
     },
 };

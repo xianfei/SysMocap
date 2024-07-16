@@ -58,8 +58,10 @@ jobs:
         run: |
           npm run package:win64
           npm run 7z:win64
+          npm run msix64
           npm run package:winarm
           npm run 7z:winarm
+          npm run msixarm
         env:
           GH_TOKEN: ${{ secrets.SECRET_TOKEN }}
 
