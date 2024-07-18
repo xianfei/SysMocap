@@ -1,6 +1,6 @@
 {
   "name": "sysmocap",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "description": "Video-based motion capture system.",
   "main": "main.js",
   "scripts": {
@@ -34,7 +34,6 @@
     "kalidokit": "^1.1.5",
     "lil-gui": "^0.16.1",
     "mdui": "^1.0.2",
-    "pdfjs-dist": "^2.13.216",
     "socket.io": "^4.5.3",
     "svelte-jsoneditor": "^0.3.60",
     "three": "^0.164.1",
