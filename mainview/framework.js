@@ -13,54 +13,66 @@ var remote = null;
 var platform = "web";
 
 var mixamorig = {
-    Hips: {
-        name: "mixamorigHips",
-        func: { fx: "-x", fy: "y", fz: "-z" },
+    "Hips": {
+        "name": "mixamorigHips",
+        "order": "XYZ",
+        "func": { "fx": "-x", "fy": "y", "fz": "-z" }
     },
-    Neck: {
-        name: "mixamorigNeck",
-        func: { fx: "-x", fy: "y", fz: "-z" },
+    "Neck": {
+        "name": "mixamorigNeck",
+        "order": "XYZ",
+        "func": { "fx": "-x", "fy": "y", "fz": "-z" }
     },
-    Chest: {
-        name: "mixamorigSpine2",
-        func: { fx: "-x", fy: "y", fz: "-z" },
+    "Chest": {
+        "name": "mixamorigSpine2",
+        "order": "XYZ",
+        "func": { "fx": "-x", "fy": "y", "fz": "-z" }
     },
-    Spine: {
-        name: "mixamorigSpine",
-        func: { fx: "-x", fy: "y", fz: "-z" },
+    "Spine": {
+        "name": "mixamorigSpine",
+        "order": "XYZ",
+        "func": { "fx": "-x", "fy": "y", "fz": "-z" }
     },
-    RightUpperArm: {
-        name: "mixamorigRightArm",
-        func: { fx: "-z", fy: "x", fz: "-y" },
+    "RightUpperArm": {
+        "name": "mixamorigRightArm",
+        "order": "ZXY",
+        "func": { "fx": "-z", "fy": "x", "fz": "-y" }
     },
-    RightLowerArm: {
-        name: "mixamorigRightForeArm",
-        func: { fx: "-z", fy: "x", fz: "-y" },
+    "RightLowerArm": {
+        "name": "mixamorigRightForeArm",
+        "order": "ZXY",
+        "func": { "fx": "-z", "fy": "x", "fz": "-y" }
     },
-    LeftUpperArm: {
-        name: "mixamorigLeftArm",
-        func: { fx: "z", fy: "-x", fz: "-y" },
+    "LeftUpperArm": {
+        "name": "mixamorigLeftArm",
+        "order": "ZXY",
+        "func": { "fx": "z", "fy": "-x", "fz": "-y" }
     },
-    LeftLowerArm: {
-        name: "mixamorigLeftForeArm",
-        func: { fx: "z", fy: "-x", fz: "-y" },
+    "LeftLowerArm": {
+        "name": "mixamorigLeftForeArm",
+        "order": "ZXY",
+        "func": { "fx": "z", "fy": "-x", "fz": "-y" }
     },
-    LeftUpperLeg: {
-        name: "mixamorigLeftUpLeg",
-        func: { fx: "-x", fy: "y", fz: "-z" },
+    "LeftUpperLeg": {
+        "name": "mixamorigLeftUpLeg",
+        "order": "XYZ",
+        "func": { "fx": "-x", "fy": "y", "fz": "-z" }
     },
-    LeftLowerLeg: {
-        name: "mixamorigLeftLeg",
-        func: { fx: "-x", fy: "y", fz: "-z" },
+    "LeftLowerLeg": {
+        "name": "mixamorigLeftLeg",
+        "order": "XYZ",
+        "func": { "fx": "-x", "fy": "y", "fz": "-z" }
     },
-    RightUpperLeg: {
-        name: "mixamorigRightUpLeg",
-        func: { fx: "-x", fy: "y", fz: "-z" },
+    "RightUpperLeg": {
+        "name": "mixamorigRightUpLeg",
+        "order": "XYZ",
+        "func": { "fx": "-x", "fy": "y", "fz": "-z" }
     },
-    RightLowerLeg: {
-        name: "mixamorigRightLeg",
-        func: { fx: "-x", fy: "y", fz: "-z" },
-    },
+    "RightLowerLeg": {
+        "name": "mixamorigRightLeg",
+        "order": "XYZ",
+        "func": { "fx": "-x", "fy": "y", "fz": "-z" }
+    }
 };
 
 function domBoom(target, onfinish) {
