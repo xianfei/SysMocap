@@ -272,16 +272,19 @@ const rigRotation = (
                     z: b.rotation.z,
                 };
             }
-            var bindingFunc = modelObj.binding[name].func;
+            const bindingFunc = modelObj.binding[name].func;
+            const order = modelObj.binding[name].order?.toUpperCase();
             const x = rotation.x * dampener;
             const y = rotation.y * dampener;
             const z = rotation.z * dampener;
+
+            // console.log("rotation.rotationOrder ",rotation.rotationOrder )
 
             let euler = new THREE.Euler(
                 initRotation[name].x + eval(bindingFunc.fx),
                 initRotation[name].y + eval(bindingFunc.fy),
                 initRotation[name].z + eval(bindingFunc.fz),
-                rotation.rotationOrder || "XYZ"
+                order || rotation.rotationOrder || "XYZ"
             );
             let quaternion = new THREE.Quaternion().setFromEuler(euler);
             b.quaternion.slerp(quaternion, lerpAmount); // interpolate

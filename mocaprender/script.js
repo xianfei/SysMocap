@@ -306,7 +306,7 @@ const rigRotation = (
                 };
             }
             const bindingFunc = modelObj.binding[name].func;
-            const order = modelObj.binding[name].order.toUpperCase();
+            const order = modelObj.binding[name].order?.toUpperCase();
             const x = rotation.x * dampener;
             const y = rotation.y * dampener;
             const z = rotation.z * dampener;
