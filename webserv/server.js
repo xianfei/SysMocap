@@ -16,6 +16,22 @@ const path = require("path");
 const fs = require('fs');
 const io =  require('socket.io');
 
+app.use((req, res, next) => {
+    res.setHeader(
+      'Content-Security-Policy',
+      "default-src * 'unsafe-inline' 'unsafe-eval' blob:; " +
+      "script-src * 'unsafe-inline' 'unsafe-eval' blob:; " +
+      "style-src * 'unsafe-inline' blob:; " +
+      "img-src * data: blob:; " +
+      "connect-src * blob:; " +
+      "font-src * blob:; " +
+      "object-src * blob:; " +
+      "media-src *; " +
+      "frame-src *;"
+    );
+    next();
+  });
+
 app.use("/node_modules", express.static(__dirname + "/../node_modules"));
 app.use(express.static(__dirname + "/public"));
 

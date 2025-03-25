@@ -57,15 +57,15 @@ document.body.appendChild(renderer.domElement);
 const orbitCamera = new THREE.PerspectiveCamera(
     50,
     window.innerWidth / window.innerHeight,
-    0.1,
+    0.01,
     1000
 );
-orbitCamera.position.set(0.0, 0.2, 1.8);
+orbitCamera.position.set(0.0, 1.1, 1.8);
 
 // controls
 const orbitControls = new OrbitControls(orbitCamera, renderer.domElement);
 orbitControls.screenSpacePanning = true;
-orbitControls.target.set(0.0, 0.2, 0.0);
+orbitControls.target.set(0.0, 1.4, 0.0);
 orbitControls.update();
 
 // scene
@@ -244,7 +244,8 @@ const rigRotation = (
                     z: b.rotation.z,
                 };
             }
-            var bindingFunc = modelObj.binding[name].func;
+            const bindingFunc = modelObj.binding[name].func;
+             const order = modelObj.binding[name].order?.toUpperCase();
             const x = rotation.x * dampener;
             const y = rotation.y * dampener;
             const z = rotation.z * dampener;
@@ -253,7 +254,7 @@ const rigRotation = (
                 initRotation[name].x + eval(bindingFunc.fx),
                 initRotation[name].y + eval(bindingFunc.fy),
                 initRotation[name].z + eval(bindingFunc.fz),
-                rotation.rotationOrder || "XYZ"
+                order || rotation.rotationOrder || "XYZ"
             );
             let quaternion = new THREE.Quaternion().setFromEuler(euler);
             b.quaternion.slerp(quaternion, lerpAmount); // interpolate
@@ -436,7 +437,7 @@ const animateVRM = (vrm, results) => {
             "Hips",
             {
                 x: riggedPose.Hips.position.x, // Reverse direction
-                y: riggedPose.Hips.position.y - (useXR?0.3:0.0), // Add a bit of height
+                y: riggedPose.Hips.position.y + 1, // Add a bit of height
                 z: -riggedPose.Hips.position.z, // Reverse direction
             },
             1,

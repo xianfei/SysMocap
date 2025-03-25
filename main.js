@@ -280,6 +280,7 @@ function createModelViewerWindow(args) {
     if (args.useGlass) {
         addtionalArgs = {
             vibrancy: 'hud',
+            visualEffectState: 'active',
             backgroundMaterial: 'acrylic',
             backgroundColor: "#00000000",
         };
