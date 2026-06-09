@@ -21,6 +21,7 @@ import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
 import Stats from "three/addons/libs/stats.module.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { VRMLoaderPlugin, VRMUtils } from "@pixiv/three-vrm";
+import { evalAxisExpr } from "../src/render/binding.js";
 
 // set theme
 document.body.setAttribute(
@@ -314,9 +315,9 @@ const rigRotation = (
             // console.log("rotation.rotationOrder ",rotation.rotationOrder )
 
             let euler = new THREE.Euler(
-                initRotation[name].x + eval(bindingFunc.fx),
-                initRotation[name].y + eval(bindingFunc.fy),
-                initRotation[name].z + eval(bindingFunc.fz),
+                initRotation[name].x + evalAxisExpr(bindingFunc.fx, x, y, z),
+                initRotation[name].y + evalAxisExpr(bindingFunc.fy, x, y, z),
+                initRotation[name].z + evalAxisExpr(bindingFunc.fz, x, y, z),
                 order || rotation.rotationOrder || "XYZ"
             );
             let quaternion = new THREE.Quaternion().setFromEuler(euler);
@@ -870,7 +871,14 @@ contentDom.ondragcenter =
 //对拖动释放事件进行处理
 contentDom.ondrop = (e) => {
     //console.log(e);
-    var filePath = e.dataTransfer.files[0].path.replaceAll("\\", "/");
+    var file = e.dataTransfer.files[0];
+    // Electron 32 removed File.path; webUtils.getPathForFile is the replacement (available since Electron 30)
+    var { webUtils } = require("electron");
+    var filePath = (
+        webUtils && webUtils.getPathForFile
+            ? webUtils.getPathForFile(file)
+            : file.path
+    ).replaceAll("\\", "/");
     console.log(filePath);
     contentDom.style.backgroundImage = `url(${filePath})`;
     contentDom.style.backgroundSize = "cover";

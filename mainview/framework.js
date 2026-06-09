@@ -435,7 +435,14 @@ if (typeof require != "undefined") {
     contentDom.ondrop = (e) => {
         e.preventDefault();
         //console.log(e);
-        var filePath = e.dataTransfer.files[0].path.replaceAll("\\", "/");
+        var file = e.dataTransfer.files[0];
+        // Electron 32 removed File.path; webUtils.getPathForFile is the replacement (available since Electron 30)
+        var { webUtils } = require("electron");
+        var filePath = (
+            webUtils && webUtils.getPathForFile
+                ? webUtils.getPathForFile(file)
+                : file.path
+        ).replaceAll("\\", "/");
         // console.log(filePath);
         var strs1 = filePath.split("/");
         var name_ = strs1[strs1.length - 1];
