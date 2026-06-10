@@ -95,5 +95,8 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: "OutApp/packages/**"
+          # publish as a draft so a tag push doesn't immediately go public —
+          # review the artifacts, then hit "Publish release" in the GitHub UI
+          draft: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
