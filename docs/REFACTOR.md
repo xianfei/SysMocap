@@ -1,8 +1,26 @@
 # SysMocap Refactor Plan — Vite + Vue 3 (branch `refactor/vite-vue3`)
 
-Single source of truth for the in-progress modernization. Derived from a fan-out
-audit + adversarial critique of the codebase. **The Invariants section is a hard
-safety spec — every implementation step must hold all of it.**
+Single source of truth for the modernization. Derived from a fan-out audit +
+adversarial critique of the codebase. **The Invariants section is a hard safety
+spec — every implementation step must hold all of it.**
+
+## Status — Phase B complete (committed on `main`)
+
+Everything below this section was the *plan*; what shipped: Vite 8 MPA build,
+Electron 31→42, Vue 2→3, the shared render core
+(`avatarRenderer`/`holisticPipeline`/`binding`/`ipcSource`) that killed the desktop
+triplication, and **all pages converted to SFCs** — render+mocaprender unified on
+`MocapStage.vue`/`InputPreview.vue`; modelview → `ModelViewer.vue`; framework → a
+`store.js` + `App.vue` shell + `TitleBar`/`ModelLibraryTab`/`MocapTab`/`SettingsTab`.
+The page dirs were then **relocated under `src/pages/`** (a decision added *after* the
+plan below), so the build output now mirrors it: `dist/src/pages/<page>/`. The current
+architecture + the **path-depth contract** that relocation introduced are documented
+in **CLAUDE.md** (read that first).
+
+**Remaining / deferred:** (1) unify `webserv/public` onto the shared rig (Phase F5) —
+it's still a 3rd rig copy with a different scene (full-window + WebXR); (2) packaging
+re-validation — the `@mediapipe` fs assets likely need `asarUnpack` in an `--asar`
+build (`npm start` against unpacked `dist/` works).
 
 ## Goal & locked decisions
 
@@ -15,7 +33,7 @@ or any existing feature.
 - **Vue 2.7 → Vue 3** via `createApp`; some modules may become SFCs.
 - Replace direct `eval(bindingFunc.fx/fy/fz)` with a cached `new Function("x","y","z",...)` — **string-expression data format unchanged**.
 - Collapse the **triplicated** render/rig logic (`mocaprender/script.js`, `render/render.js`, `webserv/public/script.js`) into ONE shared module, decoupled from data source (IPC desktop / socket.io web).
-- **Low-disruption layout**: keep existing page folders; add `src/` for shared code only.
+- **Layout**: shared code under `src/render|data|mocap|components`. *(Evolved later: the page dirs themselves were also relocated under `src/pages/` — see Status. The dist mirrors the source depth, and a path-depth contract — `../../../` for dist-root assets, `../` for `models`/`pdfs` — is documented in CLAUDE.md.)*
 - Update Electron 31 → latest; adopt some newer features. **BrowserView is deprecated but still works as a wrapper** → WebContentsView migration is optional/deferrable.
 
 ## Invariants (DO NOT BREAK — verified against the codebase)
@@ -26,7 +44,7 @@ or any existing feature.
 4. **Mocap payload + wire format.** Every hop carries `{ type:"xf-sysmocap-data", riggedPose, riggedLeftHand, riggedRightHand, riggedFace }`; web client gates on `type=="xf-sysmocap-data"` over socket.io event `"message"`. Desktop render iframe receives the same object via `window.onMocapData(data)` (keep that exact name on the render context). Integrated path NEVER sends render data over IPC (only optional `sendBoradcast` when forwarding on; `ipcRenderer` is null when forwarding off). Discrete `sendBoradcastNew` has DUAL fan-out (local `sendRenderDataForward` + worker `sendBroadcast`) — keep both branches.
 5. **`new Function` evaluator** is module-cached, keyed by the **expression string** (not bone name, not rebuilt per frame). `+initRotation[name].*` and `order` stay in the caller. Confirmed safe: all expressions are bare `±x/±y/±z`, no external identifiers.
 6. **Web client (`webserv/public`) stays out of the main Vite multi-page build.** Keep `express.static('/node_modules')`, `express.static('public')`, native importmap, CSP `unsafe-eval`, routes `/model` `/modelInfo` `/useWebXR`, `httpx` single-port byte-sniff (`22`→https, printable-ASCII→http), `0.0.0.0` bind, SSL `webserv/ssl/{private.pem,file.crt}`. `server.js` stays CommonJS in the worker_thread; `modelObj.path` resolves via `path.resolve(__dirname, ...)` → do not move `server.js`.
-7. **MediaPipe runtime assets** (`holistic_solution_*.wasm/.data/.js`, `holistic.binarypb`, `pose_landmark_*.tflite`) are fetched by `Holistic.locateFile` (`__dirname + '/../node_modules/@mediapipe/holistic/${file}'`), never bundled. Built pages must keep that path resolving (keep `dist/` page dirs one level under a `node_modules`, OR copy the siblings and adjust `locateFile`). Do not let Vite rename/tree-shake them. Don't blindly upgrade `@mediapipe/holistic` — `results.za` (mangled 3D-landmark field, `mocaprender/script.js:497`, `mocap.js:46`) can rename across versions.
+7. **MediaPipe runtime assets** (`holistic_solution_*.wasm/.data/.js`, `holistic.binarypb`, `pose_landmark_*.tflite`) are fetched by `Holistic.locateFile`, never bundled. **As shipped:** `holisticPipeline.js` (integrated) returns `../../../node_modules/@mediapipe/holistic/${file}` resolved against the page URL (pages are 3 deep at `dist/src/pages/<page>/`; `node_modules` is copied to the dist root) via `fileURLToPath(new URL(rel, location.href))` — MediaPipe reads via Node fs under nodeIntegration, so it must be an absolute fs path, not a relative URL. The classic `mocap.js` (discrete) uses `__dirname + '/../../../node_modules/@mediapipe/holistic/${file}'`. If page depth changes, both must change. Do not let Vite rename/tree-shake them. Don't blindly upgrade `@mediapipe/holistic` — `results.za` (mangled 3D-landmark field, `mocaprender/script.js:497`, `mocap.js:46`) can rename across versions.
 8. **Vue 3 specifics:** alias `vue` → `vue/dist/vue.esm-bundler.js` (templates live in the DOM), `__VUE_OPTIONS_API__ = true`; `data` becomes a factory; keep `window.sysmocapApp` AND `window.app` = the mounted proxy (cross-iframe `window.parent.window.sysmocapApp.settings` is load-bearing — `render.js:12` throws if not in an iframe); `markRaw(document)` + `markRaw(process)`; `nextTick`-wrap all MDUI init (`mdui.Select`, `mdui.mutation`); add `:key` to every `v-for`.
 9. **Other load-bearing flags:** `nodeIntegrationInSubFrames:true` (the `#foo` iframe's `require()`), `backgroundThrottling:false` + `disable-renderer-backgrounding` (background forwarding), `enableRemoteModule`/`webviewTag` left as-is, `global.storagePath.jsonPath` + `global.appInfo` exact shape (drives `~/<appName>/profile.json`), `additionalArguments` markers `'argsData'`/`'pdfPath'`, the `'used'`+darwin first-run gate that selects the default mocap path, `selectModel` stays a JSON **string**, screen-recording vendored UMDs (`utils/RecordRTC.js`, `utils/html2canvas.js`) imported as local files (not npm), `app.on('window-all-closed')→quit` on all platforms (intentional).
 
