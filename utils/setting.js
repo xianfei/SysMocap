@@ -16,6 +16,15 @@ storage.setStoragePath(remote.getGlobal("storagePath").jsonPath);
 
 var currentVer = 0.5;
 
+// Liquid Glass exists only on macOS 26+ (Tahoe) -> default the setting ON there,
+// OFF on older macOS / other platforms. (process.getSystemVersion() is Electron's,
+// available in the renderer with nodeIntegration; guarded so a missing API just
+// falls back to OFF.)
+const macOS26Plus =
+    require("os").platform() === "darwin" &&
+    typeof process.getSystemVersion === "function" &&
+    parseInt(process.getSystemVersion(), 10) >= 26;
+
 function getSettings() {
     var settings = storage.getItem("sysmocap-global-settings");
     // load default settings when cannot read from localStroage
@@ -25,7 +34,7 @@ function getSettings() {
                 themeColor: "indigo",
                 isDark: false,
                 useGlass: true,
-                useLiquidGlass: false,
+                useLiquidGlass: macOS26Plus,
                 language:
                     window.navigator.language.split("-")[0] == "zh"
                         ? "zh"
@@ -72,7 +81,7 @@ function getSettings() {
     // Backfill fields added since ver 0.5. Do NOT bump currentVer for these —
     // that would discard all existing user settings (the gate above). New fields
     // just default in when missing from a previously-saved settings object.
-    if (settings.ui.useLiquidGlass === undefined) settings.ui.useLiquidGlass = false;
+    if (settings.ui.useLiquidGlass === undefined) settings.ui.useLiquidGlass = macOS26Plus;
     return settings;
 }
 
