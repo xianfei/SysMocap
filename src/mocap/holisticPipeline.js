@@ -141,7 +141,20 @@ export function createHolisticPipeline({ settings, fileType, onRigged }) {
     holistic.onResults(onResults);
 
     // input: live camera or a video file, driven by requestVideoFrameCallback
-    if (localStorage.getItem("useCamera") == "camera") {
+    const useCamera = localStorage.getItem("useCamera") == "camera";
+
+    // input-preview horizontal mirror, configurable per source. The .input_video +
+    // .guides ship an inline scale(-1,1), so set the transform EXPLICITLY here (not "")
+    // to let the toggle win. Display-only: MediaPipe reads the raw videoElement, so
+    // this never affects detection.
+    const mirrorPreview = useCamera
+        ? settings.preview.mirroringWhenCamera
+        : settings.preview.mirroringWhenVideoFile;
+    videoElement.style.transform = guideCanvas.style.transform = mirrorPreview
+        ? "scale(-1, 1)"
+        : "scale(1, 1)";
+
+    if (useCamera) {
         navigator.mediaDevices
             .getUserMedia({
                 video: {
@@ -166,8 +179,6 @@ export function createHolisticPipeline({ settings, fileType, onRigged }) {
         videoElement.src = localStorage.getItem("videoFile");
         videoElement.loop = true;
         videoElement.controls = true;
-        videoElement.style.transform = "";
-        guideCanvas.style.transform = "";
         var videoFrameCallback = async () => {
             await holistic.send({ image: videoElement });
             videoElement.requestVideoFrameCallback(videoFrameCallback);
