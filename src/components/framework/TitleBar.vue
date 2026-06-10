@@ -56,7 +56,7 @@
             <!-- Show App Name -->
             <!-- <img src="../icons/sysmocap.ico" style="display: inline-block;width: 28px;position: fixed;top: 8px;left: 12px;" v-show="platform!='darwin'"> -->
             <div style="display: inline-block; position: relative;width: 200px;"
-                v-bind:style="{ marginLeft: platform=='darwin'?'88px':'28px'}">
+                v-bind:style="{ marginLeft: platform=='darwin'?'92px':'28px'}">
                 <span class="text-titlebar-sysmocap">
                     SysMocap
                 </span>
