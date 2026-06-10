@@ -94,7 +94,8 @@
 
         <!-- <button id='reset' >open dev
         tools</button> -->
-        <div id="vue-target">
+        <!-- hidden until Vue mounts (FOUC guard); revealed in the entry below -->
+        <div id="vue-target" style="display: none">
             <i
                 class="mdui-icon material-icons"
                 style="
@@ -461,6 +462,8 @@
             }).mount("#vue-target");
 
             window.app = app;
+            // reveal now that Vue has compiled/rendered (no flash of {{ }} template)
+            document.getElementById("vue-target").style.display = "";
 
             //     const container = document.getElementById("jsoneditor")
             // const options = {}

@@ -1,4 +1,5 @@
 import { defineConfig } from "vite";
+import vue from "@vitejs/plugin-vue";
 import renderer from "vite-plugin-electron-renderer";
 import { viteStaticCopy } from "vite-plugin-static-copy";
 import { resolve } from "node:path";
@@ -63,7 +64,7 @@ export default defineConfig({
         __VUE_PROD_DEVTOOLS__: "false",
         __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: "false",
     },
-    plugins: [renderer(), viteStaticCopy({ targets: copyTargets })],
+    plugins: [vue(), renderer(), viteStaticCopy({ targets: copyTargets })],
     build: {
         outDir: r("dist"),
         emptyOutDir: true,

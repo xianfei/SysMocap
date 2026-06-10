@@ -1,8 +1,7 @@
 /**
- *  Render Page entry (discrete render-iframe) — thin wrapper over the shared
- *  avatar renderer. Receives already-solved mocap data from the parent
- *  framework.js via window.onMocapData (ipcSource) and re-applies it each frame
- *  (continuousData), preserving the original per-render-frame apply cadence.
+ *  Render Page entry (discrete render-iframe) — mounts the shared MocapStage SFC
+ *  and feeds it mocap frames relayed from the parent over IPC (window.onMocapData,
+ *  via ipcSource). The SFC + avatarRenderer own all the render logic now.
  *
  *  A part of SysMocap, open sourced under Mozilla Public License 2.0
  *
@@ -11,12 +10,9 @@
  *  xianfei 2022.3, last modified 2024.7
  */
 
-import { createAvatarRenderer } from "../src/render/avatarRenderer.js";
-import { createIpcMocapSource } from "../src/data/ipcSource.js";
 import { createApp } from "vue";
-
-// import languages
-const { languages } = require("../utils/language.js");
+import MocapStage from "../src/components/MocapStage.vue";
+import { createIpcMocapSource } from "../src/data/ipcSource.js";
 
 // settings come from the parent framework.js Vue app (cross-iframe, file://)
 const globalSettings = window.parent.window.sysmocapApp.settings;
@@ -30,45 +26,17 @@ document.body.setAttribute(
         globalSettings.ui.themeColor
 );
 
-var modelObj = JSON.parse(localStorage.getItem("modelInfo"));
+const modelObj = JSON.parse(localStorage.getItem("modelInfo"));
+
+const stage = createApp(MocapStage, {
+    settings: globalSettings,
+    modelObj: modelObj,
+}).mount("#app");
 
 // mirror the stage horizontally for video-file input (matches the camera preview)
 if (localStorage.getItem("useCamera") !== "camera") {
     document.querySelector("#model").style.transform = "scale(-1, 1)";
 }
 
-// latest solved frame; the renderer re-applies it every render tick
-let lastData = null;
-
-const avatar = createAvatarRenderer({
-    settings: globalSettings,
-    modelObj: modelObj,
-    continuousData: () => lastData,
-});
-
-// #vue0 target-button overlay (face / half / full)
-var app = createApp({
-    data() {
-        return {
-            target: "face",
-            languages: languages[globalSettings.ui.language],
-        };
-    },
-}).mount("#vue0");
-
-function changeTarget(target) {
-    app.target = target;
-    avatar.setTarget(target);
-}
-window.changeTarget = changeTarget;
-
 // data source: parent relays ipcMain 'sendRenderDataForward' -> onMocapData
-var isStart = false;
-createIpcMocapSource((data) => {
-    if (!isStart) {
-        document.getElementById("loading").remove();
-        isStart = true;
-    }
-    avatar.tickMocapStats();
-    lastData = data;
-});
+createIpcMocapSource((data) => stage.pushData(data));
