@@ -265,7 +265,7 @@ import { JSONEditor } from "../../node_modules/svelte-jsoneditor/dist/jsoneditor
 import { resolveModelPath } from "../render/modelPath.js";
 
 const { languages } = require("../../utils/language.js");
-const { globalSettings, removeUserModels, addUserModels } = require("../../utils/setting.js");
+const { globalSettings, removeUserModels, addUserModels, userModels } = require("../../utils/setting.js");
 
 // launch input passed via webPreferences.additionalArguments (process.argv)
 let args;
@@ -552,6 +552,11 @@ export default {
             removeUserModels(this.model.name);
             addUserModels(jsonChanged);
             this.model = jsonChanged;
+            // notify the main window so the library + future opens reflect the edit
+            require("electron").ipcRenderer.send(
+                "userModelsChanged",
+                JSON.parse(JSON.stringify(userModels))
+            );
         },
     },
 };

@@ -37,6 +37,7 @@ import {
     saveSettings,
     addUserModels,
     removeUserModels,
+    setUserModels,
     languages,
 } from "./store.js";
 import {
@@ -587,6 +588,20 @@ ipcRenderer.on("sendRenderDataForward", (ev, data) => {
 
 ipcRenderer.on("switch-tab", (ev, data) => {
     window.sysmocapApp.tab = data;
+});
+
+// the model viewer (a separate window) saved a model edit -> re-sync the user-model
+// list so the library + the next openModelViewer reflect it (#75/#65). electron-
+// localstorage caches per-process, so we take the fresh list from the IPC payload
+// rather than re-reading storage (which would return this window's stale cache).
+ipcRenderer.on("userModelsChanged", (ev, list) => {
+    if (!Array.isArray(list)) return;
+    setUserModels(list); // keep setting.js's in-memory list current (avoid clobber on next import)
+    app.userModels = JSON.parse(JSON.stringify(list));
+    nextTick(() => {
+        addRightClick();
+        if (app.settings.ui.useNewModelUI) modelOnload();
+    });
 });
 
 window.startMocap = async function (e) {

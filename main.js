@@ -470,6 +470,11 @@ ipcMain.on("stopWebServer", function (event, arg) {
     worker = null;
 });
 
+// model viewer edited a user model -> relay the fresh list to the main window
+ipcMain.on("userModelsChanged", function (event, list) {
+    if (mainWindow) mainWindow.webContents.send("userModelsChanged", list);
+});
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.

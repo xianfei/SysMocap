@@ -21,6 +21,7 @@ const {
     userModels,
     addUserModels,
     removeUserModels,
+    setUserModels,
 } = require("../../../utils/setting.js");
 const { languages } = require("../../../utils/language.js");
 const builtInModels = require("../../../models/models.json");
@@ -73,5 +74,6 @@ export {
     saveSettings,
     addUserModels,
     removeUserModels,
+    setUserModels,
     languages,
 };

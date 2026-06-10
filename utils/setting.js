@@ -122,11 +122,19 @@ function removeUserModels(name) {
     storage.setItem("sysmocap-user-models", models);
 }
 
+// replace the in-memory list (used to re-sync one window after another window edited
+// a model; done in-place so the exported `userModels`/`models` reference stays valid)
+function setUserModels(list) {
+    models.length = 0;
+    if (Array.isArray(list)) models.push(...list);
+}
+
 module.exports = {
     getSettings: getSettings,
     globalSettings: globalSettings,
     saveSettings: saveSettings,
     getUserModels: getUserModels,
+    setUserModels: setUserModels,
     userModels: models,
     addUserModels: addUserModels,
     removeUserModels: removeUserModels,
