@@ -9,7 +9,7 @@
  */
 
 // import setting utils
-const { globalSettings } = require("../utils/setting.js");
+const { globalSettings } = require("../../../utils/setting.js");
 
 // import mocap web server
 var ipcRenderer = require("electron").ipcRenderer;
@@ -113,8 +113,8 @@ const onResults = (results) => {
 const holistic = new Holistic({
     locateFile: (file) => {
         if (typeof require != "undefined")
-            return __dirname + `/../node_modules/@mediapipe/holistic/${file}`;
-        else return `../node_modules/@mediapipe/holistic/${file}`;
+            return __dirname + `/../../../node_modules/@mediapipe/holistic/${file}`;
+        else return `../../../node_modules/@mediapipe/holistic/${file}`;
     },
 });
 

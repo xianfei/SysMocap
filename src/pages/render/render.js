@@ -11,8 +11,8 @@
  */
 
 import { createApp } from "vue";
-import MocapStage from "../src/components/MocapStage.vue";
-import { createIpcMocapSource } from "../src/data/ipcSource.js";
+import MocapStage from "../../components/MocapStage.vue";
+import { createIpcMocapSource } from "../../data/ipcSource.js";
 
 // settings come from the parent framework.js Vue app (cross-iframe, file://)
 const globalSettings = window.parent.window.sysmocapApp.settings;

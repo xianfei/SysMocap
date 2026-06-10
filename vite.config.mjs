@@ -40,17 +40,21 @@ const copyTargets = [
     // mocap.js is a classic (non-module) capture-only script — Vite does not
     // bundle it, so copy it verbatim; staying classic preserves its require()
     // + window-global + __dirname locateFile behavior under nodeIntegration.
-    "mocap/mocap.js",
+    "src/pages/mocap/mocap.js",
     // favicon referenced by framework.html
     "icons/sysmocap.ico",
-    // Built-in model files + thumbnails: referenced via runtime strings in
-    // models.json (path / picBg = "../models/...") that Vite can't see at
-    // build time, so copy the dir verbatim. (fonts/ is a <link> Vite bundles.)
-    "models",
-    // about-section preview PNGs are runtime <img :src="'../pdfs/...'"> refs
-    // (framework.html loads from dist/mainview/, so ../pdfs -> dist/pdfs).
-    "pdfs",
 ].map((src) => ({ src, dest: "" }));
+
+// Built-in model files + thumbnails (models.json path/picBg = "../models/...") and
+// the about-section preview PNGs ("../pdfs/...") are runtime-string refs Vite can't
+// see. They're referenced ONE level up from each page, and the pages now live at
+// dist/src/pages/<page>/ — so copy them beside the pages (-> dist/src/pages/), not
+// at the dist root. (models.json keeps "../models/..." so the web server's
+// path.resolve(__dirname, modelObj.path) still resolves to repo/models.)
+copyTargets.push(
+    { src: "models", dest: "src/pages" },
+    { src: "pdfs", dest: "src/pages" }
+);
 
 export default defineConfig({
     root,
@@ -71,11 +75,11 @@ export default defineConfig({
         emptyOutDir: true,
         rollupOptions: {
             input: {
-                framework: r("mainview/framework.html"),
-                modelview: r("modelview/modelview.html"),
-                render: r("render/render.html"),
-                mocaprender: r("mocaprender/render.html"),
-                mocap: r("mocap/mocap.html"),
+                framework: r("src/pages/mainview/framework.html"),
+                modelview: r("src/pages/modelview/modelview.html"),
+                render: r("src/pages/render/render.html"),
+                mocaprender: r("src/pages/mocaprender/render.html"),
+                mocap: r("src/pages/mocap/mocap.html"),
             },
         },
     },

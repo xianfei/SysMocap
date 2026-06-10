@@ -11,9 +11,9 @@
  */
 
 import { createApp } from "vue";
-import MocapStage from "../src/components/MocapStage.vue";
-import InputPreview from "../src/components/InputPreview.vue";
-import { createHolisticPipeline } from "../src/mocap/holisticPipeline.js";
+import MocapStage from "../../components/MocapStage.vue";
+import InputPreview from "../../components/InputPreview.vue";
+import { createHolisticPipeline } from "../../mocap/holisticPipeline.js";
 
 // settings come from the parent framework.js Vue app (cross-iframe, file://)
 const globalSettings = window.parent.window.sysmocapApp.settings;

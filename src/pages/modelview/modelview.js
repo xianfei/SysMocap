@@ -7,6 +7,6 @@
  */
 
 import { createApp } from "vue";
-import ModelViewer from "../src/components/ModelViewer.vue";
+import ModelViewer from "../../components/ModelViewer.vue";
 
 createApp(ModelViewer).mount("#app");

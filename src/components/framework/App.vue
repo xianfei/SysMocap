@@ -618,7 +618,7 @@ window.startMocap = async function (e) {
                 width: parseInt(winWidth / 2) - 20,
                 height: parseInt(((winWidth - 40) * 10) / 32),
             });
-            bw.webContents.loadFile("dist/mocap/mocap.html");
+            bw.webContents.loadFile("dist/src/pages/mocap/mocap.html");
             if (window.sysmocapApp.settings.dev.openDevToolsWhenMocap)
                 bw.webContents.openDevTools({ mode: "detach" });
             document.getElementById("foo").src = "../render/render.html";

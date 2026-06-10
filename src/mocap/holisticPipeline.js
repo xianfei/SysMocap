@@ -117,10 +117,11 @@ export function createHolisticPipeline({ settings, fileType, onRigged }) {
         // Node fs, so locateFile must return an ABSOLUTE filesystem path, not a
         // URL/relative path (fs.open would resolve it against cwd -> ENOENT).
         // Derive the absolute path from the page URL so it works from the
-        // bundled chunk without relying on __dirname/cwd:
-        // file://.../dist/<page>/render.html -> .../dist/node_modules/@mediapipe/...
+        // bundled chunk without relying on __dirname/cwd. Pages live at
+        // dist/src/pages/<page>/render.html, so node_modules (copied to the dist
+        // root) is three levels up: dist/src/pages/<page>/ -> dist/node_modules.
         locateFile: (file) => {
-            const rel = `../node_modules/@mediapipe/holistic/${file}`;
+            const rel = `../../../node_modules/@mediapipe/holistic/${file}`;
             try {
                 return require("url").fileURLToPath(
                     new URL(rel, window.location.href)

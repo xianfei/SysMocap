@@ -11,7 +11,7 @@
  */
 
 import { createApp, toRaw } from "vue";
-import App from "../src/components/framework/App.vue";
+import App from "../../components/framework/App.vue";
 
 const app = createApp(App);
 // Vue 3 template scope can't see Node globals; ModelLibraryTab's openModelViewer
