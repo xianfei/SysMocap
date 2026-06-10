@@ -45,10 +45,11 @@ const copyTargets = [
     "icons/sysmocap.ico",
     // Built-in model files + thumbnails: referenced via runtime strings in
     // models.json (path / picBg = "../models/...") that Vite can't see at
-    // build time, so copy the dir verbatim. (fonts/ and the pdf preview PNGs
-    // are <link>/<img> refs Vite already bundles into dist/assets/, and the
-    // help PDFs load from the source pdfviewer/ — none of those need copying.)
+    // build time, so copy the dir verbatim. (fonts/ is a <link> Vite bundles.)
     "models",
+    // about-section preview PNGs are runtime <img :src="'../pdfs/...'"> refs
+    // (framework.html loads from dist/mainview/, so ../pdfs -> dist/pdfs).
+    "pdfs",
 ].map((src) => ({ src, dest: "" }));
 
 export default defineConfig({
