@@ -104,7 +104,12 @@ function createWindow() {
     });
 
     // and load the index.html of the app.
-    mainWindow.loadFile("mainview/framework.html");
+    // Renderer pages are served from the Vite build output (dist/); the dist
+    // tree mirrors the source layout so relative iframe srcs (../render/...,
+    // ../mocaprender/...) and the discrete BrowserView still resolve, and all
+    // pages share one file:// origin for the localStorage handoff (Invariant 1).
+    // Run `npm run build` first (npm start does this). See docs/REFACTOR.md.
+    mainWindow.loadFile("dist/src/pages/mainview/framework.html");
     if(storage.getItem("useDark")){
         nativeTheme.themeSource = "dark";
     }else{
@@ -276,8 +281,19 @@ function createWindow() {
 function createModelViewerWindow(args) {
     // console.log(screen.getPrimaryDisplay().scaleFactor)
     // Create the browser window.
+    // Liquid Glass (macOS 26+) replaces the frosted-glass vibrancy. It needs a
+    // transparent window and NO vibrancy (vibrancy overrides it and looks blurry).
+    var useLiquid =
+        args.useLiquidGlass &&
+        platform === "darwin" &&
+        parseInt(process.getSystemVersion(), 10) >= 26;
+    // tell the model viewer page whether glass is actually active, so it makes its
+    // body fully transparent (letting the window's Liquid Glass show through).
+    args.liquidGlassActive = useLiquid;
     var addtionalArgs = { backgroundColor: "#eee" };
-    if (args.useGlass) {
+    if (useLiquid) {
+        addtionalArgs = { transparent: true, backgroundColor: "#00000000" };
+    } else if (args.useGlass) {
         addtionalArgs = {
             vibrancy: 'hud',
             visualEffectState: 'active',
@@ -312,7 +328,21 @@ function createModelViewerWindow(args) {
 
     viewer.webContents.once('dom-ready', () => {
         viewer.show();
-        viewer.loadFile("modelview/modelview.html");
+        if (useLiquid) {
+            // electron-liquid-glass uses private macOS APIs; guard the native load
+            // so a missing / ABI-mismatched prebuild can't crash the window.
+            try {
+                const liquidGlass = require("electron-liquid-glass");
+                viewer.setWindowButtonVisibility(true);
+                liquidGlass.addView(viewer.getNativeWindowHandle(), {
+                    cornerRadius: 12,
+                    opaque: false,
+                });
+            } catch (e) {
+                console.error("electron-liquid-glass unavailable:", e && e.message);
+            }
+        }
+        viewer.loadFile("dist/src/pages/modelview/modelview.html");
     });
 
     // Open the DevTools.
@@ -416,6 +446,7 @@ ipcMain.on("openPDF", function (event, arg) {
 var worker = null;
 
 ipcMain.on("startWebServer", function (event, ...arg) {
+    if (worker) worker.terminate(); // never leak a previous worker thread
     worker = new Worker(__dirname + "/webserv/worker.js");
     worker.postMessage({ type: "startWebServer", arg: arg });
 });
@@ -432,8 +463,16 @@ ipcMain.on("sendBoradcastNew", function (event, arg) {
 });
 
 ipcMain.on("stopWebServer", function (event, arg) {
-    if (worker) worker.postMessage({ type: "stopWebServer" });
+    if (worker) {
+        worker.postMessage({ type: "stopWebServer" });
+        worker.terminate(); // free the thread + its listening socket (was leaked)
+    }
     worker = null;
+});
+
+// model viewer edited a user model -> relay the fresh list to the main window
+ipcMain.on("userModelsChanged", function (event, list) {
+    if (mainWindow) mainWindow.webContents.send("userModelsChanged", list);
 });
 
 // This method will be called when Electron has finished

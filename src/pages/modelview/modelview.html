@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
+        />
+        <title>ModelVierer</title>
+        <link rel="stylesheet" href="../../../node_modules/mdui/dist/css/mdui.css" />
+        <script src="../../../node_modules/mdui/dist/js/mdui.js"></script>
+        <!-- Vue 3 + three/vrm/svelte-jsoneditor are ESM-bundled via modelview.js -->
+
+        <script src="../../../node_modules/lil-gui/dist/lil-gui.umd.min.js"></script>
+
+        <link rel="stylesheet" href="../../../fonts/fonts.css" />
+
+        <style>
+            body {
+                /* !important on both: Vite injects the bundled mdui CSS AFTER
+                   this inline <style> (unlike the source <link> order), so
+                   mdui's body rules (font-family:Roboto + opaque background)
+                   would otherwise win. The main window dodges this by setting
+                   these via an inline style= attribute on <body>; modelview
+                   uses a <style> block, hence the explicit !important. */
+                font-family: "Quicksand", "NowarRounded" !important;
+                background-color: #fff3 !important;
+            }
+
+            @media (prefers-color-scheme: dark) {
+                body {
+                    background-color: #2222 !important;
+                }
+            }
+
+            .titlebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 30px;
+                z-index: 1000;
+                -webkit-app-region: drag;
+            }
+
+            canvas {
+                display: block;
+            }
+
+            ::-webkit-scrollbar {
+                display: none;
+            }
+
+            .jsoneditor {
+                border: none !important;
+            }
+
+            .jse-absolute-popup {
+                transform: scale(0.75);
+                transform-origin: 100% 100%;
+            }
+
+            .jse-sort {
+                display: none;
+            }
+
+            .jse-transform {
+                display: none;
+            }
+
+            .jse-powered-by {
+                display: none;
+            }
+
+            @media screen and (min-width: 800px) {
+                body {
+                    --side-bar-width: 313px;
+                }
+            }
+
+            @media screen and (max-width: 799px) {
+                body {
+                    --side-bar-width: 39.125vw;
+                }
+            }
+
+            /* .jse-search{display: none;} */
+        </style>
+    </head>
+
+    <body>
+        <div class="titlebar"></div>
+        <div id="app"></div>
+        <script src="./modelview.js" type="module"></script>
+    </body>
+</html>

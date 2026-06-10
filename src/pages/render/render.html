@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+    <!--
+/**
+ *  Render Page (discrete render-iframe) — mounts the shared MocapStage SFC.
+ *
+ *  A part of SysMocap, open sourced under Mozilla Public License 2.0
+ *
+ *  https://github.com/xianfei/SysMocap
+ *
+ *  xianfei 2022.3
+ */
+-->
+    <head>
+        <meta charset="utf-8" />
+        <title>Mocap</title>
+
+        <meta
+            name="viewport"
+            content="viewport-fit=cover, user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1"
+        />
+
+        <link rel="stylesheet" href="render.css" />
+        <link rel="stylesheet" href="../../../node_modules/mdui/dist/css/mdui.css" />
+        <script src="../../../node_modules/mdui/dist/js/mdui.js"></script>
+    </head>
+
+    <body class="mdui-theme-layout-auto" style="background-color: #0000">
+        <div id="app"></div>
+
+        <!-- window globals used imperatively by avatarRenderer:
+             html2canvas + RecordRTC (recording), Kalidokit (Utils/Vector helpers).
+             three / @pixiv/three-vrm are ESM-bundled via avatarRenderer's imports. -->
+        <script src="../../../utils/html2canvas.js"></script>
+        <script src="../../../utils/RecordRTC.js"></script>
+        <script src="../../../node_modules/kalidokit/dist/kalidokit.umd.js"></script>
+        <script src="./render.js" defer type="module"></script>
+    </body>
+</html>

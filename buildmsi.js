@@ -74,6 +74,7 @@ async function harness() {
                 path.basename(file, ".msi") +
                     "-Windows-" +
                     arch +
+                    "-v" + require("./package.json").version +
                     "-installer.msi"
             );
 

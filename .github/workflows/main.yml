@@ -22,7 +22,7 @@ jobs:
     # create a build matrix for jobs
     strategy:
       matrix:
-        os: [windows-2019, macos-13]
+        os: [windows-2022, macos-14]
 
     steps:
       # step1: check out repository
@@ -33,16 +33,16 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
 
       - name: setup python
         uses: actions/setup-python@v5
-        if: matrix.os == 'macos-13'
+        if: matrix.os == 'macos-14'
         with:
           python-version: 3.12
 
       - name: setup appdmg
-        if: matrix.os == 'macos-13'
+        if: matrix.os == 'macos-14'
         run: |
           python3 -m pip install setuptools
           npm install -g appdmg@0.6.6
@@ -54,7 +54,7 @@ jobs:
 
       # step4: build app for mac/win
       - name: build windows app
-        if: matrix.os == 'windows-2019'
+        if: matrix.os == 'windows-2022'
         run: |
           npm install electron-wix-msi
           npm run package:win64
@@ -67,7 +67,7 @@ jobs:
           GH_TOKEN: ${{ secrets.SECRET_TOKEN }}
 
       - name: build mac app
-        if: matrix.os == 'macos-13'
+        if: matrix.os == 'macos-14'
         run: |
           sed -i '' '137,149d' `npm root -g`/appdmg/lib/appdmg.js
           npm run package:mac64
@@ -77,32 +77,10 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.SECRET_TOKEN }}
 
-      - name: Get the version tag
-        if: matrix.os == 'macos-13'
-        run: echo "VERSION_TAG=$(git describe --tags)" >> $GITHUB_ENV
-
-      - name: Rename files in OutApp/packages
-        if: matrix.os == 'macos-13'
-        run: |
-          for file in OutApp/packages/*; do
-            # 获取文件扩展名
-            ext="${file##*.}"
-            # 获取不带扩展名的文件名
-            base="${file%.*}"
-            # 重命名文件，添加版本号
-            mv "$file" "${base}-${{ env.VERSION_TAG }}.$ext"
-          done
-
-      - name: Rename files in OutApp/packages win
-        if: matrix.os == 'windows-2019'
-        run: |
-          $versionTag = git describe --tags
-          Get-ChildItem OutApp/packages -File | ForEach-Object {
-            $baseName = $_.BaseName
-            $extension = $_.Extension
-            $newName = "${baseName}-${versionTag}${extension}"
-            Rename-Item $_.FullName $newName
-          }
+      # Artifacts are already version-stamped by the package scripts (they read
+      # package.json's version via $npm_package_version / require(...)), so the old
+      # git-describe rename steps are gone. Keep package.json's version in sync with
+      # the release tag (e.g. tag v0.8.0 <-> "version": "0.8.0").
 
       # step6: upload artifacts
       - name: upload artifacts
@@ -117,5 +95,8 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: "OutApp/packages/**"
+          # publish as a draft so a tag push doesn't immediately go public —
+          # review the artifacts, then hit "Publish release" in the GitHub UI
+          draft: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

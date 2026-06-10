@@ -1,17 +1,57 @@
-/**
- *  SysMocap Main GUI (display when boot finish)
- *
- *  A part of SysMocap, open sourced under Mozilla Public License 2.0
- *
- *  https://github.com/xianfei/SysMocap
- *
- *  xianfei 2022.3
- */
+<!--
+  Framework (main GUI) root: shell (titlebar + the three tabs). All state lives in
+  the shared reactive store; this component owns the imperative logic (theme,
+  startMocap/BrowserView, right-click menu, update check, the #foo iframe bridge),
+  relocated near-verbatim from the former framework.js via an `app = state` alias.
 
-var ipcRenderer = null;
-var remote = null;
-var platform = "web";
+  A part of SysMocap, open sourced under Mozilla Public License 2.0
+  https://github.com/xianfei/SysMocap
+-->
+<template>
+    <TitleBar />
+    <div
+        class="line"
+        style="position: fixed; top: 44px; transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1)"
+        :style="{ opacity: showLine ? '1' : '0' }"
+    ></div>
+    <div style="padding: 10px 20px; margin-top: 44px">
+        <ModelLibraryTab />
+        <MocapTab />
+        <SettingsTab />
+    </div>
+</template>
 
+<script>
+import { onMounted, watch, nextTick, toRefs } from "vue";
+import TitleBar from "./TitleBar.vue";
+import ModelLibraryTab from "./ModelLibraryTab.vue";
+import MocapTab from "./MocapTab.vue";
+import SettingsTab from "./SettingsTab.vue";
+import {
+    state,
+    remote,
+    ipcRenderer,
+    shell,
+    platform,
+    darkMode,
+    saveSettings,
+    addUserModels,
+    removeUserModels,
+    setUserModels,
+    languages,
+} from "./store.js";
+import {
+    argbFromHex,
+    themeFromSourceColor,
+    themeFromImage,
+    sourceColorFromImage,
+    applyTheme,
+} from "../../../node_modules/@material/material-color-utilities/index.js";
+
+// alias: keeps the relocated framework.js logic verbatim (app.X === state.X, reactive)
+const app = state;
+
+// --- helpers (relocated from framework.js module scope) ---
 var mixamorig = {
     "Hips": {
         "name": "mixamorigHips",
@@ -141,16 +181,6 @@ function domBoom(target, onfinish) {
     );
 }
 
-var darkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
-
-import {
-    argbFromHex,
-    themeFromSourceColor,
-    themeFromImage,
-    sourceColorFromImage,
-    applyTheme,
-} from "../node_modules/@material/material-color-utilities/index.js";
-
 function rgba2hex(rgba) {
     rgba = rgba.match(
         /^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i
@@ -163,118 +193,14 @@ function rgba2hex(rgba) {
         : "";
 }
 
-if (typeof require != "undefined") {
-    // import electron remote
-    remote = require("@electron/remote");
-
-    ipcRenderer = require("electron").ipcRenderer;
-
-    const { shell } = require("electron");
-
-    platform = require("os").platform();
-
-    // import setting utils
-    const {
-        getSettings,
-        globalSettings,
-        saveSettings,
-        userModels,
-        addUserModels,
-        removeUserModels,
-    } = require("../utils/setting.js");
-
-    // set theme
-    document.body.setAttribute(
-        "class",
-        "mdui-theme-layout-auto mdui-theme-primary-" +
-            globalSettings.ui.themeColor +
-            " mdui-theme-accent-" +
-            globalSettings.ui.themeColor
-    );
-
-    var f = async () => {
-        var color = window.getComputedStyle(
-            document.querySelector(".mdui-color-theme"),
-            null
-        ).backgroundColor;
-        var hex = rgba2hex(color);
-        var theme = await themeFromSourceColor(argbFromHex(hex));
-        applyTheme(theme, { target: document.body, dark: darkMode });
-        // console.log(theme)
-        ipcRenderer.send('tabChanged',window.sysmocapApp.tab,document.body.style.getPropertyValue('--md-sys-color-primary'),document.body.style.getPropertyValue('--md-sys-color-primary-container'));
-    };
-    f();
-
-    // import languages
-    const { languages } = require("../utils/language.js");
-
-    // import built-in models
-    var builtInModels = require("../models/models.json");
-
-    var app = new Vue({
-        el: "#vue-mount",
-        data: {
-            tab: "model",
-            builtIn: builtInModels,
-            selectModel: localStorage.getItem("selectModel")
-                ? localStorage.getItem("selectModel")
-                : JSON.stringify(builtInModels[0]),
-            language: languages[globalSettings.ui.language],
-            videoSource: "camera",
-            videoPath: "",
-            showModelImporter: 0,
-            modelImporterName: "",
-            modelImporterType: "",
-            modelImporterPath: "",
-            modelImporterImg: "",
-            settings: globalSettings,
-            appVersion: remote.getGlobal("appInfo").appVersion,
-            glRenderer: "Unknown",
-            platform: platform,
-            userModels: JSON.parse(JSON.stringify(userModels)),
-            theme: {},
-            document: document,
-            camera: "",
-            cameras: [],
-            process: process,
-            checkingUpdate: false,
-            hasUpdate: null,
-            updateError:null,
-            isLatest:false,
-            disableAutoUpdate:localStorage.getItem('disableUpdate'),
-            showLine: false
-        },
-        computed: {
-            bg: function () {
-                this.settings.ui.themeColor;
-                var color = window.getComputedStyle(
-                    document.querySelector(".mdui-color-theme"),
-                    null
-                ).backgroundColor;
-                // console.log(color);
-                return color;
-            },
-        },
-        mounted() {
-            var modelOnload = async function () {
-                for (var e of document.querySelectorAll(".my-img")) {
-                    if (e.src.includes("framework.html")) continue;
-                    var theme = await themeFromImage(e);
-                    applyTheme(theme, {
-                        target: e.parentElement,
-                        dark: darkMode,
-                    });
-                }
-            };
-            if (this.settings.ui.useNewModelUI) modelOnload();
-            for(var e of document.querySelectorAll("div.color-dot")){
-                e.style.boxShadow = e.computedStyleMap().get('background-color').toString().replace('rgb','rgba').replace(')',', 0.6) 0px 2px 6px')
-            }
-
-        },
-        watch: {
-            settings: {
-                handler(newVal, oldVal) {
+export default {
+    name: "FrameworkApp",
+    components: { TitleBar, ModelLibraryTab, MocapTab, SettingsTab },
+    setup() {
+        // --- watchers (relocated from the old createApp watch:{}) ---
+        watch(
+            () => state.settings,
+            (newVal, oldVal) => {
                     // save when changed
                     // console.log('settings changed')
                     document.body.setAttribute(
@@ -329,34 +255,85 @@ if (typeof require != "undefined") {
                     app.language = languages[app.settings.ui.language];
 
                     
-                },
-                deep: true,
             },
-            selectModel: {
-                handler(newVal, oldVal) {
-                    localStorage.setItem("selectModel", app.selectModel);
-                },
-                deep: true,
+            { deep: true }
+        );
+        watch(
+            () => state.selectModel,
+            () => {
+                localStorage.setItem("selectModel", app.selectModel);
             },
-            camera: (newVal, oldVal) => {
-                // console.log({
-                //     a: "last-choosed-camera",
-                //     b: newVal,
-                //     c: oldVal,
-                //     d: localStorage.getItem("last-choosed-camera"),
-                // });
-                if (oldVal != "")
-                    localStorage.setItem("last-choosed-camera", newVal);
-            },
-            disableAutoUpdate: (newVal, oldVal) => {
-                if(newVal)localStorage.setItem('disableUpdate',true)
-            },
-            tab:(a,b)=>{
-                ipcRenderer.send('tabChanged',window.sysmocapApp.tab,document.body.style.getPropertyValue('--md-sys-color-primary'),document.body.style.getPropertyValue('--md-sys-color-primary-container'));
+            { deep: true }
+        );
+        watch(
+            () => state.camera,
+            (newVal, oldVal) => {
+                if (oldVal != "") localStorage.setItem("last-choosed-camera", newVal);
             }
-        },
-    });
+        );
+        watch(
+            () => state.disableAutoUpdate,
+            (newVal) => {
+                if (newVal) localStorage.setItem("disableUpdate", true);
+                else localStorage.removeItem("disableUpdate");
+            }
+        );
+        watch(
+            () => state.tab,
+            () => {
+                ipcRenderer.send(
+                    "tabChanged",
+                    window.sysmocapApp.tab,
+                    document.body.style.getPropertyValue("--md-sys-color-primary"),
+                    document.body.style.getPropertyValue("--md-sys-color-primary-container")
+                );
+            }
+        );
 
+        onMounted(() => {
+            document.body.setAttribute(
+                "class",
+                "mdui-theme-layout-auto mdui-theme-primary-" +
+                    app.settings.ui.themeColor +
+                    " mdui-theme-accent-" +
+                    app.settings.ui.themeColor
+            );
+            window.sysmocapApp = app;
+
+            var f = async () => {
+        // read the themed color from .mdui-text-color-theme (which survives after
+        // Vue mounts) instead of the old .mdui-color-theme that lived only in a
+        // now-removed v-if="false" block; otherwise the query is null, f() throws,
+        // no Material-You theme is applied, and main.js's tabChanged Color() crashes
+        var color = window.getComputedStyle(
+            document.querySelector(".mdui-text-color-theme"),
+            null
+        ).color;
+        var hex = rgba2hex(color);
+        var theme = await themeFromSourceColor(argbFromHex(hex));
+        applyTheme(theme, { target: document.body, dark: darkMode });
+        // console.log(theme)
+        ipcRenderer.send('tabChanged',window.sysmocapApp.tab,document.body.style.getPropertyValue('--md-sys-color-primary'),document.body.style.getPropertyValue('--md-sys-color-primary-container'));
+            };
+            f();
+
+            // --- mounted() body (model image themes + color-dot shadows) ---
+            var modelOnload = async function () {
+                for (var e of document.querySelectorAll(".my-img")) {
+                    if (e.src.includes("framework.html")) continue;
+                    var theme = await themeFromImage(e);
+                    applyTheme(theme, {
+                        target: e.parentElement,
+                        dark: darkMode,
+                    });
+                }
+            };
+            if (app.settings.ui.useNewModelUI) modelOnload();
+            for(var e of document.querySelectorAll("div.color-dot")){
+                e.style.boxShadow = e.computedStyleMap().get('background-color').toString().replace('rgb','rgba').replace(')',', 0.6) 0px 2px 6px')
+            }
+
+            // --- post-mount imperative code (relocated from framework.js) ---
     navigator.mediaDevices.enumerateDevices().then((mediaDevices) => {
         var lastChoosed = localStorage.getItem("last-choosed-camera");
         for (var mediaDevice of mediaDevices)
@@ -372,7 +349,7 @@ if (typeof require != "undefined") {
                 app.camera = lastChoosed;
             }
         }
-        app.$nextTick(() => {
+        nextTick(() => {
             new mdui.Select("#demo-js-3");
         });
     });
@@ -435,7 +412,14 @@ if (typeof require != "undefined") {
     contentDom.ondrop = (e) => {
         e.preventDefault();
         //console.log(e);
-        var filePath = e.dataTransfer.files[0].path.replaceAll("\\", "/");
+        var file = e.dataTransfer.files[0];
+        // Electron 32 removed File.path; webUtils.getPathForFile is the replacement (available since Electron 30)
+        var { webUtils } = require("electron");
+        var filePath = (
+            webUtils && webUtils.getPathForFile
+                ? webUtils.getPathForFile(file)
+                : file.path
+        ).replaceAll("\\", "/");
         // console.log(filePath);
         var strs1 = filePath.split("/");
         var name_ = strs1[strs1.length - 1];
@@ -592,10 +576,8 @@ if (typeof require != "undefined") {
     };
 
     mdui.mutation();
-} else {
-    // todo
-}
 
+            // --- iframe data bridge, startMocap, update check (formerly module scope) ---
 var isMocaping = false;
 
 const iframeWindow = document.getElementById("foo").contentWindow;
@@ -608,6 +590,20 @@ ipcRenderer.on("switch-tab", (ev, data) => {
     window.sysmocapApp.tab = data;
 });
 
+// the model viewer (a separate window) saved a model edit -> re-sync the user-model
+// list so the library + the next openModelViewer reflect it (#75/#65). electron-
+// localstorage caches per-process, so we take the fresh list from the IPC payload
+// rather than re-reading storage (which would return this window's stale cache).
+ipcRenderer.on("userModelsChanged", (ev, list) => {
+    if (!Array.isArray(list)) return;
+    setUserModels(list); // keep setting.js's in-memory list current (avoid clobber on next import)
+    app.userModels = JSON.parse(JSON.stringify(list));
+    nextTick(() => {
+        addRightClick();
+        if (app.settings.ui.useNewModelUI) modelOnload();
+    });
+});
+
 window.startMocap = async function (e) {
     if (process.platform == "darwin" && app.videoSource == "camera")
         if (
@@ -615,20 +611,31 @@ window.startMocap = async function (e) {
             "granted"
         ) {
             if (!(await remote.systemPreferences.askForMediaAccess("camera"))) {
-                alert("需要授予摄像头使用权限");
+                alert(app.language.tabMocap.needCameraPermission);
                 return;
             }
         }
-    if (e.innerHTML.indexOf(app.language.tabMocap.start) != -1) {
+    // drive the start/stop state off the boolean, not the localized button text
+    // (which would misfire if the UI language changed mid-session).
+    if (!isMocaping) {
+        // file mode needs a chosen video first, else the pipeline sets
+        // videoElement.src = "undefined" and the loading spinner hangs forever
+        if (app.videoSource === "file" && !(app.videoPath && app.videoPath[0])) {
+            alert(app.language.tabMocap.noVideoSelected);
+            return;
+        }
         isMocaping = true;
         localStorage.setItem("modelInfo", app.selectModel);
         localStorage.setItem("useCamera", app.videoSource);
         localStorage.setItem("cameraId", app.camera);
         localStorage.setItem("videoFile", app.videoPath[0]);
 
-        if (window.sysmocapApp.settings.performance.useDescrertionProcess) {
-            const win = remote.getCurrentWindow();
-            const bw = win.getBrowserView();
+        const win = remote.getCurrentWindow();
+        const bw = win.getBrowserView();
+        // the discrete path needs the BrowserView, which is created at launch from the
+        // persisted setting; if the user toggled the setting on without restarting, bw
+        // is null -> fall back to the integrated page rather than crashing.
+        if (window.sysmocapApp.settings.performance.useDescrertionProcess && bw) {
             var winWidth = parseInt(win.getSize()[0]);
             bw.setBounds({
                 x: parseInt(winWidth / 2),
@@ -638,7 +645,7 @@ window.startMocap = async function (e) {
                 width: parseInt(winWidth / 2) - 20,
                 height: parseInt(((winWidth - 40) * 10) / 32),
             });
-            bw.webContents.loadFile("mocap/mocap.html");
+            bw.webContents.loadFile("dist/src/pages/mocap/mocap.html");
             if (window.sysmocapApp.settings.dev.openDevToolsWhenMocap)
                 bw.webContents.openDevTools({ mode: "detach" });
             document.getElementById("foo").src = "../render/render.html";
@@ -654,8 +661,10 @@ window.startMocap = async function (e) {
         if (window.sysmocapApp.settings.performance.useDescrertionProcess) {
             const win = remote.getCurrentWindow();
             const bw = win.getBrowserView();
-            bw.setBounds({ x: 0, y: 0, width: 0, height: 0 });
-            bw.webContents.loadURL("about:blank");
+            if (bw) {
+                bw.setBounds({ x: 0, y: 0, width: 0, height: 0 });
+                bw.webContents.loadURL("about:blank");
+            }
         }
         document.getElementById("foo").src = "about:blank";
 
@@ -675,6 +684,7 @@ if (window.sysmocapApp.settings.performance.useDescrertionProcess)
             if (!isMocaping) return;
             const win = remote.getCurrentWindow();
             const bw = win.getBrowserView();
+            if (!bw) return;
             var winWidth = parseInt(win.getSize()[0]);
             bw.setBounds({
                 x: parseInt(winWidth / 2),
@@ -738,3 +748,9 @@ window.addEventListener('scroll',function(e){
         window.sysmocapApp.showLine = false
     }
   })
+        });
+
+        return { ...toRefs(state) };
+    },
+};
+</script>

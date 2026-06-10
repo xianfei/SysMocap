@@ -48,7 +48,7 @@ blockquote {
     opacity: 0.8;
     position: absolute;
     display: inline-block;
-    width: 62px;
+    width: 38px;
     height: 14px;
     line-height: 14px;
     text-align: center;
@@ -58,7 +58,7 @@ blockquote {
     padding: 2px;
     border-radius: 7px;
     margin: 3px;
-    margin-left: 10px;
+    margin-left: 8px;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -138,7 +138,7 @@ blockquote {
 }
 
 .tab-bar label {
-    width: 110px;
+    width: 113px;
     height: 32px;
     line-height: 32px;
     margin-top: 1px;
@@ -556,4 +556,13 @@ button {
 
 .mdui-slider-discrete .mdui-slider-thumb span {
     top: 0 !important;
+}
+
+
+.mdui-dialog{
+    border-radius: 15px !important;
+}
+
+.mdui-tooltip{
+    border-radius: 10px !important;
 }
