@@ -287,6 +287,9 @@ function createModelViewerWindow(args) {
         args.useLiquidGlass &&
         platform === "darwin" &&
         parseInt(process.getSystemVersion(), 10) >= 26;
+    // tell the model viewer page whether glass is actually active, so it makes its
+    // body fully transparent (letting the window's Liquid Glass show through).
+    args.liquidGlassActive = useLiquid;
     var addtionalArgs = { backgroundColor: "#eee" };
     if (useLiquid) {
         addtionalArgs = { transparent: true, backgroundColor: "#00000000" };

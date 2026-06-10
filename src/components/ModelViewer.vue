@@ -275,6 +275,14 @@ for (var i = 0; i < process.argv.length; i++) {
     }
 }
 
+// When Liquid Glass is active (decided by main.js), the window itself provides the
+// glass, so make the page fully transparent — overriding the frosted semi-white body
+// background set !important in modelview.html's <style>. Otherwise keep that frosted
+// background.
+if (args && args.liquidGlassActive) {
+    document.body.style.setProperty("background-color", "transparent", "important");
+}
+
 export default {
     name: "ModelViewer",
     data() {
