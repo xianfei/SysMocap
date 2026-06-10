@@ -1,8 +1,7 @@
 /**
- *  Integrated mocap+render page entry — thin wrapper composing the shared
- *  avatar renderer with the Holistic detection pipeline in one context.
- *  Detection runs locally; solved frames are applied to the avatar and (when
- *  forwarding is enabled) broadcast to the web server over IPC.
+ *  Integrated mocap+render page entry — mounts the shared MocapStage SFC plus
+ *  the InputPreview, runs detection in-page via holisticPipeline, applies each
+ *  solved frame to the stage, and (when forwarding is on) broadcasts it over IPC.
  *
  *  A part of SysMocap, open sourced under Mozilla Public License 2.0
  *
@@ -11,12 +10,10 @@
  *  xianfei 2022.3, last modified 2024.7
  */
 
-import { createAvatarRenderer } from "../src/render/avatarRenderer.js";
-import { createHolisticPipeline } from "../src/mocap/holisticPipeline.js";
 import { createApp } from "vue";
-
-// import languages
-const { languages } = require("../utils/language.js");
+import MocapStage from "../src/components/MocapStage.vue";
+import InputPreview from "../src/components/InputPreview.vue";
+import { createHolisticPipeline } from "../src/mocap/holisticPipeline.js";
 
 // settings come from the parent framework.js Vue app (cross-iframe, file://)
 const globalSettings = window.parent.window.sysmocapApp.settings;
@@ -30,15 +27,14 @@ document.body.setAttribute(
         globalSettings.ui.themeColor
 );
 
-var modelObj = JSON.parse(localStorage.getItem("modelInfo"));
-var fileType = modelObj.path
+const modelObj = JSON.parse(localStorage.getItem("modelInfo"));
+const fileType = modelObj.path
     .substring(modelObj.path.lastIndexOf(".") + 1)
     .toLowerCase();
 
-// Mocap data forwarding: only require electron IPC when forwarding is enabled
-// (so the integrated path stays IPC-free otherwise). Channel names are
-// load-bearing — keep 'startWebServer' and the misspelled 'sendBoradcast'.
-var ipcRenderer = null;
+// Mocap data forwarding: only require electron IPC when forwarding is enabled.
+// Channel names are load-bearing — keep 'startWebServer' and 'sendBoradcast'.
+let ipcRenderer = null;
 if (globalSettings.forward.enableForwarding)
     ipcRenderer = require("electron").ipcRenderer;
 if (ipcRenderer)
@@ -49,46 +45,36 @@ if (ipcRenderer)
         globalSettings.forward.supportForWebXR
     );
 
+const root = createApp({
+    components: { MocapStage, InputPreview },
+    data() {
+        return { settings: globalSettings, modelObj: modelObj };
+    },
+    template:
+        '<MocapStage ref="stage" :settings="settings" :model-obj="modelObj" /><InputPreview />',
+    mounted() {
+        const stage = this.$refs.stage;
+        // detection runs here; each solved frame is forwarded (if enabled) then
+        // applied to the shared stage. Forward-before-apply matches the original.
+        createHolisticPipeline({
+            settings: globalSettings,
+            fileType: fileType,
+            onRigged: (rigged) => {
+                if (ipcRenderer)
+                    ipcRenderer.send("sendBoradcast", {
+                        type: "xf-sysmocap-data",
+                        riggedPose: rigged.riggedPose,
+                        riggedLeftHand: rigged.riggedLeftHand,
+                        riggedRightHand: rigged.riggedRightHand,
+                        riggedFace: rigged.riggedFace,
+                    });
+                stage.pushData(rigged);
+            },
+        });
+    },
+}).mount("#app");
+
 // mirror the avatar stage for video-file input (camera is mirrored via video CSS)
 if (localStorage.getItem("useCamera") !== "camera") {
     document.querySelector("#model").style.transform = "scale(-1, 1)";
 }
-
-const avatar = createAvatarRenderer({
-    settings: globalSettings,
-    modelObj: modelObj,
-});
-
-createHolisticPipeline({
-    settings: globalSettings,
-    fileType: fileType,
-    onRigged: (rigged) => {
-        avatar.tickMocapStats();
-        // forward to the web server first (matches the original ordering)
-        if (ipcRenderer)
-            ipcRenderer.send("sendBoradcast", {
-                type: "xf-sysmocap-data",
-                riggedPose: rigged.riggedPose,
-                riggedLeftHand: rigged.riggedLeftHand,
-                riggedRightHand: rigged.riggedRightHand,
-                riggedFace: rigged.riggedFace,
-            });
-        avatar.applyRigged(rigged);
-    },
-});
-
-// #vue0 target-button overlay (face / half / full)
-var app = createApp({
-    data() {
-        return {
-            target: "face",
-            languages: languages[globalSettings.ui.language],
-        };
-    },
-}).mount("#vue0");
-
-function changeTarget(target) {
-    app.target = target;
-    avatar.setTarget(target);
-}
-window.changeTarget = changeTarget;
