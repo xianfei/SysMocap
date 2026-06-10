@@ -40,6 +40,7 @@ export function createAvatarRenderer({ settings, modelObj, continuousData = null
 
     let currentVrm = null;
     let skeletonHelper;
+    let boneMap = null; // name -> bone, built once after load (avoids per-frame .find)
     let initRotation = {};
 
     const modelPath = resolveModelPath(modelObj.path);
@@ -156,6 +157,11 @@ export function createAvatarRenderer({ settings, modelObj, continuousData = null
                 skeletonHelper = new THREE.SkeletonHelper(model);
                 skeletonHelper.visible = false;
                 scene.add(skeletonHelper);
+                // index bones by name once: rigRotation/rigPosition hit this every
+                // frame, so a Map beats a linear .find over a 50-70-bone skeleton at 60fps
+                boneMap = new Map();
+                for (const bone of skeletonHelper.bones)
+                    if (!boneMap.has(bone.name)) boneMap.set(bone.name, bone);
                 // for glb files
                 scene.add(model);
                 model.rotation.y = Math.PI; // Rotate model 180deg to face camera
@@ -241,7 +247,7 @@ export function createAvatarRenderer({ settings, modelObj, continuousData = null
                 return;
             }
             // find bone in bones by name
-            var b = skeletonHelper.bones.find((bone) => bone.name == skname);
+            var b = boneMap.get(skname);
 
             if (b) {
                 if (!initRotation[name]) {
@@ -294,7 +300,7 @@ export function createAvatarRenderer({ settings, modelObj, continuousData = null
         } else if (skeletonHelper) {
             name = modelObj.binding[name].name; // convert name with model json binding info
             // find bone in bones by name
-            var b = skeletonHelper.bones.find((bone) => bone.name == name);
+            var b = boneMap.get(name);
             if (b) {
                 if (fileType == "fbx") {
                     dampener *= 100;
