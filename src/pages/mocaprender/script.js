@@ -74,7 +74,14 @@ const root = createApp({
     },
 }).mount("#app");
 
-// mirror the avatar stage for video-file input (camera is mirrored via video CSS)
-if (localStorage.getItem("useCamera") !== "camera") {
-    document.querySelector("#model").style.transform = "scale(-1, 1)";
+// mirror the avatar stage per the user's per-source mirror setting, in lockstep with
+// the input-preview mirror (holisticPipeline). Set explicitly so toggling off un-mirrors.
+{
+    const useCamera = localStorage.getItem("useCamera") == "camera";
+    const mirror = useCamera
+        ? globalSettings.preview.mirroringWhenCamera
+        : globalSettings.preview.mirroringWhenVideoFile;
+    document.querySelector("#model").style.transform = mirror
+        ? "scale(-1, 1)"
+        : "scale(1, 1)";
 }

@@ -33,9 +33,16 @@ const stage = createApp(MocapStage, {
     modelObj: modelObj,
 }).mount("#app");
 
-// mirror the stage horizontally for video-file input (matches the camera preview)
-if (localStorage.getItem("useCamera") !== "camera") {
-    document.querySelector("#model").style.transform = "scale(-1, 1)";
+// mirror the avatar stage per the user's per-source mirror setting, in lockstep with
+// the input-preview mirror (holisticPipeline). Set explicitly so toggling off un-mirrors.
+{
+    const useCamera = localStorage.getItem("useCamera") == "camera";
+    const mirror = useCamera
+        ? globalSettings.preview.mirroringWhenCamera
+        : globalSettings.preview.mirroringWhenVideoFile;
+    document.querySelector("#model").style.transform = mirror
+        ? "scale(-1, 1)"
+        : "scale(1, 1)";
 }
 
 // data source: parent relays ipcMain 'sendRenderDataForward' -> onMocapData
