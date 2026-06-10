@@ -140,7 +140,7 @@
                         :style="{ outlineColor: color }"
                     >
                         <img
-                            :src="model.picBg"
+                            :src="resolveModelPath(model.picBg)"
                             style="object-fit: cover; height: 100%; width: 100%"
                         />
                     </div>
@@ -262,6 +262,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { VRMLoaderPlugin, VRMUtils } from "@pixiv/three-vrm";
 // the prebuilt bundle (the package main is Svelte source Rolldown can't parse)
 import { JSONEditor } from "../../node_modules/svelte-jsoneditor/dist/jsoneditor.js";
+import { resolveModelPath } from "../render/modelPath.js";
 
 const { languages } = require("../../utils/language.js");
 const { globalSettings, removeUserModels, addUserModels } = require("../../utils/setting.js");
@@ -360,7 +361,7 @@ export default {
         }
         loader.crossOrigin = "anonymous";
         loader.load(
-            args.model.path,
+            resolveModelPath(args.model.path),
             (gltf) => {
                 let model = null;
                 if (args.model.type == "fbx") {
@@ -469,6 +470,7 @@ export default {
         this._editor = editor;
     },
     methods: {
+        resolveModelPath,
         setupDatGui(skeletonHelper, avatar) {
             const gui = this._gui;
             let folder = gui.addFolder("Skeletons");

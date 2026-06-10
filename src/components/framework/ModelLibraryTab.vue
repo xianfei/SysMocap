@@ -82,7 +82,7 @@
                 <div class="flex-container">
                     <div v-if="settings.ui.useNewModelUI" class="model-item-new user-model" v-for="model in userModels"
                         v-on:click="require('electron').ipcRenderer.send('openModelViewer', {model:toRaw(model),backgroundColor:$event.currentTarget.style.getPropertyValue('--md-sys-color-primary-container')?$event.currentTarget.style.getPropertyValue('--md-sys-color-primary-container'):document.body.style.getPropertyValue('--md-sys-color-primary-container'),color:$event.currentTarget.style.getPropertyValue('--md-sys-color-primary')?$event.currentTarget.style.getPropertyValue('--md-sys-color-primary'):document.body.style.getPropertyValue('--md-sys-color-primary'),textColor:$event.currentTarget.style.getPropertyValue('--md-sys-color-on-primary-container')?$event.currentTarget.style.getPropertyValue('--md-sys-color-on-primary-container'):document.body.style.getPropertyValue('--md-sys-color-on-primary-container'),useGlass:settings.ui.useGlass});">
-                        <img class="my-img" v-bind:src="model.picBg" />
+                        <img class="my-img" v-bind:src="resolveModelPath(model.picBg)" />
                         <i class="mdui-icon material-icons" v-show="model.picBg==''">
                             person_outline</i>
                         <div class="desc">
@@ -117,7 +117,7 @@
                 <div class="flex-container" id="userModels">
                     <div v-if="settings.ui.useNewModelUI" class="model-item-new buildin-model" v-for="model in builtIn"
                         v-on:click="require('electron').ipcRenderer.send('openModelViewer', {model:toRaw(model),backgroundColor:$event.currentTarget.style.getPropertyValue('--md-sys-color-primary-container')?$event.currentTarget.style.getPropertyValue('--md-sys-color-primary-container'):document.body.style.getPropertyValue('--md-sys-color-primary-container'),color:$event.currentTarget.style.getPropertyValue('--md-sys-color-primary')?$event.currentTarget.style.getPropertyValue('--md-sys-color-primary'):document.body.style.getPropertyValue('--md-sys-color-primary'),textColor:$event.currentTarget.style.getPropertyValue('--md-sys-color-on-primary-container')?$event.currentTarget.style.getPropertyValue('--md-sys-color-on-primary-container'):document.body.style.getPropertyValue('--md-sys-color-on-primary-container'),useGlass:settings.ui.useGlass});">
-                        <img class="my-img" v-bind:src="model.picBg" />
+                        <img class="my-img" v-bind:src="resolveModelPath(model.picBg)" />
                         <div class="desc">
                             <h2>{{model.name}}</h2>
                             <div class="type">
@@ -169,6 +169,7 @@
 <script>
 import { computed, toRefs } from "vue";
 import { state } from "./store.js";
+import { resolveModelPath } from "../../render/modelPath.js";
 export default {
     name: "ModelLibraryTab",
     setup() {
@@ -176,7 +177,7 @@ export default {
         const bg = computed(() =>
             window.getComputedStyle(document.querySelector(".mdui-color-theme"), null).backgroundColor
         );
-        return { ...toRefs(state), bg };
+        return { ...toRefs(state), bg, resolveModelPath };
     },
 };
 </script>

@@ -462,7 +462,7 @@
                                 border-radius: 10px;
                                 left: -2px;
                             ">
-                        <img :src="'../pdfs/ismar.png'"
+                        <img :src="'../../../../pdfs/ismar.png'"
                             style="box-shadow: #7773 -1px -1px 2px;width: 70px;position: absolute;top: 13px;display: block;right: -10px;border-radius: 5px 0 0 0;transform: rotate(10deg);">
                         <div style="position: absolute;top: 6px;left: 10px;">
                             <div style="font-size: 10px;margin-bottom: 5px;">ISMAR 2022</div>
@@ -502,7 +502,7 @@
                                 font-size: 14px;
                                 top: -15px;
                                 left: 268px;
-                            "><img :src="'../pdfs/bylw.png'"
+                            "><img :src="'../../../../pdfs/bylw.png'"
                             style="box-shadow: #7773 -1px -1px 2px;width: 70px;position: absolute;top: 15px;display: block;right: -10px;border-radius: 5px 0 0 0;transform: rotate(10deg);">
                         <div style="position: absolute;top: 6px;left: 10px;">
                             <div style="font-size: 10px;margin-bottom: 5px;">本科毕业论文（Chinese Only）</div>

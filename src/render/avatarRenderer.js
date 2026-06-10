@@ -22,6 +22,7 @@ import Stats from "three/addons/libs/stats.module.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { VRMLoaderPlugin, VRMUtils } from "@pixiv/three-vrm";
 import { evalAxisExpr } from "./binding.js";
+import { resolveModelPath } from "./modelPath.js";
 
 /**
  * @param {object} opts
@@ -41,7 +42,7 @@ export function createAvatarRenderer({ settings, modelObj, continuousData = null
     let skeletonHelper;
     let initRotation = {};
 
-    const modelPath = modelObj.path;
+    const modelPath = resolveModelPath(modelObj.path);
     const fileType = modelPath
         .substring(modelPath.lastIndexOf(".") + 1)
         .toLowerCase();

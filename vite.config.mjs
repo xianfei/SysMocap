@@ -45,16 +45,11 @@ const copyTargets = [
     "icons/sysmocap.ico",
 ].map((src) => ({ src, dest: "" }));
 
-// Built-in model files + thumbnails (models.json path/picBg = "../models/...") and
-// the about-section preview PNGs ("../pdfs/...") are runtime-string refs Vite can't
-// see. They're referenced ONE level up from each page, and the pages now live at
-// dist/src/pages/<page>/ — so copy them beside the pages (-> dist/src/pages/), not
-// at the dist root. (models.json keeps "../models/..." so the web server's
-// path.resolve(__dirname, modelObj.path) still resolves to repo/models.)
-copyTargets.push(
-    { src: "models", dest: "src/pages" },
-    { src: "pdfs", dest: "src/pages" }
-);
+// models/ + pdfs/ are deliberately NOT copied into dist (that doubled the app
+// size). The desktop pages load them from the SOURCE dirs at the app root:
+// resolveModelPath() rewrites built-in model paths to "../../../../models/...",
+// and the about-section <img> use "../../../../pdfs/...". The web server reads the
+// source models/ directly (path.resolve(__dirname, modelObj.path) from webserv/).
 
 export default defineConfig({
     root,
