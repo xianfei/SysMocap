@@ -37,10 +37,6 @@ const copyTargets = [
     // (Vue 3 is ESM-imported + bundled now, no longer a classic global script)
     // vendored UMDs referenced as ../utils/*.js by the render pages
     "utils/*.js",
-    // mocap.js is a classic (non-module) capture-only script — Vite does not
-    // bundle it, so copy it verbatim; staying classic preserves its require()
-    // + window-global + __dirname locateFile behavior under nodeIntegration.
-    "src/pages/mocap/mocap.js",
     // favicon referenced by framework.html
     "icons/sysmocap.ico",
 ].map((src) => ({ src, dest: "" }));

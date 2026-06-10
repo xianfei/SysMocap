@@ -60,7 +60,7 @@ Renderer pages share one `file://` origin so `localStorage` (`modelInfo`/`useCam
 Controlled by setting `performance.useDescrertionProcess` (**note the misspelling — it means "discrete process"; the typo is load-bearing, appearing verbatim in settings + branching**). Defaults `true` on macOS, `false` elsewhere.
 
 1. **Integrated** (`== false`): `#foo` iframe → `src/pages/mocaprender/render.html` → `script.js` mounts `MocapStage.vue` + `InputPreview.vue` and drives detection in-page via `holisticPipeline`.
-2. **Discrete** (`== true`): detection split into a **`BrowserView`** (`src/pages/mocap/mocap.html` → `mocap.js`, classic non-SFC capture script) that IPC-sends rigged data; the `#foo` iframe → `src/pages/render/render.html` → `render.js` (render only, `MocapStage.vue` + `ipcSource`). Data flow: `mocap.js` → `send("sendRenderData")` → `main.js` → `mainWindow.send("sendRenderDataForward")` → `App.vue` (framework) → `iframeWindow.onMocapData(data)` → `render.js`.
+2. **Discrete** (`== true`): detection split into a **`BrowserView`** (`src/pages/mocap/mocap.html` → `mocap.js`, a thin ESM entry over the shared `holisticPipeline`) that IPC-sends rigged data; the `#foo` iframe → `src/pages/render/render.html` → `render.js` (render only, `MocapStage.vue` + `ipcSource`). Data flow: `mocap.js` → `send("sendRenderData")` → `main.js` → `mainWindow.send("sendRenderDataForward")` → `App.vue` (framework) → `iframeWindow.onMocapData(data)` → `render.js`.
 
 **The render UI is now unified** — both paths use the same `src/components/MocapStage.vue` (3D stage, target overlay, loading spinner, recording); the integrated page adds `InputPreview.vue`. No more duplicated rig/render code.
 
