@@ -74,3 +74,9 @@ Existing `mainview/ modelview/ render/ mocap/ mocaprender/ webserv/` stay; their
 | F6 (optional) | BrowserView → WebContentsView | serial, isolated | both `main.js`+`framework.js`, one actor |
 
 **Collision rule:** `framework.js`, `main.js`, `setting.js` are the most-shared files — never edit them from two parallel agents. The eval fix + IPC rewiring happen inside the shared-module extraction (one atomic change), guarded by the `Borad` grep count.
+
+## Build gotchas (discovered during F1/F2)
+
+- **CSS injection order:** Vite injects the bundled stylesheet `<link>` (which includes mdui) into `<head>` **after** a page's inline `<style>` block — the opposite of the source `<link>` order. So an inline `<style>` rule that ties on specificity with an mdui rule (notably element selectors like `body { … }`) now *loses*. Fix: set body-level overrides via an inline `style=` **attribute** on `<body>` (highest specificity — what `framework.html`/`render.html` do), or `!important` (what `modelview.html` does for `font-family` + `background-color` to keep its fonts and acrylic glass). Watch for this whenever a page's glass/transparency or custom font depends on overriding mdui.
+- **Runtime-string assets aren't bundled:** assets referenced only via runtime strings (e.g. `models.json` `path`/`picBg = "../models/..."`, `Holistic.locateFile`) are invisible to Vite and must be copied via `vite-plugin-static-copy` (`models/`, `@mediapipe`, the library globals). `<link>`/`<img>`/`@font-face url()` refs in HTML/CSS *are* found and bundled into `dist/assets/`.
+- **File drops need `e.preventDefault()`** in the `drop` handler (not only `dragover`), or Electron navigates to / opens the dropped file.

@@ -4,7 +4,8 @@
   "description": "Video-based motion capture system.",
   "main": "main.js",
   "scripts": {
-    "start": "electron .",
+    "build": "vite build",
+    "start": "npm run build && electron .",
     "package:mac64": "npx @electron/packager ./ SysMocap --icon=icons/sysmocap.icns --platform=darwin --arch=x64 --out ./OutApp --overwrite --usage-description.Camera='该程序需要摄像头权限' --electronVersion 31.1.0 --asar",
     "package:macarm": "npx @electron/packager ./ SysMocap --icon=icons/sysmocap.icns --platform=darwin --arch=arm64 --out ./OutApp --overwrite --usage-description.Camera='该程序需要摄像头权限' --electronVersion 31.1.0 --asar",
     "package:win64": "npx @electron/packager ./ SysMocap --icon=icons/sysmocap.ico --platform=win32 --arch=x64 --out ./OutApp --overwrite --electronVersion 31.1.0 --asar",

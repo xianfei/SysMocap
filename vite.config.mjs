@@ -42,7 +42,12 @@ const copyTargets = [
     "mocap/mocap.js",
     // favicon referenced by framework.html
     "icons/sysmocap.ico",
-    // TODO(F1): also copy fonts/, models/, pdfs/ for a fully runnable build.
+    // Built-in model files + thumbnails: referenced via runtime strings in
+    // models.json (path / picBg = "../models/...") that Vite can't see at
+    // build time, so copy the dir verbatim. (fonts/ and the pdf preview PNGs
+    // are <link>/<img> refs Vite already bundles into dist/assets/, and the
+    // help PDFs load from the source pdfviewer/ — none of those need copying.)
+    "models",
 ].map((src) => ({ src, dest: "" }));
 
 export default defineConfig({

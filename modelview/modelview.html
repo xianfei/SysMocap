@@ -18,13 +18,19 @@
 
         <style>
             body {
-                font-family: "Quicksand", "NowarRounded";
-                background-color: #fff3;
+                /* !important on both: Vite injects the bundled mdui CSS AFTER
+                   this inline <style> (unlike the source <link> order), so
+                   mdui's body rules (font-family:Roboto + opaque background)
+                   would otherwise win. The main window dodges this by setting
+                   these via an inline style= attribute on <body>; modelview
+                   uses a <style> block, hence the explicit !important. */
+                font-family: "Quicksand", "NowarRounded" !important;
+                background-color: #fff3 !important;
             }
 
             @media (prefers-color-scheme: dark) {
                 body {
-                    background-color: #2222;
+                    background-color: #2222 !important;
                 }
             }
 

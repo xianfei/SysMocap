@@ -104,7 +104,12 @@ function createWindow() {
     });
 
     // and load the index.html of the app.
-    mainWindow.loadFile("mainview/framework.html");
+    // Renderer pages are served from the Vite build output (dist/); the dist
+    // tree mirrors the source layout so relative iframe srcs (../render/...,
+    // ../mocaprender/...) and the discrete BrowserView still resolve, and all
+    // pages share one file:// origin for the localStorage handoff (Invariant 1).
+    // Run `npm run build` first (npm start does this). See docs/REFACTOR.md.
+    mainWindow.loadFile("dist/mainview/framework.html");
     if(storage.getItem("useDark")){
         nativeTheme.themeSource = "dark";
     }else{
@@ -312,7 +317,7 @@ function createModelViewerWindow(args) {
 
     viewer.webContents.once('dom-ready', () => {
         viewer.show();
-        viewer.loadFile("modelview/modelview.html");
+        viewer.loadFile("dist/modelview/modelview.html");
     });
 
     // Open the DevTools.
