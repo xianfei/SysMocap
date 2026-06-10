@@ -33,6 +33,8 @@ module.exports = {
                 chooseVideo: "选择视频文件",
                 choosedVideo: "已选择视频文件:",
                 unchoosed: "未选择",
+                needCameraPermission: "需要授予摄像头使用权限",
+                noVideoSelected: "请先选择视频文件！",
                 chooseCamera: "选择摄像头",
             },
             tabSettings: {
@@ -153,6 +155,8 @@ module.exports = {
                 chooseVideo: "Choose Video File",
                 choosedVideo: "Choosed Video File: ",
                 unchoosed: "Unchoosed",
+                needCameraPermission: "Camera permission is required.",
+                noVideoSelected: "Please select a video file first.",
                 chooseCamera: "Choose Camera",
             },
             tabSettings: {

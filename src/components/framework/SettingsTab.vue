@@ -186,8 +186,8 @@
                 </div>
                 <div class="settings-item" v-show="platform=='darwin' && settings.ui.useGlass">
                     <label class="mdui-switch">
-                        <span><i class="mdui-icon material-icons"
-                                style="margin-right: 10px; margin-top: -3px">water_drop</i>{{language.tabSettings.ui.useLiquidGlass}}</span>
+                        <span><span class="material-icons-outlined">
+                                water_drop </span>{{language.tabSettings.ui.useLiquidGlass}}</span>
                         <input type="checkbox" v-model="settings.ui.useLiquidGlass" />
                         <i class="mdui-switch-icon"></i>
                     </label>
@@ -402,7 +402,7 @@
                                 mdui-tooltip="{content: 'If set to true, the solution filters pose landmarks across different input images to reduce jitter. Default to true.'}"
                                 style="margin-top: -2.5px">info_outline</i>
                         </span>
-                        <input type="checkbox" checked />
+                        <input type="checkbox" v-model="settings.mediapipe.smoothLandmarks" />
                         <i class="mdui-switch-icon"></i>
                     </label>
                 </div>
@@ -413,7 +413,7 @@
                                 mdui-tooltip="{content: 'Whether to further refine the landmark coordinates around the eyes and lips, and output additional landmarks around the irises. Default to false.'}"
                                 style="margin-top: -2.5px">info_outline</i>
                         </span>
-                        <input type="checkbox" checked />
+                        <input type="checkbox" v-model="settings.mediapipe.refineFaceLandmarks" />
                         <i class="mdui-switch-icon"></i>
                     </label>
                 </div>
@@ -428,7 +428,7 @@
                                 width: 40%;
                                 margin-bottom: -12px;
                             ">
-                        <input type="range" step="0.1" min="0" max="1" value="0.7" />
+                        <input type="range" step="0.1" min="0" max="1" v-model="settings.mediapipe.minDetectionConfidence" />
                     </label>
                 </div>
                 <div class="settings-item">
@@ -442,7 +442,7 @@
                                 width: 40%;
                                 margin-bottom: -12px;
                             ">
-                        <input type="range" step="0.1" min="0" max="1" value="0.7" />
+                        <input type="range" step="0.1" min="0" max="1" v-model="settings.mediapipe.minTrackingConfidence" />
                     </label>
                 </div>
                 <!-- Setting Tab: About -->

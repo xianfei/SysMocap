@@ -274,6 +274,7 @@ export default {
             () => state.disableAutoUpdate,
             (newVal) => {
                 if (newVal) localStorage.setItem("disableUpdate", true);
+                else localStorage.removeItem("disableUpdate");
             }
         );
         watch(
@@ -595,11 +596,19 @@ window.startMocap = async function (e) {
             "granted"
         ) {
             if (!(await remote.systemPreferences.askForMediaAccess("camera"))) {
-                alert("需要授予摄像头使用权限");
+                alert(app.language.tabMocap.needCameraPermission);
                 return;
             }
         }
-    if (e.innerHTML.indexOf(app.language.tabMocap.start) != -1) {
+    // drive the start/stop state off the boolean, not the localized button text
+    // (which would misfire if the UI language changed mid-session).
+    if (!isMocaping) {
+        // file mode needs a chosen video first, else the pipeline sets
+        // videoElement.src = "undefined" and the loading spinner hangs forever
+        if (app.videoSource === "file" && !(app.videoPath && app.videoPath[0])) {
+            alert(app.language.tabMocap.noVideoSelected);
+            return;
+        }
         isMocaping = true;
         localStorage.setItem("modelInfo", app.selectModel);
         localStorage.setItem("useCamera", app.videoSource);

@@ -446,6 +446,7 @@ ipcMain.on("openPDF", function (event, arg) {
 var worker = null;
 
 ipcMain.on("startWebServer", function (event, ...arg) {
+    if (worker) worker.terminate(); // never leak a previous worker thread
     worker = new Worker(__dirname + "/webserv/worker.js");
     worker.postMessage({ type: "startWebServer", arg: arg });
 });
@@ -462,7 +463,10 @@ ipcMain.on("sendBoradcastNew", function (event, arg) {
 });
 
 ipcMain.on("stopWebServer", function (event, arg) {
-    if (worker) worker.postMessage({ type: "stopWebServer" });
+    if (worker) {
+        worker.postMessage({ type: "stopWebServer" });
+        worker.terminate(); // free the thread + its listening socket (was leaked)
+    }
     worker = null;
 });
 

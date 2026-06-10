@@ -451,7 +451,7 @@ export function createAvatarRenderer({ settings, modelObj, continuousData = null
         // Animate Hands
         if (riggedLeftHand && fileType == "vrm") {
             rigRotation("LeftHand", {
-                z: riggedPose.LeftHand.z,
+                z: riggedPose?.LeftHand?.z ?? 0,
                 y: riggedLeftHand.LeftWrist.y,
                 x: riggedLeftHand.LeftWrist.x,
             });
@@ -473,7 +473,7 @@ export function createAvatarRenderer({ settings, modelObj, continuousData = null
         }
         if (riggedRightHand && fileType == "vrm") {
             rigRotation("RightHand", {
-                z: riggedPose.RightHand.z,
+                z: riggedPose?.RightHand?.z ?? 0,
                 y: riggedRightHand.RightWrist.y,
                 x: riggedRightHand.RightWrist.x,
             });
