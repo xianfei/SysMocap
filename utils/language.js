@@ -47,6 +47,7 @@ module.exports = {
                     themeColor: "主题颜色",
                     isDark: "使用深色模式",
                     useGlass: "使用毛玻璃效果",
+                    useLiquidGlass: "使用液态玻璃代替毛玻璃 (仅限 macOS 26+)",
                     language: "语言",
                 },
                 preview: {
@@ -166,6 +167,7 @@ module.exports = {
                     themeColor: "Themed Color",
                     isDark: "Use Dark Mode",
                     useGlass: "Use Frosted Glass Effect",
+                    useLiquidGlass: "Use Liquid Glass instead of Frosted Glass (macOS 26+ only)",
                     language: "Language",
                 },
                 preview: {

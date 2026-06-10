@@ -41,8 +41,10 @@ const opts = {
     overwrite: true,
     electronVersion: "42.4.0",
     icon: platform === "darwin" ? "icons/sysmocap.icns" : "icons/sysmocap.ico",
-    // MediaPipe assets are read via fs at runtime -> must be real files, not asar'd.
-    asar: { unpack: "**/@mediapipe/**" },
+    // Unpack: MediaPipe assets (read via fs at runtime) + every native module's
+    // .node binary (dlopen can't load from inside the asar archive, e.g.
+    // electron-liquid-glass) -> must be real files on disk.
+    asar: { unpack: "{**/@mediapipe/**,**/*.node}" },
 };
 if (platform === "darwin") opts.usageDescription = { Camera: "该程序需要摄像头权限" };
 

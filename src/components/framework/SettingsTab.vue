@@ -184,6 +184,14 @@
                         <i class="mdui-switch-icon"></i>
                     </label>
                 </div>
+                <div class="settings-item" v-show="platform=='darwin' && settings.ui.useGlass">
+                    <label class="mdui-switch">
+                        <span><i class="mdui-icon material-icons"
+                                style="margin-right: 10px; margin-top: -3px">water_drop</i>{{language.tabSettings.ui.useLiquidGlass}}</span>
+                        <input type="checkbox" v-model="settings.ui.useLiquidGlass" />
+                        <i class="mdui-switch-icon"></i>
+                    </label>
+                </div>
                 <div class="settings-item">
                     <label class="mdui-switch">
                         <span><span class="material-icons-outlined">

@@ -281,8 +281,16 @@ function createWindow() {
 function createModelViewerWindow(args) {
     // console.log(screen.getPrimaryDisplay().scaleFactor)
     // Create the browser window.
+    // Liquid Glass (macOS 26+) replaces the frosted-glass vibrancy. It needs a
+    // transparent window and NO vibrancy (vibrancy overrides it and looks blurry).
+    var useLiquid =
+        args.useLiquidGlass &&
+        platform === "darwin" &&
+        parseInt(process.getSystemVersion(), 10) >= 26;
     var addtionalArgs = { backgroundColor: "#eee" };
-    if (args.useGlass) {
+    if (useLiquid) {
+        addtionalArgs = { transparent: true, backgroundColor: "#00000000" };
+    } else if (args.useGlass) {
         addtionalArgs = {
             vibrancy: 'hud',
             visualEffectState: 'active',
@@ -317,6 +325,20 @@ function createModelViewerWindow(args) {
 
     viewer.webContents.once('dom-ready', () => {
         viewer.show();
+        if (useLiquid) {
+            // electron-liquid-glass uses private macOS APIs; guard the native load
+            // so a missing / ABI-mismatched prebuild can't crash the window.
+            try {
+                const liquidGlass = require("electron-liquid-glass");
+                viewer.setWindowButtonVisibility(true);
+                liquidGlass.addView(viewer.getNativeWindowHandle(), {
+                    cornerRadius: 12,
+                    opaque: false,
+                });
+            } catch (e) {
+                console.error("electron-liquid-glass unavailable:", e && e.message);
+            }
+        }
         viewer.loadFile("dist/src/pages/modelview/modelview.html");
     });
 

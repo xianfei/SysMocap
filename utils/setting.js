@@ -25,6 +25,7 @@ function getSettings() {
                 themeColor: "indigo",
                 isDark: false,
                 useGlass: true,
+                useLiquidGlass: false,
                 language:
                     window.navigator.language.split("-")[0] == "zh"
                         ? "zh"
@@ -68,6 +69,10 @@ function getSettings() {
             valued: true,
             ver: currentVer,
         };
+    // Backfill fields added since ver 0.5. Do NOT bump currentVer for these —
+    // that would discard all existing user settings (the gate above). New fields
+    // just default in when missing from a previously-saved settings object.
+    if (settings.ui.useLiquidGlass === undefined) settings.ui.useLiquidGlass = false;
     return settings;
 }
 

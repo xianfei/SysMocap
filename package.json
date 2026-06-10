@@ -25,6 +25,7 @@
     "@electron/remote": "^2.1.2",
     "@pixiv/three-vrm": "^2.1.2",
     "color": "^4.2.3",
+    "electron-liquid-glass": "^1.1.1",
     "electron-localstorage": "^1.0.5",
     "express": "^4.18.2",
     "express-ws": "^5.0.2",
