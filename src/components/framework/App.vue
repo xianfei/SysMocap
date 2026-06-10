@@ -630,9 +630,12 @@ window.startMocap = async function (e) {
         localStorage.setItem("cameraId", app.camera);
         localStorage.setItem("videoFile", app.videoPath[0]);
 
-        if (window.sysmocapApp.settings.performance.useDescrertionProcess) {
-            const win = remote.getCurrentWindow();
-            const bw = win.getBrowserView();
+        const win = remote.getCurrentWindow();
+        const bw = win.getBrowserView();
+        // the discrete path needs the BrowserView, which is created at launch from the
+        // persisted setting; if the user toggled the setting on without restarting, bw
+        // is null -> fall back to the integrated page rather than crashing.
+        if (window.sysmocapApp.settings.performance.useDescrertionProcess && bw) {
             var winWidth = parseInt(win.getSize()[0]);
             bw.setBounds({
                 x: parseInt(winWidth / 2),
@@ -658,8 +661,10 @@ window.startMocap = async function (e) {
         if (window.sysmocapApp.settings.performance.useDescrertionProcess) {
             const win = remote.getCurrentWindow();
             const bw = win.getBrowserView();
-            bw.setBounds({ x: 0, y: 0, width: 0, height: 0 });
-            bw.webContents.loadURL("about:blank");
+            if (bw) {
+                bw.setBounds({ x: 0, y: 0, width: 0, height: 0 });
+                bw.webContents.loadURL("about:blank");
+            }
         }
         document.getElementById("foo").src = "about:blank";
 
@@ -679,6 +684,7 @@ if (window.sysmocapApp.settings.performance.useDescrertionProcess)
             if (!isMocaping) return;
             const win = remote.getCurrentWindow();
             const bw = win.getBrowserView();
+            if (!bw) return;
             var winWidth = parseInt(win.getSize()[0]);
             bw.setBounds({
                 x: parseInt(winWidth / 2),
