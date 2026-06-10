@@ -12,6 +12,7 @@ module.exports = {
             tabModelLib: {
                 userModel: "用户模型",
                 buildinModel: "内建模型",
+                defaultModel: "默认使用的形象",
                 optAdd: "导入",
                 optHide: "隐藏",
                 dragModel: "把模型拖到这儿来~",
@@ -62,6 +63,7 @@ module.exports = {
                 output: {
                     name: "虚拟形象输出",
                     antialias: "启用抗锯齿",
+                    showFPS: "显示帧率",
                     usePicInsteadOfColor: "使用图片作为背景而不是纯色",
                     bgColor: "背景颜色",
                     bgPicPath: "背景图片（点击更换）",
@@ -78,6 +80,7 @@ module.exports = {
                     enableForwarding:
                         "启用通过 HTTP / WebSocket 的动作/虚拟形象转发",
                     port: "HTTP / WebSocket 端口号",
+                    editPort: "修改端口号",
                     useSSL: "启用安全协议（HTTPS/WSS）",
                     supportForWebXR: "启用WebXR（AR、VR）支持",
                     webXRtips:"WebXR需要HTTPS协议，该系统会在同一端口同时监听HTTPS和HTTP请求",
@@ -134,6 +137,7 @@ module.exports = {
             tabModelLib: {
                 userModel: "User's Models",
                 buildinModel: "Built-in Models",
+                defaultModel: "Default Avatar",
                 optAdd: "Import",
                 optHide: "Hide",
                 dragModel: "Drag model here",
@@ -192,6 +196,7 @@ module.exports = {
                 output: {
                     name: "Virtual Character Output",
                     antialias: "Enable Antialias",
+                    showFPS: "Show FPS",
                     usePicInsteadOfColor:
                         "Use Picture as Background instead of Color",
                     bgColor: "Background Color",
@@ -201,6 +206,7 @@ module.exports = {
                     name: "Mocap Data Forward",
                     enableForwarding: "Enable Forward via HTTP & WebSocket",
                     port: "Port Number of HTTP & WebSocket",
+                    editPort: "Edit Port Number",
                     useSSL: "Enable Security Protocol（HTTPS/WSS）",
                     supportForWebXR: "Support for WebXR (AR/VR) ",
                     webXRtips:"WebXR needs HTTPS protocol, this system will listen both HTTPS and HTTP at same port.",

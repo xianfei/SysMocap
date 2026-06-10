@@ -61,7 +61,7 @@
                     SysMocap
                 </span>
                 <div class="titlebar-ver">
-                    Beta, v{{appVersion}}
+                    v{{appVersion}}
                 </div>
             </div>
 

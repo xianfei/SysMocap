@@ -262,7 +262,7 @@
                     </label>
                 </div>
                 <div class="settings-item" v-show="settings.forward.enableForwarding"
-                    onclick="mdui.prompt('','修改端口号',(s)=>{window.sysmocapApp.settings.forward.port = parseInt(s)},()=>{},{defaultValue:window.sysmocapApp.settings.forward.port})">
+                    onclick="mdui.prompt('',window.sysmocapApp.language.tabSettings.forward.editPort,(s)=>{window.sysmocapApp.settings.forward.port = parseInt(s)},()=>{},{defaultValue:window.sysmocapApp.settings.forward.port})">
                     <span><span class="material-icons-outlined"> cable
                         </span>{{language.tabSettings.forward.port}}</span>
                     <span style="
@@ -334,7 +334,7 @@
                 <div class="settings-item">
                     <label class="mdui-switch">
                         <span><span class="material-icons-outlined">
-                                60fps_select </span>Show FPS</span>
+                                60fps_select </span>{{language.tabSettings.output.showFPS}}</span>
                         <input type="checkbox" v-model="settings.output.showFPS" />
                         <i class="mdui-switch-icon"></i>
                     </label>

@@ -97,7 +97,7 @@
                                         color: var(--md-sys-color-primary);
                                     " v-show="selectModel==JSON.stringify(model)">
                                 <span class="material-icons-outlined" style="font-size: 16px"
-                                    mdui-tooltip="{content: '默认使用的形象'}">
+                                    mdui-tooltip="{content: window.sysmocapApp.language.tabModelLib.defaultModel}">
                                     done
                                 </span>
                             </div>
@@ -130,7 +130,7 @@
                                         color: var(--md-sys-color-primary);
                                     " v-show="selectModel==JSON.stringify(model)">
                                 <span class="material-icons-outlined" style="font-size: 16px"
-                                    mdui-tooltip="{content: '默认使用的形象'}">
+                                    mdui-tooltip="{content: window.sysmocapApp.language.tabModelLib.defaultModel}">
                                     done
                                 </span>
                             </div>

@@ -305,7 +305,6 @@ export default {
     },
     mounted() {
         window.document.title = args.model.name;
-        window.app = this; // legacy global referenced in a few places
 
         const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
         renderer.shadowMapEnabled = true;

@@ -104,7 +104,5 @@ When `forward.enableForwarding` is on, `main.js` spawns `webserv/worker.js` → 
 ## Things to know before refactoring
 
 - **License mismatch**: source headers say "Mozilla Public License 2.0" but `package.json` says `"license": "ISC"`. Confirm before publishing.
-- `src/pages/mocaprender/mocapWorker.js` is a Web Worker wrapper around Holistic that appears **unused** — verify before relying on/deleting.
-- `utils/model-importer.js` is an empty placeholder.
 - `utils/` vendors large third-party bundles (`mdc-bundle.js`, `html2canvas.js`, `RecordRTC.js`, `particle-boom.umd.js`) — libraries, loaded as classic globals, not app code.
 - `docs/REFACTOR.md` is the design doc: hard invariants + the Vue 2→3 / build gotchas accumulated during this refactor.
