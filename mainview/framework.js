@@ -150,6 +150,7 @@ import {
     sourceColorFromImage,
     applyTheme,
 } from "../node_modules/@material/material-color-utilities/index.js";
+import { createApp, markRaw, toRaw } from "vue";
 
 function rgba2hex(rgba) {
     rgba = rgba.match(
@@ -211,9 +212,9 @@ if (typeof require != "undefined") {
     // import built-in models
     var builtInModels = require("../models/models.json");
 
-    var app = new Vue({
-        el: "#vue-mount",
-        data: {
+    var _vueApp = createApp({
+        data() {
+            return {
             tab: "model",
             builtIn: builtInModels,
             selectModel: localStorage.getItem("selectModel")
@@ -233,16 +234,17 @@ if (typeof require != "undefined") {
             platform: platform,
             userModels: JSON.parse(JSON.stringify(userModels)),
             theme: {},
-            document: document,
+            document: markRaw(document),
             camera: "",
             cameras: [],
-            process: process,
+            process: markRaw(process),
             checkingUpdate: false,
             hasUpdate: null,
             updateError:null,
             isLatest:false,
             disableAutoUpdate:localStorage.getItem('disableUpdate'),
-            showLine: false
+            showLine: false,
+            };
         },
         computed: {
             bg: function () {
@@ -356,6 +358,18 @@ if (typeof require != "undefined") {
             }
         },
     });
+    // Vue 3 template expressions run in a restricted scope that can't see Node
+    // globals; the model-card openModelViewer handlers call require('electron'),
+    // so expose require to templates. (Phase B SFC will turn these into methods.)
+    _vueApp.config.globalProperties.require = require;
+    // toRaw unwraps a reactive Proxy to its plain object so it can cross IPC
+    // (V8 structured-clone rejects Proxies). Used by the openModelViewer handler.
+    _vueApp.config.globalProperties.toRaw = toRaw;
+    var app = _vueApp.mount("#vue-mount");
+    // Vue 3 .mount() renders INTO the container and does not process v-show on
+    // it, so the FOUC-guard `display:none` on #vue-mount is never cleared the
+    // way Vue 2's `new Vue({el})` did — clear it now that content is rendered.
+    document.getElementById("vue-mount").style.display = "";
 
     navigator.mediaDevices.enumerateDevices().then((mediaDevices) => {
         var lastChoosed = localStorage.getItem("last-choosed-camera");

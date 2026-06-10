@@ -10,7 +10,7 @@
         <title>ModelVierer</title>
         <link rel="stylesheet" href="../node_modules/mdui/dist/css/mdui.css" />
         <script src="../node_modules/mdui/dist/js/mdui.js"></script>
-        <script src="../node_modules/vue/dist/vue.js"></script>
+        <!-- Vue 3 is ESM-imported by the inline module below -->
 
         <script src="../node_modules/lil-gui/dist/lil-gui.umd.min.js"></script>
 
@@ -420,6 +420,7 @@
             import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
             import { OrbitControls } from "three/addons/controls/OrbitControls.js";
             import { VRMLoaderPlugin, VRMUtils } from "@pixiv/three-vrm";
+            import { createApp } from "vue";
 
             // import languages
             const { languages } = require("../utils/language.js");
@@ -438,9 +439,9 @@
 
             window.document.title = args.model.name;
 
-            var app = new Vue({
-                el: "#vue-target",
-                data: {
+            var app = createApp({
+                data() {
+                    return {
                     model: args.model,
                     color: args.color,
                     bgcolor: args.backgroundColor,
@@ -455,8 +456,9 @@
                     failed: false,
                     modeltype: args.model.type,
                     failedText: "加载失败",
+                    };
                 },
-            });
+            }).mount("#vue-target");
 
             window.app = app;
 

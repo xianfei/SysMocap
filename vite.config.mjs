@@ -33,7 +33,7 @@ const copyTargets = [
     "node_modules/mdui/dist",
     "node_modules/kalidokit/dist",
     "node_modules/lil-gui/dist",
-    "node_modules/vue/dist",
+    // (Vue 3 is ESM-imported + bundled now, no longer a classic global script)
     // vendored UMDs referenced as ../utils/*.js by the render pages
     "utils/*.js",
     // mocap.js is a classic (non-module) capture-only script — Vite does not
@@ -53,6 +53,16 @@ const copyTargets = [
 export default defineConfig({
     root,
     base: "./",
+    resolve: {
+        // Vue 3 full build (includes the template compiler) for the pages'
+        // in-DOM templates mounted via createApp(...).mount(el).
+        alias: { vue: "vue/dist/vue.esm-bundler.js" },
+    },
+    define: {
+        __VUE_OPTIONS_API__: "true",
+        __VUE_PROD_DEVTOOLS__: "false",
+        __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: "false",
+    },
     plugins: [renderer(), viteStaticCopy({ targets: copyTargets })],
     build: {
         outDir: r("dist"),

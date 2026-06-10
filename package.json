@@ -27,6 +27,7 @@
     "@mediapipe/drawing_utils": "^0.3.1675466124",
     "@mediapipe/holistic": "^0.5.1675471629",
     "@pixiv/three-vrm": "^2.1.2",
+    "@vitejs/plugin-vue": "^6.0.7",
     "color": "^4.2.3",
     "electron-localstorage": "^1.0.5",
     "express": "^4.18.2",
@@ -38,7 +39,7 @@
     "socket.io": "^4.5.3",
     "svelte-jsoneditor": "^0.3.60",
     "three": "^0.164.1",
-    "vue": "^2.7.14"
+    "vue": "^3.5.35"
   },
   "devDependencies": {
     "@electron/packager": "^18.3.3",

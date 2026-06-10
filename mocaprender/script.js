@@ -13,6 +13,7 @@
 
 import { createAvatarRenderer } from "../src/render/avatarRenderer.js";
 import { createHolisticPipeline } from "../src/mocap/holisticPipeline.js";
+import { createApp } from "vue";
 
 // import languages
 const { languages } = require("../utils/language.js");
@@ -77,13 +78,14 @@ createHolisticPipeline({
 });
 
 // #vue0 target-button overlay (face / half / full)
-var app = new Vue({
-    el: "#vue0",
-    data: {
-        target: "face",
-        languages: languages[globalSettings.ui.language],
+var app = createApp({
+    data() {
+        return {
+            target: "face",
+            languages: languages[globalSettings.ui.language],
+        };
     },
-});
+}).mount("#vue0");
 
 function changeTarget(target) {
     app.target = target;
