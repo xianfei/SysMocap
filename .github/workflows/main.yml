@@ -22,7 +22,7 @@ jobs:
     # create a build matrix for jobs
     strategy:
       matrix:
-        os: [windows-2019, macos-13]
+        os: [windows-2022, macos-14]
 
     steps:
       # step1: check out repository
@@ -33,16 +33,16 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
 
       - name: setup python
         uses: actions/setup-python@v5
-        if: matrix.os == 'macos-13'
+        if: matrix.os == 'macos-14'
         with:
           python-version: 3.12
 
       - name: setup appdmg
-        if: matrix.os == 'macos-13'
+        if: matrix.os == 'macos-14'
         run: |
           python3 -m pip install setuptools
           npm install -g appdmg@0.6.6
@@ -54,7 +54,7 @@ jobs:
 
       # step4: build app for mac/win
       - name: build windows app
-        if: matrix.os == 'windows-2019'
+        if: matrix.os == 'windows-2022'
         run: |
           npm install electron-wix-msi
           npm run package:win64
@@ -67,7 +67,7 @@ jobs:
           GH_TOKEN: ${{ secrets.SECRET_TOKEN }}
 
       - name: build mac app
-        if: matrix.os == 'macos-13'
+        if: matrix.os == 'macos-14'
         run: |
           sed -i '' '137,149d' `npm root -g`/appdmg/lib/appdmg.js
           npm run package:mac64
@@ -78,11 +78,11 @@ jobs:
           GH_TOKEN: ${{ secrets.SECRET_TOKEN }}
 
       - name: Get the version tag
-        if: matrix.os == 'macos-13'
+        if: matrix.os == 'macos-14'
         run: echo "VERSION_TAG=$(git describe --tags)" >> $GITHUB_ENV
 
       - name: Rename files in OutApp/packages
-        if: matrix.os == 'macos-13'
+        if: matrix.os == 'macos-14'
         run: |
           for file in OutApp/packages/*; do
             # 获取文件扩展名
@@ -94,7 +94,7 @@ jobs:
           done
 
       - name: Rename files in OutApp/packages win
-        if: matrix.os == 'windows-2019'
+        if: matrix.os == 'windows-2022'
         run: |
           $versionTag = git describe --tags
           Get-ChildItem OutApp/packages -File | ForEach-Object {
