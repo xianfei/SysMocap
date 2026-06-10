@@ -77,32 +77,10 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.SECRET_TOKEN }}
 
-      - name: Get the version tag
-        if: matrix.os == 'macos-14'
-        run: echo "VERSION_TAG=$(git describe --tags)" >> $GITHUB_ENV
-
-      - name: Rename files in OutApp/packages
-        if: matrix.os == 'macos-14'
-        run: |
-          for file in OutApp/packages/*; do
-            # 获取文件扩展名
-            ext="${file##*.}"
-            # 获取不带扩展名的文件名
-            base="${file%.*}"
-            # 重命名文件，添加版本号
-            mv "$file" "${base}-${{ env.VERSION_TAG }}.$ext"
-          done
-
-      - name: Rename files in OutApp/packages win
-        if: matrix.os == 'windows-2022'
-        run: |
-          $versionTag = git describe --tags
-          Get-ChildItem OutApp/packages -File | ForEach-Object {
-            $baseName = $_.BaseName
-            $extension = $_.Extension
-            $newName = "${baseName}-${versionTag}${extension}"
-            Rename-Item $_.FullName $newName
-          }
+      # Artifacts are already version-stamped by the package scripts (they read
+      # package.json's version via $npm_package_version / require(...)), so the old
+      # git-describe rename steps are gone. Keep package.json's version in sync with
+      # the release tag (e.g. tag v0.8.0 <-> "version": "0.8.0").
 
       # step6: upload artifacts
       - name: upload artifacts
