@@ -142,6 +142,32 @@ npm i
 npm start
 ```
 
+
+### Ubuntu/Kubuntu (24.04) Tips:
+
+- Lock various dependencies to their needed version for this application. For example: Vue3 is a more common version of vue to have on Kubuntu with Nvidia GPUs so locking the version for SysMocap to vue2 will prevent global variable changes from preventing vue creating the display (white screen error).
+- You may need to nuke your install package.json and reinstall with your needed GPU repository and dependecies to bypass white screen errors.
+
+
+#### Using Lutris to compile needed dependencies:
+
+- Because there are an indefinate way to have your machine setup with Linux like Ubuntu/Kubuntu, Lutris on Linux ver 24+ can obtain exe installer, new winetricks, modern processes as runners like wow x86 windows runners and rebuilt ubuntu 9.
+- Lutris can handle some Nvidia drivers especially intergrated GPUs and dual-GPUs so you can setup a Lutris game enviroment to run Intergrated Graphics like with MESA and a seperate game enviroment in Lutris to run the GPU for better quality tracking and output.
+
+
+#### Helpful Lutris Guide:
+
+1) Fully update your npm and nodejs by reinstalling them (do not clean these if there are vulnable dependencies because some of the SysMocap dependencies are now days vulnable)
+2) Use winetricks to turn on and activate: all codex, .net data, C++ data, (your GPU specific extras), directdraw and dirc, 3D rendering services
+3) Usd Lutris to add an exe -> use windows MSI installer file for the exe -> proceed to install process to setup the folders and enviroment for Lutris -> successfully exit without Launch
+4) Configure File to run with machine libraries, do not disable lutris runtime, use Ubuntu 9 rebuild runners, Use no-fsync/e-sync nor DRMs, setup your needed GPU/intergrated-graphics toggles now
+5) Run (it may not pull up first time, if so close with lutris then open again this time debugger should run and app should appear visible after that) -> Setup your settings and character but your cameras shouldn't work correctly -> safely exit
+6) Configure file to run on compatable windows x86 or the correct bit formation for sysmocap then run as is with rest of specs
+7) Run (should run on first try and debugger may run) -> use Mocap feature and enjoy
+
+
+
+
 ### Notice
 
 1. HTTP & HTTPS will use **same port** in Mocap Data Forward.
