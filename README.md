@@ -176,7 +176,7 @@ npm start
 
 ### Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=xianfei/SysMocap&type=Date)](https://star-history.com/#xianfei/SysMocap&Date)
+[![Star History Chart](https://star-history.dera.page/svg?repos=xianfei/SysMocap&type=Date)](https://star-history.dera.page/#xianfei/SysMocap&Date)
 
 ### Improve Translate
 
